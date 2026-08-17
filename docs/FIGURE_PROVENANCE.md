@@ -25,7 +25,7 @@ Paths: figure sources live in `rebuild/figs/`; generating scripts and data live 
 | 12 | fig:scaling | fig_scaling2_native.tex | make_scaling_fig.py (⚠ panel c added by hand to the .tex) | **scaling_data.json** | F1 6.6→22.5, frac 0.92→0.08; 2026-08-17 added panel (c) |S|=frac·Np1_sector & D=Np1_sector, both exponential. `figs/scaling.dat` DELETED (orphan) |
 | 13 | fig:ladder | fig_ladder_native.tex | ladder_vs_chain.py | **ladder_vs_chain.json** | ⚠ json chain-L6 F1 still 9.6047 (stale) — figure/caption use corrected 9.39; overwrite json to match |
 | 14 | fig:circ | fig_circuit.pdf | fig_circuit_native.tex (quantikz) | — (schematic, no data) | interaction column drawn as ctrl dots, labelled R_zz |
-| 15 | fig:heron | fig_hardware_hero_frag.tex | (native; SHOULD be make_hardware_hero.py) | **hw_lucj_n2_result.json — job `da125f2ein7c73bcsqs0`** | ⭐ AUTHORITATIVE HW RUN. hist_hw→[27.0,6.99,2.49,1.10,0.66] mHa; 8-seed final **0.59±0.14** (best 0.40); noiseless 29.5 |
+| 15 | fig:heron | fig_hardware_hero_frag.tex | make_hardware_hero.py | **hw_lucj_n2_result.json — job `da125f2ein7c73bcsqs0`** | ⭐ AUTHORITATIVE HW RUN. Panel (b) = **8-seed recovery MEAN per step + ±std error bar** (`dE_hist_mean`/`dE_hist_std` = [31.1±4.0, 6.1±0.8, 2.1±0.3, 1.0±0.2, **0.59±0.14**]); noiseless 29.5 |
 | 16 | fig:noise | fig_noise_score.pdf | make_noise_fig.py | **noise_spectral.json** + figs/noise.dat | naive vs S-CoRe; "naive" curve colour clashes with orange=learned elsewhere |
 | 17 | fig:noiserec | fig_noise_recovery_native.tex | make_noise_recovery_native.py | **molecular_noise.json** + molecular_noise_sweep.json | panel (a) 5 mols (8 seeds), panel (b) 19 mols at ε=2% (5 seeds) — different ensembles |
 | 18 | fig:gflow | fig_gflownet.pdf | make_gflow_fig.py | **gflow.json** | bars 43.2/39.2/27.0/26.0/22.9 |
@@ -35,8 +35,11 @@ Paths: figure sources live in `rebuild/figs/`; generating scripts and data live 
 ## ⭐ HARDWARE — the single authoritative run (do not confuse)
 
 **N₂ / ibm_marrakesh energy = job `da125f2ein7c73bcsqs0`** (8-seed recovery sweep, "Run all").
-File: `hw_lucj_n2_result.json`. dE = **0.59 ± 0.14 mHa** (best seed 0.40); noiseless sim 29.5 mHa.
-Confirmed authoritative by Nicolás (2026-08-17).
+File: `hw_lucj_n2_result.json`. The **full per-seed × per-iteration trajectories** are stored in
+`e_hw_seed_hist` (8×5 energies) and `dE_hist_seeds` (8×5 mHa), with `dE_hist_mean`/`dE_hist_std` the
+per-step 8-seed statistics — reconstructed from the run log so the per-point error bars are never lost
+again. Converged dE = **0.59 ± 0.14 mHa** (best seed 0.40); noiseless sim 29.5 mHa.
+Confirmed authoritative by Nicolás (2026-08-17); per-seed trajectories restored 2026-08-17.
 
 **A(ω) / ibm_fez** = the `ibm_fez` L=6 Hubbard run (|S|=300/300, exact by coverage). File: `heron_spectral.json` / figs/heron*.dat.
 

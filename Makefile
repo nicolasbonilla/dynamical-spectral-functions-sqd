@@ -19,9 +19,10 @@ verify:
 	$(PYTHON) src/verify.py
 
 # ---- regenerate the data-driven native \input fragments from the committed .json/.dat ----
-# NOTE: the committed paper/figs/*.tex + *.pdf are AUTHORITATIVE and match main.pdf. A few fragments
-# received manual finalization AFTER generation (resource-master annotation placement; the scaling
-# panel (c); the honest single-trajectory hardware panel) — for those the committed .tex is the truth.
+# NOTE: the committed paper/figs/*.tex + *.pdf are AUTHORITATIVE and match main.pdf. Two fragments
+# received manual annotation placement AFTER generation (resource-master annotation; the scaling
+# panel (c)) — for those the committed .tex is the truth. The hardware panel (Fig. 15b) is fully
+# regenerated below from data/hw_lucj_n2_result.json (8-seed mean + per-step std error bars).
 # The .pdf figures (hero, bench, noise, gflow, gallery, magic-suite, circuit, S(q,w), S^zz, A(k,w))
 # are standalone-compiled; see docs/REPRODUCE.md for the two-step recipe.
 figures:
@@ -29,6 +30,7 @@ figures:
 	$(PYTHON) src/make_method_fig_max.py
 	$(PYTHON) src/make_akw_sampled_fig.py
 	$(PYTHON) src/make_noise_recovery_native.py
+	$(PYTHON) src/make_hardware_hero.py
 	$(PYTHON) src/make_table.py
 	@echo "OK: data-driven fragments regenerated. Committed paper/figs/ remains authoritative."
 

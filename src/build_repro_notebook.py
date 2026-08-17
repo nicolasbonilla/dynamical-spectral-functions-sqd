@@ -178,15 +178,17 @@ cells.append(md(
 ))
 cells.append(code(
 "hw = load('hw_lucj_n2_result.json'); efci = hw['e_fci']",
-"traj = [(e-efci)*1000 for e in hw['hist_hw']]; sim = [(e-efci)*1000 for e in hw['hist_sim']]",
+"mean = hw['dE_hist_mean']; std = hw['dE_hist_std']          # 8-seed recovery: per-step mean +/- std",
+"sim = [(e-efci)*1000 for e in hw['hist_sim']]",
 "plt.figure(figsize=(6,3.6))",
 "plt.plot(range(len(sim)), sim, 's--', color='gray', label='noiseless (same circuit)')",
-"plt.plot(range(len(traj)), traj, 'o-', color='#C4360C', label='noisy hardware (da125 run)')",
-"plt.errorbar(len(traj)-1, hw['dE_mean_mHa'], yerr=hw['dE_std_mHa'], fmt='o', color='#C4360C', capsize=4)",
+"plt.errorbar(range(len(mean)), mean, yerr=std, fmt='o-', color='#C4360C', lw=2, capsize=4,",
+"             label='noisy hardware (8-seed mean +/- s.d.)')",
 "plt.axhspan(0,1.6, color='0.85', alpha=0.6); plt.yscale('log')",
 "plt.xlabel('configuration-recovery step'); plt.ylabel('error to FCI (mHa)')",
 "plt.legend(fontsize=8); plt.title('N2 on ibm_marrakesh (Fig. 15b)'); plt.tight_layout(); plt.show()",
-"print('Hardware N2: %.2f +/- %.2f mHa  (noiseless %.1f mHa)  job %s'%(",
+"print('Hardware N2 per-step (mHa):', ['%.2f+/-%.2f'%(m,s) for m,s in zip(mean,std)])",
+"print('converged %.2f +/- %.2f mHa  (noiseless %.1f mHa)  job %s'%(",
 "      hw['dE_mean_mHa'], hw['dE_std_mHa'], sim[-1], hw['job_id']))",
 ))
 
