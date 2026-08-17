@@ -1,0 +1,22 @@
+# Core — exact diagonalization, all spectral/resource/scaling figures (reproduces locally)
+numpy>=1.24
+scipy>=1.10
+
+# Molecular fermionic-magic suite (FCI in an active space)
+pyscf>=2.3
+
+# Figure rasters (perceptual "hot" colormaps for A(k,w), S(q,w)) and orbital-gallery trimming
+matplotlib>=3.7
+pillow>=9.5
+
+# Amortized configuration recovery (leave-one-out model, Fig. 19)
+scikit-learn>=1.3
+
+# ---------------------------------------------------------------------------
+# OPTIONAL — only for re-running the IBM Heron hardware notebooks (needs an
+# IBM Quantum account; the classical post-processing runs on the cached counts).
+# ---------------------------------------------------------------------------
+# qiskit>=1.0
+# qiskit-ibm-runtime>=0.20
+# qiskit-addon-sqd>=0.6
+# ffsim>=0.0.40

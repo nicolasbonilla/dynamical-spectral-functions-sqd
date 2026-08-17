@@ -1,0 +1,183 @@
+\section{One-body magic and its decoupling from the sampling cost $|\mathcal S|$}\label{sec:resource}
+
+The value of a sampling method is set by whether the distribution it samples is classically hard, and
+for fermions that hardness has a precise algebraic origin. Circuits of free-fermion (matchgate) gates
+are classically simulable in polynomial time~\cite{valiant2002}, equivalently the classical
+simulability of non-interacting-fermion dynamics~\cite{terhaldivincenzo2002}, with a
+Grassmann/covariance-matrix formulation via fermionic linear optics~\cite{bravyi2005flo,jozsamiyake2008}.
+The resource that leaves this manifold is fermionic \emph{non-Gaussianity}: every pure non-Gaussian
+fermionic state, injected into a matchgate circuit, promotes it to universal quantum
+computation~\cite{hebenstreit2019}---the fermionic counterpart of the non-stabilizerness (``magic'')
+of universal qubit computation~\cite{bravyikitaev2005,leone2022sre}. A ladder of measures makes this
+quantitative: Gaussian rank and extent~\cite{cudbystrelchuk2023}, the non-Gaussian gate count that
+bounds phase-sensitive free-fermion simulation~\cite{reardonsmith2024,diaskoenig2024}, and
+covariance-matrix monotones computable from two-point functions~\cite{tarabunga2026,collura2026}.
+
+We work with the fermionic AntiFlatness (FAF)~\cite{sierant2026},
+\begin{equation}
+\mathcal F_k \;=\; 2n_{\rm o}-\tfrac12\,\mathrm{tr}\bigl[(\Gamma^{\top}\Gamma)^k\bigr] \;=\; 2n_{\rm o}-\sum_{j=1}^{2n_{\rm o}}\lambda_j^{2k},
+\qquad \Gamma_{mn}=-\tfrac{i}{2}\langle[\gamma_m,\gamma_n]\rangle,
+\label{eq:faf}
+\end{equation}
+where $\Gamma$ is the $4n_{\rm o}\times4n_{\rm o}$ Majorana covariance matrix and $\{\lambda_j\}\in[0,1]$
+the singular values of its orthogonal (Youla) normal form---the moduli of its eigenvalue pairs
+$\pm i\lambda_j$; here $2n_{\rm o}$ is the number of spin-orbital \emph{modes} (twice the spatial-orbital
+count $n_{\rm o}$), distinct from the electron number of the $(N\pm1)$ sectors, and $\mathcal F_k$ ranges in $[0,2n_{\rm o}]$.
+$\mathcal F_k=0$ if and only if the state is Gaussian, and $\mathcal F_k$ is invariant
+under Gaussian (free-fermion) unitaries by construction~\cite{sierant2026}. The index $k$ is a
+hierarchy of correlator orders, efficiently computable and experimentally accessible from two-point
+functions~\cite{sierant2026,bittel2025,tarabunga2026}.
+
+\paragraph{One-body collapse.} On the number-conserving states of electronic structure the anomalous
+correlators $\langle c_ic_j\rangle$ vanish, so $\Gamma$ is fixed by the one-particle reduced density matrix
+$\gamma$ and its singular values are $\lambda_i=|2g_i-1|$, with $g_i\in[0,1]$ the natural
+spin-orbital occupations. The $k=1$ member then reduces to a single 1-RDM invariant,
+\begin{equation}
+\boxed{\;\mathcal F_1 \;=\; \sum_i\bigl[1-(2g_i-1)^2\bigr] \;=\; 4\sum_i g_i(1-g_i)
+\;=\; 4\,\mathrm{tr}[\gamma(1-\gamma)]\;,}
+\label{eq:collapse}
+\end{equation}
+where the sum runs over spin orbitals and $g_i\in[0,1]$ are the natural spin-orbital occupations. This
+chain is exact on any number-conserving state. For \emph{spin-restricted} natural orbitals
+($g_{a\uparrow}=g_{a\downarrow}=n_a/2$) it equals $2N_{\mathrm u}$, with
+$N_{\mathrm u}=\sum_a n_a(2-n_a)$ (spatial occupations $n_a\in[0,2]$) the \emph{quadratic}
+effectively-unpaired-electron index of Takatsuka--Fueno--Yamaguchi and of
+Staroverov--Davidson~\cite{takatsuka1978,staroverov2000} (distinct from the \emph{linear}
+$\sum_a\min(n_a,2-n_a)$ index of Head-Gordon~\cite{headgordon2003}); a cleanly singly-occupied spin
+orbital contributes $0$ to $\mathcal F_1$ but $2$ to $2N_{\mathrm u}$, so on the five genuinely
+spin-polarized (open-shell) members of Table~\ref{tab:molecules} ($\mathrm{O_2},\mathrm{NO},\mathrm{CN},
+\mathrm{OH},\mathrm{BeH}$) the two differ and we report the exact
+$\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$ directly. The invariant $\mathrm{tr}[\gamma(1-\gamma)]$ is
+the Gigena--Rossignoli one-body-entanglement linear entropy~\cite{gigena2020}. We verify
+Eq.~\eqref{eq:collapse}---and, on the closed-shell members, its equality to $2N_{\mathrm u}$---to machine
+precision across the dissociation of $\mathrm{N_2}$ and the full suite of Table~\ref{tab:molecules}. Algebraically Eq.~\eqref{eq:collapse} is an immediate
+number-conserving specialization of the antiflatness of Ref.~\cite{sierant2026}, and its ensemble
+form---$\mathcal F_1$ proportional to the one-body purity deficit---was independently noted for
+interacting-integrable eigenstates in Ref.~\cite{swietek2026}; our point is not the algebra but the
+exact, state-by-state \emph{dictionary} it makes explicit. Three literatures---fermionic magic,
+effectively-unpaired electrons, and one-body entanglement---thus name one quantity, and, being a
+function of the occupation spectrum alone, $\mathcal F_1$ inherits the orbital-rotation invariance of
+the eigenvalues of $\gamma$. (Outside
+number conservation the collapse fails: a paired Gaussian state hides fractional occupations in
+anomalous correlators and keeps $\mathcal F_1=0$.)
+
+\paragraph{Decoupling from the cost.} That invariance is exactly what severs $\mathcal F_1$ from the
+sampling cost. The cost of a sample-based method is the determinant support $|\mathcal S|_\varepsilon$:
+the number of fixed-basis Slater determinants that carry $1-\varepsilon^2$ of the weight. Unlike
+$\mathcal F_1$, $|\mathcal S|$ is \emph{basis dependent}---a single Slater determinant has
+$|\mathcal S|=1$ in its own natural orbitals and exponentially many terms in a generic basis. An
+orbital rotation is a free (Gaussian) operation that leaves the occupation spectrum, hence
+$\mathcal F_1$, exactly fixed while changing $|\mathcal S|$---from $O(1)$ in the natural-orbital basis to
+exponentially many determinants in a generic basis. A quantity invariant under operations that change
+$|\mathcal S|$ at fixed value cannot bound or predict it: one-body magic and the sampling cost are
+decoupled by symmetry.
+
+\begin{figure}[t]\centering
+\input{figs/fig_decoupling_native.tex}
+\caption{\label{fig:decoupling}\textbf{One-body magic $\mathcal F_1$ is decoupled from the sample-based
+determinant support $|\mathcal S|$.} \textbf{(a)}~Nineteen FCI-verified molecules at equilibrium and
+dissociation: in the static-correlation regime $\mathcal F_1$ and $|\mathcal S|$ rise together
+(Pearson $r=0.80$ on $\log_2|\mathcal S|$), yet $\mathcal F_1$ approaches its maximum while
+$|\mathcal S|$ stays a modest fraction of the active-space sector. \textbf{(b)}~Hubbard chains at fixed
+filling (three representative sweeps; the full $30$-point set is Fig.~\ref{fig:master}): increasing on-site repulsion $U$ raises $\mathcal F_1$ but \emph{lowers} the site-basis
+support $|\mathcal S|$ as the ground state localizes, inverting the sign of the correlation.
+\textbf{(c)}~Free fermions ($U=0$): a single Slater determinant with $\mathcal F_1=0$, whose site-basis
+support nonetheless grows as $35,336,3496,37361$ for chain length $L=4,6,8,10$. The
+$\mathcal F_1$--$|\mathcal S|$ relationship is not sign stable---the signature of comparing an
+orbital invariant to a basis variant.}
+\end{figure}
+
+The decoupling is two-sided, and its sign is not even stable (Fig.~\ref{fig:decoupling}). Across the
+nineteen FCI-verified molecules of Table~\ref{tab:molecules}, $\mathcal F_1$ and $|\mathcal S|$ rise
+\emph{together} in the static-correlation regime (Pearson $r=0.80$ on $\log_2|\mathcal S|$): bond
+dissociation drives fractional occupations and multireference weight in step. But a free-fermion
+ground state---a single Slater determinant, $\mathcal F_1=0$---has $|\mathcal S|$ that grows
+exponentially in the site basis ($|\mathcal S|=35,\,336,\,3496,\,37361$ for chain length
+$L=4,6,8,10$), and along a Hubbard chain at fixed filling, increasing on-site repulsion \emph{raises}
+$\mathcal F_1$ while \emph{lowering} $|\mathcal S|$ as the ground state localizes onto few
+configurations. The relationship between an orbital invariant and a basis variant cannot be otherwise.
+
+\paragraph{An obstruction, not a weakness.} The failure is structural, not special to $\mathcal F_1$.
+For the \emph{raw} determinant support (the unthresholded Slater rank), \emph{no} continuous functional
+of a fixed set of reduced density matrices can lower-bound it (App.~\ref{app:theorem}): rank is a
+coefficient-insensitive count, so $\ket{\Psi_\epsilon}=\ket{D_0}+\epsilon\sum_{k=1}^{K}\ket{D_k}$ has all
+reduced density matrices converging to those of a single determinant---every continuous magic or
+correlation functional $\to0$---while the rank stays $\Theta(K)$. This continuity route does \emph{not}
+by itself carry over to the operative, coefficient-\emph{sensitive} $|\mathcal S|_\varepsilon$, which
+collapses to $1$ as $\epsilon\to0$ in step with the functionals; the threshold-robust obstruction for
+$|\mathcal S|_\varepsilon$ is supplied instead by the symmetry argument above---no
+orbital-rotation-invariant functional can bound it---and by two \emph{equal-weight} witnesses, whose
+amplitudes do not shrink. The two-determinant cat $(\ket{1\cdots10\cdots0}+\ket{0\cdots01\cdots1})/\sqrt2$
+has $\gamma=\tfrac12\mathbb 1$, hence $\mathcal F_1=2n_{\rm o}$ (maximal) yet Slater rank $2$; and a paired (BCS)
+Gaussian state has Gaussian rank $1$ yet fractional occupations. The only computable lower bounds on $|\mathcal S|$ are themselves
+basis dependent---the orbital-Schmidt rank across a bipartition, i.e.\ the tensor-network bond
+dimension~\cite{schollwock2011}, which we prove is a rigorous lower bound, $\chi\le|\mathcal S|$
+(App.~\ref{app:theorem}, Prop.~\ref{prop:chibound}), and, consistently, the basis-dependent non-Gaussianity measures
+(such as the natural-orbital participation entropy) that \emph{do} upper-bound the simulation
+cost~\cite{tarabunga2026}---while a Gaussian-invariant magic measure is blind to them. We make the
+obstruction constructive (App.~\ref{app:witness}, Thm.~\ref{thm:witness}): an antisymmetrized product of
+$K$ strongly orthogonal geminals carries one-body magic $\mathcal F_1=2N_{\mathrm u}=4K$, higher-order
+magic $\mathcal F_2=4K$, and pairing-basis determinant support $|\mathcal S|=2^{K}$ all growing without
+bound, yet in that basis is a bond-dimension-$2$ tensor network---$O(1)$ bond dimension, $O(K)$
+contraction and Born-sampling cost---so magic of \emph{every} order is unbounded at fixed $O(1)$ bond dimension. Because $\mathcal F_k$ is orbital-rotation invariant while the sampling
+cost is not, no magic monotone is a sufficient certificate of hardness. Even the higher-order
+antiflatness $\mathcal F_{k\ge2}$ fails: the witness has $\mathcal F_2=4K$ unbounded at $O(1)$ bond
+dimension. What is hard is \emph{generic, high-rank} non-Gaussianity in the fixed operative basis---the
+connected higher-body cumulants, which no orbital-invariant $\mathcal F_k$ can capture---and not the
+paired stratum, whose amplitudes, overlaps, and number correlators are classically \emph{estimable} to
+additive error under free-fermionic dynamics~\cite{oh2026}.
+This bond dimension---which directly sets the classical cost of a matrix-product-state
+simulation~\cite{schollwock2011}---is a rigorous lower bound on $|\mathcal S|$ (Prop.~\ref{prop:chibound})
+that, unlike the orbital-invariant $\mathcal F_1$, empirically co-varies with it: across both the
+nineteen-molecule suite and Hubbard chains the minimal bond dimension $\chi$ tracks $|\mathcal S|$
+(Spearman $\rho=0.90$ over the $n=38$ molecular equilibrium-and-dissociation points and $\rho=0.57$ over
+the $n=30$ Hubbard points; both $p<0.01$), whereas one-body magic tracks it only in the
+static-correlation regime of dissociating molecules ($\rho=0.86$, $n=38$) and not under the Hubbard
+interaction sweep ($\rho=-0.11$, $n=30$, $p\approx0.56$, not significant, where increasing $U$ raises
+$\mathcal F_1$ but lowers $|\mathcal S|$); the absolute $|\mathcal S|$, sector dimension $D$, and $\chi$
+underlying these coefficients are tabulated per species in App.~\ref{app:repro}. Many-body
+(bond-dimension) entanglement lower-bounds and, across the studied regimes, empirically tracks the
+sampling cost; one-body entanglement---equivalently the one-body magic $\mathcal F_1$---does so only
+where it coincides with static correlation. That single-particle entanglement can be maximal while
+bipartite (bond) entanglement stays $O(1)$ is the fermionic counterpart of the magic--entanglement
+decoupling seen in qubit matrix-product states~\cite{frautarabunga2024}.
+Figure~\ref{fig:master} consolidates the picture over all $74$ exact ground states of this
+work---nineteen molecules (equilibrium and dissociation), the Hubbard interaction sweep, and the
+chain/ladder pair. The determinant support tracks the bond dimension in \emph{every} family (pooled
+Spearman $\rho=0.72$, and positive within each), with the geminal witness ($\chi=2$, $|\mathcal S|=2^{K}$)
+the deliberately loose lower bound; one-body magic does not, and fails in two visibly distinct ways---the
+Hubbard branch runs the \emph{wrong} way ($U\!\uparrow$ raises $\mathcal F_1$ while lowering
+$|\mathcal S|$) and the chain/ladder points sit at \emph{identical} $\mathcal F_1$ with $|\mathcal S|$
+differing by up to $\sim\!2.2\times$. The cost is a property of the sampler's basis, read by $\chi$; the orbital
+invariant $\mathcal F_1$ is blind to it.
+
+\begin{figure}[htbp]\centering\input{figs/fig_resource_master_native.tex}
+\caption{\textbf{The resource thesis over $74$ exact ground states.} Nineteen molecules at equilibrium and
+dissociation, a Hubbard interaction sweep, and a matched chain/two-leg-ladder pair (all exact
+diagonalization). \textbf{(a)}~The determinant support $|\mathcal S|$ tracks the minimal bond dimension
+$\chi$ in every family (pooled Spearman $\rho=0.72$; the geminal witness $\chi{=}2,\,|\mathcal S|{=}2^{K}$
+is the deliberately loose lower bound). \textbf{(b)}~One-body magic $\mathcal F_1$ does not (pooled
+Spearman $\rho=0.60$ for $\mathcal F_1$ vs $|\mathcal S|$ over the same $74$ states): the Hubbard
+branch runs the wrong way ($U\!\uparrow\Rightarrow\mathcal F_1\!\uparrow,|\mathcal S|\!\downarrow$) and the
+chain/ladder points share the same $\mathcal F_1$ at $|\mathcal S|$ differing by up to $\sim\!2.2\times$. Cost is lower-bounded and tracked by
+the basis-dependent $\chi$, not by the orbital-invariant $\mathcal F_1$.}\label{fig:master}\end{figure}
+
+\paragraph{What one-body magic does, and where the hardness is.} None of this makes $\mathcal F_1$
+uninformative. It is a faithful, efficiently measurable detector of \emph{static} (multireference)
+correlation---generalizing to fermionic non-Gaussianity, and to nineteen FCI-verified molecules, the
+qubit non-stabilizerness peak of molecular bonding~\cite{sarkis2025} and the reported proportionality
+between qubit non-stabilizerness and Hartree--Fock weight (correlation) for weak-to-moderate
+correlation---itself reported to break down beyond the Coulson--Fischer point~\cite{seibert2026}
+(Table~\ref{tab:molecules}). What it is
+\emph{not} is a predictor of the classical \emph{cost} of sampling, which---as the $\chi$--$|\mathcal S|$
+tracking above shows---is lower-bounded and tracked by the basis-dependent entanglement, and by the fixed basis a sampler
+cannot rotate, not by the orbital invariant $\mathcal F_1$. Cost and quantum hardness are thus distinct
+axes: the classical cost of the simulation is governed by entanglement, the bond dimension $\chi$,
+whereas a genuine quantum advantage---a regime beyond \emph{every} classical method---would require
+\emph{generic, high-rank} non-Gaussianity in the operative basis, the connected two- and higher-body
+cumulants beyond the covariance~\cite{coffman2025}, and specifically not the paired stratum, whose
+free-fermionic estimation primitives remain classically tractable~\cite{oh2026}; the orbital-invariant
+one-body magic $\mathcal F_1$ certifies neither. Fermionic magic thus supplies the missing link between the resource theory of non-Gaussianity
+and sample-based electronic-structure computation---but the link is a \emph{demarcation}: what is so
+easily measured (invariant one-body magic) diagnoses correlation, while the cost lives in the
+entanglement and any genuine advantage one stratum above, in the generic higher-order sector.

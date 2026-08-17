@@ -1,0 +1,314 @@
+\section{Results}
+
+Having established analytically the resource that tracks the sampling cost (Sec.~\ref{sec:resource}), we
+now demonstrate the method and that resource numerically. We validate the reconstruction against exact
+diagonalization, map the resource axis across lattices
+and a nineteen-molecule chemical suite, benchmark the time-evolution selector against standard classical
+selectors (conceding the strongest, heat-bath CI), and scale the demonstration toward the beyond-classical regime.
+
+\subsection{Validation}
+On Hubbard chains the bitstring-sampled subspace reproduces the exact multi-peak single-particle
+spectral function (Fig.~\ref{fig:method}). The relative-$L_1$ error falls toward zero
+as the time-evolution sampling discovers the spectral configurations, reaching $0.017$ for the
+complete-subspace reconstruction (panel a; the $8$-seed finite-shot curve of panel b flattens toward
+$\approx0.019$), and the addition-branch sum rule $\int A^{+}\,d\omega=1-\langle \hat n_p\rangle$ is satisfied
+exactly---confirming that the classically-assembled Green's function of Eq.~\eqref{eq:green} inherits
+the accuracy of the sampled subspace, not of any device-side estimation. The same primitive extends to
+the momentum-dependent $A(k,\omega)$---whose dispersing lower and upper Hubbard bands and mid-gap Fermi
+level are shown \emph{exactly} in Fig.~\ref{fig:lattice}---and to the dynamical structure factor
+$S(q,\omega)$ from a number-conserving density seed (Fig.~\ref{fig:sqw}): a single sampling primitive
+covers the photoemission and density-response channels that classically require separate dynamical-DMRG
+computations~\cite{jeckelmann2002,nocera2016}. From a spin seed the same primitive furnishes the spin
+structure factor $S^{zz}(q,\omega)$ (Fig.~\ref{fig:spin}), and the two collective responses lay bare
+spin--charge separation in the two-particle channel: the charge continuum is \emph{gapped} by the Mott
+gap $\Delta$, whereas the spin continuum is \emph{gapless} (in the thermodynamic limit), its bandwidth set by the far smaller exchange $J=4t^2/U$.
+At subspace saturation the bitstring-sampled reconstruction
+reproduces the exact result at every momentum to relative-$L_1$ below $\sim\!0.5\%$
+(Fig.~\ref{fig:akwsampled}: the sampled $A(k,\omega)$ overlays the exact target across the Brillouin
+zone, mean per-momentum error $2.2\times10^{-3}$, at a subspace of $85\%$ of the $(N{\pm}1)$ sector);
+crucially, however---and unlike the ground-state
+energy---saturating a \emph{full} dynamical spectral function requires a substantial---though
+\emph{shrinking}---fraction of the $(N{+}1)$ sector ($0.92$ at $L=4$ down to $0.08$ at $L=14$,
+Fig.~\ref{fig:scaling}), because the spectral weight
+is distributed across the excited-state spectrum rather than concentrated in a few dominant
+configurations. This subspace-fraction cost, not any device-side accuracy, is the resource that
+Sec.~\ref{sec:resource} analyses. The continued-fraction reconstruction itself carries the standard
+Lanczos caveats---finite sampling of the subspace and loss of orthogonality at high recursion order can
+seed spurious low-weight poles---mitigated here by seed averaging and the finite broadening $\eta$.
+
+\begin{figure}[htbp]\centering\input{figs/fig_method_native_frag.tex}
+\caption{\textbf{The method, validated---and its convergence matches the theorem.} \textbf{(a)}~The
+bitstring-sampled single-particle spectral function reproduces the exact $A(\omega)$ (Hubbard $L=6$,
+$U/t=8$; broadening $\eta=0.15\,t$) to relative-$L_1$ $0.017$---the exact (filled) and reconstructed
+(dashed) curves are indistinguishable---and the reconstructed spectral weights obey the exact addition-branch sum
+rule $\int A^{+}\,d\omega=0.500=1-\langle n_p\rangle$ to machine precision (the panel shows the addition branch $\omega>0$; the full $A$ integrates to $1$). \textbf{(b)}~Convergence of the relative-$L_1$ error with
+the Krylov order $K$ (number of time-evolution steps sampled), seed-averaged over eight independent
+runs (band $=$ standard deviation). Two regimes appear: a short \emph{discovery} phase in which the
+time-evolution sampling first locates the spectral configurations, followed by a \emph{geometric
+collapse} $\text{rel-}L_1\sim\rho^{-K}$ with $\rho\approx1.7$---precisely the geometric convergence
+guaranteed by the moment-exactness theorem (Thm.~\ref{thm:b2}, App.~\ref{app:b2}). The sampled error
+tracks the geometric law until it flattens toward the $8$-seed finite-shot value ($\approx0.019$ at $K=12$); the
+complete-subspace reconstruction of panel (a) reaches $0.017$.}\label{fig:method}\end{figure}
+
+\begin{figure}[htbp]\centering\includegraphics[width=\textwidth]{figs/fig_akw_native.pdf}
+\caption{\textbf{Momentum-resolved spectral function: the exact dynamical target.} The
+single-particle spectral function $A(k,\omega)$ of the half-filled Hubbard chain ($U/t=8$, $L=12$,
+Lorentzian broadening $\eta=0.18\,t$), computed exactly from the resolvent $\langle\phi|(z-\hat H)^{-1}|\phi\rangle$ via the
+Haydock continued fraction~\cite{haydock1972} over the full $(N{\pm}1)$ sectors (equivalent to the Lehmann sum in exact arithmetic)---the frequency- and momentum-resolved
+observable that sample-based diagonalization targets but its energy-only output cannot itself deliver.
+The two dispersing Hubbard bands---electron removal (lower, $\omega<0$; photoemission) and electron
+addition (upper, $\omega>0$; inverse photoemission)---are separated by the correlation-driven
+\emph{Mott gap} $\Delta=\mu^{+}-\mu^{-}=4.97\,t$ between the highest occupied state ($\mu^{-}$, lower
+edge) and the lowest unoccupied state ($\mu^{+}$, upper edge), obtained from the exact $(N{\pm}1)$
+ground-state energies (ticks at $\pm2.484\,t$); the broadened spectral peaks of the plotted $A(k_F,\omega)$
+sit slightly wider, at $\pm2.49\,t$ (a $4.99\,t$ splitting), the $\sim\!0.02\,t$ excess being the
+$\eta=0.18\,t$ Lorentzian broadening; the thermodynamic Lieb--Wu value~\cite{liebwu1968} is $4.68\,t$, the
+$L=12$ excess being finite-size. The gap is \emph{direct} at the
+Fermi momentum $k_F=\pi/2$. Particle--hole symmetry places the Fermi level at mid-gap ($\omega=0$),
+verified to machine precision, and each momentum obeys the analytic spectral sum rule
+$\int A(k,\omega)\,d\omega=1$ (the plotted broadened grid recovers it to $\sim\!2\%$ within the $\pm9t$ window).
+The lower Hubbard band is not a single quasiparticle band but a \emph{spin--charge-separated} continuum:
+a narrow spinon branch (bandwidth $\pi J/2=0.79\,t$~\cite{descloizeaux1962}, $J=4t^2/U$; dashed, validated against the exact
+peak dispersion to ${<}0.1\,t$) rides a broad holon (charge, ${\sim}4t$) continuum---the hallmark
+fractionalization of the 1D Mott insulator~\cite{liebwu1968}.
+The momentum axis is a periodic cubic-spline interpolation of the $12$ physical momenta (ticks, top).
+Faithfully \emph{sampling} this full momentum-resolved observable---as opposed to the ground-state
+energy---requires a large fraction of the $(N{+}1)$ sector (Fig.~\ref{fig:scaling}), the cost
+quantified in Sec.~\ref{sec:resource}.}\label{fig:lattice}\end{figure}
+
+\begin{figure}[htbp]\centering\input{figs/fig_akw_sampled_native.tex}
+\caption{\textbf{The momentum-resolved spectral function reconstructed from bitstring-sampled subspaces,
+overlaid on the exact target.} \textbf{(a)}~Bitstring-sampled $A(k,\omega)$ (dashed) versus the exact
+Haydock result (solid, shaded) at three representative momenta ($k=0,\pi/2,\pi$; Hubbard chain, $L=8$,
+$U/t=8$, $\eta=0.18\,t$; curves offset vertically by $k$), reconstructed by time-evolution
+configuration sampling in the $(N{\pm}1)$ sectors and the classical Lehmann assembly of
+Eq.~\eqref{eq:green}---not the exact target of Fig.~\ref{fig:lattice}, but the \emph{sampled} output.
+\textbf{(b)}~Relative-$L_1$ error of the sampled reconstruction at every physical momentum, at a subspace
+of $85\%$ of the $(N{\pm}1)$ sector: below $0.5\%$ throughout (mean $2.2\times10^{-3}$). The reconstruction
+is faithful across the Brillouin zone, at the sector-fraction cost quantified in
+Sec.~\ref{sec:resource}.}\label{fig:akwsampled}\end{figure}
+
+\begin{figure}[htbp]\centering\includegraphics[width=0.92\textwidth]{figs/fig_sqw.pdf}
+\caption{\textbf{Dynamical structure factor: the exact density response.} $S(q,\omega)$ of the
+half-filled Hubbard chain ($U/t=8$, $L=12$, Lorentzian broadening $\eta=0.18\,t$)---the density--density
+response, a number-conserving (neutral) excitation, computed exactly via the Haydock continued fraction
+in the $N$-particle sector. Colour is the \emph{response intensity} $S(q,\omega)$ (units $1/t$): bright
+means the system responds strongly at that $(q,\omega)$, dark means it does not. The weight forms the
+two-particle charge (holon--antiholon) continuum, whose lower edge (dotted, the charge threshold)
+sets the gap---as $q\to0$ it approaches $\Delta$---and traces the lower-boundary dispersion of the continuum; its diffuse upper boundary is left unmarked. Two features are decisive. \emph{(i)}
+The continuum is \emph{gapped}: as $q\to0$ its lower edge approaches the charge gap
+$\Delta=\mu^{+}-\mu^{-}=4.97\,t$ (exact $(N{\pm}1)$ ground-state energies)---the \emph{same} Mott gap that
+separates the Hubbard bands in the single-particle channel (Fig.~\ref{fig:lattice}): two independent
+dynamical observables, one correlation gap. \emph{(ii)} The continuum peaks at $q=2k_F=\pi$ at
+$\omega\approx U\approx8\,t$, the bare Hubbard scale of a doubly-occupied site. The reflection
+$S(q)=S(2\pi{-}q)$ holds to $\sim\!10^{-4}$ (Lanczos precision), and the analytic f-sum rule
+$\int\omega\,S(q,\omega)\,d\omega\propto(1-\cos q)$ is recovered by the plotted (finite-window) grid to
+$\sim\!0.3\%$. This is the collective observable the same bitstring-sampled primitive targets; as for
+$A(k,\omega)$, faithfully sampling the \emph{full} response carries the sector-fraction cost of
+Sec.~\ref{sec:resource}, where classically it needs a separate dynamical-DMRG computation.}\label{fig:sqw}\end{figure}
+
+\begin{figure}[htbp]\centering\includegraphics[width=0.92\textwidth]{figs/fig_spinqw.pdf}
+\caption{\textbf{Spin structure factor: the gapless companion of the charge response.} The dynamical
+spin structure factor $S^{zz}(q,\omega)$ of the same half-filled Hubbard chain ($U/t=8$, $L=12$; here
+$\eta=0.10\,t$, finer because the spin scale is small), computed exactly by the Haydock continued fraction
+from a spin seed $S^z_q\lvert\psi_0\rangle$ in the $N$-particle sector. \emph{Contrast Fig.~\ref{fig:sqw}}:
+the charge response is \emph{gapped} by the Mott gap $\Delta\approx5\,t$, but the spin response is
+\emph{gapless}---the two-spinon continuum touches $\omega=0$ at $q=0$ and $q=2k_F=\pi$. This is
+spin--charge separation in the collective (two-particle) channel: charge and spin live in energetically
+separate worlds, the spin set by the superexchange $J=4t^2/U=0.5\,t$, some $16\times$ smaller than $U$.
+The spectral weight piles up on the des Cloizeaux--Pearson~\cite{descloizeaux1962} lower boundary $\tfrac{\pi J}{2}\lvert\sin q\rvert$
+(dotted), bounded above by $\pi J\lvert\sin\tfrac q2\rvert$~\cite{mueller1981}; the numerically-extracted
+peak dispersion (cyan markers) tracks this lower boundary to $\sim\!3\%$; the antiferromagnetic soft mode at $q=\pi$
+carries the dominant weight. The reflection $S^{zz}(q)=S^{zz}(2\pi{-}q)$ holds to machine precision and
+$S^{zz}(q{\to}0)\to0$ (total-$S^z$ conservation). The same bitstring-sampled primitive that yields
+$A(k,\omega)$ and $S(q,\omega)$ targets this collective response as well.}\label{fig:spin}\end{figure}
+
+\subsection{Fermionic magic marks the multireference regime}
+
+Having validated the dynamical primitive, we now turn from the observable to its resource. The same
+bitstring-sampled subspaces that reconstruct these spectra also let us evaluate, across the
+nineteen-molecule suite, the one-body fermionic magic $\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$
+($=2N_{\mathrm u}$ for the closed-shell members) identified in Sec.~\ref{sec:resource}---and it
+tracks precisely the \emph{multireference} character of the chemistry, not the sampling cost.
+
+\begin{figure}[htbp]\centering\includegraphics[width=\textwidth]{figs/fig_molecular_gallery.pdf}
+\caption{\textbf{Nineteen molecules ordered by fermionic magic---the multireference axis.} The frontier
+(HOMO) molecular orbital of each molecule at its dissociation geometry (PyMOL ray-traced two-phase
+isosurface; orange/blue $=$ orbital phase $\pm$; CPK atoms), arranged left-to-right, top-to-bottom in
+order of increasing FCI-verified fermionic magic (single-reference $\to$ strongly multireference). The
+bar beneath each panel has length $\mathcal F_1/\mathcal F_1^{\max}$ and colour set by bonding regime; molecule names
+are in neutral dark ink. The ordering makes the diagnostic visual: ionic and weakly-correlated bonds
+(LiF, LiH, BeH, BH) sit at the near-Gaussian, single-reference end; covalent bond-breaking (HF,
+$\mathrm{H_2O}$, $\mathrm{N_2}$, $\mathrm{F_2}$) at the strongly-multireference end; the inherently
+multireference $\mathrm{C_2}$ and $\mathrm{O_2}$ in between. This one-body magic faithfully diagnoses
+static-correlation character; it is decoupled from the sampling cost $|\mathcal S|$
+(Sec.~\ref{sec:resource}, Fig.~\ref{fig:decoupling}). Orbitals are the mean-field frontier MO; the
+magic ordering is the correlated, FCI-verified quantity.}\label{fig:gallery}\end{figure}
+
+Across \textbf{nineteen molecules} spanning every bonding regime---covalent single, double, and triple
+($\mathrm{H_2}$, $\mathrm{F_2}$, $\mathrm{C_2}$, $\mathrm{N_2}$, CO), polar and ionic (HF, LiF, LiH),
+multi-centre ($\mathrm{H_2O}$, $\mathrm{NH_3}$, $\mathrm{BeH_2}$), metal hydrides (BH, BeH), open-shell
+radicals (OH, CN, NO), the $\mathrm{O_2}$ triplet, and hydrogen chains ($\mathrm{H_4}$,
+$\mathrm{H_6}$)---we compute the fermionic AntiFlatness in a valence bond-breaking active space,
+\textbf{verifying every ground-state energy against exact active-space FCI to below $10^{-5}$~Ha}
+(Figs.~\ref{fig:gallery},~\ref{fig:molsuite}, Table~\ref{tab:molecules}). On the same suite the sampling method reproduces
+the exact (orbital-projected) spectral function $A(\omega)$ from bitstring-sampled subspaces to
+relative-$L_1$ error below $10^{-3}$ at every molecule---at the dissociation geometry, using a sampled
+subspace a fraction $\ge0.10$ of the $(N{+}1)$ sector, full only for the smallest ionic active spaces
+where the sector itself is tiny (Table~\ref{tab:molecules})---so the
+reconstruction is both exact and efficient across chemistry. The magic picture is sharp, and it is
+\emph{not} a universal bond-length effect. Magic \emph{switches on} for covalent bond-breaking---rising from
+near-Gaussian at equilibrium to a large fraction of its maximum on stretch ($\mathrm{F_2}$,
+$\mathrm{N_2}$, $\mathrm{H_2O}$, HF, $\mathrm{NH_3}$, CO). It is \emph{already large at equilibrium} for
+the inherently multireference $\mathrm{C_2}$ and $\mathrm{O_2}$, whose near-degenerate ground states
+carry static correlation before any bond is stretched. And it \emph{stays near-Gaussian} for ionic and
+weakly-correlated bonds (LiF, LiH, BH, BeH), whose dissociation remains essentially
+single-configurational---the ionic--covalent avoided crossing of LiF lies well beyond the
+stretch shown. Fermionic magic therefore tracks \emph{multireference, static-correlation} character,
+not bond length \emph{per se}. This refines the qubit non-stabilizerness peak identified for molecular
+bonding~\cite{sarkis2025} into a fermionic, Gaussian-referenced, FCI-verified statement: the fermionic
+AntiFlatness~\cite{sierant2026,tarabunga2026}---efficiently computable from the Majorana covariance
+matrix, and a genuine magic monotone for matchgate circuits~\cite{hebenstreit2019}---is a faithful
+one-body diagnostic of static-correlation character, reading \emph{low} for the near-Gaussian LiF and
+LiH and \emph{high} for stretched $\mathrm{N_2}$ or $\mathrm{F_2}$. As Sec.~\ref{sec:resource} makes
+precise, this is a diagnostic of multireference character, not a predictor of the classical sampling
+cost: the two are decoupled, and the cost of these strongly-correlated targets is set by the
+higher-order structure the one-body magic does not resolve.
+
+The $\mathrm{N_2}$ triple-bond dissociation ties the picture together (Fig.~\ref{fig:hero}): as the
+bond stretches, the sharp quasiparticle feature of the addition spectrum $A(\omega)$ broadens into a
+correlated multiplet and its integrated addition weight $\int A^{+}d\omega=1-\langle\hat n_p\rangle$
+falls from $0.98$ to $0.52$ as the frontier orbital fills toward half-occupation on homolytic
+dissociation. Along the same coordinate the fermionic magic rises as the \emph{exact} identity
+$\mathcal F_1=2N_{\mathrm u}$ [Eq.~\eqref{eq:collapse}]---one-body magic \emph{is} the orbital-rotation-invariant
+multireference count, the effective number of unpaired electrons $N_{\mathrm u}$ from the natural-orbital
+occupations, which approaches its atomic limit of $6$---the two triplet $\mathrm{N}(^4S)$ atoms---as the
+bond fully breaks ($N_{\mathrm u}\!=\!5.9$ at the largest stretch shown; $\mathcal F_1^{\rm diss}=11.38$, i.e.\
+$N_{\mathrm u}=5.69$, at the finite dissociation geometry of Table~\ref{tab:molecules}). The
+two curves in Fig.~\ref{fig:hero}(b)---the frontier-orbital addition weight and the static-correlation
+magic---are distinct one-body diagnostics that cross as the bond breaks: the addition spectrum
+redistributes from a single quasiparticle into a multiplet precisely as multireference character switches on. Fermionic magic is thus a computable, basis-independent proxy
+for the strong static correlation that develops as the triple bond breaks.
+
+\begin{figure}[htbp]\centering\includegraphics[width=0.9\textwidth]{figs/fig_molecular_suite.pdf}
+\caption{\textbf{Fermionic magic marks the multireference regime across nineteen molecules.} Normalized
+fermionic AntiFlatness $\mathcal F_1/\mathcal F_1^{\max}$ ($0$: Gaussian/mean-field; $1$: maximal non-Gaussianity) at
+equilibrium (open circles) and at dissociation (filled), for all nineteen molecules, sorted by
+dissociation magic and coloured by regime. Covalent bond-breaking switches magic on; the inherently
+multireference $\mathrm{C_2}$ and $\mathrm{O_2}$ are already large at equilibrium; ionic and
+weakly-correlated bonds (LiF, LiH, BH, BeH) stay near-Gaussian. Every ground-state energy is verified
+against exact active-space FCI to $<10^{-5}$~Ha (Table~\ref{tab:molecules}); computed in valence
+bond-breaking active spaces, cc-pVDZ.}\label{fig:molsuite}\end{figure}
+
+\begin{figure}[htbp]\centering\includegraphics[width=\textwidth]{figs/fig_hero.pdf}
+\caption{\textbf{Magic and multireference character in $\mathrm{N_2}$ dissociation.} (a)~The exact
+addition spectral function $A(\omega)$ (orbital-projected, CAS(6,6), cc-pVDZ) along the triple-bond
+stretch, offset by $R$: the sharp coherent quasiparticle peak at equilibrium ($R=1.0$~\AA) broadens
+into a correlated multiplet on dissociation as its spectral weight collapses. (b)~Two physically
+independent quantities along the same coordinate. The fermionic magic obeys the \emph{exact} identity
+$\mathcal F_1=2N_{\mathrm u}$ [Eq.~\eqref{eq:collapse}, verified to $<10^{-13}$], so a single curve carries both: it rises
+with the orbital-rotation-invariant multireference count---the effective number of unpaired electrons
+$N_{\mathrm u}=\sum_i n_i(2-n_i)$ from the natural-orbital occupations $n_i$, approaching its atomic limit of $6$
+(the two triplet $\mathrm{N}(^4S)$ atoms) as the bond fully breaks. The integrated addition weight $\int A^{+}d\omega=1-\langle\hat n_p\rangle$
+(from panel a) falls from $0.98$ to $0.52$ over the same stretch; the two cross as the bond
+breaks. Every geometry is FCI-verified to $<10^{-5}$~Ha.}\label{fig:hero}\end{figure}
+
+\subsection{The time-evolution selector versus classical Krylov and CIPSI selectors}
+The relevant question is not whether the sampled reconstruction is accurate---it is---but whether the
+time-evolution selector (the selection strategy a quantum device implements, evaluated here in classical
+simulation) discovers the important configurations more efficiently than deterministic classical
+selectors at fixed subspace size. Averaged over twelve independent sampling seeds, the time-evolution
+selector holds no robust advantage over classical polynomial Krylov and a
+configuration-interaction perturbation-theory (CIPSI~\cite{cipsi1973,garniron2019}) Green's-function selector at small subspaces but moves ahead of
+both in the strong-coupling corner once the subspace exceeds
+$\sim\!120$ determinants: at $U/t=12$, $|\mathcal S|=200$ it reaches relative-$L_1$
+$0.042\pm0.004$ against $0.729$ for deterministic Krylov and $0.431$ for CIPSI---a
+tenfold reduction (Fig.~\ref{fig:bench})---because deterministic Krylov plateaus, unable to resolve the
+delocalized configurations the strong-$U$ response demands, whereas the time-evolution selector reaches low
+error with fewer discovered configurations. The same picture holds against budget-limited real-time
+adaptive-sampling configuration interaction~\cite{tdasci2024}. At small subspace size there is
+\emph{no} robust advantage: the win is over these two deterministic selectors and is asymptotic in
+subspace size and coupling, not a small-scale artifact. We make no claim against the strongest classical
+selector: heat-bath configuration interaction remains competitive with sample-based selection at
+accessible sizes~\cite{reinholdt2025,holmeshci2016,sharmashci2017}, consistent with our own companion
+review~\cite{review}. What drives the separation is the determinant count itself: the number of
+configurations over which the strong-$U$ response spreads---and, with it, the extended-matchgate
+circuit extent~\cite{extraferm}---grows with the evolution time the processor runs, while the quantum
+sampling stays polynomial in the target subspace size $|\mathcal S|$. The fermionic magic grows alongside but, as Sec.~\ref{sec:resource}
+establishes, does not itself set this cost.
+
+\begin{figure}[htbp]\centering\includegraphics[width=0.97\textwidth]{figs/fig_benchmark.pdf}
+\caption{\textbf{Time-evolution selector vs.\ classical Krylov and CIPSI selectors}, seed-averaged
+(bands = seed spread; all curves evaluated in classical simulation). At strong coupling and
+$|\mathcal S|\gtrsim120$ the time-evolution selector reaches low error with fewer discovered
+configurations, while classical Krylov plateaus and the CIPSI perturbative Green's-function selector
+trails; at small $|\mathcal S|$ there is no robust advantage.}\label{fig:bench}\end{figure}
+
+\subsection{Scaling of the sampling cost with system size}
+Across $L=4$--$14$ ($8$ to $28$ qubits---the three largest, $20$--$28$ qubits, reached by matrix-free
+Lanczos/Haydock beyond the dense-diagonalization frontier and validated against it at $L\le8$) two
+trends coexist (Fig.~\ref{fig:scaling}): the fermionic magic of the correlated ground state grows with
+system size ($\mathcal F_1=6.6\to9.4\to12.8\to16.0\to19.3\to22.5$)---the static correlation strengthens---while
+the $(N{+}1)$-sector subspace \emph{fraction} needed to reconstruct $A(\omega)$ to relative-$L_1<0.05$
+\emph{falls} steeply ($0.92\to0.82\to0.56\to0.36\to0.17\to0.08$, i.e.\ from $92\%$ to $8\%$), the favourable
+face of the polynomial-shot bound of Theorem~\ref{thm:b2} (App.~\ref{app:b2}) and consistent with the
+convergence behaviour established for sample-based Krylov
+diagonalization~\cite{skqd2025,yoshioka2025}. The absolute subspace $|\mathcal S|$ nonetheless grows---
+indeed, for these lattice models it grows \emph{exponentially} with system size, an intrinsic
+consequence of the computational-basis delocalization of the ground state~\cite{gaberle2026}. Quantitatively,
+a least-squares fit over $L=4$--$14$ gives $|\mathcal S|\sim e^{1.05\,L}$ ($R^2=0.998$)---exponential, but
+\emph{slower} than the full $(N{+}1)$ sector $D\sim e^{1.30\,L}$, so the required fraction contracts as
+$\sim e^{-0.25\,L}$ (halving every $\sim2.8$ sites, $R^2=0.94$). Figure~\ref{fig:scaling}
+is therefore not a claim of small \emph{absolute} cost but the complementary, quantitative statement that the
+\emph{fraction} of the sector required for a fixed spectral accuracy shrinks exponentially. And what tracks that
+absolute size is not the magic but the entanglement, as a direct chain-versus-ladder test makes concrete
+(Fig.~\ref{fig:ladder}). At \emph{matched} one-body magic---a two-leg Hubbard ladder~\cite{nogaki2025} and
+a chain of the same site count have near-identical $\mathcal F_1$ ($12.82$ vs $12.91$ at $16$ qubits, half
+filling, $U/t=8$), since $\mathcal F_1$ is a geometry-blind one-body invariant---the ladder's
+perpendicular cut carries an area-law boundary of two legs rather than one, so its minimal bond dimension
+is far larger ($\chi=8\to38$ at $16$ qubits; the ratio grows with size, $\times2.6\to\times4.8\to\times6.3$
+from $12$ to $20$ qubits) and its response-targeted $(N{\pm}1)$ fraction correspondingly higher
+($0.43\to0.63$). The cost is lower-bounded and tracked by the bond dimension $\chi$, not by $\mathcal F_1$---the
+decoupling of Sec.~\ref{sec:resource}, now exhibited as a controlled contrast in which the classical cost
+tracks $\chi$ and not $\mathcal F_1$. We are explicit about scope: a two-leg ladder with
+$\chi\!\approx\!38$ is quasi-one-dimensional and remains near-exact for (dynamical) density-matrix
+renormalization group~\cite{paeckel2019,jeckelmann2002}---it is \emph{not} itself beyond the tensor-network
+frontier, which lies in genuinely two-dimensional (wide-cylinder) geometries and the all-to-all orbital
+graphs of quantum chemistry. What the ladder isolates is the \emph{resource} statement---that entanglement,
+not one-body magic, lower-bounds and tracks the determinant support. Because $\chi$ is precisely the bond dimension a
+(dynamical) density-matrix renormalization-group calculation must carry~\cite{paeckel2019,jeckelmann2002},
+panel~(a) is a direct classical-cost comparison: the $\times4.8$ chain-to-ladder growth at fixed
+$\mathcal F_1$ is the growth of the tensor-network spectral cost itself, and by Prop.~\ref{prop:chibound}
+it is a rigorous lower bound on the sampled support $|\mathcal S|$---a resource contrast, with no
+beyond-classical claim asserted.
+
+\begin{figure}[htbp]\centering\input{figs/fig_scaling2_native.tex}
+\caption{\textbf{Scaling of the sampling cost with system size} ($L=4$--$14$; 8--28 qubits, half-filled
+Hubbard $U/t=8$; the three largest sizes ($20$--$28$ qubits) computed by matrix-free Lanczos/Haydock,
+validated against dense diagonalization at $L\le8$). (a)~The fermionic magic $\mathcal F_1$ of the correlated
+ground state grows with system size ($6.6\to22.5$). (b)~The $(N{+}1)$-sector subspace fraction
+$|\mathcal S|/\dim$ needed to reconstruct $A(\omega)$ to relative-$L_1<0.05$ \emph{falls} steeply
+($0.92\to0.08$)---the sampled reconstruction becomes relatively cheaper as the state grows
+harder to represent classically. \textbf{(c)}~The absolute sizes nonetheless both grow
+\emph{exponentially} (log scale): the determinant support $|\mathcal S|\sim e^{1.05\,L}$ and the full
+$(N{+}1)$ sector dimension $\dim\sim e^{1.30\,L}$; the faster-growing sector is precisely why the
+\emph{fraction} in (b) contracts. Fraction down, absolute cost up---the honest two-sided
+picture.}\label{fig:scaling}\end{figure}
+
+\begin{figure}[htbp]\centering\input{figs/fig_ladder_native.tex}
+\caption{\textbf{The cost is tracked by entanglement, not one-body magic---a controlled chain-versus-ladder
+contrast.} A two-leg Hubbard ladder versus a chain of the \emph{same} site count (half filling,
+$U/t=8$; exact diagonalization). At matched fermionic magic $\mathcal F_1$ (chain vs.\ ladder: $9.39/9.69$,
+$12.82/12.91$, $16.03/16.09$ at $12/16/20$ qubits---$\mathcal F_1$ is a geometry-blind one-body invariant)
+the ladder's perpendicular cut has an area-law boundary of two rather than one. \textbf{(a)}~Its minimal
+matrix-product-state bond dimension $\chi$ is far larger; the chain-to-ladder ratio grows over
+$12\to20$ qubits ($\times2.6,\times4.8,\times6.3$), the ladder $\chi$ saturating at $38$ and the chain
+$\chi$ remaining small and growing only slowly ($5\to8\to6$ over these sizes, consistent with the
+logarithmic entanglement of the gapless spin sector)---the reported $\chi$ are
+threshold-truncated Schmidt ranks. \textbf{(b)}~The response-targeted $(N{\pm}1)$ fraction needed for spectral
+relative-$L_1<0.05$ is correspondingly higher for the ladder (these union $(N{\pm}1)$ response fractions
+differ from the single-sector $(N{+}1)$ $A(\omega)$ fractions of Fig.~\ref{fig:scaling}, a different
+observable). Same one-body magic, higher cost: the
+determinant support is lower-bounded and tracked by the basis-dependent bond dimension $\chi$ (Sec.~\ref{sec:resource}), not
+by $\mathcal F_1$. A ladder of this width ($\chi\!\approx\!38$) remains classically near-exact for dynamical
+DMRG; it is a resource contrast, not a beyond-classical claim.}\label{fig:ladder}\end{figure}

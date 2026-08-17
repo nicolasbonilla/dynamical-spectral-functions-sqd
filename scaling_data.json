@@ -1,0 +1,65 @@
+{
+ "U": 8.0,
+ "points": [
+  {
+   "L": 4,
+   "qubits": 8,
+   "FAF": 6.607399285018181,
+   "FAF_per_site": 1.6518498212545452,
+   "Np1_sector": 24,
+   "frac": 0.9166666666666666,
+   "E0": -1.3202349582719286,
+   "method": "lanczos-haydock"
+  },
+  {
+   "L": 6,
+   "qubits": 12,
+   "FAF": 9.385082461707718,
+   "FAF_per_site": 1.5641804102846197,
+   "Np1_sector": 300,
+   "frac": 0.82,
+   "E0": -2.0481308860914527,
+   "method": "lanczos-haydock"
+  },
+  {
+   "L": 8,
+   "qubits": 16,
+   "FAF": 12.81382109484005,
+   "FAF_per_site": 1.6017276368550062,
+   "Np1_sector": 3920,
+   "frac": 0.5561224489795918,
+   "E0": -2.6661474201323463,
+   "method": "lanczos-haydock"
+  },
+  {
+   "L": 10,
+   "qubits": 20,
+   "FAF": 16.018265327668843,
+   "FAF_per_site": 1.6018265327668844,
+   "Np1_sector": 52920,
+   "frac": 0.36249055177626605,
+   "E0": -3.314996729087829,
+   "method": "lanczos-haydock-matrixfree"
+  },
+  {
+   "L": 12,
+   "qubits": 24,
+   "FAF": 19.27206883814795,
+   "FAF_per_site": 1.606005736512329,
+   "Np1_sector": 731808,
+   "frac": 0.16999950806768988,
+   "E0": -3.962563033142947,
+   "method": "lanczos-haydock-matrixfree"
+  },
+  {
+   "L": 14,
+   "qubits": 28,
+   "FAF": 22.50497728150742,
+   "FAF_per_site": 1.6074983772505298,
+   "Np1_sector": 10306296,
+   "frac": 0.07999993402091304,
+   "E0": -4.613102625985336,
+   "method": "lanczos-haydock-matrixfree"
+  }
+ ]
+}

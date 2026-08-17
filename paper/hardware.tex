@@ -1,0 +1,153 @@
+\section{Hardware demonstration}
+
+The method runs on today's processors without realizing the number-non-conserving operator $\hat
+c^\dagger_p$ on the device. One prepares a \emph{number-conserving} $(N{+}1)$-electron reference---a
+Slater or local-unitary-cluster-Jastrow state with $n_\alpha=N/2+1$---and Trotter-evolves it
+shallowly, mapping on-site interactions to native fractional $R_{ZZ}$ gates and hopping to Givens
+rotations (Fig.~\ref{fig:circ}). Computational-basis bitstrings are sampled, recovered to the correct
+particle-number sector by self-consistent configuration recovery~\cite{robledomoreno2025}, and the
+entire $\hat c^\dagger_p$/Lehmann construction of Eq.~\eqref{eq:green} is assembled classically to
+yield the full matrix $A_{pq}(\omega)$. Only a few Trotter steps are needed, because the classical
+diagonalization is variational in the sampled subspace.
+
+\begin{figure}[htbp]\centering\includegraphics[width=\textwidth]{figs/fig_circuit.pdf}
+\caption{\textbf{One sampling primitive, four dynamical responses.} A shallow, ancilla-free
+circuit---state preparation and a Trotter layer repeated $K$ times (Givens rotations for the hopping
+$t$, native $R_{zz}$ for the on-site $U\hat n_\uparrow\hat n_\downarrow$)---is measured in the
+computational basis; no Hadamard test or controlled unitary is run on the device. The sampled
+bitstrings define a sector-specific subspace $\mathcal S$ and feed a single classical engine---a Haydock
+continued-fraction resolvent~\cite{haydock1972} $G_\phi(z)=\langle\phi|(z-\hat H_{\mathcal S})^{-1}|\phi\rangle$, whose
+single-particle case ($\phi=\hat c^\dagger_p|0\rangle$) is the Green's function of
+Eq.~\eqref{eq:green}. The seed $\phi$ then selects the channel: particle addition/removal seeds
+$\hat c^{\dagger}_p|0\rangle,\hat c_p|0\rangle$ in the $(N{\pm}1)$ sectors give the single-particle
+spectral functions $A(\omega)$ and $A(k,\omega)$ (photoemission/ARPES), while number-conserving density
+and spin seeds $\hat n_q|0\rangle,\hat S^z_q|0\rangle$ in the $N$ sector give the dynamical structure
+factors $S(q,\omega)$ and $S^{zz}(q,\omega)$ (neutron/X-ray scattering)---all from \emph{one} sampling
+primitive, the seed selecting the sector and hence the subspace. The four channels are realized in Figs.~\ref{fig:method} ($A(\omega)$),
+\ref{fig:lattice} ($A(k,\omega)$), \ref{fig:sqw} ($S(q,\omega)$), and \ref{fig:spin}
+($S^{zz}(q,\omega)$).}\label{fig:circ}\end{figure}
+
+Executed on the IBM Heron processor \texttt{ibm\_fez} for the $L=6$ Hubbard model at $U/t=4$ (broadening
+$\eta=0.15\,t$; $12$ qubits; the $t=0$ reference plus $K=7$ real-time-evolution circuits, whose $50{,}000$
+pooled computational-basis shots define the union subspace; TREX readout twirling, Pauli twirling, and
+dynamical decoupling, and \emph{no} zero-noise extrapolation), the bitstring-sampled spectral function
+reproduces the exact $A(\omega)$ to within the line-broadening resolution
+(Fig.~\ref{fig:heron})---a demonstration on a real quantum computer that the open-gap method works.
+At this scale the $(N{+}1)$ sector is small enough that hardware sampling with self-consistent
+recovery captures essentially the complete subspace; the robustness underlying this clean result is
+quantified under a per-qubit bit-flip channel: self-consistent configuration recovery holds the
+spectral reconstruction near relative-$L_1\approx0.05$ out to $\varepsilon\approx16\%$, far beyond the
+naive-post-selection range where the error grows steadily with the flip rate (Fig.~\ref{fig:noise}). The demonstration realizes time-evolved QSCI~\cite{teqsci2024} and
+sample-based Krylov diagonalization~\cite{skqd2025,kirby2023,yoshioka2025} lifted into the
+$(N{\pm}1)$ sectors; the nearest published sibling also builds a subspace from
+sampled configurations---from short-time quantum-evolved states with classically projected long-time
+dynamics---but targets the \emph{neutral}-sector molecular response, not the charged-$(N{\pm}1)$
+single-particle Green's function our Lehmann construction assembles~\cite{santini2025}; the hardware Green's-function and dynamical-structure-factor
+results of the trapped-ion line~\cite{greenediniz2024,quantinuum_dsf2026} use non-subspace routes.
+A ready-to-run notebook for the $\mathrm{N_2}$ molecular spectral function---a
+double-factorized Trotter of the molecular Hamiltonian feeding the same sample--recover--Lehmann
+pipeline, \emph{not executed on hardware here}---is provided as an ancillary file, bridging the concept from the Hubbard model to
+chemistry and situating the method within the quantum-centric-supercomputing program that couples IBM
+Heron processors to the Fugaku supercomputer~\cite{robledomoreno2025,shirakawa2025} under
+error-mitigated observable estimation~\cite{qesem2025,algorithmiq2026}.
+
+To take the same sample--recover pipeline to a molecular energy, we ran the ground state of stretched
+$\mathrm{N_2}$ ($R=2.0$~\AA, valence active space) on a second Heron processor,
+\texttt{ibm\_marrakesh} ($10{,}000$ shots), through a double-factorized Trotter circuit. Self-consistent
+configuration recovery reaches, averaged over $8$ recovery seeds on the same device counts,
+$E_{\mathrm{hw}}=-108.80745\pm0.00014$~Ha---$0.59\pm0.14$~mHa of the exact FCI value
+($E_{\mathrm{FCI}}=-108.80804$~Ha; best seed $0.40$~mHa)---well below chemical accuracy on a real device
+for a strongly multireference bond (Fig.~\ref{fig:heron}, panel~b). Notably, the same shallow circuit evaluated by \emph{noiseless} statevector
+simulation lands at $-108.77850$~Ha ($29.5$~mHa error): here the device noise, filtered through recovery,
+populates valid configurations the ideal shallow circuit misses, an instance of the noise-assisted
+recovery mechanism we analyze at length in a companion study~\cite{review}. The same effect has been
+reported independently on a variable-length cuprate chain, where real trapped-ion noise \emph{improves}
+the sample-based energy convergence over the noiseless statevector simulation~\cite{wray2025}, and---on
+$\mathrm{N_2}$ with the LUCJ ansatz, the present system---the same noise-enhanced configuration recovery
+is reported independently in~\cite{vaquero2026}, so the mechanism is not an artifact of one processor or
+one molecule. The quoted $\pm0.14$~mHa is the spread over the $8$ recovery
+seeds---the stochastic uncertainty of the self-consistent recovery on the fixed device counts, not a
+device-repeat statistic; the systematic version, across nineteen molecules and a controlled noise model, is the subject of
+Fig.~\ref{fig:noiserec} below.
+
+\paragraph{Why $\mathrm{N_2}$ alone is not the test: noise robustness across chemistry.} A single
+molecule cannot separate a genuine mechanism from a lucky geometry, so we stress-test the
+sample--recover energy pipeline across the entire nineteen-molecule suite of
+Table~\ref{tab:molecules} under a controlled, hardware-motivated noise model. For each dissociated
+molecule we Born-sample the exact ground-state configuration distribution, apply an independent
+per-qubit bit-flip channel at rate $\varepsilon$, and rebuild the subspace either by naive
+in-sector post-selection or by self-consistent configuration recovery (S-CoRe) to the correct $(N_\alpha,N_\beta)$
+sector; the recovered configurations are diagonalized and the energy is compared to FCI, seed-averaged
+(Fig.~\ref{fig:noiserec}). Two facts emerge, and both bound the limits. First, at a
+realistic Heron-scale rate $\varepsilon=2\%$ the subspace energy is intrinsically forgiving---because
+diagonalization in the sampled subspace is variational, corrupted bitstrings that survive as valid
+configurations only enlarge the subspace, a valid-shot economy rather than a fidelity gain---so $18/19$ molecules reach chemical accuracy with recovery
+(the lone exception is the strongly multireference $\mathrm{H_6}$ chain at $3.6$~mHa), and S-CoRe
+converts one of the two naive failures ($\mathrm{NH_3}$, $2.65\!\to\!1.51$~mHa) into a success. Second, and
+more informative, the \emph{advantage} of recovery grows monotonically with the noise: where naive
+post-selection discards the increasing fraction of out-of-sector strings and its error climbs steeply
+($\mathrm{N_2}$: $0.4\!\to\!6.4\!\to\!31.9$~mHa at $\varepsilon=0,20,30\%$), S-CoRe reassigns them to
+physical configurations and roughly halves the error throughout ($\mathrm{N_2}$: $0.4\!\to\!3.3\!\to
+\!13.2$~mHa; $\mathrm{CO}$ actually \emph{improves}, from $1.7$~mHa at $\varepsilon=0$ to a $0.6$~mHa
+minimum near $\varepsilon=20\%$ ($0.7$~mHa at $\varepsilon=30\%$), as recovered strings enrich
+the subspace). The effect is molecule-dependent: species whose ground state concentrates on few
+determinants ($\mathrm{C_2}$) are essentially noise-immune out to $\varepsilon=30\%$ ($\mathrm{H_2O}$ is
+likewise noise-immune at the realistic $\varepsilon=2\%$),
+while the hardest ($\mathrm{H_6}$) remains the residual challenge---consistent with the resource
+analysis of Sec.~\ref{sec:resource}, where the cost is the determinant support $|\mathcal S|$---tracked by the entanglement, not predicted by one-body magic.
+This is the molecular counterpart of the Hubbard noise sweep of Fig.~\ref{fig:noise}, and it answers
+the natural objection to a single-molecule hardware run: the recovery mechanism is a property of the
+chemistry, not of $\mathrm{N_2}$.
+
+\begin{figure}[htbp]\centering\input{figs/fig_hardware_hero_frag.tex}
+\caption{\textbf{The complete quantum-hardware record of this work: two runs on IBM~Heron processors.}
+\textbf{(a)}~Single-particle spectral function $A(\omega)$ of the $L=6$ Hubbard model at $U/t=4$,
+$\eta=0.15\,t$ ($12$ qubits; the classical validation of Fig.~\ref{fig:method} is a different instance,
+$U/t=8$), reconstructed from $50{,}000$ computational-basis bitstrings sampled on \texttt{ibm\_fez} (TREX
+readout twirling, Pauli twirling, and dynamical decoupling). The device histogram
+covered the complete $(N{+}1)$ sector ($|\mathcal S|\!=\!300/300$), so the reconstruction is exact by
+coverage---a proof of principle, not a fidelity or beyond-classical claim.
+\textbf{(b)}~Ground-state energy error of stretched $\mathrm{N_2}$ ($R=2.0$~\AA, CAS(10e,12o)/cc-pVDZ,
+$24$ qubits) versus self-consistent configuration-recovery step, on \texttt{ibm\_marrakesh} ($10{,}000$ shots,
+double-factorized Trotter circuit). The noisy device (solid) reaches
+$0.59\pm0.14$~mHa of the exact FCI value---well below chemical accuracy---whereas the noiseless statevector
+simulation of the \emph{same} shallow circuit (dashed) is stranded at $29.5$~mHa: device noise, filtered
+through configuration recovery, populates valid configurations the ideal shallow circuit misses. The
+solid curve is the configuration-recovery trajectory on the cached device counts; the error bar at the
+converged point is the $\pm1$~s.d.\ spread over $8$ recovery seeds on the same counts
+($0.59\pm0.14$~mHa; best seed $0.40$~mHa). The
+systematic version across nineteen molecules under a controlled noise model is Fig.~\ref{fig:noiserec}. These two runs are the entirety of the quantum
+hardware used here; every other result in this work is an exact classical simulation.}\label{fig:heron}\end{figure}
+
+\begin{figure}[htbp]\centering\includegraphics[width=0.7\textwidth]{figs/fig_noise_score.pdf}
+\caption{\textbf{Noise robustness (synthetic per-qubit bit-flip channel, $L=6$).} Spectral
+relative-$L_1$ error vs the per-qubit bit-flip rate $\varepsilon$, applied to bitstrings Born-sampled from
+the exact distribution (this is a controlled classical simulation, not a device run). Naive
+post-selection degrades steadily, whereas S-CoRe self-consistent configuration recovery holds the error
+near $0.05$ out to $\varepsilon\approx16\%$ (seed-averaged over $6$ seeds at $6{,}000$ shots each; bands
+$=\pm1$ s.d.\ across seeds).}\label{fig:noise}\end{figure}
+
+\begin{figure}[htbp]\centering\input{figs/fig_noise_recovery_native.tex}
+\caption{\textbf{Noise-assisted SQD ground-state energy across the molecular suite.}
+\textbf{(a)}~Energy error vs the per-qubit bit-flip rate $\varepsilon$ for five representative molecules
+($\mathrm{H_6}$, $\mathrm{NH_3}$, $\mathrm{N_2}$, CO, $\mathrm{C_2}$; seed-averaged over $8$ seeds at $4{,}000$ shots each, bands $=\pm1$ s.d.\ across seeds; log scale). Solid $=$ S-CoRe recovery, dashed $=$ naive
+post-selection. The recovery advantage grows with noise, and for $\mathrm{CO}$ and $\mathrm{C_2}$ the
+recovered subspace drives the error \emph{below} the noiseless value; $\mathrm{C_2}$ is
+effectively noise-immune across the full $\varepsilon$ sweep. \textbf{(b)}~The full nineteen-molecule suite at a realistic
+$\varepsilon=2\%$ (log scale, sorted): for each molecule the naive post-selection error (open circle) is
+linked to the S-CoRe value (filled), so the leftward pull is the recovery gain; the shaded band is
+chemical accuracy ($<1.6$~mHa). Eighteen of nineteen land inside it; $\mathrm{H_6}$, the most
+multireference case, is the residual challenge. Panels (a) and (b) are independent seed ensembles
+(panel (a): $8$ seeds; panel (b): $5$ seeds, $4000$ shots), so a given molecule's $\varepsilon=2\%$ value
+can differ by up to a factor of a few between them (for $\mathrm{N_2}$, $0.34$ vs $0.06$~mHa; both far below chemical accuracy).}\label{fig:noiserec}\end{figure}
+
+\paragraph{Data and code availability.} Both hardware runs are archived with full metadata. For each run
+we provide, as ancillary files, the raw measurement counts, the transpiled circuits (OpenQASM), the
+backend, calibration date, physical-qubit layout and coupling map, transpiled two-qubit-gate count and
+depth, job identifiers, the reference-state (LUCJ/Slater) parameters, the Trotter step and the
+real-time-evolution times $t_k=k\,\Delta t$ ($k=0,\dots,7$: the $t=0$ reference plus the $K=7$ evolutions)
+that define the union subspace, and the full mitigation settings (TREX, Pauli twirling, dynamical decoupling). The scripts that regenerate every
+figure and Table~\ref{tab:molecules}---including the per-molecule geometries, active spaces, FCI energies,
+absolute $|\mathcal S|$, sector dimension $D$, and minimal bond dimension $\chi$ of
+App.~\ref{app:repro}---are provided alongside; every non-hardware result is an exact classical simulation
+reproducible from them.

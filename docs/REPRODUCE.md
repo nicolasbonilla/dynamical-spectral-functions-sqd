@@ -1,0 +1,84 @@
+# REPRODUCE — every figure and every number, traced to source
+
+This is the referee's map. **Every plotted number is committed as a `.json`/`.dat` file**, and every figure
+is regenerated from it by a `make_*.py` script (native pgfplots — no hand-typed values). To rebuild a
+figure's data *from scratch* (exact diagonalization), run the **compute** script in the same row first.
+
+All commands are run **from the repository root** with the environment of [`requirements.txt`](../requirements.txt).
+The two-step pattern is: `python <compute>.py` → writes `<data>.json` → `python make_<fig>.py` → writes
+`paper/figs/<fragment>.tex` → `make paper`.
+
+**Fastest check (seconds, numpy/scipy only):** `python verify.py` — reproduces `F₁(L=6)=9.3851` and the
+geminal witness (`F₁=F₂=4K`, `|S|=2^K`, `χ=2`) by exact diagonalization and prints PASS/FAIL. This is what CI runs.
+
+> **Honesty note.** The committed `paper/figs/*.tex` and `*.pdf` are **authoritative** and match `main.pdf`.
+> Every plotted *number* comes from the committed `.json`/`.dat`. Three fragments received manual finalization
+> *after* generation — the resource-master annotation placement (Fig. 2), the added absolute-cost panel (c)
+> of Fig. 12, and the honest single-trajectory hardware panel (Fig. 15b, which shows the real `da125` recovery
+> path with one error bar at the converged 8-seed point rather than fabricated per-iteration bars). For these,
+> the committed `.tex` is the source of truth; re-running their `make_*.py` regenerates the data-driven core
+> but not the manual placement.
+
+---
+
+## Figures (main text)
+
+| Fig | Paper object | Compute (exact) → data | Figure generator | Notes |
+|:--:|---|---|---|---|
+| 1 | `A(ω)`+`A(k,ω)` decoupling `F₁`–\|S\| | `n19_suite.py`, `cost_vs_entanglement.py` → `n19_suite.json`, `cost_vs_ent.json` | `make_decoupling_native.py` | 19 mol + Hubbard sweep + free fermions |
+| 2 | Resource thesis, 74 exact states | (aggregated) → `resource_master.json` | `make_resource_master_fig.py` | χ–\|S\| ρ=0.72 pooled / 0.90 molecular |
+| 3 | Method validation `A(ω)` + convergence | `spectral_validation_max.py` → `method_max.json`, `figs/aw_method.dat`, `figs/conv_method.dat` | `make_method_fig_max.py` | rel-L1 0.017; geometric collapse ρ≈1.7 |
+| 4 | Exact `A(k,ω)`, L=12 Mott map | `akw_lanczos.py` → `akw_lanczos_L12.json` | `recolor_akw_v2.py` + `fig_akw_v2_L12.tex` | Haydock continued fraction, sector basis |
+| **5** | **Sampled-vs-exact `A(k,ω)`, L=8** | **`sampled_akw.py` → `sampled_akw_L8.json`** | **`make_akw_sampled_fig.py`** | REAL sampled reconstruction, 85% sector |
+| 6 | `S(q,ω)` structure factor | `sqw_lanczos.py` → `sqw_L12.json`, `figs/sqw_edges.dat` | `sqw_field.py` + `paper/figs/fig_sqw.tex` | charge continuum, Mott gap |
+| 7 | `S^zz(q,ω)` spin structure factor | `spin_lanczos.py` → `spinqw_L12.json`, `figs/spinqw_edges.dat` | `paper/figs/fig_spinqw.tex` | gapless; dCP boundary + extracted peaks |
+| 8 | Nineteen-molecule magic gallery | `n19_suite.py` → `n19_suite.json` (+ PyMOL orbital PNGs) | `make_gallery_native.py` | ordered by FCI-verified `F₁` |
+| 9 | Magic across 19 molecules (eq vs diss) | `n19_suite.py` → `n19_suite.json` | `make_magic_suite_fig.py` | dumbbell eq→diss |
+| 10 | N₂ dissociation hero (`F₁=2Nᵤ` + weight) | `n2_hero_data.py` → `n2_hero.json`, `figs/hero_*.dat` | `make_hero_fig.py` | identity `F₁=2Nᵤ` to `<10⁻¹³` |
+| 11 | Time-evolution vs Krylov vs CIPSI | `headtohead_ms.py` → `headtohead_ms.json`, `figs/bench_U*.dat` | `make_bench_fig.py` | 0.042 / 0.729 / 0.431 at U/t=12, \|S\|=200 |
+| 12 | Scaling to 28 qubits | `scaling_data.py` (L≤8) / `scaling_lanczos_mf.py` (L≤14) → `scaling_data.json` | `make_scaling_fig.py` | `F₁` 6.6→22.5, frac 0.92→0.08, \|S\|~e^{1.05L} |
+| 13 | Chain vs 2-leg ladder (χ, fraction) | `ladder_vs_chain.py` → `ladder_vs_chain.json` | `paper/figs/fig_ladder_native.tex` | χ contrast at matched `F₁` |
+| 14 | Sampling-primitive circuit schematic | — (schematic) | `paper/figs/fig_circuit_native.tex` | quantikz; LUCJ + classical Lehmann coda |
+| 15 | **IBM Heron hardware** (`A(ω)` + N₂ energy) | `notebooks/HW_LUCJ_N2_Heron_READY.ipynb` (job `da125…`), Heron `A(ω)` run | `make_hardware_hero.py` → `hw_lucj_n2_result.json` | **0.59 ± 0.14 mHa**; needs IBM account |
+| 16 | Noise robustness (bit-flip, L=6) | `noise_spectral.py` → `noise_spectral.json`, `figs/noise.dat` | `make_noise_fig.py` | S-CoRe holds rel-L1≈0.05 to ε≈16% |
+| 17 | Noise-assisted energy across chemistry | `molecular_noise_energy.py`, `molecular_noise_sweep.py` → `molecular_noise*.json` | `make_noise_recovery_native.py` | 18/19 reach chemical accuracy at ε=2% |
+| 18 | Dequantization guard (GFlowNet) | (verified §3.4 results) → `gflow.json` | `make_gflow_fig.py` | generative ≈ classical control, no clean win |
+| 19 | Amortized configuration recovery | `amortized_recovery.py` → `amortized_recovery.json` | `paper/figs/fig_amort_native.tex` | leave-one-out; feasible, no resolved advantage |
+| 20 | Decoupling witness (Theorem 2) | `apsg_witness.py` → `apsg_witness.json` | `paper/figs/fig_witness_native.tex` | `F₁=F₂=4K`, \|S\|=2^K, χ=2 |
+
+Tables: `make_table.py` → `paper/table_molecules.tex` (Table 1) and the App. C reproducibility table.
+
+---
+
+## Key numbers → where they come from
+
+| Number in the paper | Value | Source |
+|---|---|---|
+| Collapse identity `F₁ = 4 tr[γ(1−γ)] = 2Nᵤ` | to `<10⁻¹³` | `n19_suite.py`, `n2_hero_data.py` |
+| χ–\|S\| Spearman (molecular / pooled) | 0.90 / 0.72 | `cost_vs_entanglement.py`, `resource_master.json` |
+| Hardware N₂ energy (`ibm_marrakesh`) | **0.59 ± 0.14 mHa** | `HW_LUCJ_N2_Heron_READY.ipynb`, job `da125f2ein7c73bcsqs0` |
+| Noiseless statevector (same circuit) | 29.5 mHa | same notebook (`hist_sim`) |
+| Hardware `A(ω)` (`ibm_fez`) coverage | \|S\|=300/300 (exact by coverage) | `Spectral_Heron.ipynb`, job `d9s16avpemts73ct6g8g` |
+| Benchmark at U/t=12, \|S\|=200 | 0.042 / 0.729 / 0.431 | `headtohead_ms.py` |
+| Sampled `A(k,ω)` rel-L1 (85% sector) | mean 0.0022, max 0.0033 | `sampled_akw.py` |
+
+**Hardware provenance:** the authoritative N₂ run is job `da125f2ein7c73bcsqs0` (8-seed recovery sweep).
+See [`FIGURE_PROVENANCE.md`](FIGURE_PROVENANCE.md) for the full data-source table and the stale-file list.
+
+---
+
+## Compute engines (shared)
+
+- **`akw_lanczos.py`** — sector-basis (up-string ⊗ dn-string) Hubbard engine: sparse ground state, Haydock
+  continued fraction for `G(z)`, `c†_k`/`c_k` maps. Reused by `sampled_akw.py`, `scaling_data.py`.
+- **`scaling_lanczos_mf.py`** — fully matrix-free, RAM-staged, resumable (checkpoints to `ckpt/`) to reach
+  L=14 (28 qubits) on a memory-limited machine.
+
+## Environment & caveats (honest)
+
+- Exact-diagonalization figures reproduce **locally in seconds–minutes**. `scaling_lanczos_mf.py` at L=14
+  needs staged runs (see its docstring); L=16 is physically infeasible on a workstation.
+- Figures compile with any TeX distribution (TeX Live / MiKTeX) + `pgfplots ≥ 1.18`.
+- The two IBM Heron runs need an IBM Quantum account; the notebooks ship with **cached device counts** and a
+  re-run cell, so the classical post-processing (recovery + reconstruction) is reproducible without new QPU
+  time. Credentials are **not** included — insert your own (see the security note in the README).

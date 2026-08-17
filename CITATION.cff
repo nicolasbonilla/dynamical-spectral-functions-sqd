@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this repository or its results, please cite the paper below."
+title: "Dynamical spectral functions from bitstring-sampled quantum subspaces: entanglement, not one-body magic, tracks the sampling cost"
+authors:
+  - family-names: "Bonilla Vargas"
+    given-names: "Nicolás"
+    affiliation: "Universidad Nacional de Colombia; SRH University Heidelberg/Munich; Daita AI"
+    email: "ngbonillav@unal.edu.co"
+abstract: >-
+  Sample-based quantum diagonalization is lifted from the ground-state energy to dynamical spectral
+  functions A(w), A(k,w), S(q,w) and S^zz(q,w), reconstructed from purely bitstring-sampled quantum
+  subspaces with no Hadamard or controlled-unitary tests. The one-body fermionic magic F1 = 4 tr[g(1-g)]
+  = 2Nu is shown to be an orbital-rotation invariant that is provably decoupled from the sampling cost |S|,
+  which is instead lower-bounded and empirically tracked by the basis-dependent entanglement (bond
+  dimension chi). Validated against exact diagonalization across Hubbard chains and a nineteen-molecule
+  suite, and demonstrated on the IBM Heron processor.
+version: "1.0.0"
+date-released: "2026-08-17"
+license: "MIT AND CC-BY-4.0"
+keywords:
+  - quantum computing
+  - sample-based quantum diagonalization
+  - spectral functions
+  - fermionic non-Gaussianity
+  - Hubbard model
+  - reproducible research
+preferred-citation:
+  type: article
+  title: "Dynamical spectral functions from bitstring-sampled quantum subspaces: entanglement, not one-body magic, tracks the sampling cost"
+  authors:
+    - family-names: "Bonilla Vargas"
+      given-names: "Nicolás"
+  year: 2026
+  journal: "arXiv preprint"
+  notes: "arXiv:XXXX.XXXXX"

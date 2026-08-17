@@ -1,0 +1,178 @@
+\section{Discussion}\label{sec:honest}
+
+\subsection{An honest account of the classical hardness}
+We state plainly what is certified and what is open. Sampling from a subclass of unitary-cluster-Jastrow
+circuits is classically hard---it embeds instantaneous-quantum-polynomial
+computation~\cite{bremner2016,hafid2025}---and adding a single non-Clifford resource already makes
+distribution learning hard~\cite{hinsche2023}, just as the difficulty of learning fermionic
+states grows with their non-Gaussian gate count~\cite{melehera2025}; the cost of matchgate simulation grows with the
+non-Gaussian (controlled-phase) content of the circuit~\cite{extraferm}. These are
+not, however, a monotone certificate of hardness for a specific trained instance: the fermionic
+AntiFlatness is a \emph{state} monotone while the matchgate simulation cost is a \emph{circuit}
+quantity, and their relation is empirical rather than a theorem. A tensor-network comparison
+sharpens the scope. On one-dimensional chains a matrix-product state of small bond dimension
+represents these states far more compactly than any determinant subspace---unsurprising, since one
+dimension is where the density-matrix renormalization group is near-optimal~\cite{schollwock2011}. DMRG has
+matured into a production \emph{ab initio} method for quantum chemistry~\cite{chanheadgordon2002,block2},
+and mature correction-vector, dynamical-DMRG, time-dependent-DMRG~\cite{paeckel2019}, and kernel-polynomial
+spectral-function methods already
+exist~\cite{kuehner1999,jeckelmann2002,holzner2011,nocera2016,whitefeiguin2004,kpm2006};
+beyond tensor networks, classical Pauli-propagation methods now evaluate real-time correlators
+directly~\cite{kemper2026}.
+\emph{We therefore do not claim advantage over tensor networks in one dimension.} The
+configuration-selection advantage we demonstrate---over deterministic Krylov and CIPSI selectors, not
+over heat-bath CI---is relevant in the settings where matrix-product representations strain: genuinely
+two-dimensional geometries and quantum chemistry, whose orbital graphs lack the one-dimensional locality
+that matrix-product states exploit. Figure~\ref{fig:ladder} isolates the resource mechanism in a
+controlled contrast: at \emph{matched} one-body magic a two-leg Hubbard ladder already carries a larger
+minimal bond dimension---and a $|\mathcal S|$ up to $\sim\!2.2\times$ that of the chain, needing a
+correspondingly larger $(N{\pm}1)$ fraction---the chain-to-ladder ratio growing with size. A ladder of this
+width ($\chi\!\approx\!38$) remains classically near-exact for dynamical DMRG, so this is a resource
+contrast---the cost tracks $\chi$, not $\mathcal F_1$, exactly as the resource theory predicts---not a
+beyond-classical claim. On the positive side,
+Theorem~\ref{thm:b2} (App.~\ref{app:b2}) guarantees that a subspace containing the order-$K$ Krylov
+space reproduces the exact spectral moments through order $2K{+}1$ and is captured with a polynomial
+shot budget, so the sampled reconstruction is convergent and its error is bounded by the captured
+spectral weight.
+
+\paragraph{The strongest classical counterexamples, and why they sharpen rather than sink the thesis.}
+Two recent results set the bar for any ground-state advantage claim, and we concede both without
+reservation. Reinholdt \emph{et al.}~\cite{reinholdt2025} show that quantum-selected configuration
+interaction re-samples already-seen determinants in a coupon-collector process and returns expansions
+\emph{less} compact than classical heat-bath or adaptive selected CI; Zhang and
+Otten~\cite{zhangotten2026} reach the ground state of the $[\mathrm{4Fe\text{-}4S}]$ cluster from
+\emph{random} Slater determinants using of order $10^{6}$ times fewer determinants and CPU-hours than the
+quantum demonstration. For the ground-state \emph{energy} of the systems shown to date, strong classical
+selectors match or beat sample-based diagonalization, usually far more cheaply---we do not dispute it.
+Our decoupling explains \emph{why} this must be so rather than contradicting it. The quantity these
+critiques probe is the size and compactness of the determinant expansion $|\mathcal S|$, a
+basis-dependent count that a free orbital rotation moves across its whole range and that the invariant
+one-body magic $\mathcal F_1$ is provably blind to (Sec.~\ref{sec:resource}, Thm.~\ref{thm:witness}). The
+critiques therefore land where our analysis predicts a classical method should win---on a
+basis-dependent, higher-order cost that no efficiently measurable state monotone we know can rank---and
+they say nothing about the invariant multireference diagnostic, which was never a cost claim. The
+conclusion is not that the critiques are wrong but that the advantage question has been posed about the
+wrong observable: the ground-state energy, where $|\mathcal S|$ is classically tamable and random- or
+heat-bath-selected determinants suffice, rather than the frequency-resolved response, whose faithful
+reconstruction demands a large fraction of the $(N\pm1)$ sector (Sec.~\ref{sec:resource}) and where the
+compactness edge that powers heat-bath and adaptive selected CI~\cite{holmeshci2016,sharmashci2017,tubmanasci2016} does not transfer. We make no beyond-classical claim
+even there; we relocate the open question to where it remains open.
+
+\subsection{Machine learning that preserves, rather than removes, the quantum sampling role}
+Machine learning can enhance the pipeline only where it \emph{consumes device samples or schedules
+device work}---the regime where learning from quantum experiments carries a provable
+advantage~\cite{huang2022}---never where it could generate the dominant determinants unaided, which
+would dequantize the method exactly as the classical selectors of the introduction
+do~\cite{belagali2026,hinqs2026,review}. We put the strongest candidate to a stringent test. A
+generative tail-completer---an orbital-native generative flow network~\cite{bengio2021}
+trained to sample high-weight $(N{+}1)$-sector configurations---is asked to complete an under-sampled
+device head, in both device-seeded and from-scratch conditions (Fig.~\ref{fig:gflow}). A cheap
+classical CIPSI~\cite{cipsi1973} tail captures most of the gain; the learned generator's point estimate
+edges below the classical control but not by a statistically resolved margin (the $\sim\!4$~mHa
+fused-vs-control difference is $\sim\!1.2$~s.d.\ over five seeds; Fig.~\ref{fig:gflow}), and the residual
+error is closed by drawing more device samples, not by the generator. This is a
+\emph{null result}: on this single instance a learned generator does not beat the cheap classical baseline
+that the quantum sampling already enables---it does not, on the evidence here, manufacture dominant
+determinants the sampling misses. The safe roles for machine learning are therefore strictly
+post-processing and scheduling---mitigation and certification of the sampled histogram feeding
+recovery~\cite{qesem2025,algorithmiq2026}, a role in which generative flow networks are already being
+deployed for measurement optimization---both to group commuting operators into compatible measurement
+sets~\cite{vargashernandez2024} and to optimize the discrete measurement
+basis~\cite{vargashernandez2025}---and an active-learning schedule that
+places the evolution times where the spectral function is most uncertain, in the spirit of Bayesian
+optimization for inverse problems in quantum reaction dynamics~\cite{vargashernandez2019}---none of which replaces the quantum
+sampling. The dequantization guard reported here corroborates, from the spectral-function side, the
+classical-simulability frontier mapped for ground-state SQD in our companion review~\cite{review}.
+
+This delimits, rather than forecloses, the ``quantum-for-AI'' horizon, and bounds where it could lie. The
+2026 generative frontier has two mirror faces: Born machines that are classically \emph{trainable} yet
+quantum-hard to \emph{sample}~\cite{genqadv2025,spectralborn2026}, and sample-based diagonalization,
+which is quantum-\emph{sampled} yet classically \emph{diagonalized}. The defensible role for a learned
+model is the one that respects this duality---consuming the device histogram rather than replacing
+it~\cite{huang2022,bennewitz2022}---and the theme of the present programme, amortization, names the
+opening the current instance-by-instance generative selectors~\cite{nqssc2026,zeni2026,pigensqd} leave
+open. Per-molecule generative configuration recovery can already improve a \emph{single} target's sampled
+sector when retrained for that molecule~\cite{pigensqd}; what our negative result and this programme
+target is different---a recovery model trained \emph{once} across a family to complete the
+physical-sector tail of a new, under-sampled instance without per-instance retraining. We take a first,
+falsifiable step on this question (Fig.~\ref{fig:amort}). Trained once across a six-instance Hubbard family
+and evaluated leave-one-out, an amortized configuration-importance model recovers a held-out instance's
+spectral support \emph{at the level of} the strong per-instance classical selector (an Epstein--Nesbet
+tail it never sees): the leave-one-out relative-$L_1$ difference is $-0.01$ to $-0.09$ across subspace
+fractions, within $\sim\!1$~s.d.\ over the six folds. Amortization without per-instance retraining is
+therefore \emph{feasible}---a train-once model generalizes across the family---but shows \emph{no
+statistically resolved advantage} over the classical baseline yet, the status of the open
+question: the single-instance
+negative result sets the bar, the amortized result meets but does not clear it, and---consistent with
+both---any advantage, if it exists, would be confined to the high-noise, high-correlation regime, never on the easy instances
+where the classical prior already wins.
+
+\begin{figure}[htbp]\centering\includegraphics[width=0.80\textwidth]{figs/fig_gflownet.pdf}
+\caption{\textbf{Dequantization guard: the learned generator does not beat the cheap classical baseline.} At an under-sampled device head ($\mathrm{N_2}$,
+$1000$ shots, $5$ seeds), a cheap classical CIPSI~\cite{cipsi1973} tail already closes most of the gap
+($39.2\!\to\!27.0$~mHa). A generative GFlowNet tail-completer edges the point estimate lower still
+($26.0$~mHa from scratch, $22.9$~mHa fused onto the classical prior), but the $\sim\!4$~mHa
+fused-vs-control ($27.0$) improvement is only $\sim\!1.2$~s.d.\ over five seeds---not a statistically
+resolved win. The residual error is closed by drawing more device samples, not by the generator: on this
+single instance the quantum sampling, not a learned generator, supplies the dominant determinants that
+additional device shots recover.}\label{fig:gflow}\end{figure}
+
+\begin{figure}[htbp]\centering\input{figs/fig_amort_native.tex}
+\caption{\textbf{Amortized configuration recovery: a first data point on the programme's open question.}
+A configuration-importance model trained \emph{once} across a six-instance Hubbard family
+($L=6,8$; $U/t=4,8,12$) and evaluated \emph{leave-one-out} recovers a held-out instance's
+$(N{+}1)$-sector spectral support, versus the strong per-instance classical selector (Epstein--Nesbet,
+untrained), as a function of the sampled subspace fraction. The amortized model---which never sees the
+held-out instance---meets the classical baseline (leave-one-out $\Delta=$ amortized $-$ classical
+$=-0.01$ to $-0.09$ across fractions, within $\sim\!1$~s.d.\ over the six folds): amortization without
+per-instance retraining is \emph{feasible} but shows no statistically resolved advantage yet. Error bars
+are $\pm1$~s.d.\ across the six leave-one-out folds.}\label{fig:amort}\end{figure}
+
+\subsection{Significance for academia and industry}
+
+\paragraph{Academia.} The result reframes the quantum-advantage question in electronic structure. The
+debate has centred on the ground-state \emph{energy}, where the evidence for a generic exponential
+advantage is weak~\cite{leechan2023} and the flagship sample-based demonstrations are being
+dequantized~\cite{belagali2026,reinholdt2025}. We move the question to a regime where an advantage is
+defensible---dynamical response---and, more consequentially, replace an asserted advantage with a
+\emph{precise resource statement}. One-body fermionic magic, though efficiently computable, is
+decoupled from the sampling cost and cannot certify where a quantum processor is required; what it
+faithfully reports is the static, multireference character of a target, while the operative hardness
+lives in the higher-order, connected-cumulant sector. In drawing this line we tie the resource theory
+of fermionic non-Gaussianity~\cite{hebenstreit2019,sierant2026,tarabunga2026} to sample-based
+electronic-structure computation~\cite{robledomoreno2025,kanno2023} for the first time, and open a
+concrete programme: the frequency-resolved observables now accessible from sampled subspaces are the
+very objects of dynamical mean-field theory~\cite{dmft1996} and correlated
+spectroscopy~\cite{damascelli2003}, and the resource analysis is a template for how quantum-advantage
+claims can be \emph{scoped and delimited} rather than asserted---a discipline the field increasingly
+demands~\cite{leechan2023,babbush2021,cerezo2025bp}.
+
+\paragraph{Industry.} The significance for the quantum-computing industry is threefold and concrete.
+\emph{First, the right observables.} What the method produces---the single-particle spectral function
+measured by photoemission, its momentum-resolved form, and the dynamical structure factor probed by
+neutron and X-ray scattering~\cite{squires2012,ament2011}---are precisely the quantities that
+materials discovery, catalysis, and correlated-electron device design require, and that the
+energy-only output of today's sample-based hardware does not
+deliver~\cite{robledomoreno2025,extsqd2025}. \emph{Second, a correlation diagnostic.} Quantum runtime on the quantum-centric
+supercomputers now in operation---an IBM Heron processor coupled to the Fugaku
+supercomputer~\cite{robledomoreno2025,shirakawa2025}, the QSCI software
+stack~\cite{kanno2023,adaptqsci}, and the trapped-ion Green's-function and
+dynamical-structure-factor pipeline~\cite{greenediniz2024,quantinuum_dsf2026}---is scarce and
+expensive, so knowing \emph{which} targets are strongly correlated is operationally valuable. The
+efficiently measurable fermionic magic flags exactly the multireference regime where mean-field and
+weakly-correlated classical methods break down. It is not, however, a cost oracle: being
+decoupled from the determinant support (Sec.~\ref{sec:resource}), it cannot by itself rank a strongly-correlated target against a
+classical selected configuration interaction~\cite{sharmashci2017,tubmanasci2016}, the density-matrix
+renormalization group~\cite{whitedmrg1992}, or auxiliary-field quantum Monte
+Carlo~\cite{mottazhang2018}---that decision turns on the higher-order, basis-dependent cost the
+one-body magic does not see~\cite{reinholdt2025}. \emph{Third, low adoption cost.} The method is
+hardware-native: it needs only computational-basis sampling, with no Hadamard tests or controlled
+unitaries~\cite{bauer2016,endo2020}, so it runs on current devices within the existing SQD stack and
+its GPU-accelerated classical back end~\cite{gpusqdomp,gpusqdthrust}, and it \emph{lightens} rather than adds to the
+observable-estimation and error-mitigation burden that dominates near-term
+cost~\cite{qesem2025,algorithmiq2026,qedma2026}. Fermionic magic is thus offered as an efficiently
+measurable multireference diagnostic---a \emph{one-sided} triage that flags, before committing runtime,
+the strongly-correlated targets on which mean-field and weakly-correlated classical methods fail. It is
+expressly \emph{not} a placement oracle: whether a workload belongs on the quantum processor turns on the
+basis-dependent cost---the bond dimension $\chi$---that one-body magic provably cannot supply
+(Sec.~\ref{sec:resource}), and we claim no scheduling result absent a scheduling experiment.

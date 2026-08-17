@@ -1,0 +1,44 @@
+% self-contained native pgfplots fragment (fig:scaling) -- DATA-DRIVEN from scaling_data.json
+% (real Lanczos/Haydock scaling data, L=4,6,8,10,12,14; U=8).
+% Panel (c) added 2026-08-17: absolute support |S|=frac*Np1_sector and sector dim D=Np1_sector vs 2L
+% (Np1_sector=[24,300,3920,52920,731808,10306296]; both grow exponentially, D faster than |S|).
+\definecolor{scMag}{HTML}{D55E00}\definecolor{scFrac}{HTML}{0072B2}\definecolor{scInk}{HTML}{5B5B5B}
+\definecolor{inkPrim}{HTML}{1B1B1B}\definecolor{scDim}{HTML}{8A8A8A}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=3 by 1, horizontal sep=0.95cm},
+  width=5.0cm, height=5.5cm, paperaxis,
+  xmin=6.5, xmax=29.5, xtick={8,16,24}, xtick align=outside,
+  title style={at={(0,1)},anchor=south west,font=\small\bfseries,yshift=1.5pt},
+  label style={font=\small}, tick label style={font=\footnotesize},
+  every node near coord/.append style={font=\scriptsize,inkPrim,anchor=south,yshift=1pt}]
+% ---------- (a) fermionic magic grows ----------
+\nextgroupplot[title={(a)~magic grows},
+  xlabel={qubits $\;2L$}, ylabel={fermionic magic $\mathcal{F}_1$}, ymin=0, ymax=30.5,
+  ytick={0,10,20,30}, ymajorgrids, grid style={draw=black!10}]
+\addplot[draw=none,fill=scMag,fill opacity=0.10] coordinates {(8,6.6074) (12,9.3851) (16,12.8138) (20,16.0183) (24,19.2721) (28,22.5050)} \closedcycle;
+\addplot[scMag,line width=1.3pt,mark=*,mark size=2.5pt,mark options={fill=scMag,draw=white,line width=0.7pt},
+  nodes near coords,point meta=explicit symbolic]
+  coordinates {(8,6.6074)[6.6] (12,9.3851)[] (16,12.8138)[] (20,16.0183)[] (24,19.2721)[] (28,22.5050)[22.5]};
+% ---------- (b) subspace fraction falls ----------
+\nextgroupplot[title={(b)~fraction falls},
+  xlabel={qubits $\;2L$}, ylabel={$|\mathcal{S}|/\dim$}, ymin=0, ymax=1.08,
+  ytick={0,0.5,1}, ymajorgrids, grid style={draw=black!10}]
+\fill[scFrac,fill opacity=0.05] (axis cs:6.5,0) rectangle (axis cs:29.5,0.5);
+\node[inkPrim,font=\footnotesize\itshape,anchor=west] at (axis cs:7.2,0.19) {beyond-classical};
+\addplot[draw=none,fill=scFrac,fill opacity=0.10] coordinates {(8,0.9167) (12,0.8200) (16,0.5561) (20,0.3625) (24,0.1700) (28,0.0800)} \closedcycle;
+\addplot[scFrac,line width=1.3pt,mark=square*,mark size=2.4pt,mark options={fill=scFrac,draw=white,line width=0.7pt},
+  nodes near coords,point meta=explicit symbolic]
+  coordinates {(8,0.9167)[0.92] (12,0.8200)[] (16,0.5561)[] (20,0.3625)[] (24,0.1700)[] (28,0.0800)[0.08]};
+% ---------- (c) absolute size grows exponentially ----------
+\nextgroupplot[title={(c)~absolute size grows},
+  xlabel={qubits $\;2L$}, ylabel={count}, ymode=log, ymin=8, ymax=8e7,
+  ytick={1e1,1e3,1e5,1e7}, ymajorgrids, grid style={draw=black!10},
+  legend style={font=\scriptsize,at={(0.03,0.98)},anchor=north west,draw=none,fill=white,fill opacity=0.55,text opacity=1,row sep=0.4pt,inner sep=1.5pt},legend cell align=left]
+\addplot[scDim,line width=1.3pt,mark=triangle*,mark size=2.6pt,mark options={fill=scDim,draw=white,line width=0.6pt}]
+  coordinates {(8,24) (12,300) (16,3920) (20,52920) (24,731808) (28,10306296)};
+\addlegendentry{sector $\dim$ $\sim e^{1.30L}$}
+\addplot[scFrac,line width=1.3pt,mark=square*,mark size=2.3pt,mark options={fill=scFrac,draw=white,line width=0.6pt}]
+  coordinates {(8,22) (12,246) (16,2180) (20,19184) (24,124407) (28,824504)};
+\addlegendentry{support $|\mathcal S|$ $\sim e^{1.05L}$}
+\end{groupplot}
+\end{tikzpicture}

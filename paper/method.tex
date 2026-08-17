@@ -1,0 +1,88 @@
+\section{The method: spectral functions from bitstring-sampled subspaces}\label{sec:method}
+
+\subsection{Construction}
+For a Hamiltonian $\hat H$ with $N$-electron ground state $\lvert 0\rangle$ of energy $E_0$, the
+single-particle spectral function has an electron-addition and an electron-removal branch,
+\begin{equation}
+\begin{aligned}
+A_{p}(\omega)=&\sum_{n}\bigl|\langle n^{N+1}\lvert \hat c^\dagger_p\rvert 0\rangle\bigr|^{2}\,
+\delta\!\bigl(\omega-(E^{N+1}_n-E_0)\bigr)\\
++&\sum_{m}\bigl|\langle m^{N-1}\lvert \hat c_p\rvert 0\rangle\bigr|^{2}\,
+\delta\!\bigl(\omega-(E_0-E^{N-1}_m)\bigr),
+\end{aligned}
+\label{eq:lehmann}
+\end{equation}
+energies measured from $E_0$; the chemical potential $\mu=\tfrac12(E^{N+1}_0-E^{N-1}_0)$, which for the
+particle--hole-symmetric Hubbard model at half filling places the Fermi level mid-gap. We build the
+diagonalization subspace in three steps. \emph{(1)}~Prepare the response seeds
+$\lvert\phi^{\pm}\rangle=\hat c^{\dagger}_p\lvert 0\rangle,\ \hat c_p\lvert 0\rangle$ in the
+$(N{\pm}1)$ sectors. \emph{(2)}~Time-evolve each, $\lvert\phi^{\pm}(t_k)\rangle=e^{-i\hat H
+t_k}\lvert\phi^{\pm}\rangle$, and \emph{sample computational-basis bitstrings}; the union of sampled
+configurations across the evolution times is the determinant subspace $\mathcal S^{\pm}$.
+\emph{(3)}~Form $\hat H_{\mathcal S^{\pm}}=P_{\mathcal S^{\pm}}\hat H P_{\mathcal S^{\pm}}$,
+diagonalize each as $\hat H_{\mathcal S^{\pm}}=\sum_m \tilde E^{\pm}_m\lvert\tilde m^{\pm}\rangle\langle\tilde m^{\pm}\rvert$,
+and evaluate the Lehmann sum inside $\mathcal S^{\pm}$. The retarded Green's function is then assembled
+entirely on the classical processor,
+\begin{equation}
+G_{pq}(\omega)=\sum_{m}\frac{\langle 0\lvert \hat c_p\rvert\tilde m^{+}\rangle\langle\tilde m^{+}\lvert \hat
+c^\dagger_q\rvert 0\rangle}{\omega-(\tilde E^{+}_m-E_0)+i\eta}
++\sum_{m}\frac{\langle 0\lvert \hat c^{\dagger}_q\rvert\tilde m^{-}\rangle\langle\tilde m^{-}\lvert \hat
+c_p\rvert 0\rangle}{\omega-(E_0-\tilde E^{-}_m)+i\eta},
+\label{eq:green}
+\end{equation}
+whose imaginary part is the Lorentzian-broadened $A_{pq}(\omega)$ at resolution $\eta$. Because the sampled
+configurations---the union over all orbital seeds $\{\hat c^\dagger_q\lvert 0\rangle\}_q$ in the charged
+$(N{\pm}1)$ sectors, and number-conserving density seeds $\{\hat n_q\lvert 0\rangle\}_q$ in the neutral
+$N$ sector---span the sector-specific subspaces in which the \emph{full} response matrices live, they
+yield without further measurement the momentum-resolved spectral function $A(k,\omega)$ (by Fourier
+transform of the charged $G_{pq}$) and the dynamical structure factor $S(q,\omega)$ (from the neutral
+density response). The quantum processor measures \emph{only} bitstrings; no Hadamard test, controlled
+unitary, or off-diagonal overlap is estimated on the device (the sample--recover--reconstruct primitive
+is schematized in Fig.~\ref{fig:circ}).
+
+\subsection{Relation to quantum subspace and Krylov methods}
+The construction is a sampling realization of the quantum subspace idea. In exact arithmetic the span
+of the time-evolved seeds $\{e^{-i\hat H t_k}\lvert\phi\rangle\}$ coincides with the order-$K$
+polynomial Krylov space~\cite{shen2023,kirby2023}, and diagonalizing $\hat H$ within a subspace
+containing this space is the route taken by quantum subspace expansion~\cite{mcclean2017qse}, quantum
+filter diagonalization~\cite{parrish2019}, and real-time quantum Krylov
+algorithms~\cite{cortesgray2022}, whose stability and error theory are now
+well characterized~\cite{epperly2022}. What distinguishes our method is that these
+states are used not to \emph{estimate matrix elements}---the step that requires Hadamard tests or
+quantum equation-of-motion measurements in Green's-function algorithms on
+hardware~\cite{bauer2016,endo2020,rungger2020,greenediniz2024,bespalova2025}---but as a \emph{sampling
+distribution} that selects a determinant subspace, exactly as in sample-based
+diagonalization~\cite{robledomoreno2025,kanno2023,skqd2025}, now lifted to the $(N{\pm}1)$ manifold
+and to a frequency-resolved observable. Closest on lattice models, Nogaki \emph{et al.}~\cite{nogaki2025}
+apply symmetry-adapted SQD to lattice-model ground-state \emph{energies}; we instead lift the sampled
+subspace to the $(N{\pm}1)$ and neutral sectors to reconstruct the frequency-resolved single-particle and
+collective \emph{response}. The device \emph{readout} is therefore that of SQD---computational-basis
+sampling---while the circuits are the real-time-evolution circuits of sample-based Krylov
+diagonalization~\cite{skqd2025,yoshioka2025}, and the dynamical information is reconstructed
+classically through Eq.~\eqref{eq:green}.
+
+\subsection{Convergence and sampling cost}
+Two questions govern reliability: does the subspace reproduce the exact spectrum, and how many shots
+are required to populate it? Both admit an answer. Writing each branch of $A_p$ through its spectral moments---for the addition branch,
+$\mu_r^{+}=\int \omega^r A_p^{+}(\omega)\,d\omega=\langle 0\lvert \hat c_p (\hat H-E_0)^r \hat
+c^\dagger_p\rvert 0\rangle$, and analogously for removal ($\hat c^\dagger_p,\hat c_p$)---a subspace
+containing the order-$K$ Krylov space of that branch reproduces its exact
+moments through order $2K{+}1$---the Gauss-quadrature property of moment
+methods~\cite{golub2010}---so the underlying unbroadened Stieltjes measure is moment-exact through order
+$2K{+}1$ in each branch (the broadened $A_p$ inherits this as geometric $L_1$ convergence at fixed
+$\eta>0$, though its own moments of order ${\ge}2$ diverge), and its
+residual $L_1$ error is bounded by the spectral weight outside the captured subspace. Under the empirically observed concentration of the
+dominant Lehmann residues on a number of configurations that grows polynomially in the target accuracy,
+a polynomial shot budget suffices to realize this subspace with high probability; we make
+this precise in Theorem~\ref{thm:b2} (App.~\ref{app:b2}), in the spirit of the convergence guarantees
+established for sample-based Krylov diagonalization~\cite{skqd2025,kirby2023,yoshioka2025,piccinelli2025}. In
+practice the reconstruction is validated \emph{a posteriori} by the exact branch sum rules
+$\int A_p^{+}\,d\omega = 1-\langle \hat n_p\rangle$ and $\int A_p^{-}\,d\omega = \langle \hat n_p\rangle$
+(unit total weight) and by self-consistency of the sampled subspace, so that at scales where an
+exact reference is unavailable the result remains internally consistent and weight-normalized. These
+zeroth-moment checks are not themselves an error bound; the genuine certificate is the error
+bound of Theorem~\ref{thm:b2}(iii), $\lVert A-A_S\rVert_1\le 2\lVert\phi\rVert^2(1-w_S)+C\,\rho^{-K_S}$,
+which controls the reconstruction once the captured weight $w_S\to1$ and the captured Krylov order
+$K_S$ is adequate---an essential property given that the
+classical-hardness of a specific instance is empirical rather than a theorem
+(Sec.~\ref{sec:honest}).

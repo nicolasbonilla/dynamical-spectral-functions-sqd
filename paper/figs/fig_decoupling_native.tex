@@ -1,0 +1,34 @@
+% self-contained native pgfplots fragment (fig:decoupling)
+\definecolor{dcH1}{HTML}{D1495B}\definecolor{dcH2}{HTML}{009E73}\definecolor{dcH3}{HTML}{E0A21E}
+\definecolor{dcFree}{HTML}{3B7A57}\definecolor{dcCov}{HTML}{E8543A}\definecolor{dcMrf}{HTML}{10A87B}
+\definecolor{dcIon}{HTML}{2E6FE0}\definecolor{dcTrend}{HTML}{9A9A9A}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=3 by 1, horizontal sep=0.9cm},
+  width=6.0cm, height=5.4cm, paperaxis,
+  title style={at={(0.5,1.0)},anchor=south,font=\bfseries,yshift=2pt},
+  label style={font=\normalsize}, tick label style={font=\normalsize},]
+% ---- (a) molecules (coloured by bonding regime) ----
+\nextgroupplot[xlabel={$\mathcal{F}_1=4\,\mathrm{tr}[\gamma(1{-}\gamma)]$},ylabel={$\log_2|\mathcal{S}|$},
+  title={(a)~molecules},xmin=-0.6,ymin=-0.4,enlarge x limits=0.05]
+\addplot[dcTrend,line width=1pt,dashed,domain=0.000:11.377,forget plot] {0.4736*x+0.8502};
+\addplot[only marks,mark=*,mark size=2pt,draw=white,line width=0.4pt,fill=dcCov] coordinates {(0.038,0.000) (2.511,1.000) (0.001,0.000) (3.460,2.000) (0.068,0.000) (3.985,1.000) (0.688,3.000) (8.192,5.524) (0.847,2.807) (11.377,6.322) (0.039,0.000) (3.754,2.585) (0.007,0.000) (6.936,3.700) (0.080,0.000) (10.289,6.087) (0.252,1.000) (5.113,3.459) (0.521,3.170) (7.735,6.508)};
+\addplot[only marks,mark=*,mark size=2pt,draw=white,line width=0.4pt,fill=dcMrf] coordinates {(4.743,3.700) (8.001,2.585) (0.013,0.000) (3.703,2.322) (1.673,3.459) (6.000,2.000) (1.307,4.755) (5.938,3.170) (0.790,2.322) (7.449,4.644)};
+\addplot[only marks,mark=*,mark size=2pt,draw=white,line width=0.4pt,fill=dcIon] coordinates {(0.002,0.000) (0.075,1.000) (0.000,0.000) (0.001,0.000) (0.518,2.322) (0.573,1.585) (0.035,0.000) (0.386,1.000)};
+\node[anchor=south east] at (rel axis cs:0.98,0.02) {$r=0.80$};
+% ---- (b) Hubbard chains ----
+\nextgroupplot[xlabel={$\mathcal{F}_1$\; ($U\!\uparrow$)},ylabel={$\log_2|\mathcal{S}|$},
+  title={(b)~Hubbard chains},legend style={at={(0.97,0.97)},anchor=north east,draw=black!20},
+  legend cell align=left]
+\addplot[dcH1,mark=*,mark size=2pt,line width=1.1pt] coordinates {(0.626,8.366) (2.232,8.285) (5.913,8.022) (9.605,7.200) (11.300,6.087)}; \addlegendentry{$(6,6)$}
+\addplot[dcH2,mark=square*,mark size=2pt,line width=1.1pt] coordinates {(0.802,11.729) (2.918,11.607) (7.881,11.087) (12.816,9.781) (15.070,8.353)}; \addlegendentry{$(8,8)$}
+\addplot[dcH3,mark=triangle*,mark size=2.4pt,line width=1.1pt] coordinates {(0.486,11.194) (1.635,11.150) (4.368,10.995) (7.960,10.644) (10.439,10.091)}; \addlegendentry{$(8,6)$}
+% ---- (c) free fermions (y-label dropped; shares the |S| meaning, own scale) ----
+\nextgroupplot[xlabel={chain length $L$},ylabel={},
+  title={(c)~free fermions},xtick={4,6,8,10},enlarge x limits=0.16,ymin=4,ymax=17.5]
+\addplot[dcFree,mark=square*,mark size=2.4pt,line width=1.2pt] coordinates {(4,5.129) (6,8.392) (8,11.771) (10,15.189)};
+\node[anchor=south east,inner sep=1.5pt] at (axis cs:4,5.13){$35$};
+\node[anchor=south east,inner sep=1.5pt] at (axis cs:6,8.39){$336$};
+\node[anchor=south east,inner sep=1.5pt] at (axis cs:8,11.77){$3496$};
+\node[anchor=north east,inner sep=1.5pt] at (axis cs:10,15.19){$37361$};
+\end{groupplot}
+\end{tikzpicture}

@@ -1,0 +1,165 @@
+\section{Introduction}
+
+The promise that quantum computers will solve the central problem of electronic
+structure---computing the ground-state energy of a many-electron Hamiltonian, whose
+configuration space grows combinatorially and whose exact solution is QMA-complete in the worst
+case~\cite{schuchverstraete2009}---has driven a decade of algorithmic development~\cite{reiher2017,cerezo2021,tilly2022}. The
+variational quantum eigensolver (VQE)~\cite{peruzzo2014,kandala2017} dominated the noisy-device era
+but has, for the purpose of demonstrating a scaling advantage, largely run its course: barren
+plateaus render deep expressive circuits untrainable~\cite{mcclean2018}, and the very structural
+conditions that let a circuit avoid them tend also to render it classically
+simulable~\cite{cerezo2025bp}. Sample-based quantum diagonalization
+(SQD)~\cite{robledomoreno2025}, equivalently quantum-selected configuration interaction
+(QSCI)~\cite{kanno2023}, took a different route: rather than optimize a circuit to \emph{be} the ground state, one uses a
+shallow, noise-tolerant circuit only to \emph{sample} the electronic configurations that carry
+appreciable weight, and then diagonalizes the Hamiltonian classically in the sampled determinant
+subspace on high-performance hardware~\cite{robledomoreno2025,skqd2025,yoshioka2025,kirby2023}.
+Within two years SQD became the de facto default of pre-fault-tolerant quantum chemistry, reaching
+iron--sulfur clusters at 77 qubits with the Fugaku supercomputer in the
+loop~\cite{robledomoreno2025,shirakawa2025} and extending to excited
+states~\cite{extsqd2025}, adaptive state preparation~\cite{adaptqsci}, density-matrix
+embedding~\cite{shajan2024}, and auxiliary-field quantum Monte Carlo~\cite{danilov2025,qcqmc,qcafqmcion2025}.
+
+Yet the target of SQD---the ground-state \emph{energy}---is exactly where the classical frontier has
+closed the gap. The broader case for a generic exponential quantum advantage in ground-state
+chemistry was already found wanting: across sampled chemical space, heuristic classical methods
+remain competitive and the assumed advantage rests on efficient state
+preparation~\cite{leechan2023}. For SQD specifically, an extended matchgate simulator reproduces the
+unitary-cluster-Jastrow--SQD workflow~\cite{extraferm}, single-layer unitary cluster Jastrow
+energies are computable in polynomial time---reproducing the flagship 77-qubit experiment on a
+laptop at \emph{lower} energy~\cite{belagali2026}---and classical autoregressive neural samplers
+reconstruct the determinant-selection loop on a GPU~\cite{hinqs2026,arnnsci2026}. A direct
+quantum-chemistry benchmark finds classical heat-bath configuration interaction more compact and
+cheaper than QSCI at accessible sizes~\cite{reinholdt2025}, and a complementary lattice-model study
+reports the intrinsic exponential configuration-space scaling that drives this~\cite{gaberle2026}---a
+conclusion we reached independently in a companion review~\cite{review}. This mirrors the fate of the first ``quantum utility''
+demonstration~\cite{kim2023}, reproduced classically within months by tensor-network~\cite{tindall2024}
+and sparse-Pauli~\cite{begusic2024} methods. The lesson is quantitative: under fault-tolerant
+overheads even polynomial speedups do not deliver practical advantage~\cite{babbush2021}, so a
+\emph{defensible} advantage must live where the classical cost genuinely
+explodes~\cite{mazzola2024}.
+
+We argue that the \emph{defensible} quantum advantage of a sample-based method, if one exists, is not in
+the energy but in the \emph{sampling} of a hard distribution, realized most cleanly for
+\emph{dynamical} observables---the regime our primitive targets, a necessary precondition for any such
+advantage rather than a demonstration of one. Real-time dynamics is where classical tensor networks hit the
+entanglement barrier~\cite{calabresecardy2005}, where the fermion sign problem becomes a phase
+problem~\cite{troyerwiese2005}, and where every
+surviving beyond-classical hardware demonstration now lives---from the random-circuit-sampling
+programme~\cite{arute2019} and verifiable-advantage correlators~\cite{google_echoes} to real-time
+simulations of the Fermi--Hubbard model that already outrun exact classical methods on
+superconducting~\cite{googlefh2025} and trapped-ion~\cite{quantinuumfh2025} processors, and to
+precision estimation of prethermal dynamics beyond classical
+reach~\cite{qedma2026,algorithmiq2026}. The natural dynamical targets are the
+\emph{spectral functions} of correlated matter: the single-particle spectral function $A(\omega)$
+measured by angle-resolved photoemission~\cite{damascelli2003}, its momentum-resolved form
+$A(k,\omega)$, and the dynamical structure factor $S(q,\omega)$ probed by neutron and X-ray
+scattering~\cite{squires2012,ament2011}---the central outputs of dynamical mean-field theory~\cite{dmft1996}. Classically these
+are obtained by dynamical density-matrix renormalization~\cite{jeckelmann2002,nocera2016},
+time-dependent DMRG~\cite{whitefeiguin2004}, and kernel-polynomial expansions~\cite{kpm2006} in one
+dimension, where the density-matrix renormalization group is near-optimal~\cite{whitedmrg1992,schollwock2011}, but
+they remain hard beyond it.
+
+Crucially, no published method reconstructs a frequency-resolved single-particle spectral function from
+a \emph{bitstring-sampled} quantum subspace in the charged $(N{\pm}1)$ sectors, with the Green's function
+assembled classically in the Lehmann representation. The SQD/SKQD/TE-QSCI
+lineage stops at energies and, at most, a handful of discrete excited-state
+levels~\cite{extsqd2025,teqsci2024}; quantum Green's-function methods use Hadamard
+tests~\cite{bauer2016,endo2020} or Krylov and quantum-subspace recursions
+built from measured overlaps~\cite{mcclean2017qse,rungger2020,cortesgray2022,parrish2019,onqse2024,umeano2025}---the
+last computing a dynamical structure factor $S(q,\omega)$ for a Kitaev spin liquid from a measured-overlap
+subspace rather than sampled configurations---or hybrid quantum--classical response-and-structure
+frameworks~\cite{du2026}, rather than sampled subspaces; and
+the hardware real-time-observable results come from a separate
+error-mitigation-plus-Trotter line~\cite{qedma2026,algorithmiq2026,quantinuum_dsf2026}. The two
+closest results---a QSCI quasiparticle band structure that returns discrete
+poles~\cite{ohgoe2025} and a molecular spectrum obtained from a neutral-sector autocorrelation built from
+short-time quantum-evolved samples with classically projected long-time dynamics~\cite{santini2025}---return
+static levels or a neutral-sector response, not the charged-sector $(N{\pm}1)$ single-particle Green's
+function that our Lehmann construction assembles from the sampled subspace. We occupy that gap.
+
+To know \emph{where} such a method is hard---and, just as important, where it is not---one must know
+which resource controls its cost. Free-fermion (matchgate) circuits are classically
+efficient~\cite{valiant2002,terhaldivincenzo2002,bravyi2005flo,jozsamiyake2008}; the resource that
+leaves this manifold is fermionic non-Gaussianity, and every pure non-Gaussian fermionic state is a
+\emph{magic} state for matchgate computation~\cite{hebenstreit2019}---the fermionic counterpart of the
+non-stabilizerness that powers universal qubit computation~\cite{bravyikitaev2005,leone2022sre}. The
+efficiently computable fermionic AntiFlatness (FAF)~\cite{sierant2026}, built from the Majorana
+covariance matrix, quantifies that distance from the Gaussian manifold, and it is natural to hope that
+this single measured number decides when the quantum sampler is essential. \emph{It does not.} The
+cost of a sample-based method is its determinant-subspace size $|\mathcal S|$ (defined below); we prove
+one-body fermionic magic is decoupled from it. Understanding this
+decoupling---and locating the genuine hardness in the higher-order sector, where the paired
+``magic-input'' regime is classically tractable for additive-error \emph{estimation} under
+free-fermionic dynamics~\cite{oh2026}, though computational-basis \emph{sampling} of the same family in
+a rotated frame may remain hard~\cite{fermionsampling2022}---is the second contribution of this work.
+
+This work makes \emph{two} central contributions to quantum computation, each closing a gap that a
+comprehensive survey of the literature confirms is open, and each supported by a rigorous account of
+its scope.
+
+\textbf{First, a new use of the sampled-subspace toolkit: frequency-resolved dynamical response
+from bitstring-sampled subspaces---charged-sector single-particle spectra and neutral-sector structure factors.} We compute the single-particle spectral function $A(\omega)$ and, from the same
+charged-$(N{\pm}1)$ sampled configurations, its momentum-resolved form $A(k,\omega)$; the density and
+spin responses $S(q,\omega)$ and $S^{zz}(q,\omega)$ follow from number-conserving seeds in the neutral
+$N$ sector---all purely from computational-basis bitstrings, with no Hadamard tests, no controlled unitaries, no
+overlap estimation. This lifts the entire SQD/QSCI toolkit from the static energies and discrete
+levels it has been confined to~\cite{robledomoreno2025,kanno2023,extsqd2025,ohgoe2025} to
+continuous, frequency-resolved dynamics, and we validate it against exact diagonalization on Hubbard
+chains, across nineteen molecules spanning every bonding regime, and on the IBM Heron
+processor.
+
+\textbf{Second, the resource that sets the cost---and the one that does not.} The cost of a
+sample-based method is the size $|\mathcal S|$ of the determinant subspace the sampler must populate to
+reach a target accuracy, and we identify what controls it by first ruling out what does not. Restricted
+to the number-conserving states of chemistry, the fermionic AntiFlatness~\cite{sierant2026} collapses
+to a single one-particle reduced-density-matrix invariant,
+$\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$ (equal to $2N_{\mathrm u}$ for spin-restricted natural
+orbitals)---the effectively-unpaired-electron
+index~\cite{takatsuka1978,staroverov2000} and the one-body-entanglement linear
+entropy~\cite{gigena2020} (\S\ref{sec:resource}). Being a function of the orbital-rotation-invariant
+occupation spectrum it is a Gaussian invariant, whereas $|\mathcal S|$ is basis dependent; a quantity
+unchanged by the orbital rotations that sweep $|\mathcal S|$ over its whole range cannot predict it.
+Across the same nineteen FCI-verified molecules one-body magic does track static, multireference
+character---switching on for covalent bond-breaking, already large for inherently multireference
+$\mathrm{C_2}$ and $\mathrm{O_2}$, near-Gaussian for the ionic bond of LiF, refining to fermionic
+non-Gaussianity the qubit non-stabilizerness peak of molecular bonding~\cite{sarkis2025}---yet this
+correlation is not even sign stable: a free-fermion determinant has $\mathcal F_1=0$ with exponentially
+large $|\mathcal S|$, and increasing on-site repulsion raises $\mathcal F_1$ while \emph{lowering}
+$|\mathcal S|$. One-body fermionic magic is a faithful multireference diagnostic but an unreliable
+predictor of the sampling cost, which is set instead by the basis-dependent entanglement---the minimal
+bond dimension $\chi$, which tracks $|\mathcal S|$ across the suite. Any genuine quantum advantage lives
+one stratum above, in the generic, high-rank non-Gaussianity of the connected higher-body cumulants in
+the fixed sampling basis---not the orbital-invariant higher-order antiflatness $\mathcal F_{k\ge2}$, which
+we exhibit large on a classically trivial paired family---beyond the stratum whose free-fermionic
+estimation primitives remain classically tractable~\cite{oh2026}.
+To our knowledge this is the first time a fermionic-magic measure is connected to sample-based
+diagonalization.
+
+These contributions are delivered with the rigor the dequantization debate now
+demands~\cite{leechan2023,reinholdt2025,belagali2026}: we scope the reach of the method (it
+is asymptotic, and lives in two-dimensional and chemical settings, not in one dimension where tensor
+networks remain near-optimal~\cite{whitedmrg1992,schollwock2011}), prove a moment-exactness and polynomial-shot bound
+for the sampled reconstruction, and, on the artificial-intelligence side of the hybrid loop, show that
+self-consistent configuration recovery~\cite{robledomoreno2025} improves the sampled subspace under
+realistic device noise~\cite{wray2025,vaquero2026}---through valid-shot economy rather than quantum advantage---while a \emph{learned}
+generative tail-completer does \emph{not} beat that classical baseline (Fig.~\ref{fig:gflow}), delimiting
+the quantum--AI frontier consistent with, not counter to, the classical-simulability frontier we and
+others have charted~\cite{review,reinholdt2025}. The
+resulting resource diagnostics, computed from bitstrings already in hand, map where that frontier lies
+for the spectral and dynamical workloads of quantum-centric
+computation~\cite{robledomoreno2025,shirakawa2025}.
+
+Beyond the specific algorithm, the reframing carries weight for both the science and the industry of
+quantum computing. \emph{For the field}, it forges a first link between the resource theory of
+fermionic non-Gaussianity~\cite{hebenstreit2019,sierant2026} and sample-based electronic-structure
+computation~\cite{robledomoreno2025,kanno2023}, and replaces a natural but mistaken hope---that a
+one-body magic number certifies where sampling is hard---with a precise statement of which resource
+sets the cost and which does not. \emph{For practice}, the observables it delivers---the single-particle
+spectral function, its momentum resolution, and the dynamical structure factor of correlated
+matter~\cite{damascelli2003,dmft1996}---are precisely those that materials discovery, catalysis, and
+correlated-electron device design demand and that the energy-only output of today's sample-based
+hardware does not provide; and because the resource diagnostics are measured from bitstrings already in
+hand, they chart, before further runtime is spent, where the classical frontier lies for a given
+spectral or dynamical workload on the quantum-centric supercomputers now in
+operation. We develop both threads in Sec.~\ref{sec:honest}.

@@ -1,0 +1,13 @@
+% G2 amortized recovery (fig:amort) -- amortized_recovery.json. Train-once-across-family, leave-one-out over 6 Hubbard instances.
+\definecolor{amGen}{HTML}{D55E00}\definecolor{amCls}{HTML}{0072B2}\definecolor{amInk}{HTML}{1B1B1B}
+\begin{tikzpicture}
+\begin{axis}[width=8.6cm,height=6.2cm,paperaxis,
+  xlabel={subspace fraction $|\mathcal S|/D$}, ylabel={spectral relative-$L_1$ (leave-one-out)},
+  xmin=0.02,xmax=0.33, ymin=0.35,ymax=1.05, xtick={0.05,0.1,0.2,0.3}, ymajorgrids, grid style={draw=black!10},
+  legend style={font=\footnotesize,at={(0.5,1.02)},anchor=south,legend columns=2,/tikz/every even column/.append style={column sep=12pt},draw=none,fill=none},legend cell align=left,
+  error bars/y dir=both,error bars/y explicit]
+\addplot[amCls,line width=1.5pt,mark=square*,mark size=2.8pt,mark options={fill=amCls,draw=white}] coordinates {(0.05,0.877) +- (0,0.101) (0.1,0.856) +- (0,0.114) (0.2,0.776) +- (0,0.100) (0.3,0.657) +- (0,0.093)}; \addlegendentry{classical (per-instance)}
+\addplot[amGen,line width=1.5pt,mark=*,mark size=2.8pt,mark options={fill=amGen,draw=white}] coordinates {(0.05,0.869) +- (0,0.161) (0.1,0.833) +- (0,0.162) (0.2,0.688) +- (0,0.216) (0.3,0.618) +- (0,0.199)}; \addlegendentry{amortized (train-once)}
+% (annotation removed to avoid overlapping the data/error bars; the caption states the bands overlap)
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,58 @@
+% Native pgfplots figure — decoupling witness. F1, F2 and |S| are exact from apsg_witness.py.
+% chi=2 is the MINIMAL (theorem) MPS bond dimension of the APSG pairing basis, constant in K; the
+% json 'chi' field records 2,1,2,1 because the spin-orbital cut at position 2K lands between geminal
+% blocks for even K (rank 1) vs bisecting one for odd K (rank 2) -- a cut-placement artifact, not the
+% minimal bond dimension. See the caption in theorem_b2.tex for the exact statement.
+% Fonts/line style inherit the document (lmodern) => harmonises with the paper.
+\begin{tikzpicture}
+\definecolor{cF1}{HTML}{D55E00}       % one-body magic F1 (orange, matches scaling's F1)
+\definecolor{cF2}{RGB}{123,63,160}    % higher-order magic
+\definecolor{cS}{HTML}{0072B2}        % determinant support |S| (blue, matches scaling's |S|/fraction)
+\definecolor{cX}{RGB}{38,120,74}      % bond dimension (cost)
+\begin{groupplot}[
+  group style={group size=2 by 1, horizontal sep=1.7cm},
+  width=0.52\linewidth, height=6.1cm, paperaxis,
+  title style={at={(0,1)},anchor=south west,font=\bfseries\small,yshift=1pt},
+]
+% ---------- (a) scaling with K ----------
+\nextgroupplot[
+  ymode=log, xmin=0.6, xmax=4.5, ymin=0.8, ymax=48,
+  xtick={1,2,3,4}, ytick={1,2,4,8,16,32}, yticklabels={1,2,4,8,16,32},
+  xlabel={number of geminals $K$}, ylabel={resource value}, title={(a)},
+  legend style={at={(0.5,0.985)},anchor=north,legend columns=2,font=\scriptsize,
+                /tikz/every even column/.append style={column sep=6pt}},
+  legend cell align=left,
+]
+\path[fill=cX,fill opacity=0.08] (axis cs:0.6,0.8) rectangle (axis cs:4.5,2);
+\node[font=\scriptsize\itshape,align=center] at (axis cs:3.15,1.13)
+  {classically tractable\\(bond dim.\ $\chi=2$)};
+\addplot[cS,mark=*,mark size=1.9pt,line width=1pt] coordinates {(1,2)(2,4)(3,8)(4,16)};
+\addlegendentry{support $|\mathcal{S}|=2^{K}$}
+\addplot[cF1,mark=square*,mark size=1.7pt,line width=1pt] coordinates {(1,4)(2,8)(3,12)(4,16)};
+\addlegendentry{$\mathcal{F}_1=2N_{\mathrm u}=4K$}
+\addplot[cF2,mark=triangle*,mark size=2.3pt,line width=1pt,dashed] coordinates {(1,4)(2,8)(3,12)(4,16)};
+\addlegendentry{$\mathcal{F}_2=4K$}
+\node[font=\scriptsize,black,anchor=west] at (axis cs:0.72,6.7) {$\mathcal{F}_1\!=\!\mathcal{F}_2$ (here $\theta{=}\tfrac{\pi}{4}$)};
+\addplot[cX,mark=diamond*,mark size=2.2pt,line width=1pt] coordinates {(1,2)(2,2)(3,2)(4,2)};
+\addlegendentry{bond dim.\ $\chi=2$}
+% ---------- (b) theta sweep at K=3 ----------
+\nextgroupplot[
+  xmin=0, xmax=0.5, ymin=0, ymax=14.5,
+  xtick={0,0.1,0.2,0.3,0.4,0.5}, ytick={0,2,4,6,8,10,12,14},
+  xlabel={geminal pairing angle $\theta/\pi$}, ylabel={magic (order 1 and 2)}, title={(b)},
+  legend style={at={(0.97,0.97)},anchor=north east,font=\scriptsize},
+  legend cell align=left,
+]
+\draw[black!30,dashed,line width=0.5pt] (axis cs:0.25,0) -- (axis cs:0.25,12.6);
+\addplot[cX,line width=1pt,forget plot] coordinates {(0,2)(0.5,2)};
+\node[font=\scriptsize,anchor=south,align=center] at (axis cs:0.25,0.4)
+  {$\chi=2$ throughout (tractable $\forall\,\theta$)};
+\addplot[cF1,mark=square*,mark size=1.7pt,line width=1pt]
+  coordinates {(0.02,0.1885)(0.10,4.1459)(0.25,12)(0.40,4.1459)(0.50,0)};
+\addlegendentry{$\mathcal{F}_1=2N_{\mathrm u}$}
+\addplot[cF2,mark=triangle*,mark size=2.3pt,line width=1pt,dashed]
+  coordinates {(0.02,0.3740)(0.10,6.8594)(0.25,12)(0.40,6.8594)(0.50,0)};
+\addlegendentry{$\mathcal{F}_2$}
+\node[font=\scriptsize,anchor=north] at (axis cs:0.25,13.9) {maximal pairing};
+\end{groupplot}
+\end{tikzpicture}

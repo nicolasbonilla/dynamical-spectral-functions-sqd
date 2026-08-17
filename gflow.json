@@ -1,0 +1,37 @@
+{
+ "note": "N2 CAS(10e,12o), dim=120, 1000 shots, 5 seeds; dequantization guard behind fig:gflow. mean/std energy error vs FCI (mHa). Per-seed raw available on request; the ~1.2 s.d. control-vs-fused figure = (26.98-22.94)/3.30.",
+ "shots": 1000,
+ "nseeds": 5,
+ "methods": [
+  {
+   "label": "raw",
+   "mean_mHa": 43.22,
+   "std_mHa": 4.47,
+   "class": "base"
+  },
+  {
+   "label": "ibm",
+   "mean_mHa": 39.24,
+   "std_mHa": 3.95,
+   "class": "base"
+  },
+  {
+   "label": "ibm+cheap",
+   "mean_mHa": 26.98,
+   "std_mHa": 0.66,
+   "class": "classical-control"
+  },
+  {
+   "label": "gfn(no cheap)",
+   "mean_mHa": 25.96,
+   "std_mHa": 3.4,
+   "class": "generative"
+  },
+  {
+   "label": "gfn(fused)",
+   "mean_mHa": 22.94,
+   "std_mHa": 3.3,
+   "class": "generative"
+  }
+ ]
+}

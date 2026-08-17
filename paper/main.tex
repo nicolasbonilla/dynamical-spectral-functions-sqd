@@ -1,0 +1,113 @@
+% ===== Paper 2 (rebuilt) — arXiv preprint, article 11pt, Paper-1 style =====
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,bm}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots,fillbetween}
+\usetikzlibrary{backgrounds,fadings,arrows.meta,decorations.pathreplacing}
+\pgfplotsset{table/search path={figs}}
+% shared paper-native plot style (matches lmodern text, thin axes, subtle grid)
+\pgfplotsset{
+  % native figure style: ALL text inherits the document body font (11pt) so figures match the text exactly
+  paperaxis/.style={
+    tick align=outside, tick pos=left, line width=0.5pt,
+    grid style={line width=0.3pt, draw=black!12},
+    legend style={draw=black!25, fill=white, fill opacity=0.9, text opacity=1, rounded corners=1pt},
+  }
+}
+% --- float placement: pack text with figures, avoid isolated figure-only pages ---
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.88}
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+\usepackage{placeins}   % \FloatBarrier available; NO automatic per-section barrier (lets floats flow to pack pages)
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{cite}
+\usepackage[colorlinks=true,allcolors=blue,breaklinks=true]{hyperref}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf,labelsep=period}
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\frenchspacing
+\sloppy
+\graphicspath{{figs/}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\providecommand{\braket}[1]{\langle #1 \rangle}
+\providecommand{\ket}[1]{\lvert #1 \rangle}
+
+\title{\vspace{-1.2cm}\bfseries Dynamical spectral functions from bitstring-sampled quantum subspaces:
+entanglement, not one-body magic, tracks the sampling cost}
+\author{Nicol\'as Bonilla Vargas\thanks{M.Sc.\ Physics, Universidad Nacional de Colombia;
+M.Sc.\ Applied Data Science \& AI, SRH University Heidelberg / Munich; Daita AI.
+\texttt{ngbonillav@unal.edu.co}}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}\noindent
+Sample-based quantum diagonalization (SQD) and quantum-selected configuration interaction (QSCI) are
+the electronic-structure methods with the most quantum-hardware traction, yet their canonical
+target---the ground-state \emph{energy}---is precisely where classical methods have caught up:
+matchgate simulators, autoregressive neural samplers, and heat-bath configuration interaction now
+match or beat the quantum-sampled subspace. We move the target to \emph{dynamics} and to the
+underlying \emph{resource} question. From one bitstring-sampling primitive---computational-basis
+measurements of a shallow real-time circuit, with no Hadamard or controlled-unitary tests---we
+reconstruct, from sampled subspaces, the single-particle spectral function $A(\omega)$ and its
+momentum-resolved form $A(k,\omega)$; the same primitive targets the neutral-sector dynamical structure
+factors $S(q,\omega)$ and $S^{zz}(q,\omega)$, each channel assembled classically in the Lehmann
+representation from its own sector-specific subspace. The sampled reconstruction matches exact
+diagonalization on Hubbard chains and, for the orbital-projected
+$A(\omega)$, across a nineteen-molecule suite (energies FCI-verified to $<10^{-5}$~Ha), and runs on the
+IBM~Heron processor.
+
+Second, we ask which resource controls the cost---the determinant support $|\mathcal S|$ the sampler
+must populate---and correct a natural expectation. On the number-conserving states of chemistry the
+fermionic AntiFlatness (fermionic magic) collapses to a single one-particle-reduced-density-matrix
+invariant, $\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$ (equal to $2N_{\mathrm u}$ for
+spin-restricted natural orbitals), the effectively-unpaired-electron index and one-body-entanglement
+linear entropy. Being an orbital-rotation (Gaussian) invariant while $|\mathcal S|$ is basis dependent,
+$\mathcal F_1$ is provably \emph{decoupled} from the cost, two-sidedly and without a stable sign. The
+cost is instead \emph{lower-bounded and empirically tracked} by the basis-dependent entanglement---the
+minimal bond dimension $\chi$ (Spearman $\rho=0.90$, $n=38$). One-body fermionic magic is thus a
+faithful multireference diagnostic but an unreliable predictor of the sampling cost; any genuine
+advantage lives one stratum above, in the high-rank non-Gaussianity of the connected higher-body
+cumulants in the operative sampling frame. We prove moment exactness and a sampling-capture bound
+polynomial in $|\mathcal S|$ and independent of the Hilbert-space dimension. On the
+artificial-intelligence side of the hybrid loop, self-consistent configuration recovery improves the
+sampled subspace under realistic device noise, while a \emph{learned} generative model does not beat
+that classical baseline---delimiting the quantum--AI frontier.
+\end{abstract}
+
+\input{introduction.tex}
+\input{method.tex}
+\input{resource.tex}
+\input{results.tex}
+\input{table_molecules.tex}
+\input{hardware.tex}
+\input{discussion.tex}
+\input{conclusion.tex}
+
+\appendix
+% appendix sections are explicitly labelled "Appendix A/B/C"
+\titleformat{\section}{\normalfont\large\bfseries}{Appendix~\thesection.}{0.6em}{}
+\input{theorem_b2.tex}
+
+\FloatBarrier  % flush all appendix floats (incl. Table~\ref{tab:repro}) BEFORE the bibliography
+\input{bibliography.tex}
+
+\end{document}

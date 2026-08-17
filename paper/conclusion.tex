@@ -1,0 +1,46 @@
+\section{Conclusion}
+
+The pressing question for sample-based quantum computation is no longer whether it can match classical
+methods on the ground-state energy---the classical frontier has answered that in the
+negative~\cite{leechan2023,belagali2026,reinholdt2025}---but what its output should be, and what
+resource actually sets its cost. This work gives a two-part answer. We introduced a method that
+computes dynamical spectral functions $A(\omega)$, $A(k,\omega)$, and $S(q,\omega)$ from purely
+bitstring-sampled quantum subspaces, lifting the SQD/QSCI paradigm from static energies to
+frequency-resolved dynamics with no Hadamard tests, validated against exact diagonalization across
+Hubbard chains and nineteen molecules and demonstrated on the IBM~Heron processor---the $L=6$ Hubbard
+spectral function $A(\omega)$ reconstructed on \texttt{ibm\_fez}, and, for the ground-state energy of
+stretched $\mathrm{N_2}$, a noise-assisted configuration-recovery run on \texttt{ibm\_marrakesh}
+reaching $0.59\pm0.14$~mHa of the exact value (over $8$ recovery seeds).
+
+We then asked which resource controls the determinant support $|\mathcal S|$ that the sampler must
+populate, and corrected a natural expectation. Restricted to the number-conserving states of
+chemistry, the fermionic AntiFlatness collapses to a single one-particle-density-matrix invariant,
+$\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$ (equal to $2N_{\mathrm u}$ for spin-restricted natural
+orbitals), identifying fermionic magic with the effectively-unpaired-electron index and one-body entanglement. Being a Gaussian (orbital-rotation)
+invariant while $|\mathcal S|$ is basis dependent, it is provably decoupled from the sampling
+cost---two-sidedly and without a stable sign---and no orbital-rotation-invariant functional of the
+reduced density matrices can repair this. Across the nineteen-molecule suite one-body magic is nonetheless a faithful,
+efficiently measurable detector of static, multireference character---switching on for covalent
+bond-breaking, already large for inherently multireference $\mathrm{C_2}$ and $\mathrm{O_2}$,
+near-Gaussian for the ionic bond of LiF---but it is a diagnostic of correlation, not a predictor of
+classical cost---which is instead lower-bounded and, on the systems realized here, empirically tracked by the basis-dependent entanglement, the bond dimension $\chi$.
+Any genuine quantum advantage lives one stratum above, in the generic, high-rank non-Gaussianity of the
+connected higher-body cumulants in the fixed sampling basis---not any orbital-invariant magic order---beyond
+the stratum whose free-fermionic estimation primitives remain classically tractable~\cite{oh2026}.
+
+We have been deliberate about scope. The reach of the method is asymptotic and lives in two-dimensional
+and chemical settings rather than one dimension, where tensor networks remain near-optimal~\cite{schollwock2011}; it rests on
+a moment-exactness and polynomial-shot theorem (Thm.~\ref{thm:b2}, App.~\ref{app:b2}); and, on the artificial-intelligence side of the hybrid
+loop, self-consistent configuration recovery improves the sampled subspace under realistic device
+noise through valid-shot economy rather than quantum advantage, whereas a \emph{learned} generative
+tail-completer does \emph{not} beat that classical baseline (Fig.~\ref{fig:gflow})---delimiting, not
+foreclosing, the quantum--AI frontier, and consistent with the classical-simulability boundary. Read together, the two contributions deliver a dynamical primitive the
+energy-only hardware of today does not provide, and a precise account of which fermionic resource sets
+its cost and which merely diagnoses correlation---handing the quantum-centric supercomputing programs
+now operating at industrial scale~\cite{robledomoreno2025,shirakawa2025} a computable multireference
+diagnostic---and a proof that this easily-measured quantity does not by itself map the classical cost
+frontier, which is instead lower-bounded and empirically tracked by the bond dimension $\chi$. The natural next steps are to push the sampled-subspace reconstruction into
+the two-dimensional and multi-orbital regimes where the higher-order hardness lives, and to make the
+\emph{basis-dependent} cost---the bond dimension $\chi$ in the sampler's own frame, and the generic
+high-rank non-Gaussianity above it---not the orbital-invariant one-body magic that is so easily
+measured---the object one estimates when deciding whether a quantum sampler is worth its shots.
