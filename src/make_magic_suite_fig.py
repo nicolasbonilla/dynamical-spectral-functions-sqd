@@ -4,7 +4,7 @@ FCI-verified n19_suite.json. No hand-typed numbers. Normalized fermionic magic F
 equilibrium (open) -> dissociation (filled) for all 19 molecules, sorted by dissociation magic.
 Design: vibrant regime colours in the DATA, neutral dark text, polished dots, subtle row bands."""
 import json
-d=json.load(open('n19_suite.json'))
+d=json.load(open('data/n19_suite.json'))
 M=[m for m in d['mols'] if 'error' not in m]
 for m in M:
     m['fe']=m['FAF_eq']/m['fafmax']; m['fd']=m['FAF_diss']/m['fafmax']

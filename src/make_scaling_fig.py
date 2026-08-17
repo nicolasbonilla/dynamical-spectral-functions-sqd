@@ -4,7 +4,7 @@ numbers. Two panels vs qubits 2L: (a) fermionic magic F1 grows; (b) (N+1)-sector
 |S|/dim needed for rel-L1<0.05 falls. Paper identity: large fonts, NEUTRAL dark text (no coloured text),
 vibrant DATA colours, 'toward beyond-classical' band below 0.5. Scales to however many L are present."""
 import json, numpy as np
-d=json.load(open('scaling_data.json'))
+d=json.load(open('data/scaling_data.json'))
 P=sorted(d['points'], key=lambda p:p['L'])
 q=[p['qubits'] for p in P]; F=[p['FAF'] for p in P]; fr=[p['frac'] for p in P]
 qmin,qmax=min(q),max(q); xlo,xhi=qmin-1.5,qmax+1.5

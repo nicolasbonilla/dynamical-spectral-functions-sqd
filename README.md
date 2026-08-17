@@ -60,21 +60,28 @@ noise-assisted configuration recovery (the same shallow circuit gives 29.5 mHa i
 
 ```
 .
+├── src/                       # 43 computation & figure scripts (run from repo root as `python src/X.py`)
+│   ├── verify.py              #   fast numpy/scipy-only reproducibility check (what CI runs)
+│   ├── akw_lanczos.py …       #   exact-diagonalization engines + spectral/resource/scaling compute
+│   └── make_*.py              #   one data-driven figure generator per figure (no hand-typed numbers)
+├── data/                      # authoritative data: every plotted number, FCI-verified (*.json)
+├── notebooks/
+│   ├── 00_Reproduce_Everything.ipynb   #   ★ MASTER notebook: reproduces every figure & number, end to end
+│   ├── HW_LUCJ_N2_Heron_READY.ipynb    #   IBM Heron N₂ energy   (token SCRUBBED — see below)
+│   └── Spectral_Heron.ipynb            #   IBM Heron A(ω)        (token SCRUBBED — see below)
 ├── paper/                     # arXiv-ready LaTeX source + compiled PDF
 │   ├── main.tex               #   master file (\input's the sections below)
 │   ├── introduction.tex … conclusion.tex, theorem_b2.tex, bibliography.tex
 │   ├── figs/                  #   figure fragments (.tex), vector PDFs, plotted data (.dat)
-│   └── main.pdf               #   the compiled preprint (39 pp)
-├── *.py                       # 38 computation scripts (run from repo root)
-├── *.json                     # authoritative data: every plotted number, FCI-verified
-├── notebooks/                 # IBM Heron hardware notebooks (tokens SCRUBBED — see below)
+│   ├── main.pdf               #   the compiled preprint (39 pp)
+│   └── arxiv-submission.tar.gz#   ready-to-upload source bundle
 ├── docs/
 │   ├── REPRODUCE.md           #   figure/number → script → exact command
 │   ├── FILE_INDEX.md          #   every file, described
 │   ├── FIGURE_PROVENANCE.md   #   figure → data-source → job-id single source of truth
 │   └── img/                   #   README thumbnails
 ├── requirements.txt           # Python dependencies
-├── Makefile                   # `make paper`, `make figures`, `make verify`
+├── Makefile                   # `make verify`, `make figures`, `make reproduce`, `make paper`
 ├── CITATION.cff               # citation metadata
 └── LICENSE                    # MIT (code) + CC-BY-4.0 (paper text/figures)
 ```
@@ -89,15 +96,22 @@ python -m venv .venv && source .venv/bin/activate      # (Windows: .venv\Scripts
 pip install -r requirements.txt
 
 # 2. reproduce headline numbers in SECONDS (numpy/scipy only): F₁(L=6)=9.3851 + the geminal witness
-python verify.py            # or: make verify   ->   all PASS
+python src/verify.py        # or: make verify   ->   all PASS
 
-# 3. regenerate a data-driven figure fragment from its committed data
-python make_decoupling_native.py        # -> paper/figs/fig_decoupling_native.tex
+# 3. reproduce EVERYTHING in one coherent, narrated pass — every figure and number, top to bottom
+jupyter notebook notebooks/00_Reproduce_Everything.ipynb    # or headless: make reproduce
 
-# 4. build the paper (needs a TeX distribution, e.g. TeX Live / MiKTeX)
+# 4. regenerate a single data-driven figure fragment from its committed data
+python src/make_decoupling_native.py    # -> paper/figs/fig_decoupling_native.tex
+
+# 5. build the paper (needs a TeX distribution, e.g. TeX Live / MiKTeX)
 make paper                              # -> paper/main.pdf
 ```
 
+The **master notebook** [`notebooks/00_Reproduce_Everything.ipynb`](notebooks/00_Reproduce_Everything.ipynb)
+walks the whole pipeline end to end — the decoupling identity and witness, the sampled spectral functions,
+the χ–\|S\| resource map, the scaling, the 19-molecule magic suite, the selector/noise/AI results, the
+hardware run, and the figures — each number loaded from the same `data/*.json` that feeds the paper.
 Every figure's one-line reproduce command is in **[`docs/REPRODUCE.md`](docs/REPRODUCE.md)**.
 
 ---
@@ -106,9 +120,10 @@ Every figure's one-line reproduce command is in **[`docs/REPRODUCE.md`](docs/REP
 
 | Layer | Reproducible here? | How |
 |---|---|---|
-| **Exact diagonalization** (all `A(ω)`, `A(k,ω)`, `S(q,ω)`, `S^zz`, the 19-molecule magic suite, the χ–\|S\| resource map, the geminal witness) | ✅ fully, locally | `python <script>.py`; see `docs/REPRODUCE.md` |
-| **Matrix-free scaling** to 28 qubits | ✅ (RAM-staged) | `scaling_lanczos_mf.py` (resumable, checkpointed) |
-| **Figures** | ✅ fully | `make figures` (native pgfplots from the `.json`/`.dat`) |
+| **Everything, one coherent pass** | ✅ narrated, end to end | `notebooks/00_Reproduce_Everything.ipynb` (or `make reproduce`) |
+| **Exact diagonalization** (all `A(ω)`, `A(k,ω)`, `S(q,ω)`, `S^zz`, the 19-molecule magic suite, the χ–\|S\| resource map, the geminal witness) | ✅ fully, locally | `python src/<script>.py`; see `docs/REPRODUCE.md` |
+| **Matrix-free scaling** to 28 qubits | ✅ (RAM-staged) | `src/scaling_lanczos_mf.py` (resumable, checkpointed) |
+| **Figures** | ✅ fully | `make figures` (native pgfplots from the `data/*.json`/`.dat`) |
 | **IBM Heron hardware runs** | ⚠️ needs an IBM Quantum account | `notebooks/` (cached counts + a re-run cell; tokens scrubbed) |
 
 The two hardware runs are the **entirety** of the quantum hardware used; every other result is an exact

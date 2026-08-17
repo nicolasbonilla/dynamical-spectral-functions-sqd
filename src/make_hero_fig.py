@@ -9,7 +9,7 @@ quantity by identity, so only ONE is drawn); the second curve Z is independent a
 Paper identity: vibrant molecular palette (covalent vermilion / ionic blue), neutral dark text, larger
 fonts, no text over data. No hand-typed numbers."""
 import json, numpy as np
-d=json.load(open('n2_hero.json'))
+d=json.load(open('data/n2_hero.json'))
 grid=np.array(d['grid']); P=d['points']
 R=[p['R'] for p in P]; FAF=[p['FAF'] for p in P]; NU=[p['Nu'] for p in P]
 SENT=[p['S_ent'] for p in P]; NPK=[p['npeaks'] for p in P]; ZW=[p['sumrule'] for p in P]

@@ -2,8 +2,8 @@
 """Emit rebuild/table_molecules.tex from the REAL FCI-verified n19_suite.json + n19_spectral.json.
 No hand-typed numbers."""
 import json
-d=json.load(open('n19_suite.json'))
-sp={m['mol']:m for m in json.load(open('n19_spectral.json'))['mols'] if 'relL1_final' in m}
+d=json.load(open('data/n19_suite.json'))
+sp={m['mol']:m for m in json.load(open('data/n19_spectral.json'))['mols'] if 'relL1_final' in m}
 M=[m for m in d['mols'] if 'error' not in m]
 def l1tex(x):
     if x<1e-13: return r'$<\!10^{-13}$'

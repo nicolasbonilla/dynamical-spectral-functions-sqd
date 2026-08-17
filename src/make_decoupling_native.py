@@ -3,7 +3,7 @@ r"""Emit paper/figs/fig_decoupling_native.tex: a SELF-CONTAINED native pgfplots 
 coordinates, no external .dat) for the two-sided decoupling figure. Data: n19_suite.json (molecules,
 FAF vs log2|S|), cost_vs_ent.json (Hubbard U-sweep), verified free-fermion |S|. Fonts inherit lmodern."""
 import json, numpy as np
-mols=json.load(open('n19_suite.json'))['mols']
+mols=json.load(open('data/n19_suite.json'))['mols']
 COV={'H2','HF','F2','CO','N2','H2O','NH3','BeH2','H4','H6'}; MRF={'C2','O2','OH','CN','NO'}
 reg=lambda mol:'cov' if mol in COV else ('mrf' if mol in MRF else 'ion')
 mF=[]; yS=[]; byreg={'cov':[],'mrf':[],'ion':[]}
@@ -15,7 +15,7 @@ a,b=np.polyfit(mF,yS,1)                                  # trend line
 regpts={k:" ".join(f"({f:.3f},{y:.3f})" for f,y in v) for k,v in byreg.items()}
 xlo,xhi=mF.min(),mF.max()
 
-rows=json.load(open('cost_vs_ent.json'))['rows']
+rows=json.load(open('data/cost_vs_ent.json'))['rows']
 def series(L,N): return sorted([(x['FAF'],np.log2(x['S'])) for x in rows if x['L']==L and x['N']==N])
 hub={(6,6):'#D1495B',(8,8):'#009E73',(8,6):'#E0A21E'}
 hubcoord={k:" ".join(f"({f:.3f},{s:.3f})" for f,s in series(*k)) for k in hub}

@@ -6,7 +6,7 @@ deliberately loose lower bound). (b) |S| vs F1: one-body magic does NOT predict 
 branch runs the WRONG way (U up -> F1 up, |S| down) and the ladder pairs sit at the SAME F1 with very
 different |S|. Reads resource_master.json (built from n19_suite/cost_vs_ent/ladder_vs_chain)."""
 import json, numpy as np
-d=json.load(open('resource_master.json'))
+d=json.load(open('data/resource_master.json'))
 P=d['points']
 fams=['molecule','hubbard','chain2','ladder']
 col={'molecule':'rmMol','hubbard':'rmHub','chain2':'rmChn','ladder':'rmLad'}

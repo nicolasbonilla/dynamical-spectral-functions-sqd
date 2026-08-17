@@ -8,13 +8,13 @@ body size EXACTLY (no include-scaling font games). Rules enforced: (1) BOTH real
     chemical accuracy) and beats the noiseless statevector simulation of the same circuit (29.5 mHa).
 Data: heron_spectral.json, hw_lucj_n2_result.json."""
 import json, numpy as np
-h=json.load(open('heron_spectral.json')); g=np.array(h['grid'])
+h=json.load(open('data/heron_spectral.json')); g=np.array(h['grid'])
 A=np.array(h['A_hw'])   # the REAL ibm_fez hardware-sampled reconstruction (==A_exact to 8e-15 by full-sector coverage)
 with open('paper/figs/heron_hot.dat','w') as f:
     f.write('w A\n')
     for w,a in zip(g,A): f.write(f'{w:.4f} {a:.5f}\n')
 Amax=float(A.max())
-n=json.load(open('hw_lucj_n2_result.json')); fci=n['e_fci']
+n=json.load(open('data/hw_lucj_n2_result.json')); fci=n['e_fci']
 hw=[abs(e-fci)*1000 for e in n['hist_hw']]; sim=[abs(e-fci)*1000 for e in n['hist_sim']]
 hwc=" ".join(f"({i},{v:.3f})" for i,v in enumerate(hw))
 simc=" ".join(f"({i},{v:.3f})" for i,v in enumerate(sim))

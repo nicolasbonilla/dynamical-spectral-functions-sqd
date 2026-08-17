@@ -106,5 +106,5 @@ if __name__=='__main__':
         log(f"  f={f}: amortized {am.mean():.3f}+-{am.std():.3f}  classical {cl.mean():.3f}+-{cl.std():.3f}  "
             f"delta {d.mean():+.3f}+-{d.std():.3f}  -> {verdict}")
     json.dump({'note':'G2 amortized recovery: train-once-across-family vs per-instance classical (Epstein-Nesbet), leave-one-out over 6 Hubbard instances. metric=spectral rel-L1 at matched subspace fraction. delta=amort-class (positive => amortized worse).',
-               'family':FAM,'per_fold':results,'summary':summary},open('amortized_recovery.json','w'),indent=1)
+               'family':FAM,'per_fold':results,'summary':summary},open('data/amortized_recovery.json','w'),indent=1)
     log("WROTE amortized_recovery.json")

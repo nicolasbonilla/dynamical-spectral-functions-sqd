@@ -74,5 +74,5 @@ import statistics as st
 res['mean_relL1'] = st.mean(v['relL1'] for v in res['per_k'].values())
 res['max_relL1'] = max(v['relL1'] for v in res['per_k'].values())
 print("\nMEAN per-k rel-L1 @frac %.2f: %.4f   MAX: %.4f" % (FR, res['mean_relL1'], res['max_relL1']))
-json.dump(res, open('sampled_akw_L8.json', 'w'))
+json.dump(res, open('data/sampled_akw_L8.json', 'w'))
 print("wrote sampled_akw_L8.json  [%.1fs]" % (time.time() - t0))

@@ -10,7 +10,7 @@ Run:  python sampled_akw.py && python make_akw_sampled_fig.py
 import json
 import numpy as np
 
-d = json.load(open('sampled_akw_L8.json'))
+d = json.load(open('data/sampled_akw_L8.json'))
 wg = np.array(d['wg']); ov = d['overlay']; pk = d['per_k']; FR = d['frac']
 step = 3; ws = wg[::step]
 

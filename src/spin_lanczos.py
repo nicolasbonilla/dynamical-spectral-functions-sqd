@@ -30,7 +30,7 @@ for n in range(1,L):
     out[round(q/np.pi,5)]=Szz.tolist()
     log(f"  q/pi={2*n/L:.3f} sum={np.trapz(Szz,wg):.3f}")
 d=dict(L=L,U=U,eta=eta,E0=E0,J=4*t*t/U,wg=wg.tolist(),S={f"{qq:.5f}":v for qq,v in out.items()})
-json.dump(d,open('spinqw_L12.json','w'))
+json.dump(d,open('data/spinqw_L12.json','w'))
 log("WROTE spinqw_L12.json (eta=0.10)")
 # lower/upper 2-spinon edges from the data (3% threshold) for the figure
 qs=np.array(sorted(out.keys())); M=np.array([out[q] for q in qs]); wgn=np.array(wg)

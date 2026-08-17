@@ -16,7 +16,7 @@ help:
 
 # ---- fast reproducibility check (numpy+scipy only, seconds): F1(L=6)=9.3851 + the geminal witness ----
 verify:
-	$(PYTHON) verify.py
+	$(PYTHON) src/verify.py
 
 # ---- regenerate the data-driven native \input fragments from the committed .json/.dat ----
 # NOTE: the committed paper/figs/*.tex + *.pdf are AUTHORITATIVE and match main.pdf. A few fragments
@@ -25,12 +25,17 @@ verify:
 # The .pdf figures (hero, bench, noise, gflow, gallery, magic-suite, circuit, S(q,w), S^zz, A(k,w))
 # are standalone-compiled; see docs/REPRODUCE.md for the two-step recipe.
 figures:
-	$(PYTHON) make_decoupling_native.py
-	$(PYTHON) make_method_fig_max.py
-	$(PYTHON) make_akw_sampled_fig.py
-	$(PYTHON) make_noise_recovery_native.py
-	$(PYTHON) make_table.py
+	$(PYTHON) src/make_decoupling_native.py
+	$(PYTHON) src/make_method_fig_max.py
+	$(PYTHON) src/make_akw_sampled_fig.py
+	$(PYTHON) src/make_noise_recovery_native.py
+	$(PYTHON) src/make_table.py
 	@echo "OK: data-driven fragments regenerated. Committed paper/figs/ remains authoritative."
+
+# ---- reproduce EVERYTHING in one coherent notebook (narrated end-to-end pipeline) ----
+reproduce:
+	jupyter nbconvert --to notebook --execute --inplace notebooks/00_Reproduce_Everything.ipynb
+	@echo "OK: full pipeline executed in notebooks/00_Reproduce_Everything.ipynb"
 
 # ---- compile the preprint ----
 paper:

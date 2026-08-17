@@ -27,7 +27,9 @@ which figure*, see [`FIGURE_PROVENANCE.md`](FIGURE_PROVENANCE.md).
 
 ---
 
-## Computation scripts (`*.py`)
+## `src/` — computation & figure scripts (`*.py`)
+
+All scripts live in [`../src/`](../src/) and are run **from the repository root** as `python src/<name>.py`.
 
 ### Shared exact-diagonalization engines
 | File | Purpose |
@@ -85,7 +87,7 @@ Each emits a native pgfplots fragment or table into `paper/figs/` / `paper/` fro
 
 ---
 
-## Data (`*.json`) — authoritative plotted numbers
+## `data/` — authoritative plotted numbers (`*.json`)
 
 | File | Feeds |
 |---|---|
@@ -109,13 +111,14 @@ Backups (`*_backup.json`) are **not** the plotted data — see `FIGURE_PROVENANC
 
 ---
 
-## `notebooks/` — IBM Heron hardware (credentials scrubbed)
+## `notebooks/`
 | File | Contents |
 |---|---|
-| `HW_LUCJ_N2_Heron_READY.ipynb` | N₂ energy on `ibm_marrakesh`: LUCJ circuit, sampling, self-consistent recovery, 8-seed error-bar cell. |
-| `Spectral_Heron.ipynb` | `A(ω)` on `ibm_fez`: the L=6 Hubbard spectral run (full-sector coverage). |
+| `00_Reproduce_Everything.ipynb` | **Master reproduction** — one narrated, top-to-bottom pipeline regenerating every figure and number: the decoupling identity + witness (`verify.py`), the sampled `A(k,ω)`, the χ–\|S\| resource map, scaling, the 19-molecule magic suite, the selector/noise/AI results, the hardware run, and the figures. Pure `numpy`/`scipy`/`matplotlib`; loads the committed `data/*.json`. Assembled by [`../src/build_repro_notebook.py`](../src/build_repro_notebook.py). |
+| `HW_LUCJ_N2_Heron_READY.ipynb` | N₂ energy on `ibm_marrakesh`: LUCJ circuit, sampling, self-consistent recovery, 8-seed error-bar cell. Credentials scrubbed. |
+| `Spectral_Heron.ipynb` | `A(ω)` on `ibm_fez`: the L=6 Hubbard spectral run (full-sector coverage). Credentials scrubbed. |
 
-Both have the API **token and instance CRN removed** (placeholders). Insert your own to run.
+The two hardware notebooks have the API **token and instance CRN removed** (placeholders). Insert your own to run.
 
 ---
 
@@ -123,7 +126,8 @@ Both have the API **token and instance CRN removed** (placeholders). Insert your
 | File | Purpose |
 |---|---|
 | `README.md` | Front page + figure gallery + quick start. |
-| `verify.py` | Fast (seconds, numpy/scipy-only) reproducibility check: `F₁(L=6)=9.3851` + the geminal witness; prints PASS/FAIL. What CI runs. |
+| `src/verify.py` | Fast (seconds, numpy/scipy-only) reproducibility check: `F₁(L=6)=9.3851` + the geminal witness; prints PASS/FAIL. What CI runs. |
+| `src/build_repro_notebook.py` | Assembles `notebooks/00_Reproduce_Everything.ipynb` from source (the notebook is generated, not hand-edited). |
 | `docs/REPRODUCE.md` | Figure/number → script → command. |
 | `docs/FIGURE_PROVENANCE.md` | Figure → data-source → job-id single source of truth + stale-file list. |
 | `requirements.txt` | Python dependencies. |

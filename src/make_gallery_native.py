@@ -7,7 +7,7 @@ import json, os
 from PIL import Image
 
 os.makedirs('gtrim', exist_ok=True)
-d={m['mol']:m for m in json.load(open('n19_suite.json'))['mols'] if 'FAF_diss' in m}
+d={m['mol']:m for m in json.load(open('data/n19_suite.json'))['mols'] if 'FAF_diss' in m}
 order=sorted(d, key=lambda m:d[m]['FAF_diss']/d[m]['fafmax'])
 COV={'H2','HF','F2','CO','N2','H2O','NH3','BeH2','H4','H6'}; MRF={'C2','O2','OH','CN','NO'}
 def reg(m): return 'cov' if m in COV else ('mrf' if m in MRF else 'ion')

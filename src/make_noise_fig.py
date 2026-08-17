@@ -2,7 +2,7 @@
 r"""Native fig_noise from the REAL noise_spectral.json (L=6 Hubbard, per-qubit bit-flip channel):
 spectral rel-L1 vs bit-flip rate eps, naive post-selection vs S-CoRe configuration recovery."""
 import json
-d=json.load(open('noise_spectral.json'))
+d=json.load(open('data/noise_spectral.json'))
 eps=d['eps']
 with open('paper/figs/noise.dat','w') as f:
     f.write('eps na na_lo na_hi sc sc_lo sc_hi\n')

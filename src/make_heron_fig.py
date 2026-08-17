@@ -8,7 +8,7 @@ NOT a beyond-classical claim; at this system size full-sector coverage makes rel
 We now plot the REAL saved hardware array A_hw (from the committed json, sourced from Google Drive)
 as discrete markers on the exact target -- they coincide because of full-sector coverage."""
 import json, numpy as np
-d=json.load(open('heron_spectral.json'))
+d=json.load(open('data/heron_spectral.json'))
 g=np.array(d['grid']); Aex=np.array(d['A_exact']); Ahw=np.array(d['A_hw'])
 job=d['job_id']; shots=d['shots']; back=d['backend']; S=d['hw_S']; nsec=d['nsector']
 # honest cross-check

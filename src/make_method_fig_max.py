@@ -4,13 +4,16 @@ r"""Emit the MAX-LEVEL method-validation figure fragment (fig:method) + aw_metho
 (error band = std), the two physical regimes (discovery / geometric collapse), and the geometric-convergence
 line rho^{-K} that Theorem 1 guarantees. Fonts inherit the document body size (11pt) exactly."""
 import json, numpy as np
-d=json.load(open('method_max.json'))
+d=json.load(open('data/method_max.json'))
 g=np.array(d['grid']); Aex=np.array(d['A_exact']); Asm=np.array(d['A_final'])
 # panel (a) data file
 with open('paper/figs/aw_method.dat','w') as f:
     f.write('w Aex Asm\n')
     for w,ae,asm in zip(g,Aex,Asm): f.write(f'{w:.6e} {ae:.6e} {asm:.6e}\n')
 sr=d['sumrule']; rho=d['rho']; ks=d['kstar']
+# panel (a) annotation: rel-L1 of the COMPLETE-SUBSPACE reconstruction actually plotted here
+# (exact vs A_final), NOT the finite-shot convergence floor l1[-1] shown in panel (b).
+l1_complete=float(np.sum(np.abs(Aex-Asm))/np.sum(np.abs(Aex)))
 S=d['sampled']; K=[r['K'] for r in S]; l1=[r['l1'] for r in S]; sd=[r['l1_std'] for r in S]
 Smean=[r['S'] for r in S]
 FL=0.010
@@ -61,7 +64,8 @@ L=r"""% native \input fragment (fig:method) — fonts = document body (11pt) exa
 \end{groupplot}
 \end{tikzpicture}
 """
-L=(L.replace('__SR__',f'{sr:.3f}').replace('__L1F__',f'{l1[-1]:.3f}').replace('__RHO__',f'{rho:.1f}')
+L=(L.replace('__SR__',f'{sr:.3f}').replace('__L1F__',f'{l1_complete:.3f}').replace('__RHO__',f'{rho:.1f}')
     .replace('__KS__',f'{ks}').replace('__LO__',lo).replace('__HI__',hi).replace('__FIT__',fit).replace('__PTS__',pts))
 open('paper/figs/fig_method_native_frag.tex','w',encoding='utf-8').write(L)
-print(f'wrote fragment + aw_method.dat | sumrule={sr:.4f} rho={rho:.2f} final rel-L1={l1[-1]:.3f}')
+print(f'wrote fragment + aw_method.dat | sumrule={sr:.4f} rho={rho:.2f} '
+      f'complete-subspace rel-L1={l1_complete:.3f} (panel a) | finite-shot floor={l1[-1]:.3f} (panel b)')

@@ -4,7 +4,7 @@ Three panels U/t=4,8,12: spectral rel-L1 vs subspace size |S| for the quantum ti
 (coral, seed-averaged with spread band) vs classical polynomial Krylov (blue) and CIPSI-GF (pink).
 At strong coupling the quantum selector pulls decisively ahead."""
 import json
-d=json.load(open('headtohead_ms.json'))
+d=json.load(open('data/headtohead_ms.json'))
 Us=[('U4.0','4'),('U8.0','8'),('U12.0','12')]
 import numpy as np
 for key,_ in Us:

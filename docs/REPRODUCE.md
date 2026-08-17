@@ -5,10 +5,15 @@ is regenerated from it by a `make_*.py` script (native pgfplots — no hand-type
 figure's data *from scratch* (exact diagonalization), run the **compute** script in the same row first.
 
 All commands are run **from the repository root** with the environment of [`requirements.txt`](../requirements.txt).
-The two-step pattern is: `python <compute>.py` → writes `<data>.json` → `python make_<fig>.py` → writes
+All scripts live in [`../src/`](../src/) and all committed data in [`../data/`](../data/). The two-step pattern is:
+`python src/<compute>.py` → writes `data/<data>.json` → `python src/make_<fig>.py` → writes
 `paper/figs/<fragment>.tex` → `make paper`.
 
-**Fastest check (seconds, numpy/scipy only):** `python verify.py` — reproduces `F₁(L=6)=9.3851` and the
+**Reproduce everything at once:** [`../notebooks/00_Reproduce_Everything.ipynb`](../notebooks/00_Reproduce_Everything.ipynb)
+(or `make reproduce`) runs the whole pipeline as one narrated, top-to-bottom notebook — every figure and
+number below, each loaded from the same `data/*.json` that feeds the paper.
+
+**Fastest check (seconds, numpy/scipy only):** `python src/verify.py` — reproduces `F₁(L=6)=9.3851` and the
 geminal witness (`F₁=F₂=4K`, `|S|=2^K`, `χ=2`) by exact diagonalization and prints PASS/FAIL. This is what CI runs.
 
 > **Honesty note.** The committed `paper/figs/*.tex` and `*.pdf` are **authoritative** and match `main.pdf`.

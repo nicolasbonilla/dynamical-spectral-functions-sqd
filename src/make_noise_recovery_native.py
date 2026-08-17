@@ -4,8 +4,8 @@ molecular noise-robustness figure. (a) energy error vs bit-flip rate for 6 repre
 (S-CoRe solid, naive dashed), log-y, chemical-accuracy band; (b) full 19-molecule suite at eps=2%
 (S-CoRe bars, naive ticks). Real data: molecular_noise_sweep.json + molecular_noise.json."""
 import json, numpy as np
-sweep={m['mol']:m for m in json.load(open('molecular_noise_sweep.json'))['mols']}
-suite=sorted(json.load(open('molecular_noise.json'))['mols'], key=lambda x:x['score'])
+sweep={m['mol']:m for m in json.load(open('data/molecular_noise_sweep.json'))['mols']}
+suite=sorted(json.load(open('data/molecular_noise.json'))['mols'], key=lambda x:x['score'])
 CHEM=1.6; FL=3e-3
 show=[('H6','#6A4C93'),('NH3','#E8880C'),('N2','#D7263D'),('CO','#12876F'),('C2','#2E6F95')]
 

@@ -83,5 +83,5 @@ if __name__=='__main__':
             f"chi: {c['chi']} -> {l['chi']} (x{l['chi']/max(c['chi'],1):.1f}) | "
             f"|S|: {c['Sdet']} -> {l['Sdet']} (x{l['Sdet']/max(c['Sdet'],1):.1f}) | "
             f"frac: {c.get('frac','--')} -> {l.get('frac','--')}")
-    json.dump(out,open('ladder_vs_chain.json','w'),indent=1)
+    json.dump(out,open('data/ladder_vs_chain.json','w'),indent=1)
     log("WROTE ladder_vs_chain.json")
