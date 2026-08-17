@@ -113,6 +113,10 @@ python src/make_decoupling_native.py    # -> paper/figs/fig_decoupling_native.te
 make paper                              # -> paper/main.pdf
 ```
 
+**Posting to arXiv?** The upload-ready bundle `paper/arxiv-submission.tar.gz` compiles clean-room with
+`pdflatex` alone (39 pp, 0 undefined refs) — see **[`docs/ARXIV_SUBMISSION.md`](docs/ARXIV_SUBMISSION.md)**
+for the verification, metadata, and step-by-step.
+
 The **master notebook** [`notebooks/00_Reproduce_Everything.ipynb`](notebooks/00_Reproduce_Everything.ipynb)
 walks the whole pipeline end to end — the decoupling identity and witness, the sampled spectral functions,
 the χ–\|S\| resource map, the scaling, the 19-molecule magic suite, the selector/noise/AI results, the
