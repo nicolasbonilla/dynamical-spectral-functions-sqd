@@ -3,7 +3,7 @@
 # Dynamical spectral functions from bitstring-sampled quantum subspaces
 ### *entanglement, not one-body magic, tracks the sampling cost*
 
-**Nicolás Bonilla Vargas**
+**Nicolás Bonilla Vargas** &nbsp;[![ORCID](https://img.shields.io/badge/ORCID-0009--0006--6155--4391-A6CE39?logo=orcid&logoColor=white)](https://orcid.org/0009-0006-6155-4391)
 
 [![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
 [![Paper](https://img.shields.io/badge/paper-PDF-blue.svg)](paper/main.pdf)

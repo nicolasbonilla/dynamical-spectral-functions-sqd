@@ -4,6 +4,7 @@ title: "Dynamical spectral functions from bitstring-sampled quantum subspaces: e
 authors:
   - family-names: "Bonilla Vargas"
     given-names: "Nicolás"
+    orcid: "https://orcid.org/0009-0006-6155-4391"
     affiliation: "Universidad Nacional de Colombia; SRH University Heidelberg/Munich; Daita AI"
     email: "ngbonillav@unal.edu.co"
 abstract: >-
@@ -30,6 +31,7 @@ preferred-citation:
   authors:
     - family-names: "Bonilla Vargas"
       given-names: "Nicolás"
+      orcid: "https://orcid.org/0009-0006-6155-4391"
   year: 2026
   journal: "arXiv preprint"
   notes: "arXiv:XXXX.XXXXX"
