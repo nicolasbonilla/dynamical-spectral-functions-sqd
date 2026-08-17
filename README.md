@@ -31,10 +31,15 @@ traces to a script and a data file listed in [`docs/REPRODUCE.md`](docs/REPRODUC
 | Momentum-resolved `A(k,ω)` (exact Mott map) | The resource thesis (74 exact states) |
 |:---:|:---:|
 | ![akw](docs/img/akw.png) | ![resource](docs/img/resource.png) |
+| **Charge structure factor `S(q,ω)` — gapped** | **Spin structure factor `S^zz(q,ω)` — gapless** |
+| ![sqw](docs/img/sqw.png) | ![spinqw](docs/img/spinqw.png) |
 | **Scaling: fraction falls, absolute cost grows** | **IBM Heron hardware (two real runs)** |
 | ![scaling](docs/img/scaling.png) | ![hardware](docs/img/hardware.png) |
-| **Nineteen-molecule magic gallery** | **Dynamical structure factor `S(q,ω)`** |
-| ![gallery](docs/img/gallery.png) | ![sqw](docs/img/sqw.png) |
+| **Nineteen-molecule magic gallery** | **N₂ dissociation hero (`F₁ = 2Nᵤ`)** |
+| ![gallery](docs/img/gallery.png) | ![hero](docs/img/hero.png) |
+
+<div align="center"><em>The two collective channels come from the <strong>same sampling primitive</strong>: the
+<strong>spin–charge separation</strong> of the 1D Mott insulator — charge gapped (Δ≈5t), spin gapless (πJ/2≈0.79t).</em></div>
 
 ---
 
