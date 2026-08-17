@@ -25,10 +25,14 @@
   xtick={0,1,2,3,4},ytick={0.5,1,3,10,30},yticklabels={$0.5$,$1$,$3$,$10$,$30$}]
   \fill[band,opacity=0.72] (axis cs:-0.35,0.28) rectangle (axis cs:4.55,1.6);
   \node[anchor=south west,font=\normalsize,inkPrim] at (axis cs:-0.28,0.42) {chem.\ accuracy};
+  % REAL hardware recovery: MEAN over 8 recovery seeds on the SAME cached ibm_marrakesh counts
+  % (job da125f2ein7c73bcsqs0, no new QPU); shaded envelope = +-1 s.d. across the 8 seeds at every step.
+  \addplot[draw=none,name path=hwhi,forget plot] coordinates {(0,35.110) (1,6.958) (2,2.397) (3,1.199) (4,0.731)};
+  \addplot[draw=none,name path=hwlo,forget plot] coordinates {(0,27.049) (1,5.267) (2,1.827) (3,0.877) (4,0.446)};
+  \addplot[warmFill,fill opacity=0.30,forget plot] fill between[of=hwhi and hwlo];
   \addplot[simSlate,line width=1.4pt,dash pattern=on 5pt off 3pt,mark=square,mark size=2.6pt,
            mark options={draw=simSlate,fill=white,line width=1pt}] coordinates {(0,31.174) (1,29.600) (2,29.546) (3,29.546)};
-  % REAL hardware recovery: MEAN over 8 recovery seeds on the SAME cached ibm_marrakesh counts
-  % (job da125f2ein7c73bcsqs0, no new QPU); error bar at each step = std across the 8 seeds.
+  % mean over 8 seeds + a capped +-1 s.d. error bar at EVERY step, on top of the shaded envelope
   \addplot[hwWarm,line width=2.2pt,mark=*,mark size=3.0pt,mark options={fill=hwWarm,draw=white,line width=0.7pt},
      error bars/.cd,y dir=both,y explicit,error bar style={hwWarm,line width=1.1pt},
      error mark=-,error mark options={rotate=90,hwWarm,line width=1.1pt,mark size=4pt}]
