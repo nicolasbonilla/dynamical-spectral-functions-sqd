@@ -5,7 +5,7 @@
 
 **Nicolás Bonilla Vargas** &nbsp;[![ORCID](https://img.shields.io/badge/ORCID-0009--0006--6155--4391-A6CE39?logo=orcid&logoColor=white)](https://orcid.org/0009-0006-6155-4391)
 
-[![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
+[![arXiv](https://img.shields.io/badge/arXiv-2608.16436-b31b1b.svg)](https://arxiv.org/abs/2608.16436)
 [![Paper](https://img.shields.io/badge/paper-PDF-blue.svg)](paper/main.pdf)
 [![License: MIT](https://img.shields.io/badge/code-MIT-green.svg)](LICENSE)
 [![License: CC BY 4.0](https://img.shields.io/badge/paper-CC--BY--4.0-lightgrey.svg)](LICENSE)
@@ -23,6 +23,11 @@
 This repository is the **complete, reproducible record** of the paper. Every number, figure, and claim
 traces to a script and a data file listed in [`docs/REPRODUCE.md`](docs/REPRODUCE.md) and
 [`docs/FILE_INDEX.md`](docs/FILE_INDEX.md). A referee can regenerate every non-hardware result from source.
+
+> **Companion works.** Review — *Machine learning for sample-based quantum diagonalization: generative
+> configuration recovery and the classical-simulability frontier* ([arXiv:2608.05314](https://arxiv.org/abs/2608.05314)).
+> Method — *Self-falsifying quantum spectroscopy: a transportable necessary-condition screen for
+> quantum-computed dynamical spectra* (companion, arXiv posting in progress).
 
 ---
 
@@ -158,7 +163,7 @@ If you use this work, please cite it (see [`CITATION.cff`](CITATION.cff)):
   title   = {Dynamical spectral functions from bitstring-sampled quantum subspaces:
              entanglement, not one-body magic, tracks the sampling cost},
   author  = {Bonilla Vargas, Nicol\'as},
-  journal = {arXiv preprint arXiv:XXXX.XXXXX},
+  journal = {arXiv preprint arXiv:2608.16436},
   year    = {2026}
 }
 ```

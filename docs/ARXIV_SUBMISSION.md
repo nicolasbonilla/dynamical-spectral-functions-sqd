@@ -55,4 +55,4 @@ tar czf arxiv-submission.tar.gz \
 3. Review arXiv's generated PDF against `paper/main.pdf` (should be identical, 39 pp).
 4. Enter the metadata above; select the CC BY 4.0 license.
 5. Add the repository URL in **Comments** for reproducibility.
-6. Submit; note the assigned `arXiv:XXXX.XXXXX` and update the badge/`CITATION.cff` in this repo.
+6. Submit; note the assigned `arXiv:2608.16436` and update the badge/`CITATION.cff` in this repo.
