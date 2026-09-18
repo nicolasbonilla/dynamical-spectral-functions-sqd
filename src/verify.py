@@ -690,7 +690,7 @@ COVERED_FRAGMENTS = {
     "fig_scaling2_native.tex",
     "fig_witness_native.tex",
     "fig_ladder_native.tex",
-    "fig_akw_sampled_native.tex",
+    "fig_akw_sampled_honest.tex",
     "fig_method_native_frag.tex",
     "fig_hardware_hero_frag.tex",
     "fig_noise_recovery_native.tex",
@@ -1021,7 +1021,7 @@ def section9(rep, root, ctx):
     # the "sampled" curve is NOT a copy of the exact one -- a perfect reconstruction is
     # exactly what a forger would draw.
     sk = read_json(root, "data/sampled_akw_L8.json")
-    at = read(root, "paper/figs/fig_akw_sampled_native.tex")
+    at = read(root, "paper/figs/fig_akw_sampled_honest.tex")
     als = logical_lines(at)
     ex_lines = [l for l in als if "addplot[akExact,line width" in l]
     sm_lines = [l for l in als if "addplot[akSamp,line width" in l]

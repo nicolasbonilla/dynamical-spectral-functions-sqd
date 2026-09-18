@@ -1,0 +1,34 @@
+%% Caption for fig_akw_sampled_honest.tex.  Drop-in replacement for the caption of
+%% fig:akwsampled in results.tex (the label is kept so every \ref still resolves).
+\caption{\textbf{The momentum-resolved spectral function on a Born-ranked subspace, and what that
+subspace costs in shots.}
+\textbf{(a)}~Exact Haydock $A(k,\omega)$ (solid, shaded) and the reconstruction obtained by
+diagonalising the top-85\% of the $(N{\pm}1)$ sector under the time-averaged Born weight of the
+evolved state (dashed), at three momenta ($k=0,\pi/2,\pi$; Hubbard chain, $L=8$, $U/t=8$,
+$\eta=0.18\,t$, $K=16$ time slices, $\delta t=0.5$; curves offset vertically by $k$).
+The subspace is $3332$ of the $3920$ determinants of each channel. The ranking in
+\texttt{src/sampled\_akw.py} is taken on the \emph{exact} Born distribution, so panels (a) and (b)
+are the \textbf{infinite-shot limit} $T\rightarrow\infty$ of the protocol, not a finite-shot experiment;
+no shot budget is attached to them.
+\textbf{(b)}~Relative-$L_1$ error of that reconstruction at all 8 physical momenta, addition and
+removal branch summed: mean $2.19\times10^{-3}$, maximum $3.28\times10^{-3}$.
+\textbf{(c)}~What a finite shot budget buys, measured. Same chain and the same sector dimension
+($L=8$, $\dim(N{+}1)=3920$) but a separate run: local seed $c^{\dagger}_{0\uparrow}\ket{\Psi_0}$,
+$\eta=0.15\,t$, $K=18$ time slices, $T$ shots split evenly over the 19 snapshots, subspace
+= the support observed in those $T$ shots, 8 independent seeds. Markers are the seed mean; the
+shaded band and the error bars are $\pm1$ s.d.\ over the 8 seeds (at most $8.1\%$ of the
+mean at any budget, hence thinner than the line). Upper axis: the sector fraction $|\mathcal S|/\dim$
+reached at that budget; the dotted line is the acceptance threshold rel-$L_1=0.05$ used by the
+resource scan. At the largest budget measured, $T=2.60\times10^{6}$ shots, the observed subspace covers
+$0.835\pm0.0025$ of the sector and the reconstruction reaches
+rel-$L_1=(4.81\pm0.27)\times10^{-3}$.
+\textbf{Declared gap:} no finite-shot run exists for the configuration of (a)--(b)
+($\eta=0.18\,t$, $K=16$, the 16 momentum channels), and the 85\% fraction of (a)--(b)
+is above every budget measured in (c), whose largest reaches $0.835$. Panel (c) is the closest
+measured surrogate, not the same experiment, and nothing here is extrapolated; note also that the
+budget in (c) buys one channel, whereas (a)--(b) reconstruct 16. Where the two
+selections were compared at \emph{matched} subspace size in the run of (c), finite-shot selection was
+worse than the infinite-shot ranking by $1.46\times$ at $L=6$ (fraction $0.82$) and
+$2.05\times$ at $L=8$ (fraction $0.56$); panel (b) is therefore optimistic with respect to a
+finite-shot experiment on a subspace of the same size.}
+\label{fig:akwsampled}

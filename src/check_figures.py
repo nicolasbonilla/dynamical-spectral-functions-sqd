@@ -6,7 +6,7 @@ Why this exists.  `make figures` overwrites files in paper/figs/ that are commit
 that the manuscript compiles.  Until 2026-09-18 the only guarantee that those generators
 still reproduced the committed fragments was a sentence in the Makefile -- and a sentence
 is not a test.  An adversarial pass demonstrated the consequence: reintroducing the
-`%`-format bug in make_akw_sampled_fig.py, breaking make_table.py's output directory, and
+`%`-format bug in make_akw_sampled_honest_fig.py, breaking make_table.py's output directory, and
 corrupting a number inside a generated fragment all left `python src/verify.py` reporting
 PASS.  Those three repairs were unguarded; this file guards them.
 
@@ -31,7 +31,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GENERATORS = [
     "make_decoupling_native.py",
     "make_method_fig_max.py",
-    "make_akw_sampled_fig.py",
+    "make_akw_sampled_honest_fig.py",
     "make_noise_recovery_native.py",
     "make_hardware_hero.py",
     "make_table.py",
@@ -46,7 +46,7 @@ ARTEFACTS = [
     "paper/figs/fig_decoupling_native.tex",
     "paper/figs/fig_method_native_frag.tex",
     "paper/figs/aw_method.dat",
-    "paper/figs/fig_akw_sampled_native.tex",
+    "paper/figs/fig_akw_sampled_honest.tex",
     "paper/figs/fig_noise_recovery_native.tex",
     "paper/figs/fig_hardware_hero_frag.tex",
     "paper/figs/heron_hot.dat",

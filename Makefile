@@ -64,7 +64,7 @@ data:
 figures:
 	$(PYTHON) src/make_decoupling_native.py
 	$(PYTHON) src/make_method_fig_max.py
-	$(PYTHON) src/make_akw_sampled_fig.py
+	$(PYTHON) src/make_akw_sampled_honest_fig.py
 	$(PYTHON) src/make_noise_recovery_native.py
 	$(PYTHON) src/make_hardware_hero.py
 	$(PYTHON) src/make_table.py
