@@ -1,0 +1,499 @@
+{
+ "self_verification_controls": {
+  "molecular_rho_chi_S": {
+   "recomputed": 0.9011304215364547,
+   "paper": 0.9011,
+   "abs_diff": 3.042153645471668e-05
+  },
+  "molecular_rho_F1_S": {
+   "recomputed": 0.8618049768072334,
+   "paper": 0.8618,
+   "abs_diff": 4.976807233436631e-06
+  },
+  "hubbard_rho_chi_S": {
+   "recomputed": 0.5692315860031408,
+   "paper": 0.5692,
+   "abs_diff": 3.1586003140793295e-05
+  },
+  "hubbard_rho_F1_S": {
+   "recomputed": -0.10878754171301447,
+   "paper": -0.1088,
+   "abs_diff": 1.2458286985525535e-05
+  },
+  "pooled_rho_chi_S": {
+   "recomputed": 0.7223607689415286,
+   "paper": 0.7224,
+   "abs_diff": 3.923105847147834e-05
+  },
+  "pooled_rho_F1_S": {
+   "recomputed": 0.5992028038362396,
+   "paper": 0.5992,
+   "abs_diff": 2.8038362396287653e-06
+  }
+ },
+ "hubbard_strata": [
+  {
+   "L": 6,
+   "N": 6,
+   "n": 5,
+   "rho_F1_S": -0.9999999999999999,
+   "exact_p_one_sided_F1": 0.008333333333333333,
+   "rho_chi_S": 0.9999999999999999,
+   "exact_p_one_sided_chi": 0.008333333333333333,
+   "chi_values": [
+    12,
+    10,
+    6,
+    5,
+    4
+   ],
+   "n_distinct_chi": 5
+  },
+  {
+   "L": 6,
+   "N": 4,
+   "n": 5,
+   "rho_F1_S": -0.9999999999999999,
+   "exact_p_one_sided_F1": 0.008333333333333333,
+   "rho_chi_S": 0.8944271909999159,
+   "exact_p_one_sided_chi": 0.05,
+   "chi_values": [
+    11,
+    10,
+    9,
+    9,
+    9
+   ],
+   "n_distinct_chi": 3
+  },
+  {
+   "L": 8,
+   "N": 8,
+   "n": 5,
+   "rho_F1_S": -0.9999999999999999,
+   "exact_p_one_sided_F1": 0.008333333333333333,
+   "rho_chi_S": 0.9486832980505137,
+   "exact_p_one_sided_chi": 0.03333333333333333,
+   "chi_values": [
+    11,
+    11,
+    8,
+    8,
+    7
+   ],
+   "n_distinct_chi": 3
+  },
+  {
+   "L": 8,
+   "N": 6,
+   "n": 5,
+   "rho_F1_S": -0.9999999999999999,
+   "exact_p_one_sided_F1": 0.008333333333333333,
+   "rho_chi_S": 0.9746794344808963,
+   "exact_p_one_sided_chi": 0.016666666666666666,
+   "chi_values": [
+    16,
+    16,
+    15,
+    14,
+    13
+   ],
+   "n_distinct_chi": 4
+  },
+  {
+   "L": 10,
+   "N": 10,
+   "n": 5,
+   "rho_F1_S": -0.9999999999999999,
+   "exact_p_one_sided_F1": 0.008333333333333333,
+   "rho_chi_S": 0.9746794344808963,
+   "exact_p_one_sided_chi": 0.016666666666666666,
+   "chi_values": [
+    17,
+    14,
+    10,
+    6,
+    6
+   ],
+   "n_distinct_chi": 4
+  },
+  {
+   "L": 10,
+   "N": 8,
+   "n": 5,
+   "rho_F1_S": -0.9999999999999999,
+   "exact_p_one_sided_F1": 0.008333333333333333,
+   "rho_chi_S": 0.8944271909999159,
+   "exact_p_one_sided_chi": 0.05,
+   "chi_values": [
+    13,
+    13,
+    13,
+    11,
+    9
+   ],
+   "n_distinct_chi": 3
+  }
+ ],
+ "hubbard_stratified": {
+  "T_F1": -5.999999999999999,
+  "T_chi": 5.686896549012138,
+  "exact_perm_p_one_sided_F1": 3.348979766803841e-13,
+  "exact_perm_tail_points_F1": 1,
+  "exact_perm_p_one_sided_chi": 1.9290123456790124e-10,
+  "exact_perm_tail_points_chi": 576,
+  "product_space_size": 2985984000000,
+  "fisher_F1": {
+   "chi2": 57.449900913384546,
+   "df": 12,
+   "p": 6.555065169736287e-08
+  },
+  "fisher_chi": {
+   "chi2": 44.73768559199277,
+   "df": 12,
+   "p": 1.1427606459118073e-05
+  },
+  "stratified_kendall_F1": {
+   "tau": -1.0,
+   "nC": 0,
+   "nD": 60,
+   "nTies": 0
+  },
+  "stratified_kendall_chi": {
+   "tau": 1.0,
+   "nC": 50,
+   "nD": 0,
+   "nTies": 10
+  },
+  "mean_within_stratum_rho_F1": -0.9999999999999999,
+  "mean_within_stratum_rho_chi": 0.947816091502023,
+  "paper_pooled_p_F1": 0.567160824124569,
+  "paper_pooled_p_chi": 0.0010276286858928042,
+  "effective_n_of_the_pooled_test": 6
+ },
+ "molecular": {
+  "n_points": 38,
+  "n_clusters": 19,
+  "cluster_size": 2,
+  "rho_chi_S": 0.9011304215364547,
+  "rho_F1_S": 0.8618049768072334,
+  "asymptotic_p_chi_as_published": 1.2494524641803682e-14,
+  "asymptotic_p_F1_as_published": 3.708217975002004e-12,
+  "tie_structure_S": {
+   "1": 11,
+   "2": 5,
+   "3": 1,
+   "4": 2,
+   "5": 3,
+   "6": 2,
+   "7": 1,
+   "8": 1,
+   "9": 2,
+   "11": 2,
+   "13": 2,
+   "25": 1,
+   "27": 1,
+   "46": 1,
+   "68": 1,
+   "80": 1,
+   "91": 1
+  },
+  "n_at_floor_S_eq_1": 11,
+  "fraction_in_tied_group": 0.7631578947368421,
+  "max_attainable_rho_given_S_ties": 0.986282987103026,
+  "rho_chi_S_as_fraction_of_ceiling": 0.9136631507589046,
+  "rho_F1_S_as_fraction_of_ceiling": 0.8737907761529808,
+  "ICC_log2S_within_molecule": 0.21392616932091046,
+  "design_effect": 1.2139261693209105,
+  "effective_n": 31.303386449983034,
+  "cluster_permutation": {
+   "B": 1000000,
+   "seed": 20260918,
+   "p_chi": 9.99999000001e-07,
+   "p_F1": 9.99999000001e-07,
+   "exceedances_chi": 0,
+   "exceedances_F1": 0,
+   "resolution_floor": 9.99999000001e-07
+  },
+  "cluster_bootstrap": {
+   "B": 20000,
+   "seed": 20260919,
+   "ci95_rho_chi_S": [
+    0.8051241126798919,
+    0.9588894973003067
+   ],
+   "ci95_rho_F1_S": [
+    0.7091163191915764,
+    0.9293916956626194
+   ]
+  },
+  "molecule_order": [
+   "BH",
+   "BeH",
+   "BeH2",
+   "C2",
+   "CN",
+   "CO",
+   "F2",
+   "H2",
+   "H2O",
+   "H4",
+   "H6",
+   "HF",
+   "LiF",
+   "LiH",
+   "N2",
+   "NH3",
+   "NO",
+   "O2",
+   "OH"
+  ]
+ },
+ "dependent_correlation_comparisons": {
+  "molecular_38": {
+   "r_chi_S": 0.9011304215364547,
+   "r_F1_S": 0.8618049768072334,
+   "r_chi_F1": 0.7569213015742897,
+   "difference": 0.03932544472922128,
+   "williams_t": 0.9449263822647246,
+   "williams_df": 35,
+   "williams_p": 0.35117442441236857,
+   "steiger_z": 0.9386565832702136,
+   "steiger_p": 0.34790709140730314,
+   "williams_at_effective_n19": {
+    "t": 0.6408052359212567,
+    "df": 16,
+    "p": 0.5307210523817907
+   },
+   "cluster_bootstrap_ci95_difference": [
+    -0.07034142693702056,
+    0.18914332761488525
+   ],
+   "resolvable": false
+  },
+  "pooled_74": {
+   "r_chi_S": 0.7223607689415286,
+   "r_F1_S": 0.5992028038362396,
+   "r_chi_F1": 0.43463604263937144,
+   "difference": 0.12315796510528898,
+   "williams_t": 1.496648740127128,
+   "williams_df": 71,
+   "williams_p": 0.13891705183411068,
+   "steiger_z": 1.4833844609121087,
+   "steiger_p": 0.137972293569537,
+   "within_family_bootstrap_ci95_difference": [
+    -0.0653318133665453,
+    0.30691124544224124
+   ],
+   "resolvable": false
+  },
+  "hubbard_30": {
+   "r_chi_S": 0.5692315860031408,
+   "r_F1_S": -0.10878754171301447,
+   "r_chi_F1": -0.613035822695962,
+   "williams_t": 2.265748100649228,
+   "williams_df": 27,
+   "williams_p": 0.03169673182779125,
+   "williams_conservative_n9": {
+    "t": 1.091839788848984,
+    "df": 6,
+    "p": 0.3167943239798602
+   }
+  }
+ },
+ "small_families": {
+  "chain2": {
+   "F1": [
+    9.604689,
+    12.8163,
+    16.0306
+   ],
+   "S": [
+    147,
+    880,
+    5084
+   ],
+   "chi": [
+    5,
+    8,
+    6
+   ],
+   "L": [
+    6.0,
+    8.0,
+    10.0
+   ],
+   "F1_over_L": [
+    1.6007815,
+    1.6020375,
+    1.60306
+   ],
+   "rho_F1_S": 1.0,
+   "exact_p_one_sided_F1": 0.16666666666666666,
+   "rho_chi_S": 0.5,
+   "exact_p_one_sided_chi": 0.5
+  },
+  "ladder": {
+   "F1": [
+    9.6948,
+    12.9107,
+    16.0889
+   ],
+   "S": [
+    224,
+    1479,
+    11375
+   ],
+   "chi": [
+    13,
+    38,
+    38
+   ],
+   "L": [
+    6.0,
+    8.0,
+    10.0
+   ],
+   "F1_over_L": [
+    1.6158000000000001,
+    1.6138375,
+    1.60889
+   ],
+   "rho_F1_S": 1.0,
+   "exact_p_one_sided_F1": 0.16666666666666666,
+   "rho_chi_S": 0.8660254037844387,
+   "exact_p_one_sided_chi": 0.3333333333333333
+  },
+  "exact_p_floor_n3_one_sided": 0.16666666666666666,
+  "fisher_two_families": {
+   "chi2": 7.16703787691222,
+   "df": 4,
+   "p": 0.12731997051266972
+  },
+  "verdict": "arithmetically true, statistically uninterpretable: n=3 floor p=1/6, families not independent, and the sweep variable is L with F1 = 1.60*L, so F1 is a proxy for system size."
+ },
+ "gflownet": {
+  "per_seed_raw_in_deposit": false,
+  "n_seeds": 5,
+  "t_crit_two_sided_0p05": 2.7764451051977987,
+  "contrast_A_ibm_to_ibmcheap": {
+   "delta_mHa": 12.260000000000002,
+   "sd_diff_lower": 3.29,
+   "sd_diff_upper": 4.61,
+   "t_worst_case": 5.946679697212023,
+   "p_worst_case_two_sided": 0.0040115660744658894,
+   "t_best_case": 8.332581581807728,
+   "p_best_case_two_sided": 0.0011335552078557672,
+   "df": 4
+  },
+  "contrast_B_ibmcheap_to_gfnfused": {
+   "delta_mHa": 4.039999999999999,
+   "sd_diff_lower": 2.6399999999999997,
+   "sd_diff_upper": 3.96,
+   "t_worst_case": 2.2812410679543302,
+   "p_worst_case_two_sided": 0.08467058377775034,
+   "t_best_case": 3.4218616019314965,
+   "p_best_case_two_sided": 0.026734452088370813,
+   "df": 4
+  },
+  "verdict_A": "SIGNIFICANT for every admissible pairing",
+  "verdict_B": "UNDECIDABLE from the deposit",
+  "sd_unit_conventions": {
+   "paper_as_printed": [
+    3.1037974683544305,
+    1.2242424242424241
+   ],
+   "baseline_sd_both": [
+    3.1037974683544305,
+    6.121212121212119
+   ],
+   "target_sd_both": [
+    18.575757575757578,
+    1.2242424242424241
+   ],
+   "pooled_sd_both": [
+    4.3294129264214885,
+    1.697718782386307
+   ]
+  },
+  "nonparametric_min_two_sided_p": 0.0625,
+  "seeds_needed_for_nonparametric_floor_below_0p05": 6
+ },
+ "orphan_constant_forensics": {
+  "deposited_pooled_spearman_F1_S": 0.5991983669238197,
+  "recomputed_pooled_spearman_F1_S": 0.5992028038362396,
+  "abs_diff": 4.436912419913952e-06,
+  "deposited_pooled_spearman_chi_S": 0.7223607689415286,
+  "recomputed_pooled_spearman_chi_S": 0.7223607689415286,
+  "chi_reproduces_exactly": true,
+  "hypothesis_tests": {
+   "tie_broken_chain2_vs_hubbard_at_9.604689": 0.5991983669238197,
+   "chain2_L6_set_to_PBC_9.385082": 0.5991983669238197,
+   "hubbard_L6N6U8_set_to_committed_9.3851": 0.5991983669238197,
+   "both_rows_set_to_9.3851_tie_preserved": 0.5992028038362396
+  },
+  "explained_by_F1_tie_creation": true,
+  "recommended_value": 0.5992028038362396
+ },
+ "provenance": {
+  "script": "stats_resource.py",
+  "purpose": "correct statistical re-analysis of the resource section of the manuscript",
+  "generated_utc": "2026-09-18T18:53:05Z",
+  "runtime_seconds": 9.283184289932251,
+  "python": "3.11.4",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "numpy": "1.26.4",
+  "scipy": "1.13.1",
+  "seeds": {
+   "cluster_permutation_molecular": 20260918,
+   "cluster_bootstrap_molecular": 20260919,
+   "family_bootstrap_pooled": 20260920
+  },
+  "parameters": {
+   "boot": 20000,
+   "perm": 1000000,
+   "root": ".",
+   "control_tolerance": 0.0001,
+   "U_grid": [
+    1.0,
+    2.0,
+    4.0,
+    8.0,
+    16.0
+   ]
+  },
+  "inputs": [
+   "data/cost_vs_ent.json",
+   "data/resource_master.json",
+   "data/n19_suite.json",
+   "data/gflow.json"
+  ],
+  "control_values_reproduced": {
+   "molecular_rho_chi_S": {
+    "paper": 0.9011,
+    "recomputed": 0.9011304215364547
+   },
+   "molecular_rho_F1_S": {
+    "paper": 0.8618,
+    "recomputed": 0.8618049768072334
+   },
+   "hubbard_rho_chi_S": {
+    "paper": 0.5692,
+    "recomputed": 0.5692315860031408
+   },
+   "hubbard_rho_F1_S": {
+    "paper": -0.1088,
+    "recomputed": -0.10878754171301447
+   },
+   "pooled_rho_chi_S": {
+    "paper": 0.7224,
+    "recomputed": 0.7223607689415286
+   },
+   "pooled_rho_F1_S": {
+    "paper": 0.5992,
+    "recomputed": 0.5992028038362396
+   }
+  },
+  "determinism": "all randomness from numpy.random.default_rng with the seeds above; bit-for-bit reproducible on numpy 1.26.4"
+ }
+}

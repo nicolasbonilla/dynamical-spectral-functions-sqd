@@ -7,6 +7,17 @@ principle that the spectral pipeline runs end-to-end on a real device -- NOT a f
 NOT a beyond-classical claim; at this system size full-sector coverage makes rel-L1=0 automatic.
 We now plot the REAL saved hardware array A_hw (from the committed json, sourced from Google Drive)
 as discrete markers on the exact target -- they coincide because of full-sector coverage."""
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
 import json, numpy as np
 d=json.load(open('data/heron_spectral.json'))
 g=np.array(d['grid']); Aex=np.array(d['A_exact']); Ahw=np.array(d['A_hw'])

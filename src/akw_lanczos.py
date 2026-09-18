@@ -9,9 +9,76 @@ via the Haydock continued-fraction (Lanczos) method in a SECTOR basis
 Ground state by sparse Lanczos; each G by ~n_lanc Haydock steps (sparse matvecs).
 Validated against exact sector diagonalization at L=6.
 """
+# --- DEPOSIT PATHS (repaired 2026-09-18) -----------------------------------
+# This script used to hard-code its output under '/w/'.  /w was the working
+# directory of the Docker container the published runs were made in; outside that
+# container the documented pipeline wrote nothing a reader could find, and data/
+# was in fact repopulated BY HAND.  That made `make data` and the README recipe
+# untrue.  Repaired: every path is now an ARGUMENT with a default RELATIVE TO THIS
+# REPOSITORY, so a clean clone reproduces into its own tree.
+#     read   <repo>/data/<name>      override with  --in  PATH
+#     write  <repo>/data/<name>      override with  --out PATH
+#     write  <repo>/build/<name>     for by-products that are NOT part of the deposit
+# Paths only -- no physics and no computational default was changed here.
+import os as _os, sys as _sys
+_REPO = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+
+def _flag(name):
+    """Value of a `--name VALUE` (or `-n VALUE`) command-line flag, else None."""
+    a = _sys.argv[1:]
+    for f in ('--' + name, '-' + name[0]):
+        if f in a and a.index(f) + 1 < len(a):
+            return a[a.index(f) + 1]
+    return None
+
+def _argv_positional():
+    """argv[1:] with the --in/--out flags and their values removed."""
+    a, keep, i = _sys.argv[1:], [], 0
+    while i < len(a):
+        if a[i] in ('--out', '-o', '--in', '-i'):
+            i += 2
+            continue
+        keep.append(a[i]); i += 1
+    return keep
+
+def _outpath(name, sub='data'):
+    """Absolute path to write `name` to: --out if given, else <repo>/<sub>/<name>."""
+    p = _os.path.abspath(_flag('out') or _os.path.join(_REPO, sub, name))
+    _os.makedirs(_os.path.dirname(p), exist_ok=True)
+    return p
+
+def _inpath(name, sub='data'):
+    """Absolute path to read `name` from: --in if given, else <repo>/<sub>/<name>."""
+    return _os.path.abspath(_flag('in') or _os.path.join(_REPO, sub, name))
+# ---------------------------------------------------------------------------
 import json, time, numpy as np, scipy.sparse as sp
+# --- NUMPY_TRAPEZOID_BRIDGE ------------------------------------------------
+# numpy 2.0 ADDED np.trapezoid and REMOVED np.trapz.  Files in this repository use
+# both names, so without this bridge no single numpy version runs the whole deposit:
+# numpy 1.x breaks the files that call trapezoid, numpy 2.x breaks the files that call
+# trapz (this guardian included).  requirements.txt asks for numpy>=1.24; with the
+# bridge that is true again.
+if not hasattr(np, "trapezoid"):
+    np.trapezoid = np.trapz          # numpy < 2.0
+if not hasattr(np, "trapz"):
+    np.trapz = np.trapezoid          # numpy >= 2.0
+# ---------------------------------------------------------------------------
 from itertools import combinations
 from scipy.sparse.linalg import eigsh, LinearOperator
+# --- DETERMINISTIC ARPACK START VECTOR (added 2026-09-18, second pass) ------
+# eigsh() with no v0= lets ARPACK draw its own start vector from an UNSEEDED
+# generator, so E0 converges to a slightly different point on every run (the last
+# few digits move) and every quantity derived from it moves with it.  Measured, not
+# hypothetical: three consecutive calls on the same matrix gave
+# -2.0481308860914536 / ...504 / ...522, and in the leakage certificate a small
+# subspace selection moved by 3.2%.  The eigenpair is the same to ARPACK's
+# tolerance -- no physics changes -- but a deposit must be bit-reproducible.
+# Deliberately NOT a numpy global seed: this touches only the ARPACK start vector.
+# The seed 20260918 is the one used by scaling_lanczos.py and the certificate suite.
+def _v0(n):
+    """Fixed, dimension-dependent ARPACK start vector (never orthogonal to the GS)."""
+    return np.random.default_rng(20260918).standard_normal(n)
+# ---------------------------------------------------------------------------
 t0=time.time(); log=lambda *a: print(f"[{time.time()-t0:6.1f}s]",*a,flush=True)
 
 def strings(L,n):
@@ -100,7 +167,7 @@ def run(L=6,U=8.0,t=1.0,eta=0.15,nl=120,nw=600,ntw=1,wwin=None):
     nup=nd=L//2
     Hexpl,Du,Dd=build_H_explicit(L,U,nup,nd,t)
     # ground state (explicit sparse -> fast, reliable ARPACK)
-    E0,V0=eigsh(Hexpl,k=1,which='SA'); E0=float(E0[0]); psi0=V0[:,0]
+    E0,V0=eigsh(Hexpl,k=1,which='SA',v0=_v0(Hexpl.shape[0])); E0=float(E0[0]); psi0=V0[:,0]
     log(f"L={L} U={U}: gs dim={Du*Dd}  E0={E0:.6f}")
     Psi=psi0.reshape(Du,Dd)
     Ha,_,_,_,_,Dua,_=sector_H(L,U,nup+1,nd,t)
@@ -134,7 +201,7 @@ def _apply(Hlin,x):
 
 if __name__=="__main__":
     import sys
-    L=int(sys.argv[1]) if len(sys.argv)>1 else 12
+    _a=_argv_positional(); L=int(_a[0]) if _a else 12
     d=run(L=L,U=8.0,eta=0.18,nl=150,nw=640,wwin=(-9,9))
-    json.dump(d,open(f'/w/akw_lanczos_L{L}.json','w'))
+    json.dump(d,open(_outpath(f'akw_lanczos_L{L}.json'),'w'))
     log(f"WROTE akw_lanczos_L{L}.json ({len(d['A'])} native k-points)")

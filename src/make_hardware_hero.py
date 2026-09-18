@@ -10,6 +10,17 @@ body size EXACTLY (no include-scaling font games). Rules enforced: (1) BOTH real
     noiseless statevector simulation of the same circuit (29.5 mHa).
 Data: heron_spectral.json, hw_lucj_n2_result.json (dE_hist_mean / dE_hist_std -- the full per-seed run
 log; NO hand-typed numbers)."""
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
 import json, numpy as np
 h=json.load(open('data/heron_spectral.json')); g=np.array(h['grid'])
 A=np.array(h['A_hw'])   # the REAL ibm_fez hardware-sampled reconstruction (==A_exact to 8e-15 by full-sector coverage)

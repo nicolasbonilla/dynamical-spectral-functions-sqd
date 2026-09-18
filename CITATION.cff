@@ -15,6 +15,8 @@ abstract: >-
   which is instead lower-bounded and empirically tracked by the basis-dependent entanglement (bond
   dimension chi). Validated against exact diagonalization across Hubbard chains and a nineteen-molecule
   suite, and demonstrated on the IBM Heron processor.
+repository-code: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
+url: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
 version: "1.0.0"
 date-released: "2026-08-17"
 license: "MIT AND CC-BY-4.0"

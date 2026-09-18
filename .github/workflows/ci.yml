@@ -1,0 +1,57 @@
+# Continuous integration for the P2 deposit.
+#
+# HISTORY, stated plainly: until 2026-09-18 this file existed on disk but was listed
+# in .gitignore, so it was never part of the repository and this workflow had NEVER
+# RUN — not once, on any commit. The exclusion is gone; what follows is what CI
+# actually does, and nothing else is claimed for it.
+#
+# Two jobs, both of them just `make` targets so that a reader can run the identical
+# check locally:
+#   guardian  -> make verify        (src/verify.py: recompute the physics, then check
+#                                    every deposited artefact against it)
+#   figures   -> make check-figures (regenerate every generated fragment into a scratch
+#                                    tree and diff it against the committed one)
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guardian:
+    name: Reproducibility guardian (make verify)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # numpy + scipy only: the guardian recomputes the Hubbard ground states and the
+      # geminal witness from first principles. No pyscf, no qiskit, no network.
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && pip install numpy scipy
+      # Invoked at its real path. The file lives in src/, so `python verify.py` from
+      # the repository root cannot work; `make verify` runs exactly this line.
+      - name: Run the guardian
+        run: python src/verify.py
+
+  figures:
+    name: Generated fragments still match the deposit (make check-figures)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && pip install numpy scipy matplotlib pillow
+      # Writes nothing into the tree: it regenerates into a scratch directory and diffs.
+      # If a generator drifts away from the committed figure, the paper and the deposit
+      # disagree — this is the job that notices.
+      - name: make check-figures
+        run: make check-figures

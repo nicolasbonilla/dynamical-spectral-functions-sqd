@@ -1,0 +1,1022 @@
+{
+  "provenance": {
+    "script": "gap_scaling.py",
+    "generated_utc": "2026-09-18T19:41:36Z",
+    "wall_seconds": 149.74,
+    "argv": [],
+    "parameters": {
+      "sizes": [
+        4,
+        6,
+        8,
+        10,
+        12
+      ],
+      "U": 8.0,
+      "t": 1.0,
+      "J_eff": 0.5,
+      "q": "pi",
+      "boundary": "periodic ring",
+      "filling": "half (n_up = n_dn = L/2)",
+      "nl_max": 40,
+      "rng_seed": 20260918,
+      "lanczos": "full reorthogonalization (2 DGKS passes)",
+      "broadening": "none -- exact poles from the Lanczos tridiagonal"
+    },
+    "versions": {
+      "python": "3.11.4",
+      "numpy": "1.26.4",
+      "scipy": "1.13.1",
+      "platform": "Windows-10-10.0.26200-SP0"
+    },
+    "engine": {
+      "module": "akw_lanczos",
+      "path": "src/akw_lanczos.py",
+      "functions_reused": [
+        "strings",
+        "sector_H"
+      ]
+    },
+    "self_checks": [
+      {
+        "check": "lieb_wu_two_forms_agree",
+        "got": -1.092459456231154e-13,
+        "expected": 0.0,
+        "tolerance": 1e-06,
+        "abs_error": 1.092459456231154e-13,
+        "pass": true
+      },
+      {
+        "check": "lieb_wu_literature_value",
+        "got": 4.679517107463974,
+        "expected": 4.6795,
+        "tolerance": 0.001,
+        "abs_error": 1.7107463974319614e-05,
+        "pass": true
+      },
+      {
+        "check": "L4_particle_hole_mu_sum",
+        "got": 7.999999999999998,
+        "expected": 8.0,
+        "tolerance": 1e-06,
+        "abs_error": 1.7763568394002505e-15,
+        "pass": true
+      },
+      {
+        "check": "L6_particle_hole_mu_sum",
+        "got": 8.000000000000007,
+        "expected": 8.0,
+        "tolerance": 1e-06,
+        "abs_error": 7.105427357601002e-15,
+        "pass": true
+      },
+      {
+        "check": "L6_charge_gap",
+        "got": 5.3581267870760465,
+        "expected": 5.358,
+        "tolerance": 0.005,
+        "abs_error": 0.00012678707604685258,
+        "pass": true
+      },
+      {
+        "check": "L6_spin_gap",
+        "got": 0.34856627196367873,
+        "expected": 0.34857,
+        "tolerance": 0.0005,
+        "abs_error": 3.7280363212599532e-06,
+        "pass": true
+      },
+      {
+        "check": "L6_heisenberg_szz_pi",
+        "got": 0.3423708244910513,
+        "expected": 0.34237,
+        "tolerance": 0.0005,
+        "abs_error": 8.244910512655856e-07,
+        "pass": true
+      },
+      {
+        "check": "L6_heisenberg_pole_equals_ST_gap",
+        "got": 3.3306690738754696e-15,
+        "expected": 0.0,
+        "tolerance": 1e-08,
+        "abs_error": 3.3306690738754696e-15,
+        "pass": true
+      },
+      {
+        "check": "L8_particle_hole_mu_sum",
+        "got": 7.999999999999985,
+        "expected": 8.0,
+        "tolerance": 1e-06,
+        "abs_error": 1.509903313490213e-14,
+        "pass": true
+      },
+      {
+        "check": "L8_charge_gap",
+        "got": 5.185842186671638,
+        "expected": 5.186,
+        "tolerance": 0.005,
+        "abs_error": 0.00015781332836173334,
+        "pass": true
+      },
+      {
+        "check": "L8_spin_gap",
+        "got": 0.23958351350636709,
+        "expected": 0.23958,
+        "tolerance": 0.0005,
+        "abs_error": 3.513506367097685e-06,
+        "pass": true
+      },
+      {
+        "check": "L8_heisenberg_szz_pi",
+        "got": 0.2613371725463036,
+        "expected": 0.26134,
+        "tolerance": 0.0005,
+        "abs_error": 2.827453696396809e-06,
+        "pass": true
+      },
+      {
+        "check": "L8_heisenberg_pole_equals_ST_gap",
+        "got": 2.6645352591003757e-15,
+        "expected": 0.0,
+        "tolerance": 1e-08,
+        "abs_error": 2.6645352591003757e-15,
+        "pass": true
+      },
+      {
+        "check": "L10_particle_hole_mu_sum",
+        "got": 8.00000000000001,
+        "expected": 8.0,
+        "tolerance": 1e-06,
+        "abs_error": 1.0658141036401503e-14,
+        "pass": true
+      },
+      {
+        "check": "L10_charge_gap",
+        "got": 5.022235267052238,
+        "expected": 5.022,
+        "tolerance": 0.005,
+        "abs_error": 0.0002352670522380862,
+        "pass": true
+      },
+      {
+        "check": "L10_spin_gap",
+        "got": 0.19955899721754464,
+        "expected": 0.19956,
+        "tolerance": 0.0005,
+        "abs_error": 1.0027824553504594e-06,
+        "pass": true
+      },
+      {
+        "check": "L10_heisenberg_szz_pi",
+        "got": 0.21161950387669037,
+        "expected": 0.21162,
+        "tolerance": 0.0005,
+        "abs_error": 4.961233096290041e-07,
+        "pass": true
+      },
+      {
+        "check": "L10_heisenberg_pole_equals_ST_gap",
+        "got": 5.329070518200751e-15,
+        "expected": 0.0,
+        "tolerance": 1e-08,
+        "abs_error": 5.329070518200751e-15,
+        "pass": true
+      },
+      {
+        "check": "L12_particle_hole_mu_sum",
+        "got": 8.000000000000023,
+        "expected": 8.0,
+        "tolerance": 1e-06,
+        "abs_error": 2.3092638912203256e-14,
+        "pass": true
+      },
+      {
+        "check": "L12_charge_gap",
+        "got": 4.968759359857588,
+        "expected": 4.9688,
+        "tolerance": 0.001,
+        "abs_error": 4.064014241222935e-05,
+        "pass": true
+      },
+      {
+        "check": "L12_spin_gap",
+        "got": 0.16634621681066797,
+        "expected": 0.16635,
+        "tolerance": 0.0001,
+        "abs_error": 3.7831893320294796e-06,
+        "pass": true
+      },
+      {
+        "check": "L12_heisenberg_szz_pi",
+        "got": 0.17792375685137785,
+        "expected": 0.17792,
+        "tolerance": 0.0005,
+        "abs_error": 3.756851377850756e-06,
+        "pass": true
+      },
+      {
+        "check": "L12_heisenberg_pole_equals_ST_gap",
+        "got": 7.549516567451064e-15,
+        "expected": 0.0,
+        "tolerance": 1e-08,
+        "abs_error": 7.549516567451064e-15,
+        "pass": true
+      }
+    ],
+    "self_check_enforced": true,
+    "control_values_reproduced": [
+      "lieb_wu_two_forms_agree",
+      "lieb_wu_literature_value",
+      "L4_particle_hole_mu_sum",
+      "L6_particle_hole_mu_sum",
+      "L6_charge_gap",
+      "L6_spin_gap",
+      "L6_heisenberg_szz_pi",
+      "L6_heisenberg_pole_equals_ST_gap",
+      "L8_particle_hole_mu_sum",
+      "L8_charge_gap",
+      "L8_spin_gap",
+      "L8_heisenberg_szz_pi",
+      "L8_heisenberg_pole_equals_ST_gap",
+      "L10_particle_hole_mu_sum",
+      "L10_charge_gap",
+      "L10_spin_gap",
+      "L10_heisenberg_szz_pi",
+      "L10_heisenberg_pole_equals_ST_gap",
+      "L12_particle_hole_mu_sum",
+      "L12_charge_gap",
+      "L12_spin_gap",
+      "L12_heisenberg_szz_pi",
+      "L12_heisenberg_pole_equals_ST_gap"
+    ]
+  },
+  "lieb_wu": {
+    "U": 8.0,
+    "t": 1.0,
+    "form_A_sinh_integral": 4.679517107463974,
+    "form_B_bessel_integral": 4.679517107464084,
+    "literature": 4.6795
+  },
+  "hubbard": [
+    {
+      "L": 4,
+      "dim_N": 36,
+      "E0_N": -1.3202349582719295,
+      "E0_Nplus1": 5.67544467966324,
+      "E0_Nminus1": -2.324555320336758,
+      "mu_plus": 6.99567963793517,
+      "mu_minus": 1.0043203620648287,
+      "ph_symmetry_residual": -1.7763568394002505e-15,
+      "charge_gap": 5.991359275870341,
+      "spin_gap": 0.3323165434020613,
+      "spin_gap_relweight": 0.9781148985345828,
+      "spin_gap_no_reorth": 0.3323165434020613,
+      "L_times_spin_gap": 1.3292661736082452,
+      "L_times_charge_gap": 23.965437103481364,
+      "lanczos": {
+        "n_lanczos": 3,
+        "stop": "breakdown",
+        "seed_norm2": 2.4511390194457428,
+        "reorth": true,
+        "lowest_history": [
+          0.3337328755844678,
+          0.3323165434020613
+        ]
+      },
+      "szz_pi_top_poles": [
+        [
+          0.3323165434020613,
+          0.9781148985345828
+        ],
+        [
+          7.100402429922453,
+          0.021699613783133835
+        ],
+        [
+          12.527985901491279,
+          0.0001854876822834489
+        ]
+      ]
+    },
+    {
+      "L": 6,
+      "dim_N": 400,
+      "E0_N": -2.0481308860914513,
+      "E0_Nplus1": 4.630932507446575,
+      "E0_Nminus1": -3.369067492553431,
+      "mu_plus": 6.679063393538026,
+      "mu_minus": 1.3209366064619799,
+      "ph_symmetry_residual": 7.105427357601002e-15,
+      "charge_gap": 5.3581267870760465,
+      "spin_gap": 0.34856627196367873,
+      "spin_gap_relweight": 0.9367790756896252,
+      "spin_gap_no_reorth": 0.34856627196367856,
+      "L_times_spin_gap": 2.0913976317820726,
+      "L_times_charge_gap": 32.14876072245628,
+      "lanczos": {
+        "n_lanczos": 14,
+        "stop": "converged",
+        "seed_norm2": 4.162329190098728,
+        "reorth": true,
+        "lowest_history": [
+          0.34856627208343127,
+          0.34856627196918666,
+          0.3485662719636835,
+          0.3485662719636764,
+          0.3485662719636835,
+          0.34856627196367873
+        ]
+      },
+      "szz_pi_top_poles": [
+        [
+          0.34856627196367873,
+          0.9367790756896252
+        ],
+        [
+          1.3781831279431573,
+          0.05471617428283767
+        ],
+        [
+          7.45297905668949,
+          0.0026614544264456437
+        ],
+        [
+          8.231897519220876,
+          0.005182916567584085
+        ],
+        [
+          10.048130886091464,
+          0.00038958805909269895
+        ],
+        [
+          11.854397538590952,
+          0.00026316679410104117
+        ]
+      ]
+    },
+    {
+      "L": 8,
+      "dim_N": 4900,
+      "E0_N": -2.666147420132341,
+      "E0_Nplus1": 3.9267736732034706,
+      "E0_Nminus1": -4.073226326796514,
+      "mu_plus": 6.5929210933358116,
+      "mu_minus": 1.4070789066641733,
+      "ph_symmetry_residual": -1.509903313490213e-14,
+      "charge_gap": 5.185842186671638,
+      "spin_gap": 0.23958351350636709,
+      "spin_gap_relweight": 0.8893959735952773,
+      "spin_gap_no_reorth": 0.23958351350636722,
+      "L_times_spin_gap": 1.9166681080509367,
+      "L_times_charge_gap": 41.486737493373106,
+      "lanczos": {
+        "n_lanczos": 19,
+        "stop": "converged",
+        "seed_norm2": 6.166733103547814,
+        "reorth": true,
+        "lowest_history": [
+          0.23958351388607652,
+          0.23958351354070453,
+          0.23958351350923104,
+          0.23958351350684193,
+          0.2395835135064221,
+          0.23958351350636709
+        ]
+      },
+      "szz_pi_top_poles": [
+        [
+          0.23958351350636709,
+          0.8893959735952773
+        ],
+        [
+          1.1415133781518914,
+          0.09906623705126746
+        ],
+        [
+          5.6092883372639255,
+          0.005303071612211432
+        ],
+        [
+          7.602342785440194,
+          0.0025020336441659206
+        ],
+        [
+          8.6442068218613,
+          0.0025917961948598227
+        ],
+        [
+          9.139155601614988,
+          0.0003746622853813949
+        ]
+      ]
+    },
+    {
+      "L": 10,
+      "dim_N": 63504,
+      "E0_N": -3.3149967290878357,
+      "E0_Nplus1": 3.1961209044382883,
+      "E0_Nminus1": -4.803879095561721,
+      "mu_plus": 6.5111176335261245,
+      "mu_minus": 1.4888823664738857,
+      "ph_symmetry_residual": 1.0658141036401503e-14,
+      "charge_gap": 5.022235267052238,
+      "spin_gap": 0.19955899721754464,
+      "spin_gap_relweight": 0.856475196193471,
+      "spin_gap_no_reorth": 0.19955899721754491,
+      "L_times_spin_gap": 1.9955899721754464,
+      "L_times_charge_gap": 50.22235267052238,
+      "lanczos": {
+        "n_lanczos": 24,
+        "stop": "converged",
+        "seed_norm2": 8.27993102927696,
+        "reorth": true,
+        "lowest_history": [
+          0.19955899744353717,
+          0.19955899733732751,
+          0.19955899727046322,
+          0.19955899723759415,
+          0.19955899722230377,
+          0.19955899721754464
+        ]
+      },
+      "szz_pi_top_poles": [
+        [
+          0.19955899721754464,
+          0.856475196193471
+        ],
+        [
+          0.9722348109576051,
+          0.12160920812439636
+        ],
+        [
+          1.4273315783086904,
+          0.012063725095689556
+        ],
+        [
+          6.155505482098148,
+          0.0016874402631629317
+        ],
+        [
+          6.4076853578842305,
+          0.0034385665531869777
+        ],
+        [
+          9.044852886134473,
+          0.0016995802685789581
+        ]
+      ]
+    },
+    {
+      "L": 12,
+      "dim_N": 853776,
+      "E0_N": -3.962563033142929,
+      "E0_Nplus1": 2.521816646785876,
+      "E0_Nminus1": -5.478183353214147,
+      "mu_plus": 6.484379679928805,
+      "mu_minus": 1.5156203200712182,
+      "ph_symmetry_residual": 2.3092638912203256e-14,
+      "charge_gap": 4.968759359857588,
+      "spin_gap": 0.16634621681066797,
+      "spin_gap_relweight": 0.8293156951425474,
+      "spin_gap_no_reorth": 0.1663462168106686,
+      "L_times_spin_gap": 1.9961546017280156,
+      "L_times_charge_gap": 59.62511231829105,
+      "lanczos": {
+        "n_lanczos": 29,
+        "stop": "converged",
+        "seed_norm2": 10.524298121777562,
+        "reorth": true,
+        "lowest_history": [
+          0.16634621696172208,
+          0.16634621685681317,
+          0.16634621682834352,
+          0.16634621681760092,
+          0.16634621681309314,
+          0.16634621681066797
+        ]
+      },
+      "szz_pi_top_poles": [
+        [
+          0.16634621681066797,
+          0.8293156951425474
+        ],
+        [
+          0.8377299963587922,
+          0.1328819753740581
+        ],
+        [
+          1.3118080703095563,
+          0.02812247900300569
+        ],
+        [
+          6.943731354568565,
+          0.002960483374662473
+        ],
+        [
+          7.977684197691579,
+          0.0015088825238855456
+        ],
+        [
+          8.950359074196088,
+          0.0015165186946041135
+        ]
+      ]
+    }
+  ],
+  "heisenberg_control": [
+    {
+      "L": 4,
+      "J": 0.5,
+      "E0": -0.999999999999998,
+      "dim_sz0": 6,
+      "szz_pi_lowest_pole": 0.49999999999999806,
+      "singlet_triplet_gap": 0.499999999999998,
+      "L_times_gap": 1.9999999999999922,
+      "internal_consistency": 5.551115123125783e-17
+    },
+    {
+      "L": 6,
+      "J": 0.5,
+      "E0": -1.401387818865996,
+      "dim_sz0": 20,
+      "szz_pi_lowest_pole": 0.3423708244910513,
+      "singlet_triplet_gap": 0.34237082449104794,
+      "L_times_gap": 2.0542249469463076,
+      "internal_consistency": 3.3306690738754696e-15
+    },
+    {
+      "L": 8,
+      "J": 0.5,
+      "E0": -1.8255467044685898,
+      "dim_sz0": 70,
+      "szz_pi_lowest_pole": 0.2613371725463036,
+      "singlet_triplet_gap": 0.26133717254630096,
+      "L_times_gap": 2.090697380370429,
+      "internal_consistency": 2.6645352591003757e-15
+    },
+    {
+      "L": 10,
+      "J": 0.5,
+      "E0": -2.25772317724602,
+      "dim_sz0": 252,
+      "szz_pi_lowest_pole": 0.21161950387669037,
+      "singlet_triplet_gap": 0.21161950387668504,
+      "L_times_gap": 2.1161950387669037,
+      "internal_consistency": 5.329070518200751e-15
+    },
+    {
+      "L": 12,
+      "J": 0.5,
+      "E0": -2.693695458722599,
+      "dim_sz0": 924,
+      "szz_pi_lowest_pole": 0.17792375685137785,
+      "singlet_triplet_gap": 0.1779237568513854,
+      "L_times_gap": 2.135085082216534,
+      "internal_consistency": 7.549516567451064e-15
+    }
+  ],
+  "heisenberg_control_extended": [
+    {
+      "L": 4,
+      "J": 0.5,
+      "E0": -0.999999999999998,
+      "dim_sz0": 6,
+      "szz_pi_lowest_pole": 0.49999999999999806,
+      "singlet_triplet_gap": 0.499999999999998,
+      "L_times_gap": 1.9999999999999922,
+      "internal_consistency": 5.551115123125783e-17
+    },
+    {
+      "L": 6,
+      "J": 0.5,
+      "E0": -1.401387818865996,
+      "dim_sz0": 20,
+      "szz_pi_lowest_pole": 0.3423708244910513,
+      "singlet_triplet_gap": 0.34237082449104794,
+      "L_times_gap": 2.0542249469463076,
+      "internal_consistency": 3.3306690738754696e-15
+    },
+    {
+      "L": 8,
+      "J": 0.5,
+      "E0": -1.8255467044685898,
+      "dim_sz0": 70,
+      "szz_pi_lowest_pole": 0.2613371725463036,
+      "singlet_triplet_gap": 0.26133717254630096,
+      "L_times_gap": 2.090697380370429,
+      "internal_consistency": 2.6645352591003757e-15
+    },
+    {
+      "L": 10,
+      "J": 0.5,
+      "E0": -2.25772317724602,
+      "dim_sz0": 252,
+      "szz_pi_lowest_pole": 0.21161950387669037,
+      "singlet_triplet_gap": 0.21161950387668504,
+      "L_times_gap": 2.1161950387669037,
+      "internal_consistency": 5.329070518200751e-15
+    },
+    {
+      "L": 12,
+      "J": 0.5,
+      "E0": -2.693695458722599,
+      "dim_sz0": 924,
+      "szz_pi_lowest_pole": 0.17792375685137785,
+      "singlet_triplet_gap": 0.1779237568513854,
+      "L_times_gap": 2.135085082216534,
+      "internal_consistency": 7.549516567451064e-15
+    },
+    {
+      "L": 14,
+      "J": 0.5,
+      "E0": -3.1317747667735216,
+      "method": "sparse ARPACK, singlet-triplet gap only",
+      "szz_pi_lowest_pole": 0.1535528547842122,
+      "singlet_triplet_gap": 0.1535528547842122,
+      "L_times_gap": 2.149739966978971,
+      "internal_consistency": null
+    },
+    {
+      "L": 16,
+      "J": 0.5,
+      "E0": -3.5711481803083873,
+      "method": "sparse ARPACK, singlet-triplet gap only",
+      "szz_pi_lowest_pole": 0.13509484112516024,
+      "singlet_triplet_gap": 0.13509484112516024,
+      "L_times_gap": 2.161517458002564,
+      "internal_consistency": null
+    },
+    {
+      "L": 18,
+      "J": 0.5,
+      "E0": -4.0113745435168795,
+      "method": "sparse ARPACK, singlet-triplet gap only",
+      "szz_pi_lowest_pole": 0.12062472494530763,
+      "singlet_triplet_gap": 0.12062472494530763,
+      "L_times_gap": 2.1712450490155373,
+      "internal_consistency": null
+    },
+    {
+      "L": 20,
+      "J": 0.5,
+      "E0": -4.452193264938236,
+      "method": "sparse ARPACK, singlet-triplet gap only",
+      "szz_pi_lowest_pole": 0.10897277184476106,
+      "singlet_triplet_gap": 0.10897277184476106,
+      "L_times_gap": 2.1794554368952213,
+      "internal_consistency": null
+    }
+  ],
+  "fits": {
+    "spin_all": {
+      "label": "Hubbard spin gap vs 1/L (all sizes)",
+      "sizes": [
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0
+      ],
+      "values": [
+        0.3323165434020613,
+        0.34856627196367873,
+        0.23958351350636709,
+        0.19955899721754464,
+        0.16634621681066797
+      ],
+      "model": "y = c0 + c1/L",
+      "c0_intercept": 0.10660069047670677,
+      "c0_se": 0.05581468215713634,
+      "c1_slope": 1.0391284007128083,
+      "c1_se": 0.3560826289783336,
+      "rmse": 0.047403441935849853,
+      "r2": 0.7394934124028357,
+      "dof": 3
+    },
+    "charge_all": {
+      "label": "Hubbard charge gap vs 1/L (all sizes)",
+      "sizes": [
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0
+      ],
+      "values": [
+        5.991359275870341,
+        5.3581267870760465,
+        5.185842186671638,
+        5.022235267052238,
+        4.968759359857588
+      ],
+      "model": "y = c0 + c1/L",
+      "c0_intercept": 4.412945559215309,
+      "c0_se": 0.06787392545731014,
+      "c1_slope": 6.153924248898346,
+      "c1_se": 0.4330173510237983,
+      "rmse": 0.057645364266621105,
+      "r2": 0.9853639385321582,
+      "dof": 3,
+      "quadratic": {
+        "model": "y = c0 + c1/L + c2/L^2",
+        "c0_intercept": 4.7641431146087685,
+        "c0_se": 0.12781366801929675,
+        "c1": 1.2835234708506822,
+        "c1_se": 1.7137660831895483,
+        "c2": 14.449270850473997,
+        "c2_se": 5.036502550599774,
+        "rmse": 0.03121573441913383,
+        "r2": 0.9971387796569209,
+        "dof": 2
+      }
+    },
+    "heisenberg_all": {
+      "label": "Heisenberg spin gap vs 1/L (all sizes)",
+      "sizes": [
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0
+      ],
+      "values": [
+        0.49999999999999806,
+        0.3423708244910513,
+        0.2613371725463036,
+        0.21161950387669037,
+        0.17792375685137785
+      ],
+      "model": "y = c0 + c1/L",
+      "c0_intercept": 0.018861128285044004,
+      "c0_se": 0.0021415955109860044,
+      "c1_slope": 1.9295801604692435,
+      "c1_se": 0.01366280215684417,
+      "rmse": 0.0018188583098850766,
+      "r2": 0.9998496131555984,
+      "dof": 3
+    },
+    "heisenberg_extended": {
+      "label": "Heisenberg spin gap vs 1/L (control extended by sparse ED)",
+      "sizes": [
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "values": [
+        0.49999999999999806,
+        0.3423708244910513,
+        0.2613371725463036,
+        0.21161950387669037,
+        0.17792375685137785,
+        0.1535528547842122,
+        0.13509484112516024,
+        0.12062472494530763,
+        0.10897277184476106
+      ],
+      "model": "y = c0 + c1/L",
+      "c0_intercept": 0.013724556526558547,
+      "c0_se": 0.0016186029621131043,
+      "c1_slope": 1.957497680785478,
+      "c1_se": 0.013097908694389563,
+      "rmse": 0.0024180841296131046,
+      "r2": 0.9996866978622527,
+      "dof": 7
+    },
+    "heisenberg_extended_L6plus": {
+      "label": "Heisenberg spin gap vs 1/L (control extended, L >= 6)",
+      "sizes": [
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "values": [
+        0.3423708244910513,
+        0.2613371725463036,
+        0.21161950387669037,
+        0.17792375685137785,
+        0.1535528547842122,
+        0.13509484112516024,
+        0.12062472494530763,
+        0.10897277184476106
+      ],
+      "model": "y = c0 + c1/L",
+      "c0_intercept": 0.010116395820657244,
+      "c0_se": 0.0010491718771253227,
+      "c1_slope": 2.002235221009169,
+      "c1_se": 0.010839997688348146,
+      "rmse": 0.0011436576095677018,
+      "r2": 0.9998241659150631,
+      "dof": 6
+    },
+    "spin_L6plus": {
+      "label": "Hubbard spin gap vs 1/L (L >= 6)",
+      "sizes": [
+        6.0,
+        8.0,
+        10.0,
+        12.0
+      ],
+      "values": [
+        0.34856627196367873,
+        0.23958351350636709,
+        0.19955899721754464,
+        0.16634621681066797
+      ],
+      "model": "y = c0 + c1/L",
+      "c0_intercept": -0.01960950309001046,
+      "c0_se": 0.020421078511657784,
+      "c1_slope": 2.173669498649053,
+      "c1_se": 0.16625703401220443,
+      "rmse": 0.010437144961017048,
+      "r2": 0.988434855017247,
+      "dof": 2
+    },
+    "charge_L6plus": {
+      "label": "Hubbard charge gap vs 1/L (L >= 6)",
+      "sizes": [
+        6.0,
+        8.0,
+        10.0,
+        12.0
+      ],
+      "values": [
+        5.3581267870760465,
+        5.185842186671638,
+        5.022235267052238,
+        4.968759359857588
+      ],
+      "model": "y = c0 + c1/L",
+      "c0_intercept": 4.560889886862896,
+      "c0_se": 0.04386815767007473,
+      "c1_slope": 4.824008533065114,
+      "c1_se": 0.3571500779277051,
+      "rmse": 0.022420868736876175,
+      "r2": 0.9891562311707871,
+      "dof": 2,
+      "quadratic": {
+        "model": "y = c0 + c1/L + c2/L^2",
+        "c0_intercept": 4.4610705380138205,
+        "c0_se": 0.3084448800713043,
+        "c1": 6.515629885722418,
+        "c1_se": 5.153283722383231,
+        "c2": -6.698613991333996,
+        "c2_se": 20.317774991043194,
+        "rmse": 0.030113483355016266,
+        "r2": 0.9902193577707042,
+        "dof": 1
+      }
+    },
+    "heisenberg_L6plus": {
+      "label": "Heisenberg spin gap vs 1/L (L >= 6)",
+      "sizes": [
+        6.0,
+        8.0,
+        10.0,
+        12.0
+      ],
+      "values": [
+        0.3423708244910513,
+        0.2613371725463036,
+        0.21161950387669037,
+        0.17792375685137785
+      ],
+      "model": "y = c0 + c1/L",
+      "c0_intercept": 0.014207218036665286,
+      "c0_se": 0.0014209110807849735,
+      "c1_slope": 1.9714155486710776,
+      "c1_se": 0.011568265689372144,
+      "rmse": 0.000726222903379076,
+      "r2": 0.9999311379032473,
+      "dof": 2
+    }
+  },
+  "L_times_gap": {
+    "model": "L*gap = d0 + d1*L",
+    "sizes": [
+      6.0,
+      8.0,
+      10.0,
+      12.0
+    ],
+    "spin": {
+      "d0": 2.0930158301510664,
+      "d0_se": 0.16842213949234308,
+      "d1": -0.01034036130188307,
+      "d1_se": 0.0181614263703157,
+      "r2": 0.13947738912695973,
+      "d1_z": -0.5693584353475715
+    },
+    "charge": {
+      "d0": 4.846639317066605,
+      "d0_se": 0.4189363895234991,
+      "d1": 4.5582334982326795,
+      "d1_se": 0.045175072678154814,
+      "r2": 0.9998035964771528,
+      "d1_z": 100.90151997557034
+    }
+  },
+  "reorthogonalization_control": [
+    {
+      "reorth": {
+        "n_lanczos": 200,
+        "lowest_pole": 0.23958351350637486,
+        "lowest_relweight": 0.8893959735952489,
+        "n_ritz": 200,
+        "n_ghost_1e8": 0,
+        "n_ghost_1e4": 0,
+        "min_gap_between_ritz": 0.0059906951939225905
+      },
+      "no_reorth": {
+        "n_lanczos": 200,
+        "lowest_pole": 0.23958351350636148,
+        "lowest_relweight": 0.8888564207514408,
+        "n_ritz": 200,
+        "n_ghost_1e8": 6,
+        "n_ghost_1e4": 7,
+        "min_gap_between_ritz": 0.0
+      },
+      "lowest_pole_difference": -1.3378187446733136e-14,
+      "nl_fixed": 200,
+      "L": 8
+    },
+    {
+      "reorth": {
+        "n_lanczos": 200,
+        "lowest_pole": 0.1995589972158986,
+        "lowest_relweight": 0.8564751961798135,
+        "n_ritz": 200,
+        "n_ghost_1e8": 0,
+        "n_ghost_1e4": 0,
+        "min_gap_between_ritz": 0.004504447595372829
+      },
+      "no_reorth": {
+        "n_lanczos": 200,
+        "lowest_pole": 0.19955899721589426,
+        "lowest_relweight": 0.000560659188095882,
+        "n_ritz": 200,
+        "n_ghost_1e8": 1,
+        "n_ghost_1e4": 1,
+        "min_gap_between_ritz": 4.551914400963142e-15
+      },
+      "lowest_pole_difference": -4.3298697960381105e-15,
+      "nl_fixed": 200,
+      "L": 10
+    }
+  ],
+  "separation_of_the_two_channels": {
+    "fit_used_spin": "spin_L6plus",
+    "fit_used_charge": "charge_L6plus",
+    "spin_intercept": -0.01960950309001046,
+    "spin_intercept_se": 0.020421078511657784,
+    "charge_intercept": 4.560889886862896,
+    "charge_intercept_se": 0.04386815767007473,
+    "lieb_wu_exact": 4.679517107463974,
+    "charge_intercept_minus_lieb_wu": -0.11862722060107789,
+    "z_spin_intercept_vs_zero": 0.9602579549760794,
+    "z_intercept_separation": 94.66113584435091,
+    "statement": "spin gap extrapolates to zero (intercept consistent with 0 at 1.0 sigma from the fit) while the charge gap saturates at 4.5609 t; the two intercepts separate at 94.7 sigma"
+  },
+  "spin_channel_control": {
+    "hubbard_spin_gap": [
+      0.3323165434020613,
+      0.34856627196367873,
+      0.23958351350636709,
+      0.19955899721754464,
+      0.16634621681066797
+    ],
+    "heisenberg_spin_gap": [
+      0.49999999999999806,
+      0.3423708244910513,
+      0.2613371725463036,
+      0.21161950387669037,
+      0.17792375685137785
+    ],
+    "ratio_hubbard_over_heisenberg": [
+      0.6646330868041251,
+      1.018095722618413,
+      0.9167601806203738,
+      0.9430085297517126,
+      0.9349297685391122
+    ],
+    "abs_difference": [
+      -0.16768345659793676,
+      0.006195447472627458,
+      -0.021753659039936535,
+      -0.012060506659145737,
+      -0.011577540040709877
+    ],
+    "max_abs_difference": 0.16768345659793676,
+    "note": "Heisenberg here is the PURE spin ring with J = 4t^2/U, solved by dense ED in a different sector and a different code path; the strong-coupling correction to J is O(t^4/U^3), so a residual difference of a few percent at U/t=8 is expected and is itself evidence that the Hubbard number is the spin-sector gap."
+  }
+}

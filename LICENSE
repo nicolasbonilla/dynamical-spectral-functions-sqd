@@ -25,12 +25,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ================================================================================
-PAPER  (paper/ — text, figures, tables)  —  CC BY 4.0
+PAPER, DATA AND DOCUMENTATION  —  CC BY 4.0
+  paper/  (text, figures, tables)
+  data/   (every deposited dataset)
+  docs/   (the reproduction documentation)
 ================================================================================
 
-The manuscript, its figures and tables are licensed under the Creative Commons
-Attribution 4.0 International License (CC BY 4.0):
+The manuscript, its figures and tables, the deposited datasets in data/ and the
+documentation in docs/ are licensed under the Creative Commons Attribution 4.0
+International License (CC BY 4.0):
 https://creativecommons.org/licenses/by/4.0/
 
 You are free to share and adapt the material for any purpose, provided you give
 appropriate credit (cite the paper; see CITATION.cff).
+
+--------------------------------------------------------------------------------
+Scope note added 2026-09-18.  Until this date `data/` fell under NEITHER heading:
+the code clause names *.py, notebooks/, Makefile and .github/, and the paper clause
+named only paper/.  A Data Availability Statement that said "the data ... under
+CC BY 4.0" therefore claimed a licence this file did not grant.  The datasets are
+now named explicitly.  Nothing was made more restrictive.

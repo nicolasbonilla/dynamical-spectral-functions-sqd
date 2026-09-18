@@ -3,6 +3,17 @@ r"""Trim the 19 PyMOL orbital PNGs to content and emit a NATIVE TikZ gallery (fi
 with the paper's lmodern font and shared identity (coral accent on the fermionic-magic axis, colourblind-safe
 class colours matching Fig.~molsuite, readable type). Magic shown as a per-molecule bar (length = F1/F1max,
 colour = bonding regime). Data from n19_suite.json (FCI-verified). Runs natively (relative paths)."""
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
 import json, os
 from PIL import Image
 

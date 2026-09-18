@@ -9,9 +9,72 @@ of the frontier-orbital response seed phi=c^dag_0|psi0>. The model is trained on
 (instance-transferable features), the classical baseline (Epstein-Nesbet PT1 score) is per-instance and
 untrained. Metric: spectral relative-L1 of A(omega) reconstructed in the top-k configs, at matched k.
 """
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# Eighteen scripts were repaired earlier today because they hard-coded their output
+# under '/w/', the working directory of the Docker container the published runs were
+# made in.  THIS FILE WAS NOT AMONG THEM, and it was broken in a quieter way: it wrote
+# to the RELATIVE path 'data/...', which lands in whatever directory the reader happens
+# to be standing in, and raises FileNotFoundError from anywhere except the repository
+# root.  The Data Availability Statement claims that every deposited computation script
+# writes into the repository's own data/ directory; that sentence was FALSE for this
+# file until now.  Repaired exactly like the other eighteen: the default is computed
+# from THIS FILE's location, and --out overrides it.
+# Paths only -- no physics and no computational default was changed here.
+import os as _os, sys as _sys
+_REPO = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+
+
+def _flag(name):
+    """Value of a `--name VALUE` (or `-n VALUE`) command-line flag, else None."""
+    a = _sys.argv[1:]
+    for f in ('--' + name, '-' + name[0]):
+        if f in a and a.index(f) + 1 < len(a):
+            return a[a.index(f) + 1]
+    return None
+
+
+def _outpath(name, sub='data'):
+    """Absolute path to write `name` to: --out if given, else <repo>/<sub>/<name>."""
+    p = _os.path.abspath(_flag('out') or _os.path.join(_REPO, sub, name))
+    _os.makedirs(_os.path.dirname(p), exist_ok=True)
+    return p
+
+
+def _repopath(name, sub='data'):
+    """Absolute path <repo>/<sub>/<name>.  Never overridden: for a script's SECOND
+    output, which --out (a single flag) cannot address unambiguously."""
+    p = _os.path.abspath(_os.path.join(_REPO, sub, name))
+    _os.makedirs(_os.path.dirname(p), exist_ok=True)
+    return p
+# ---------------------------------------------------------------------------
 import json, time, itertools, numpy as np
+# --- NUMPY_TRAPEZOID_BRIDGE ------------------------------------------------
+# numpy 2.0 ADDED np.trapezoid and REMOVED np.trapz.  Files in this repository use
+# both names, so without this bridge no single numpy version runs the whole deposit:
+# numpy 1.x breaks the files that call trapezoid, numpy 2.x breaks the files that call
+# trapz (this guardian included).  requirements.txt asks for numpy>=1.24; with the
+# bridge that is true again.
+if not hasattr(np, "trapezoid"):
+    np.trapezoid = np.trapz          # numpy < 2.0
+if not hasattr(np, "trapz"):
+    np.trapz = np.trapezoid          # numpy >= 2.0
+# ---------------------------------------------------------------------------
 import scipy.sparse as sp
 from scipy.sparse.linalg import eigsh
+# --- DETERMINISTIC ARPACK START VECTOR (added 2026-09-18, second pass) ------
+# eigsh() with no v0= lets ARPACK draw its own start vector from an UNSEEDED
+# generator, so E0 converges to a slightly different point on every run (the last
+# few digits move) and every quantity derived from it moves with it.  Measured, not
+# hypothetical: three consecutive calls on the same matrix gave
+# -2.0481308860914536 / ...504 / ...522, and in the leakage certificate a small
+# subspace selection moved by 3.2%.  The eigenpair is the same to ARPACK's
+# tolerance -- no physics changes -- but a deposit must be bit-reproducible.
+# Deliberately NOT a numpy global seed: this touches only the ARPACK start vector.
+# The seed 20260918 is the one used by scaling_lanczos.py and the certificate suite.
+def _v0(n):
+    """Fixed, dimension-dependent ARPACK start vector (never orthogonal to the GS)."""
+    return np.random.default_rng(20260918).standard_normal(n)
+# ---------------------------------------------------------------------------
 from sklearn.ensemble import GradientBoostingRegressor
 import gate1_ladder as G
 t0=time.time(); log=lambda *a: print(f"[{time.time()-t0:6.1f}s]",*a,flush=True)
@@ -23,7 +86,7 @@ def instance(L,U,eta=0.15,K=20,dt=0.5,p=0):
     """Return per-config features, true importance, PT1 classical score, and A(omega) machinery."""
     bonds=chain_bonds(L); nup=L//2; ndn=L//2
     H,Su,iu,Sd,idd,Du,Dd=G.build_H(L,U,nup,ndn,bonds)
-    w,v=eigsh(H,k=1,which='SA'); E0=float(w[0]); psi=v[:,0].reshape(Du,Dd)
+    w,v=eigsh(H,k=1,which='SA',v0=_v0(H.shape[0])); E0=float(w[0]); psi=v[:,0].reshape(Du,Dd)
     # seed phi = c^dag_{p,up}|psi0> in (nup+1,ndn)
     Su1,iu1=G.strings(L,nup+1); r=[];c=[];val=[]
     for a,m in enumerate(Su):
@@ -106,5 +169,5 @@ if __name__=='__main__':
         log(f"  f={f}: amortized {am.mean():.3f}+-{am.std():.3f}  classical {cl.mean():.3f}+-{cl.std():.3f}  "
             f"delta {d.mean():+.3f}+-{d.std():.3f}  -> {verdict}")
     json.dump({'note':'G2 amortized recovery: train-once-across-family vs per-instance classical (Epstein-Nesbet), leave-one-out over 6 Hubbard instances. metric=spectral rel-L1 at matched subspace fraction. delta=amort-class (positive => amortized worse).',
-               'family':FAM,'per_fold':results,'summary':summary},open('data/amortized_recovery.json','w'),indent=1)
+               'family':FAM,'per_fold':results,'summary':summary},open(_outpath('amortized_recovery.json'),'w'),indent=1)
     log("WROTE amortized_recovery.json")

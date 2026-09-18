@@ -1,6 +1,17 @@
 # -*- coding: utf-8 -*-
 r"""Native fig_noise from the REAL noise_spectral.json (L=6 Hubbard, per-qubit bit-flip channel):
 spectral rel-L1 vs bit-flip rate eps, naive post-selection vs S-CoRe configuration recovery."""
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
 import json
 d=json.load(open('data/noise_spectral.json'))
 eps=d['eps']

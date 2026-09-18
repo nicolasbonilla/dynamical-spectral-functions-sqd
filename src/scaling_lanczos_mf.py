@@ -7,8 +7,31 @@ Usage:  python scaling_lanczos_mf.py <L> <stage>       e.g.  python scaling_lanc
 Memory economy: small eigsh ncv; memory-light Krylov exponential propagator (few vectors, substeps).
 Validated on L=10 (must reproduce frac=0.3625 of the dense/expm reference) before trusting L=14."""
 import json, sys, os, time, gc, numpy as np
+# --- NUMPY_TRAPEZOID_BRIDGE ------------------------------------------------
+# numpy 2.0 ADDED np.trapezoid and REMOVED np.trapz.  Files in this repository use
+# both names, so without this bridge no single numpy version runs the whole deposit:
+# numpy 1.x breaks the files that call trapezoid, numpy 2.x breaks the files that call
+# trapz (this guardian included).  requirements.txt asks for numpy>=1.24; with the
+# bridge that is true again.
+if not hasattr(np, "trapezoid"):
+    np.trapezoid = np.trapz          # numpy < 2.0
+if not hasattr(np, "trapz"):
+    np.trapz = np.trapezoid          # numpy >= 2.0
+# ---------------------------------------------------------------------------
 import scipy.sparse as sp
 from scipy.sparse.linalg import eigsh, LinearOperator
+# --- DETERMINISTIC ARPACK START VECTOR (added 2026-09-18) -------------------
+# eigsh() with no v0= lets ARPACK draw its own random start vector from an
+# unseeded generator.  E0 then converges to a slightly different point every run
+# (the last few digits move), and every rel-L1 downstream moves with it: two runs
+# of this script on the same machine did NOT agree digit-for-digit.  Nothing about
+# the physics changes -- the eigenpair is the same to ARPACK's tolerance -- but the
+# deposit must be bit-reproducible, so the start vector is now fixed.
+# Deliberately NOT a numpy global seed: this touches only the ARPACK start vector.
+def _v0(n):
+    """Fixed, dimension-dependent ARPACK start vector (never orthogonal to the GS)."""
+    return np.random.default_rng(20260918).standard_normal(n)
+# ---------------------------------------------------------------------------
 from scipy.linalg import expm as dense_expm
 import akw_lanczos as AK
 t0=time.time(); log=lambda *a: print(f"[{time.time()-t0:7.1f}s]",*a,flush=True)
@@ -65,7 +88,7 @@ def stage_gs(L,U=8.0):
     mv,dim,Du,Dd,diagU,(Su,iu)=sectorHmv(L,U,nup,nd)
     H=LinearOperator((dim,dim),matvec=mv,dtype=float)
     ncv=max(8,2*1+2)   # tiny Krylov basis for the k=1 ground state -> low memory
-    w,v=eigsh(H,k=1,which='SA',ncv=12,maxiter=5000,tol=1e-9)
+    w,v=eigsh(H,k=1,which='SA',ncv=12,maxiter=5000,tol=1e-9,v0=_v0(dim))
     E0=float(w[0]); psi=v[:,0].copy(); del v; gc.collect()
     psi_mat=psi.reshape(Du,Dd)
     g=np.linalg.eigvalsh(onerdm_up(psi_mat,Su,iu,L)); g=np.clip(g,0,1); FAF=float(8.0*np.sum(g*(1-g)))
@@ -80,8 +103,8 @@ def stage_exact(L,U=8.0):
     mv1,dim1,Du1,Dd1,diagU1,_=sectorHmv(L,U,nup+1,nd); nS=dim1
     log(f"L={L} EXACT: (N+1) dim={nS}  seed_norm2={np.vdot(seed,seed).real:.4f}  Haydock ...")
     H1=LinearOperator((nS,nS),matvec=mv1,dtype=float)
-    emin=float(eigsh(H1,k=1,which='SA',ncv=10,return_eigenvectors=False,tol=1e-6)[0])
-    emax=float(eigsh(H1,k=1,which='LA',ncv=10,return_eigenvectors=False,tol=1e-6)[0])
+    emin=float(eigsh(H1,k=1,which='SA',ncv=10,return_eigenvectors=False,tol=1e-6,v0=_v0(H1.shape[0]))[0])
+    emax=float(eigsh(H1,k=1,which='LA',ncv=10,return_eigenvectors=False,tol=1e-6,v0=_v0(H1.shape[0]))[0])
     grid=np.linspace(emin-E0-1.0,emax-E0+1.0,ngrid)
     A_ex=(-haydock_grid(mv1,seed,E0,grid).imag/np.pi); nrm=float(np.trapz(np.abs(A_ex),grid))
     np.savez(f'{CK}/L{L}_exact.npz',E0=E0,seed=seed,grid=grid,A_ex=A_ex,nrm=nrm,nS=nS,nup=nup,nd=nd)

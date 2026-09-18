@@ -2416,5 +2416,5 @@
   8.568174111132492e-05,
   8.535903395730071e-05
  ],
- "provenance": "A_hw/A_local are the REAL saved arrays from Spectral_Heron_READY.ipynb (Google Drive spectral_heron_result.json), job d9s16avpemts73ct6g8g; A_hw==A_exact byte-for-byte because the recovered subspace spans the full |S|=300 (N+/-1) sector (coverage->exact by construction, NOT a fidelity claim)."
+ "provenance": "A_hw/A_local are the REAL saved arrays from Spectral_Heron_READY.ipynb (Google Drive spectral_heron_result.json), job d9s16avpemts73ct6g8g; A_hw agrees with A_exact to machine precision (max|diff| = 7.9e-15, rel-L1 = 8.9e-15; the stored hw_relL1 = 0.0 is that number rounded, NOT an exact identity -- the two arrays are not byte-identical) because the recovered subspace spans the full |S|=300 (N+/-1) sector (coverage->exact by construction, NOT a fidelity claim)."
 }

@@ -16,6 +16,48 @@ We compute, on that SAME provably-simulable family, the resources our paper trac
    neither FAF_1 nor raw |S| certifies cost; the consistent governor (bond dimension) stays O(1) exactly
    where the state is provably easy. Writes apsg_witness.json.
 """
+# --- DEPOSIT PATHS (repaired 2026-09-18) -----------------------------------
+# This script used to hard-code its output under '/w/'.  /w was the working
+# directory of the Docker container the published runs were made in; outside that
+# container the documented pipeline wrote nothing a reader could find, and data/
+# was in fact repopulated BY HAND.  That made `make data` and the README recipe
+# untrue.  Repaired: every path is now an ARGUMENT with a default RELATIVE TO THIS
+# REPOSITORY, so a clean clone reproduces into its own tree.
+#     read   <repo>/data/<name>      override with  --in  PATH
+#     write  <repo>/data/<name>      override with  --out PATH
+#     write  <repo>/build/<name>     for by-products that are NOT part of the deposit
+# Paths only -- no physics and no computational default was changed here.
+import os as _os, sys as _sys
+_REPO = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+
+def _flag(name):
+    """Value of a `--name VALUE` (or `-n VALUE`) command-line flag, else None."""
+    a = _sys.argv[1:]
+    for f in ('--' + name, '-' + name[0]):
+        if f in a and a.index(f) + 1 < len(a):
+            return a[a.index(f) + 1]
+    return None
+
+def _argv_positional():
+    """argv[1:] with the --in/--out flags and their values removed."""
+    a, keep, i = _sys.argv[1:], [], 0
+    while i < len(a):
+        if a[i] in ('--out', '-o', '--in', '-i'):
+            i += 2
+            continue
+        keep.append(a[i]); i += 1
+    return keep
+
+def _outpath(name, sub='data'):
+    """Absolute path to write `name` to: --out if given, else <repo>/<sub>/<name>."""
+    p = _os.path.abspath(_flag('out') or _os.path.join(_REPO, sub, name))
+    _os.makedirs(_os.path.dirname(p), exist_ok=True)
+    return p
+
+def _inpath(name, sub='data'):
+    """Absolute path to read `name` from: --in if given, else <repo>/<sub>/<name>."""
+    return _os.path.abspath(_flag('in') or _os.path.join(_REPO, sub, name))
+# ---------------------------------------------------------------------------
 import json, numpy as np
 import n19_suite as N   # reuse jw_ops / faf machinery
 
@@ -83,5 +125,5 @@ if __name__=='__main__':
         F=fk_all(psi,C,Cd,M,kmax=2); Nu=n_unpaired(psi,C,Cd,6); S=support(psi); chi,_=chi_cut(psi,M,6)
         out['rows'].append(dict(K=3,theta=f'{t}pi',FAF1=F[1],twoNu=2*Nu,F2=F[2],Sdet=S,chi=chi))
         print(f"{t:8.2f} {F[1]:8.4f} {2*Nu:8.4f} {F[2]:8.4f} {S:6d} {chi:5d}")
-    json.dump(out,open('/w/apsg_witness.json','w'),indent=1)
+    json.dump(out,open(_outpath('apsg_witness.json'),'w'),indent=1)
     print("\nWROTE apsg_witness.json")

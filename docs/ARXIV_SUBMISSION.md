@@ -1,5 +1,14 @@
 # arXiv submission — the preprint is ready
 
+> **Scope of this document (added 2026-09-18).** Everything below describes the bundle that was posted
+> as **arXiv v2** (39 pp). It is *not* a description of the current working tree. Nine files in
+> `paper/` have moved ahead of `paper/arxiv-submission.tar.gz` since v2 was posted and two more have
+> been deleted from the tree altogether, and `paper/main.pdf` now builds to **40 pp**. Run
+> `python src/check_tarball.py` for the current comparison rather than trusting this sentence — it was
+> wrong once already. The bundle still carries the two fabricated rows of `figs/sqw_edges.dat`, so it
+> must be rebuilt, and this page re-verified, before any new submission. See
+> [`KNOWN_DISCREPANCIES.md`](KNOWN_DISCREPANCIES.md) §7.
+
 The upload-ready source bundle is [`../paper/arxiv-submission.tar.gz`](../paper/arxiv-submission.tar.gz)
 (~4.5 MB, well under arXiv's 50 MB limit). It has been verified to compile **from a clean extraction**
 with `pdflatex` alone — the exact process arXiv's AutoTeX runs.

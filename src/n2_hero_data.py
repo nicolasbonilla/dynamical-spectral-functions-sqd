@@ -7,6 +7,48 @@ energy-checked vs FCI at every R):
   * the fermionic magic FAF, the determinant cost n99, the bipartite entanglement S_ent.
 Writes n2_hero.json. Reuses n19_suite.py (jw_ops, build_H, faf, ent, n99, get_ops).
 """
+# --- DEPOSIT PATHS (repaired 2026-09-18) -----------------------------------
+# This script used to hard-code its output under '/w/'.  /w was the working
+# directory of the Docker container the published runs were made in; outside that
+# container the documented pipeline wrote nothing a reader could find, and data/
+# was in fact repopulated BY HAND.  That made `make data` and the README recipe
+# untrue.  Repaired: every path is now an ARGUMENT with a default RELATIVE TO THIS
+# REPOSITORY, so a clean clone reproduces into its own tree.
+#     read   <repo>/data/<name>      override with  --in  PATH
+#     write  <repo>/data/<name>      override with  --out PATH
+#     write  <repo>/build/<name>     for by-products that are NOT part of the deposit
+# Paths only -- no physics and no computational default was changed here.
+import os as _os, sys as _sys
+_REPO = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+
+def _flag(name):
+    """Value of a `--name VALUE` (or `-n VALUE`) command-line flag, else None."""
+    a = _sys.argv[1:]
+    for f in ('--' + name, '-' + name[0]):
+        if f in a and a.index(f) + 1 < len(a):
+            return a[a.index(f) + 1]
+    return None
+
+def _argv_positional():
+    """argv[1:] with the --in/--out flags and their values removed."""
+    a, keep, i = _sys.argv[1:], [], 0
+    while i < len(a):
+        if a[i] in ('--out', '-o', '--in', '-i'):
+            i += 2
+            continue
+        keep.append(a[i]); i += 1
+    return keep
+
+def _outpath(name, sub='data'):
+    """Absolute path to write `name` to: --out if given, else <repo>/<sub>/<name>."""
+    p = _os.path.abspath(_flag('out') or _os.path.join(_REPO, sub, name))
+    _os.makedirs(_os.path.dirname(p), exist_ok=True)
+    return p
+
+def _inpath(name, sub='data'):
+    """Absolute path to read `name` from: --in if given, else <repo>/<sub>/<name>."""
+    return _os.path.abspath(_flag('in') or _os.path.join(_REPO, sub, name))
+# ---------------------------------------------------------------------------
 import json, time, numpy as np
 import n19_suite as NS
 from pyscf import gto, scf, mcscf, ao2mo, fci
@@ -52,5 +94,5 @@ for R in Rgrid:
     out['points'].append({'R':R,'E0':float(E0),'dFCI':float(abs(E0-e_fci)),'FAF':F,'S_ent':Sent,
                           'n99':nd,'Nu':Nu,'nocc':nocc.tolist(),'sumrule':wnorm,'A':A.tolist(),'npeaks':npk})
     log(f"R={R:.2f}: dFCI={abs(E0-e_fci):.1e} FAF={F:.2f} Nu={Nu:.2f} S={Sent:.2f} peaks~{npk} sum={wnorm:.3f}")
-json.dump(out,open('/w/n2_hero.json','w'))
+json.dump(out,open(_outpath('n2_hero.json'),'w'))
 log("WROTE n2_hero.json")

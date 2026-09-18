@@ -1,7 +1,13 @@
 # FILE INDEX — every file in this repository, described
 
 Grouped by role. For *how to run* each script, see [`REPRODUCE.md`](REPRODUCE.md); for *which data feeds
-which figure*, see [`FIGURE_PROVENANCE.md`](FIGURE_PROVENANCE.md).
+which figure*, see [`FIGURE_PROVENANCE.md`](FIGURE_PROVENANCE.md); for *where the deposit and the code
+disagree*, see [`KNOWN_DISCREPANCIES.md`](KNOWN_DISCREPANCIES.md).
+
+The **figure-source inventory** at the bottom of this file states, for each of the twenty figures,
+whether it enters the manuscript as a compiled PDF or as a `\input` fragment, where its source lives,
+and which `.dat` files are read by nothing inside this deposit. Read it before concluding that a file
+is missing or unused.
 
 ---
 
@@ -22,8 +28,8 @@ which figure*, see [`FIGURE_PROVENANCE.md`](FIGURE_PROVENANCE.md).
 | `bibliography.tex` | Manual `thebibliography` (arXiv-safe; no external `.bib`/`.bbl` needed). |
 | `figs/*.tex` | Native pgfplots fragments (`\input`) — inline coordinates, lmodern fonts. |
 | `figs/*.pdf` | Vector figure PDFs (also native pgfplots, compiled from `figs/*.tex` standalones or the raster+axes files). |
-| `figs/*.dat` | Plotted data tables read by the fragments (`aw_method.dat`, `bench_U*.dat`, `sqw_edges.dat`, …). |
-| `main.pdf` | The compiled preprint (39 pp). |
+| `figs/*.dat` | Plotted data tables. **Only two of the twelve** (`aw_method.dat`, `heron_hot.dat`) are read by a fragment that is itself in this deposit; the rest are read by standalone `.tex` sources kept outside it. See the figure-source inventory below. |
+| `main.pdf` | The compiled preprint. **40 pp** as it stands in this tree (arXiv v2, and `paper/arxiv-submission.tar.gz`, are 39 pp: the working tree carries repairs made after v2 was posted). Rebuilt and verified 2026-09-18: 40 pages, 20 figures, 0 errors, 0 undefined references. |
 
 ---
 
@@ -46,6 +52,8 @@ All scripts live in [`../src/`](../src/) and are run **from the repository root*
 | `sampled_akw.py` | **Sampled-vs-exact `A(k,ω)`** (Fig. 5) — the genuine bitstring-sampled reconstruction. |
 | `sqw_field.py` / `recolor_akw_v2.py` | Perceptual "hot" raster fields for the `S(q,ω)` / `A(k,ω)` colormaps (data-faithful). |
 | `spectral_validation_max.py` | Max-level validation of the sampled `A(ω)` method (Hubbard L=6, U/t=8). |
+| `charge_gap_ed.py` | Chemical potentials μ⁺, μ⁻ and the charge (Mott) gap Δ of the half-filled Hubbard ring by exact sector diagonalization, L=6,8,10,12. Closes a hole: until 2026-09-18 **no script computed the 4.97 t the manuscript prints**. → `data/charge_gap.json`. |
+| `make_sqw_edges.py` | Generator of `paper/figs/sqw_edges.dat` (band edges + peak of `S(q,ω)`). Until 2026-09-18 that file **had no generator anywhere**, and `REPRODUCE.md:38` misattributed it to `sqw_lanczos.py`. → `data/sqw_edges_provenance.json`. |
 | `_maxrigor.py` | Cross-checks: first-moment sum rule, peak dispersion, Haydock convergence. |
 
 ### Molecular fermionic-magic suite
@@ -126,12 +134,88 @@ The two hardware notebooks have the API **token and instance CRN removed** (plac
 | File | Purpose |
 |---|---|
 | `README.md` | Front page + figure gallery + quick start. |
-| `src/verify.py` | Fast (seconds, numpy/scipy-only) reproducibility check: `F₁(L=6)` for BOTH boundary conditions (open chain 9.6047, periodic ring 9.3851) + the geminal witness; prints PASS/FAIL. What CI runs. |
+| `src/verify.py` | **The adversarial guardian** (~15 s, numpy/scipy only). Recomputes the half-filled Hubbard ground states for BOTH boundary conditions (open chain 9.6047, periodic ring 9.3851) and the geminal witness from first principles, then checks ≈4 900 numeric assertions across `data/*.json`, `paper/*.tex` (the abstract included), `paper/figs/*.tex` and `paper/figs/*.dat` against them. Exits non-zero and names the defect. `[XFAIL]` lines are registered open defects (`KNOWN_OPEN`) and open claims (`CLAIMS_OPEN`) — they do not set the exit code and they are the retraction agenda for v3. `--fast` is for editing loops and **certifies nothing** (it exits 3). |
+| `src/check_figures.py` | Regenerates every data-driven figure fragment in a throw-away tree and diffs it against the committed one; writes nothing. This is what makes `make figures` a checked promise instead of a comment. |
+| `src/check_tarball.py` | Compares `paper/arxiv-submission.tar.gz` (frozen arXiv v2) with the current `paper/` tree, so no document has to carry a hand-written count. |
 | `src/build_repro_notebook.py` | Assembles `notebooks/00_Reproduce_Everything.ipynb` from source (the notebook is generated, not hand-edited). |
 | `docs/REPRODUCE.md` | Figure/number → script → command. |
 | `docs/FIGURE_PROVENANCE.md` | Figure → data-source → job-id single source of truth + stale-file list. |
+| `docs/KNOWN_DISCREPANCIES.md` | Every place where running a committed script does **not** reproduce the deposit, repaired or not. **Opens with a banner about `paper/arxiv-submission.tar.gz`, which still contains two fabricated data rows and must never be uploaded as v3.** |
+| `docs/DATA_AVAILABILITY.md` | The Data Availability Statement drafted for Physical Review A, plus the audit that licenses each of its sentences and the list of things it deliberately does **not** claim. Added 2026-09-18. |
 | `requirements.txt` | Python dependencies. |
-| `Makefile` | `make paper` / `make figures` / `make verify`. |
+| `Makefile` | `make verify` / `make check-figures` / `make figures` / `make data` / `make paper` / `make ci`. Measured results for each target are in `KNOWN_DISCREPANCIES.md` §10. |
 | `CITATION.cff` | Machine-readable citation. |
 | `LICENSE` | MIT (code) + CC-BY-4.0 (paper). |
-| `.github/workflows/ci.yml` | CI: compile the paper + a computation smoke test. |
+| `.github/workflows/ci.yml` | CI: two jobs — `python src/verify.py` (the guardian) and `make check-figures`. **Until 2026-09-18 this file was listed in `.gitignore`, i.e. it was not in the repository at all and had never run.** It is tracked now; it will execute for the first time when the branch carrying it is pushed (`KNOWN_DISCREPANCIES.md` §15). |
+| `build/` | Scratch directory for by-products that are **not** part of the deposit (`nonfree.txt`, intermediate rasters). Created on demand, git-ignored. |
+
+---
+
+## Figure-source inventory — what a referee can and cannot recompile
+
+*Audited 2026-09-18 against the actual `\input` / `\includegraphics` calls in `paper/*.tex`.*
+
+Ten of the twenty figures enter the manuscript as a **compiled PDF**; ten enter as a native pgfplots
+**`\input` fragment**. For the ten PDFs the standalone `.tex` source is **not in this deposit**: eight
+of them live in the author's `work/notes/` tree, and two have no `.tex` anywhere but are rewritten by a
+deposited generator. This table says exactly which is which, so that a missing file is never mistaken
+for a lost one.
+
+`enters as` — `PDF` = `\includegraphics`, `\input` = native fragment compiled with the paper.
+`source in deposit?` — whether the file that produces the figure body ships here.
+
+| # | body ref | enters as | file in `paper/figs/` | generator in `src/` | source in deposit? | where the source is |
+|---|---|---|---|---|---|---|
+| 1 | fig:decoupling | `\input` | `fig_decoupling_native.tex` | `make_decoupling_native.py` | **yes** | — |
+| 2 | fig:master | `\input` | `fig_resource_master_native.tex` | `make_resource_master_fig.py` | **yes** | — |
+| 3 | fig:method | `\input` | `fig_method_native_frag.tex` | `make_method_fig_max.py` | **yes** | reads `figs/aw_method.dat` |
+| 4 | fig:lattice | PDF | `fig_akw_native.pdf` | `recolor_akw_v2.py` (wrote to `/w/` until 2026-09-18, now `build/`; **but neither of its two inputs is deposited**, so it cannot run on a clean clone — `KNOWN_DISCREPANCIES.md` §13) | **no** | `work/notes/fig_akw_v2_L12.tex` |
+| 5 | fig:akwsampled | `\input` | `fig_akw_sampled_native.tex` | `make_akw_sampled_fig.py` | **yes** | — |
+| 6 | fig:sqw | PDF | `fig_sqw.pdf` | raster by `sqw_field.py` (wrote to `/w/` until 2026-09-18; now reads `data/sqw_L12.json` and writes `build/sqw_field.png`) | **no** | `work/notes/fig_sqw.tex`; reads `figs/sqw_edges.dat` |
+| 7 | fig:spin | PDF | `fig_spinqw.pdf` | raster by `spin_lanczos.py` | **no** | `work/notes/fig_spinqw.tex`; reads `figs/spinqw_edges.dat` |
+| 8 | fig:gallery | PDF | `fig_molecular_gallery.pdf` | `make_gallery_native.py` (writes `fig_gallery_native.tex` into the **cwd**) | **no** | `work/notes/fig_gallery_native.tex`; also needs 19 PyMOL orbital PNGs (`gtrim/*.png`), not deposited |
+| 9 | fig:molsuite | PDF | `fig_molecular_suite.pdf` | `make_magic_suite_fig.py` (writes into the **cwd**) | **no** | `work/notes/fig_magic_suite.tex` |
+| 10 | fig:hero | PDF | `fig_hero.pdf` | `make_hero_fig.py` (writes `fig_hero.tex` into the **cwd**) | **no** — but regenerable | no `.tex` exists anywhere; rerun the generator. Reads `figs/hero_aw.dat`, `figs/hero_res.dat` |
+| 11 | fig:bench | PDF | `fig_benchmark.pdf` | `make_bench_fig.py` (writes into the **cwd**) | **no** | `work/notes/fig_bench_native.tex`; reads `figs/bench_U*.dat` |
+| 12 | fig:scaling | `\input` | `fig_scaling2_native.tex` | ⚠ **none usable** — `make_scaling_fig.py` emits a different two-panel figure and would destroy panel (c); see `KNOWN_DISCREPANCIES.md` §3 | **yes** (hand-maintained) | — |
+| 13 | fig:ladder | `\input` | `fig_ladder_native.tex` | none — hand-maintained from `data/ladder_vs_chain.json` | **yes** (hand-maintained) | — |
+| 14 | fig:circ | PDF | `fig_circuit.pdf` | none (hand-drawn quantikz schematic, no data) | **no** | `work/notes/fig_circuit_native.tex` |
+| 15 | fig:heron | `\input` | `fig_hardware_hero_frag.tex` | `make_hardware_hero.py` | **yes** | reads `figs/heron_hot.dat` |
+| 16 | fig:noise | PDF | `fig_noise_score.pdf` | `make_noise_fig.py` (writes `fig_noise_native.tex` into the **cwd**) | **no** — but regenerable | no `.tex` exists anywhere; rerun the generator. Reads `figs/noise.dat` |
+| 17 | fig:noiserec | `\input` | `fig_noise_recovery_native.tex` | `make_noise_recovery_native.py` | **yes** | — |
+| 18 | fig:gflow | PDF | `fig_gflownet.pdf` | `make_gflow_fig.py` (writes into the **cwd**) | **no** | `work/notes/fig_gflow_native.tex`. Note: its data file `data/gflow.json` has **no generator in `src/`** either |
+| 19 | fig:amort | `\input` | `fig_amort_native.tex` | none — hand-maintained from `data/amortized_recovery.json` | **yes** (hand-maintained) | — |
+| 20 | fig:witness | `\input` | `fig_witness_native.tex` | none — hand-maintained from `data/apsg_witness.json` | **yes** (hand-maintained) | — |
+
+**Summary.** 10 `\input` fragments ship complete; 6 of them have a generator in `src/` and 4
+(Figs. 12, 13, 19, 20) are hand-maintained against a committed `.json`. Of the 10 PDFs, 8 have their
+`.tex` in `work/notes/` and 2 (Figs. 10, 16) have no `.tex` at all but a deposited generator that
+recreates it. Every PDF's *numbers* are in a committed `.json`/`.dat`, which is what
+`FIGURE_PROVENANCE.md` guarantees; what is not guaranteed is that a referee can recompile the ten PDFs.
+
+### `paper/figs/*.dat` — who reads them
+
+| file | read by a fragment **in this deposit**? | read by | written by |
+|---|---|---|---|
+| `aw_method.dat` | **yes** | `fig_method_native_frag.tex` | `make_method_fig_max.py` |
+| `heron_hot.dat` | **yes** | `fig_hardware_hero_frag.tex` | `make_hardware_hero.py` |
+| `bench_U4.0.dat`, `bench_U8.0.dat`, `bench_U12.0.dat` | no | `work/notes/fig_bench_native.tex` | `make_bench_fig.py` |
+| `hero_aw.dat`, `hero_res.dat` | no | the regenerable `fig_hero.tex` | `make_hero_fig.py` |
+| `heron.dat`, `heron_hw.dat` | no | `work/notes/fig_heron_native.tex` (a **superseded** version of Fig. 15) | `make_heron_fig.py` |
+| `noise.dat` | no | the regenerable `fig_noise_native.tex` | `make_noise_fig.py` |
+| `spinqw_edges.dat` | no | `work/notes/fig_spinqw.tex` | `spin_lanczos.py` |
+| `sqw_edges.dat` | no | `work/notes/fig_sqw.tex` | `make_sqw_edges.py` (since 2026-09-18; before that, **nothing**) |
+
+**Deleted 2026-09-18** (read by nothing anywhere, and not regenerable from the deposit):
+`conv_method.dat` (stale single-seed table contradicting `data/method_max.json`) and
+`resource_axis.dat` (orphan of a figure that never entered the paper). Rationale in
+`KNOWN_DISCREPANCIES.md` §8 and in the STALE list of `FIGURE_PROVENANCE.md`.
+
+### Unused PDFs kept in `paper/figs/`
+
+Three compiled artefacts in `paper/figs/` are not referenced by any `\includegraphics` in `paper/`:
+`_method_standalone.pdf` (+ its `_method_standalone.tex`, a wrapper for compiling the Fig. 3 fragment
+on its own), `fig_hardware_hero.pdf` and `heron_spectral.pdf` (earlier standalone builds of the Fig. 15
+panels, superseded by `fig_hardware_hero_frag.tex`). They are harmless but they are not part of the
+build; they have been left in place rather than deleted, because unlike the two `.dat` files above they
+are not in contradiction with anything.

@@ -1,0 +1,271 @@
+{
+ "provenance": {
+  "generated_by": "src/support_witness.py",
+  "generated_utc": "2026-09-18T19:36:17Z",
+  "runtime_seconds": 209.6,
+  "python": "3.11.4",
+  "numpy": "1.26.4",
+  "scipy": "1.13.1",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "engine": "src/akw_lanczos.py build_H_explicit / cdag_map (1D Hubbard ring, PBC)",
+  "model": "1D Hubbard, PBC, half filling, U/t=8.0, t=1.0",
+  "seed_operator": "phi = c^dag_{0,up}|Psi_0> in the (N+1, Sz=+1) sector",
+  "subspace": "S* = supp(phi): no ranking, no argsort, no tie-break; w_S = 1 exactly",
+  "arpack_seed": 20260918,
+  "deterministic": true,
+  "parameters": {
+   "U_over_t": 8.0,
+   "t": 1.0,
+   "sizes": [
+    6,
+    8
+   ],
+   "etas": [
+    0.05,
+    0.1,
+    0.15,
+    0.18,
+    0.25,
+    0.5
+   ],
+   "n_grid": 60001,
+   "window_pad": 12.0,
+   "arpack_seed": 20260918,
+   "amplitude_tolerance": 1e-12
+  },
+  "control_values_reproduced": {
+   "6": {
+    "quantity": "rel-L1 at eta = 0.18 t",
+    "established": 0.431,
+    "recomputed": 0.4310828370779901,
+    "atol": 0.005
+   },
+   "8": {
+    "quantity": "rel-L1 at eta = 0.18 t",
+    "established": 0.327,
+    "recomputed": 0.3271855414486642,
+    "atol": 0.005
+   }
+  },
+  "n_grid": 60001,
+  "window_pad": 12.0,
+  "etas": [
+   0.05,
+   0.1,
+   0.15,
+   0.18,
+   0.25,
+   0.5
+  ],
+  "checks": {
+   "W1": "|S*| == D*(1/2 + 1/L) as an exact integer identity",
+   "W2": "|w_S* - 1| <= 1e-14",
+   "W3": "|phi| outside the combinatorial S* is <= 1e-12 relative to max|phi|; the smallest amplitude inside S* is a diagnostic, not a criterion",
+   "W4": "rel-L1(eta=0.18) reproduces {6: 0.431, 8: 0.327} within 0.005",
+   "W5": "rel-L1 <= 1 + w_S = 2 at every eta",
+   "W6": "Lambda agrees with src/leakage_certificate.py certify() to 1e-8 relative",
+   "W7": "sum-rule deficit at most the analytic Lorentzian tail (2/pi) arctan(eta/PAD), PAD = 12"
+  },
+  "checks_status": "ALL PASS",
+  "replaces": "the withdrawn 'top-phi 70/90/99%' measurement, whose subspaces were padded with amplitude-zero determinants selected by argsort ties (55 of 255 at L=6, FR=0.85; ten tie-breaks gave rel-L1 between 0.272 and 0.409)",
+  "reading": "the weight summand of the Theorem-B bound is identically zero here and the error is still O(1): finite-shot sampling, which only buys weight, cannot buy this error.  Stated as a measured observation, NEVER as a power law."
+ },
+ "results": [
+  {
+   "L": 6,
+   "D": 300,
+   "nS": 200,
+   "frac": 0.6666666666666666,
+   "frac_exact": "1/2 + 1/L",
+   "E0": -2.0481308860914504,
+   "norm_phi2": 0.4999999999999999,
+   "w_S": 1.0000000000000007,
+   "amplitude_gap": {
+    "min_abs_phi_on_S": 0.00023146190037889365,
+    "max_abs_phi_off_S": 0.0,
+    "note": "min_abs_phi_on_S is a DIAGNOSTIC: at L=8 it is 1.3e-17, ARPACK round-off on a structurally zero component. S* is combinatorial, so this number cannot move it."
+   },
+   "table": [
+    {
+     "eta": 0.05,
+     "relL1": 1.1524943138467527,
+     "relL1_windowed": 1.154434844366858,
+     "Lambda_hat_over_eta": 16.108741104468567,
+     "bound_theoremB": 32.217482208937135,
+     "bound_trivial": 2.000000000000001,
+     "certifies": false,
+     "window_loss_rel": 0.0016809355067323177,
+     "window_loss_analytic_bound": 0.0026525670344323174
+    },
+    {
+     "eta": 0.1,
+     "relL1": 0.7574251993673461,
+     "relL1_windowed": 0.7599801260481541,
+     "Lambda_hat_over_eta": 8.062747413029713,
+     "bound_theoremB": 16.125494826059427,
+     "bound_trivial": 2.000000000000001,
+     "certifies": false,
+     "window_loss_rel": 0.00336183354437647,
+     "window_loss_analytic_bound": 0.005305041970106415
+    },
+    {
+     "eta": 0.15,
+     "relL1": 0.5246338403158994,
+     "relL1_windowed": 0.5272927968445688,
+     "Lambda_hat_over_eta": 5.312513621254975,
+     "bound_theoremB": 10.62502724250995,
+     "bound_trivial": 2.000000000000001,
+     "certifies": false,
+     "window_loss_rel": 0.005042656650311007,
+     "window_loss_analytic_bound": 0.007957332727448982
+    },
+    {
+     "eta": 0.18,
+     "relL1": 0.4310828370779901,
+     "relL1_windowed": 0.4337072425251487,
+     "Lambda_hat_over_eta": 4.385375170600089,
+     "bound_theoremB": 8.770750341200179,
+     "bound_trivial": 2.000000000000001,
+     "certifies": false,
+     "window_loss_rel": 0.006051098966848413,
+     "window_loss_analytic_bound": 0.009548580484940897
+    },
+    {
+     "eta": 0.25,
+     "relL1": 0.2897233910675646,
+     "relL1_windowed": 0.292178841095305,
+     "Lambda_hat_over_eta": 3.0807005775873226,
+     "bound_theoremB": 6.161401155174645,
+     "bound_trivial": 2.000000000000001,
+     "certifies": false,
+     "window_loss_rel": 0.008403928287673114,
+     "window_loss_analytic_bound": 0.01326099359980039
+    },
+    {
+     "eta": 0.5,
+     "relL1": 0.11683474848543643,
+     "relL1_windowed": 0.11883149522607792,
+     "Lambda_hat_over_eta": 1.4109041718788418,
+     "bound_theoremB": 2.8218083437576835,
+     "bound_trivial": 2.000000000000001,
+     "certifies": false,
+     "window_loss_rel": 0.016803177784161186,
+     "window_loss_analytic_bound": 0.026510489226542363
+    }
+   ],
+   "local_log_slopes_relL1_vs_eta": [
+    -0.6055843074569481,
+    -0.9056863493542278,
+    -1.0772193187995045,
+    -1.2096459833803648,
+    -1.3102067483817317
+   ],
+   "local_slope_spread_factor": 2.1635414462500355,
+   "slope_note": "reported to make the point NEGATIVELY: the slopes are not constant, so the eta dependence is NOT a power law and must never be quoted as one.  rel-L1 <= 1 + w_S = 2 is a hard ceiling.",
+   "cross_check_leakage_certificate": {
+    "eta": 0.18,
+    "Lambda_here": 0.5581671338121184,
+    "Lambda_certify": 0.5581671338121181,
+    "rel_difference": 3.9781024620445073e-16
+   }
+  },
+  {
+   "L": 8,
+   "D": 3920,
+   "nS": 2450,
+   "frac": 0.625,
+   "frac_exact": "1/2 + 1/L",
+   "E0": -2.6661474201323476,
+   "norm_phi2": 0.5000000000000033,
+   "w_S": 0.9999999999999998,
+   "amplitude_gap": {
+    "min_abs_phi_on_S": 1.3453415115499595e-17,
+    "max_abs_phi_off_S": 0.0,
+    "note": "min_abs_phi_on_S is a DIAGNOSTIC: at L=8 it is 1.3e-17, ARPACK round-off on a structurally zero component. S* is combinatorial, so this number cannot move it."
+   },
+   "table": [
+    {
+     "eta": 0.05,
+     "relL1": 0.896906126549626,
+     "relL1_windowed": 0.8983141562771055,
+     "Lambda_hat_over_eta": 17.101392997193297,
+     "bound_theoremB": 34.20278602418892,
+     "bound_trivial": 1.9999999999999998,
+     "certifies": false,
+     "window_loss_rel": 0.0015674134907489486,
+     "window_loss_analytic_bound": 0.0026525670344323174
+    },
+    {
+     "eta": 0.1,
+     "relL1": 0.5370155072305667,
+     "relL1_windowed": 0.5387042326793563,
+     "Lambda_hat_over_eta": 8.38271295741639,
+     "bound_theoremB": 16.7654259446351,
+     "bound_trivial": 1.9999999999999998,
+     "certifies": false,
+     "window_loss_rel": 0.0031347914984637196,
+     "window_loss_analytic_bound": 0.005305041970106415
+    },
+    {
+     "eta": 0.15,
+     "relL1": 0.38095317224196734,
+     "relL1_windowed": 0.3827529141632332,
+     "Lambda_hat_over_eta": 5.4490956524067755,
+     "bound_theoremB": 10.898191334615873,
+     "bound_trivial": 1.9999999999999998,
+     "certifies": false,
+     "window_loss_rel": 0.004702098546265545,
+     "window_loss_analytic_bound": 0.007957332727448982
+    },
+    {
+     "eta": 0.18,
+     "relL1": 0.3271855414486642,
+     "relL1_windowed": 0.3290421399937106,
+     "Lambda_hat_over_eta": 4.472546463488727,
+     "bound_theoremB": 8.945092956779776,
+     "bound_trivial": 1.9999999999999998,
+     "certifies": false,
+     "window_loss_rel": 0.005642433960227529,
+     "window_loss_analytic_bound": 0.009548580484940897
+    },
+    {
+     "eta": 0.25,
+     "relL1": 0.24071279491674963,
+     "relL1_windowed": 0.24261400509764666,
+     "Lambda_hat_over_eta": 3.1143919364712827,
+     "bound_theoremB": 6.228783902744888,
+     "bound_trivial": 1.9999999999999998,
+     "certifies": false,
+     "window_loss_rel": 0.007836357922255292,
+     "window_loss_analytic_bound": 0.01326099359980039
+    },
+    {
+     "eta": 0.5,
+     "relL1": 0.12090110383640877,
+     "relL1_windowed": 0.12282556987972867,
+     "Lambda_hat_over_eta": 1.4137493264905772,
+     "bound_theoremB": 2.8274986827834767,
+     "bound_trivial": 1.9999999999999998,
+     "certifies": false,
+     "window_loss_rel": 0.015668285074552098,
+     "window_loss_analytic_bound": 0.026510489226542363
+    }
+   ],
+   "local_log_slopes_relL1_vs_eta": [
+    -0.7399932462766637,
+    -0.8468065554313949,
+    -0.8345093565531522,
+    -0.9343047633075625,
+    -0.9934854127111715
+   ],
+   "local_slope_spread_factor": 1.3425601080955458,
+   "slope_note": "reported to make the point NEGATIVELY: the slopes are not constant, so the eta dependence is NOT a power law and must never be quoted as one.  rel-L1 <= 1 + w_S = 2 is a hard ceiling.",
+   "cross_check_leakage_certificate": {
+    "eta": 0.18,
+    "Lambda_here": 0.5692622280308641,
+    "Lambda_certify": 0.5692622280308641,
+    "rel_difference": 0.0
+   }
+  }
+ ]
+}

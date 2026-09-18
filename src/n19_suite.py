@@ -9,6 +9,48 @@ For each molecule at EQUILIBRIUM and at DISSOCIATION:
     bipartite entanglement S_ent, determinant cost n99. Degeneracy gap flagged.
 Nothing is claimed that a verified run does not show. Writes n19_suite.json.
 """
+# --- DEPOSIT PATHS (repaired 2026-09-18) -----------------------------------
+# This script used to hard-code its output under '/w/'.  /w was the working
+# directory of the Docker container the published runs were made in; outside that
+# container the documented pipeline wrote nothing a reader could find, and data/
+# was in fact repopulated BY HAND.  That made `make data` and the README recipe
+# untrue.  Repaired: every path is now an ARGUMENT with a default RELATIVE TO THIS
+# REPOSITORY, so a clean clone reproduces into its own tree.
+#     read   <repo>/data/<name>      override with  --in  PATH
+#     write  <repo>/data/<name>      override with  --out PATH
+#     write  <repo>/build/<name>     for by-products that are NOT part of the deposit
+# Paths only -- no physics and no computational default was changed here.
+import os as _os, sys as _sys
+_REPO = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+
+def _flag(name):
+    """Value of a `--name VALUE` (or `-n VALUE`) command-line flag, else None."""
+    a = _sys.argv[1:]
+    for f in ('--' + name, '-' + name[0]):
+        if f in a and a.index(f) + 1 < len(a):
+            return a[a.index(f) + 1]
+    return None
+
+def _argv_positional():
+    """argv[1:] with the --in/--out flags and their values removed."""
+    a, keep, i = _sys.argv[1:], [], 0
+    while i < len(a):
+        if a[i] in ('--out', '-o', '--in', '-i'):
+            i += 2
+            continue
+        keep.append(a[i]); i += 1
+    return keep
+
+def _outpath(name, sub='data'):
+    """Absolute path to write `name` to: --out if given, else <repo>/<sub>/<name>."""
+    p = _os.path.abspath(_flag('out') or _os.path.join(_REPO, sub, name))
+    _os.makedirs(_os.path.dirname(p), exist_ok=True)
+    return p
+
+def _inpath(name, sub='data'):
+    """Absolute path to read `name` from: --in if given, else <repo>/<sub>/<name>."""
+    return _os.path.abspath(_flag('in') or _os.path.join(_REPO, sub, name))
+# ---------------------------------------------------------------------------
 import json, time, numpy as np
 import scipy.sparse as sp
 from pyscf import gto, scf, mcscf, ao2mo, fci
@@ -142,7 +184,7 @@ def run_all():
     except Exception as e:
         log(f"{lab:5s} FAILED: {type(e).__name__}: {e}")
         out['mols'].append(dict(mol=lab,bonding=bond,error=f"{type(e).__name__}: {e}"))
- json.dump(out,open('/w/n19_suite.json','w'),indent=1)
+ json.dump(out,open(_outpath('n19_suite.json'),'w'),indent=1)
  log(f"WROTE n19_suite.json  ({sum(1 for m in out['mols'] if m.get('energyOK'))}/{len(MOLS)} energy-verified)")
  return out
 

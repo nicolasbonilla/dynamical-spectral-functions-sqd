@@ -10,8 +10,71 @@ Thesis, demonstrated in 2D: at MATCHED F1 the ladder (2-bond perpendicular cut, 
 needs a HIGHER chi and a LARGER |S|/frac than the chain (1-bond cut) -- the cost is set by chi, not F1,
 exactly where tensor networks lose their edge. Reuses gate1_ladder / nonfreeness / rigor_floor.
 """
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# Eighteen scripts were repaired earlier today because they hard-coded their output
+# under '/w/', the working directory of the Docker container the published runs were
+# made in.  THIS FILE WAS NOT AMONG THEM, and it was broken in a quieter way: it wrote
+# to the RELATIVE path 'data/...', which lands in whatever directory the reader happens
+# to be standing in, and raises FileNotFoundError from anywhere except the repository
+# root.  The Data Availability Statement claims that every deposited computation script
+# writes into the repository's own data/ directory; that sentence was FALSE for this
+# file until now.  Repaired exactly like the other eighteen: the default is computed
+# from THIS FILE's location, and --out overrides it.
+# Paths only -- no physics and no computational default was changed here.
+import os as _os, sys as _sys
+_REPO = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+
+
+def _flag(name):
+    """Value of a `--name VALUE` (or `-n VALUE`) command-line flag, else None."""
+    a = _sys.argv[1:]
+    for f in ('--' + name, '-' + name[0]):
+        if f in a and a.index(f) + 1 < len(a):
+            return a[a.index(f) + 1]
+    return None
+
+
+def _outpath(name, sub='data'):
+    """Absolute path to write `name` to: --out if given, else <repo>/<sub>/<name>."""
+    p = _os.path.abspath(_flag('out') or _os.path.join(_REPO, sub, name))
+    _os.makedirs(_os.path.dirname(p), exist_ok=True)
+    return p
+
+
+def _repopath(name, sub='data'):
+    """Absolute path <repo>/<sub>/<name>.  Never overridden: for a script's SECOND
+    output, which --out (a single flag) cannot address unambiguously."""
+    p = _os.path.abspath(_os.path.join(_REPO, sub, name))
+    _os.makedirs(_os.path.dirname(p), exist_ok=True)
+    return p
+# ---------------------------------------------------------------------------
 import json, time, numpy as np
+# --- NUMPY_TRAPEZOID_BRIDGE ------------------------------------------------
+# numpy 2.0 ADDED np.trapezoid and REMOVED np.trapz.  Files in this repository use
+# both names, so without this bridge no single numpy version runs the whole deposit:
+# numpy 1.x breaks the files that call trapezoid, numpy 2.x breaks the files that call
+# trapz (this guardian included).  requirements.txt asks for numpy>=1.24; with the
+# bridge that is true again.
+if not hasattr(np, "trapezoid"):
+    np.trapezoid = np.trapz          # numpy < 2.0
+if not hasattr(np, "trapz"):
+    np.trapz = np.trapezoid          # numpy >= 2.0
+# ---------------------------------------------------------------------------
 from scipy.sparse.linalg import eigsh
+# --- DETERMINISTIC ARPACK START VECTOR (added 2026-09-18, second pass) ------
+# eigsh() with no v0= lets ARPACK draw its own start vector from an UNSEEDED
+# generator, so E0 converges to a slightly different point on every run (the last
+# few digits move) and every quantity derived from it moves with it.  Measured, not
+# hypothetical: three consecutive calls on the same matrix gave
+# -2.0481308860914536 / ...504 / ...522, and in the leakage certificate a small
+# subspace selection moved by 3.2%.  The eigenpair is the same to ARPACK's
+# tolerance -- no physics changes -- but a deposit must be bit-reproducible.
+# Deliberately NOT a numpy global seed: this touches only the ARPACK start vector.
+# The seed 20260918 is the one used by scaling_lanczos.py and the certificate suite.
+def _v0(n):
+    """Fixed, dimension-dependent ARPACK start vector (never orthogonal to the GS)."""
+    return np.random.default_rng(20260918).standard_normal(n)
+# ---------------------------------------------------------------------------
 import gate1_ladder as G, nonfreeness as NF, rigor_floor as RF
 t0=time.time(); log=lambda *a: print(f"[{time.time()-t0:6.1f}s]",*a,flush=True)
 
@@ -29,7 +92,7 @@ def spec(grid,pw,ww,eta):
 def metrics(L,U,bonds,leftorb,hole=0,eps=0.05,eta=0.15,thr=0.05,K=20,dt=0.5,p_site=0,do_frac=True):
     N=L-hole; nup=N//2; ndn=N-nup
     H,Su,iu,Sd,idd,Du,Dd=G.build_H(L,U,nup,ndn,bonds)
-    w,v=eigsh(H,k=1,which='SA'); E0=float(w[0]); psi=v[:,0]
+    w,v=eigsh(H,k=1,which='SA',v0=_v0(H.shape[0])); E0=float(w[0]); psi=v[:,0]
     occ=NF.occupations(psi,Su,iu,Sd,idd,L); F1=float(4*np.sum(occ*(1-occ)))
     w2=np.sort(np.abs(psi)**2)[::-1]; w2/=w2.sum(); S=int(np.searchsorted(np.cumsum(w2),1-eps*eps)+1)
     p=RF.schmidt_spectrum(psi,Su,Sd,L,leftorb); chi=RF.eps_rank(p,eps)
@@ -83,5 +146,5 @@ if __name__=='__main__':
             f"chi: {c['chi']} -> {l['chi']} (x{l['chi']/max(c['chi'],1):.1f}) | "
             f"|S|: {c['Sdet']} -> {l['Sdet']} (x{l['Sdet']/max(c['Sdet'],1):.1f}) | "
             f"frac: {c.get('frac','--')} -> {l.get('frac','--')}")
-    json.dump(out,open('data/ladder_vs_chain.json','w'),indent=1)
+    json.dump(out,open(_outpath('ladder_vs_chain.json'),'w'),indent=1)
     log("WROTE ladder_vs_chain.json")

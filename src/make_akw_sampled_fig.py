@@ -7,6 +7,17 @@ panel (b) the per-momentum rel-L1 error (all < 0.5%). No hand-typed numbers -- e
 
 Run:  python sampled_akw.py && python make_akw_sampled_fig.py
 """
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
 import json
 import numpy as np
 
@@ -25,7 +36,7 @@ labels = {'0.0': r'$k{=}0$', '0.5': r'$k{=}\pi/2$', '1.0': r'$k{=}\pi$'}
 maxA = max(max(ov[c]['exact']) for c in cuts); off = 1.05 * maxA
 T = []
 T.append("% Sampled-vs-exact A(k,omega): REAL reconstruction (L=8 chain, U/t=8, 85% of the (N+-1) sector).")
-T.append("% Generated from sampled_akw_L8.json (mean per-k rel-L1 %.4f, max %.4f); no hand-typed numbers." % (d['mean_relL1'], d['max_relL1']))
+T.append("%% Generated from sampled_akw_L8.json (mean per-k rel-L1 %.4f, max %.4f); no hand-typed numbers." % (d['mean_relL1'], d['max_relL1']))
 T.append(r"\definecolor{akExact}{HTML}{1B1B1B}\definecolor{akSamp}{HTML}{D55E00}\definecolor{akInk}{HTML}{1B1B1B}")
 T.append(r"\begin{tikzpicture}")
 T.append(r"\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.7cm},")

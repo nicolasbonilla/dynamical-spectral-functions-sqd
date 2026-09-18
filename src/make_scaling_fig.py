@@ -3,7 +3,53 @@ r"""Generate fig_scaling2_native.tex (fig:scaling) DATA-DRIVEN from scaling_data
 numbers. Two panels vs qubits 2L: (a) fermionic magic F1 grows; (b) (N+1)-sector subspace fraction
 |S|/dim needed for rel-L1<0.05 falls. Paper identity: large fonts, NEUTRAL dark text (no coloured text),
 vibrant DATA colours, 'toward beyond-classical' band below 0.5. Scales to however many L are present."""
-import json, numpy as np
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
+import json, sys, numpy as np
+
+# ---------------------------------------------------------------------------
+# SUPERSEDED -- REFUSES TO RUN.  Read this before removing the guard.
+#
+# This generator emits a TWO-panel figure.  The committed
+# paper/figs/fig_scaling2_native.tex has THREE panels: panel (c) (absolute support
+# |S| and sector dimension D versus 2L) was added by hand on 2026-08-17 and is the
+# panel that carries |S| = 22, 246, 2180, 19183, 124407, 824503.  Running this file
+# DELETES panel (c), and it does so silently: an adversarial pass on 2026-09-18 ran it
+# and then watched `python src/verify.py` report PASS and `pdflatex` produce a 40-page
+# document with zero errors and zero undefined references.  The only thing that changed
+# was that a third of the figure, and a correction made the same day, were gone.
+#
+# It would also relabel the shaded band 'toward beyond-classical' -- a claim the
+# manuscript disclaims six times.
+#
+# The committed .tex is AUTHORITATIVE.  If panel (a) and (b) ever need regenerating,
+# do it into a scratch directory with --i-know-this-drops-panel-c --out <path> and
+# merge by hand.
+# ---------------------------------------------------------------------------
+_OUT = 'paper/figs/fig_scaling2_native.tex'
+if '--i-know-this-drops-panel-c' not in sys.argv:
+    for _m in (
+        'make_scaling_fig.py: REFUSING TO RUN.',
+        '  This generator emits two panels; the committed fig_scaling2_native.tex has',
+        '  three. Running it would delete panel (c) and the 19183/824503 correction, and',
+        '  nothing downstream would notice. The committed .tex is authoritative.',
+        '  If you really mean it:  python src/make_scaling_fig.py '
+        '--i-know-this-drops-panel-c --out <scratch path>',
+    ):
+        print(_m, file=sys.stderr)
+    raise SystemExit(2)
+if '--out' in sys.argv:
+    _OUT = sys.argv[sys.argv.index('--out') + 1]
+
 d=json.load(open('data/scaling_data.json'))
 P=sorted(d['points'], key=lambda p:p['L'])
 q=[p['qubits'] for p in P]; F=[p['FAF'] for p in P]; fr=[p['frac'] for p in P]
@@ -66,6 +112,6 @@ out=(tmpl.replace('__LLIST__',",".join(str(p['L']) for p in P))
         .replace('__AXL__',f'{axl:.2f}').replace('__AXR__',f'{axr:.2f}')
         .replace('__AAY0__',f'{aAy0:.2f}').replace('__AAY1__',f'{aAy1:.2f}')
         .replace('__ABY0__',f'{aBy0:.3f}').replace('__ABY1__',f'{aBy1:.3f}'))
-open('paper/figs/fig_scaling2_native.tex','w',encoding='utf-8').write(out)
+open(_OUT,'w',encoding='utf-8').write(out)
 print(f"wrote fig_scaling2_native.tex from {len(P)} points: qubits={q}")
 print(f"  FAF={[round(x,2) for x in F]}  frac={[round(x,3) for x in fr]}")

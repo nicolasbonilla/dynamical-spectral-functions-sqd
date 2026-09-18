@@ -1,0 +1,95 @@
+{
+ "generated_by": "src/make_sqw_edges.py",
+ "generated_utc": "2026-09-18T18:46:26Z",
+ "input_file": "data/sqw_L12.json",
+ "input_sha256": "bfaf67a5e285fbc6b87ee37fad2c0ac26eb09cec523bd8739e22639a3db7ebe8",
+ "output_file": "paper/figs/sqw_edges.dat",
+ "output_sha256": "c13af06d73bdc9dcead7821c571050fd2884ed5b2e758b52019fc1bf181a4518",
+ "previous_output_sha256": "c13af06d73bdc9dcead7821c571050fd2884ed5b2e758b52019fc1bf181a4518",
+ "recipe": "thr=0.03*max_{q,w} S(q,w); onset=min{w: S>thr}; upper=max{w: S>thr}; peak=argmax_w S",
+ "recipe_source": "src/spin_lanczos.py:35-41",
+ "deterministic": true,
+ "random_seeds_used": null,
+ "rows": [
+  {
+   "qpi": 0.16667,
+   "onset": 5.600166944908181,
+   "upper": 7.703672787979967,
+   "peak": 5.740400667779633
+  },
+  {
+   "qpi": 0.33333,
+   "onset": 5.646911519198665,
+   "upper": 10.414858096828047,
+   "peak": 6.815525876460768
+  },
+  {
+   "qpi": 0.5,
+   "onset": 6.418196994991653,
+   "upper": 10.835559265442404,
+   "peak": 7.750417362270451
+  },
+  {
+   "qpi": 0.66667,
+   "onset": 7.002504173622705,
+   "upper": 10.90567612687813,
+   "peak": 8.40484140233723
+  },
+  {
+   "qpi": 0.83333,
+   "onset": 6.862270450751252,
+   "upper": 10.648580968280468,
+   "peak": 8.732053422370617
+  },
+  {
+   "qpi": 1.0,
+   "onset": 7.119365609348915,
+   "upper": 10.297996661101836,
+   "peak": 8.778797996661101
+  },
+  {
+   "qpi": 1.16667,
+   "onset": 6.862270450751252,
+   "upper": 10.648580968280468,
+   "peak": 8.732053422370617
+  },
+  {
+   "qpi": 1.33333,
+   "onset": 7.002504173622705,
+   "upper": 10.90567612687813,
+   "peak": 8.40484140233723
+  },
+  {
+   "qpi": 1.5,
+   "onset": 6.418196994991653,
+   "upper": 10.835559265442404,
+   "peak": 7.750417362270451
+  },
+  {
+   "qpi": 1.66667,
+   "onset": 5.646911519198665,
+   "upper": 10.414858096828047,
+   "peak": 6.815525876460768
+  },
+  {
+   "qpi": 1.83333,
+   "onset": 5.600166944908181,
+   "upper": 7.703672787979967,
+   "peak": 5.740400667779633
+  }
+ ],
+ "meta": {
+  "L": 12,
+  "U": 8.0,
+  "eta": 0.18,
+  "E0": -3.962563033142947,
+  "nw": 600,
+  "omega_min": -0.5,
+  "omega_max": 13.5,
+  "global_max": 2.1117198963196113,
+  "threshold": 0.06335159688958834,
+  "threshold_fraction": 0.03,
+  "n_q": 11
+ },
+ "note": "q/pi = 0 and q/pi = 2 are inaccessible by construction (density conservation; sqw_lanczos.py:30, sqw_field.py:3) and therefore cannot appear. The two rows '0.0000 4.969 5.000 5.000' and '2.0000 4.969 5.000 5.000' present in earlier versions of sqw_edges.dat had no computational origin: 4.969 is the one-particle charge gap Delta snapped to the S(q,omega) grid, and 5.000 is not on the grid."
+}

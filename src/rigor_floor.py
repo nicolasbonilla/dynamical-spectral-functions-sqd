@@ -12,8 +12,64 @@ For the saturated time-evolved response seed Psi = e^{-iHt*}phi (t* = argmax spa
 Reports chi_eps, Seps, their ratio (the CP-overhead above the entanglement floor), and 2^{S_ent}, for several
 eps, across sizes. Writes rigor_floor.json.
 """
+# --- DEPOSIT PATHS (repaired 2026-09-18) -----------------------------------
+# This script used to hard-code its output under '/w/'.  /w was the working
+# directory of the Docker container the published runs were made in; outside that
+# container the documented pipeline wrote nothing a reader could find, and data/
+# was in fact repopulated BY HAND.  That made `make data` and the README recipe
+# untrue.  Repaired: every path is now an ARGUMENT with a default RELATIVE TO THIS
+# REPOSITORY, so a clean clone reproduces into its own tree.
+#     read   <repo>/data/<name>      override with  --in  PATH
+#     write  <repo>/data/<name>      override with  --out PATH
+#     write  <repo>/build/<name>     for by-products that are NOT part of the deposit
+# Paths only -- no physics and no computational default was changed here.
+import os as _os, sys as _sys
+_REPO = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+
+def _flag(name):
+    """Value of a `--name VALUE` (or `-n VALUE`) command-line flag, else None."""
+    a = _sys.argv[1:]
+    for f in ('--' + name, '-' + name[0]):
+        if f in a and a.index(f) + 1 < len(a):
+            return a[a.index(f) + 1]
+    return None
+
+def _argv_positional():
+    """argv[1:] with the --in/--out flags and their values removed."""
+    a, keep, i = _sys.argv[1:], [], 0
+    while i < len(a):
+        if a[i] in ('--out', '-o', '--in', '-i'):
+            i += 2
+            continue
+        keep.append(a[i]); i += 1
+    return keep
+
+def _outpath(name, sub='data'):
+    """Absolute path to write `name` to: --out if given, else <repo>/<sub>/<name>."""
+    p = _os.path.abspath(_flag('out') or _os.path.join(_REPO, sub, name))
+    _os.makedirs(_os.path.dirname(p), exist_ok=True)
+    return p
+
+def _inpath(name, sub='data'):
+    """Absolute path to read `name` from: --in if given, else <repo>/<sub>/<name>."""
+    return _os.path.abspath(_flag('in') or _os.path.join(_REPO, sub, name))
+# ---------------------------------------------------------------------------
 import json, time, numpy as np, scipy.sparse as sp
 from scipy.sparse.linalg import eigsh, expm_multiply
+# --- DETERMINISTIC ARPACK START VECTOR (added 2026-09-18, second pass) ------
+# eigsh() with no v0= lets ARPACK draw its own start vector from an UNSEEDED
+# generator, so E0 converges to a slightly different point on every run (the last
+# few digits move) and every quantity derived from it moves with it.  Measured, not
+# hypothetical: three consecutive calls on the same matrix gave
+# -2.0481308860914536 / ...504 / ...522, and in the leakage certificate a small
+# subspace selection moved by 3.2%.  The eigenpair is the same to ARPACK's
+# tolerance -- no physics changes -- but a deposit must be bit-reproducible.
+# Deliberately NOT a numpy global seed: this touches only the ARPACK start vector.
+# The seed 20260918 is the one used by scaling_lanczos.py and the certificate suite.
+def _v0(n):
+    """Fixed, dimension-dependent ARPACK start vector (never orthogonal to the GS)."""
+    return np.random.default_rng(20260918).standard_normal(n)
+# ---------------------------------------------------------------------------
 import gate1_ladder as G
 t0=time.time(); log=lambda *a: print(f"[{time.time()-t0:7.1f}s]",*a,flush=True)
 
@@ -59,7 +115,7 @@ def eps_rank(p_desc, eps):
 def run(Lr, U=8.0, hole=2, tmax=8.0, nt=11, epslist=(0.1,0.05)):
     L=2*Lr; bonds=G.ladder_bonds(Lr); N=L-hole; nup=N//2; ndn=N-nup
     H,Su,iu,Sd,idd,Du,Dd=G.build_H(L,U,nup,ndn,bonds)
-    w,v=eigsh(H,k=1,which='SA'); psi=v[:,0].reshape(Du,Dd)
+    w,v=eigsh(H,k=1,which='SA',v0=_v0(H.shape[0])); psi=v[:,0].reshape(Du,Dd)
     Su1,iu1=G.strings(L,nup+1); r=[];c=[];val=[]
     for a,m in enumerate(Su):
         if not (m>>0)&1: r.append(iu1[m|1]); c.append(a); val.append(1.0)
@@ -84,4 +140,4 @@ def run(Lr, U=8.0, hole=2, tmax=8.0, nt=11, epslist=(0.1,0.05)):
 
 if __name__=='__main__':
     out=[run(Lr) for Lr in (3,4,5)]
-    json.dump(out,open('/w/rigor_floor.json','w'),indent=1); log("WROTE rigor_floor.json")
+    json.dump(out,open(_outpath('rigor_floor.json'),'w'),indent=1); log("WROTE rigor_floor.json")

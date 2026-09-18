@@ -4,6 +4,17 @@ r"""Native fig_gflownet (honest dequantization guard) from VERIFIED 5-seed resul
 1000 shots, real Docker pyscf+torch). Big improvement = cheap CLASSICAL prior (ibm -> ibm+cheap);
 the generative GFlowNet does NOT beat the fair classical control -> a learned generator cannot
 manufacture the dominant determinants."""
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
 # verified mHa, shots=1000, dim=120, 5 seeds: (label-lines, mean, std, class)
 METH=[(r'raw',43.22,4.47,'base'),(r'ibm',39.24,3.95,'base'),
       (r'ibm\\ $+$cheap',26.98,0.66,'ctrl'),(r'gfn\\ (no cheap)',25.96,3.40,'gen'),

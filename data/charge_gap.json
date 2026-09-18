@@ -1,0 +1,107 @@
+{
+ "provenance": {
+  "generated_by": "src/charge_gap_ed.py",
+  "generated_utc": "2026-09-18T18:50:44Z",
+  "engine": "akw_lanczos.build_H_explicit (1D Hubbard ring, PBC) + scipy.sparse.linalg.eigsh",
+  "model": "1D Hubbard, PBC, half filling, U/t=8.0, t=1.0",
+  "definitions": {
+   "mu_plus": "E0(n_up=L/2+1, n_dn=L/2) - E0(L/2, L/2)",
+   "mu_minus": "E0(L/2, L/2) - E0(n_up=L/2-1, n_dn=L/2)",
+   "Delta": "mu_plus - mu_minus",
+   "mu_rel": "mu - U/2, the particle-hole symmetric Fermi level (akw_lanczos.py:111)"
+  },
+  "arpack_seed": 12345,
+  "arpack_tol": 1e-11,
+  "arpack_ncv": 40,
+  "deterministic": true,
+  "checks": {
+   "V1": "|Delta(L=12) - 4.9688| <= 0.0010",
+   "V2": "|mu+ + mu- - U| <= 1e-8 (particle-hole symmetry)",
+   "V3": "|E0(N,L=12) - data/sqw_L12.json E0| <= 1e-6",
+   "V4": "ARPACK vs dense eigh <= 1e-10 on every sector of dim <= 5000",
+   "V5": "Delta(L) decreasing and above the Lieb-Wu limit"
+  },
+  "checks_status": "ALL PASS",
+  "backs": "Delta = 4.97 t and mu^\u00b1 = \u00b12.484 t as printed in the manuscript; identifies the 4.969 carried by the two fabricated rows of the former paper/figs/sqw_edges.dat as a ONE-PARTICLE-channel quantity."
+ },
+ "lieb_wu": {
+  "Delta_inf": 4.679517107464084,
+  "quad_abserr": 1.8506542108644417e-09,
+  "formula": "U - 4t + 8t * int_0^inf dw J_1(w)/(w(1+exp(wU/2t)))",
+  "reference": "Lieb & Wu, Phys. Rev. Lett. 20, 1445 (1968)"
+ },
+ "results": [
+  {
+   "L": 6,
+   "U": 8.0,
+   "t": 1.0,
+   "dim_N": 400,
+   "dim_Np1": 300,
+   "dim_Nm1": 300,
+   "E0_N": -2.0481308860914544,
+   "E0_Np1": 4.630932507446564,
+   "E0_Nm1": -3.3690674925534285,
+   "E0_N_dense": -2.048130886091457,
+   "mu_plus": 6.679063393538019,
+   "mu_minus": 1.320936606461974,
+   "mu_plus_rel": 2.6790633935380193,
+   "mu_minus_rel": -2.679063393538026,
+   "Delta": 5.358126787076046,
+   "L_times_Delta": 32.148760722456274
+  },
+  {
+   "L": 8,
+   "U": 8.0,
+   "t": 1.0,
+   "dim_N": 4900,
+   "dim_Np1": 3920,
+   "dim_Nm1": 3920,
+   "E0_N": -2.666147420132344,
+   "E0_Np1": 3.9267736732034804,
+   "E0_Nm1": -4.073226326796513,
+   "E0_N_dense": -2.666147420132348,
+   "mu_plus": 6.592921093335825,
+   "mu_minus": 1.4070789066641693,
+   "mu_plus_rel": 2.592921093335825,
+   "mu_minus_rel": -2.5929210933358307,
+   "Delta": 5.185842186671655,
+   "L_times_Delta": 41.48673749337324
+  },
+  {
+   "L": 10,
+   "U": 8.0,
+   "t": 1.0,
+   "dim_N": 63504,
+   "dim_Np1": 52920,
+   "dim_Nm1": 52920,
+   "E0_N": -3.3149967290878215,
+   "E0_Np1": 3.1961209044382795,
+   "E0_Nm1": -4.803879095561731,
+   "E0_N_dense": null,
+   "mu_plus": 6.511117633526101,
+   "mu_minus": 1.4888823664739097,
+   "mu_plus_rel": 2.5111176335261014,
+   "mu_minus_rel": -2.5111176335260903,
+   "Delta": 5.022235267052192,
+   "L_times_Delta": 50.22235267052192
+  },
+  {
+   "L": 12,
+   "U": 8.0,
+   "t": 1.0,
+   "dim_N": 853776,
+   "dim_Np1": 731808,
+   "dim_Nm1": 731808,
+   "E0_N": -3.962563033142956,
+   "E0_Np1": 2.5218166467858754,
+   "E0_Nm1": -5.478183353214114,
+   "E0_N_dense": null,
+   "mu_plus": 6.484379679928832,
+   "mu_minus": 1.5156203200711582,
+   "mu_plus_rel": 2.484379679928832,
+   "mu_minus_rel": -2.484379679928842,
+   "Delta": 4.968759359857674,
+   "L_times_Delta": 59.62511231829208
+  }
+ ]
+}

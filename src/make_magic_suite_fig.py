@@ -3,6 +3,17 @@ r"""Generate fig_magic_suite.tex (native TikZ/pgfplots dumbbell plot) directly f
 FCI-verified n19_suite.json. No hand-typed numbers. Normalized fermionic magic FAF/FAF_max at
 equilibrium (open) -> dissociation (filled) for all 19 molecules, sorted by dissociation magic.
 Design: vibrant regime colours in the DATA, neutral dark text, polished dots, subtle row bands."""
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
 import json
 d=json.load(open('data/n19_suite.json'))
 M=[m for m in d['mols'] if 'error' not in m]

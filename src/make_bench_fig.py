@@ -3,6 +3,17 @@ r"""Native benchmark figure from the REAL multi-seed headtohead_ms.json (L=6 Hub
 Three panels U/t=4,8,12: spectral rel-L1 vs subspace size |S| for the quantum time-evolution selector
 (coral, seed-averaged with spread band) vs classical polynomial Krylov (blue) and CIPSI-GF (pink).
 At strong coupling the quantum selector pulls decisively ahead."""
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
 import json
 d=json.load(open('data/headtohead_ms.json'))
 Us=[('U4.0','4'),('U8.0','8'),('U12.0','12')]

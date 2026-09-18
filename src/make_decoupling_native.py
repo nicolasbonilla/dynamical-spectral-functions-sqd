@@ -2,6 +2,17 @@
 r"""Emit paper/figs/fig_decoupling_native.tex: a SELF-CONTAINED native pgfplots fragment (inline
 coordinates, no external .dat) for the two-sided decoupling figure. Data: n19_suite.json (molecules,
 FAF vs log2|S|), cost_vs_ent.json (Hubbard U-sweep), verified free-fermion |S|. Fonts inherit lmodern."""
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
 import json, numpy as np
 mols=json.load(open('data/n19_suite.json'))['mols']
 COV={'H2','HF','F2','CO','N2','H2O','NH3','BeH2','H4','H6'}; MRF={'C2','O2','OH','CN','NO'}

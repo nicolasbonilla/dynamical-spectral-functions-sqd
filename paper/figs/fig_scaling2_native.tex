@@ -2,6 +2,9 @@
 % (real Lanczos/Haydock scaling data, L=4,6,8,10,12,14; U=8).
 % Panel (c) added 2026-08-17: absolute support |S|=frac*Np1_sector and sector dim D=Np1_sector vs 2L
 % (Np1_sector=[24,300,3920,52920,731808,10306296]; both grow exponentially, D faster than |S|).
+% |S| = round(frac * Np1_sector) with frac from scaling_data.json: 22, 246, 2180, 19183, 124407, 824503.
+% NOTE on panel (a): 9.3851 (L=6) is the PERIODIC RING F1 from scaling_data.json (akw_lanczos.hop, j=(i+1)%L).
+% It is NOT the open-chain 9.6047 used by fig_decoupling/fig_master/fig_ladder. Different systems -- do not "fix".
 \definecolor{scMag}{HTML}{D55E00}\definecolor{scFrac}{HTML}{0072B2}\definecolor{scInk}{HTML}{5B5B5B}
 \definecolor{inkPrim}{HTML}{1B1B1B}\definecolor{scDim}{HTML}{8A8A8A}
 \begin{tikzpicture}
@@ -38,7 +41,7 @@
   coordinates {(8,24) (12,300) (16,3920) (20,52920) (24,731808) (28,10306296)};
 \addlegendentry{sector $\dim$ $\sim e^{1.30L}$}
 \addplot[scFrac,line width=1.3pt,mark=square*,mark size=2.3pt,mark options={fill=scFrac,draw=white,line width=0.6pt}]
-  coordinates {(8,22) (12,246) (16,2180) (20,19184) (24,124407) (28,824504)};
+  coordinates {(8,22) (12,246) (16,2180) (20,19183) (24,124407) (28,824503)};
 \addlegendentry{support $|\mathcal S|$ $\sim e^{1.05L}$}
 \end{groupplot}
 \end{tikzpicture}

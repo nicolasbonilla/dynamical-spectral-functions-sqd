@@ -1,0 +1,47 @@
+{
+ "selftest": {
+  "2x2_counterexample": {
+   "L1_at_g1000_eta0p1": 1.9996692026676908,
+   "target": 2.0,
+   "Lambda_equals_g": true,
+   "w_S": 1.0,
+   "K_S": 0,
+   "tol": "|L1-2| < 1e-3, |Lambda-g| < 1e-10 rel, |w_S-1| < 1e-14"
+  },
+  "closed_form_vs_quadrature": {
+   "Lambda_closed": 10.830256497909197,
+   "Lambda_quad": 10.830256490877217,
+   "rel_diff": 6.492902857181318e-10,
+   "tol": "rel < 1e-4"
+  },
+  "random_bound_check": {
+   "n": 40,
+   "viol_lower": 0,
+   "viol_upper": 0,
+   "min_slack": 1.0776120238230067
+  },
+  "closed_form_vs_time_domain": {
+   "Lambda_closed": 13.247650162323941,
+   "Lambda_time": 13.247650968774133,
+   "rel_diff": 6.087495767060912e-08,
+   "tol": "rel < 1e-4"
+  }
+ },
+ "provenance": {
+  "script": "leakage_certificate.py",
+  "library": "leakage_certificate.py",
+  "generated_utc": "2026-09-18T19:14:05Z",
+  "python": "3.11.4",
+  "numpy": "1.26.4",
+  "scipy": "1.13.1",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "runtime_s": 10.26,
+  "params": {},
+  "controls_reproduced": [
+   "2x2_counterexample",
+   "closed_form_vs_quadrature",
+   "closed_form_vs_time_domain",
+   "random_bound_check"
+  ]
+ }
+}

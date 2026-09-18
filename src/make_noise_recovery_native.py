@@ -3,6 +3,17 @@ r"""Emit paper/figs/fig_noise_recovery_native.tex: SELF-CONTAINED native pgfplot
 molecular noise-robustness figure. (a) energy error vs bit-flip rate for 6 representative molecules
 (S-CoRe solid, naive dashed), log-y, chemical-accuracy band; (b) full 19-molecule suite at eps=2%
 (S-CoRe bars, naive ticks). Real data: molecular_noise_sweep.json + molecular_noise.json."""
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
 import json, numpy as np
 sweep={m['mol']:m for m in json.load(open('data/molecular_noise_sweep.json'))['mols']}
 suite=sorted(json.load(open('data/molecular_noise.json'))['mols'], key=lambda x:x['score'])

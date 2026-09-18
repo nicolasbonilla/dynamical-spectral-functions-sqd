@@ -1,7 +1,18 @@
 # -*- coding: utf-8 -*-
-"""Emit rebuild/table_molecules.tex from the REAL FCI-verified n19_suite.json + n19_spectral.json.
+"""Emit rebuild/table_molecules.tex (scratch build dir, created on demand) from the REAL FCI-verified n19_suite.json + n19_spectral.json.
 No hand-typed numbers."""
-import json
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
+import json, os
 d=json.load(open('data/n19_suite.json'))
 sp={m['mol']:m for m in json.load(open('data/n19_spectral.json'))['mols'] if 'relL1_final' in m}
 M=[m for m in d['mols'] if 'error' not in m]
@@ -47,6 +58,10 @@ for m in M:
              f"{m['FAF_eq']:.3f} & {m['FAF_diss']:.3f} & {m['fd']:.2f} & {rl} & {fr} {NL}")
 L.append(r'\hline\hline\end{tabular}')
 L.append(r'\end{table}')
-open('rebuild/table_molecules.tex','w',encoding='utf-8').write('\n'.join(L)+'\n')
-print('wrote rebuild/table_molecules.tex')
+OUT = os.path.join('rebuild', 'table_molecules.tex')   # scratch build directory, created on demand; not tracked in the deposit
+os.makedirs(os.path.dirname(OUT), exist_ok=True)
+open(OUT, 'w', encoding='utf-8').write('\n'.join(L) + '\n')
+print('wrote %s  [NOTE: the AUTHORITATIVE table shipped with the paper is '
+      'paper/table_molecules.tex, which carries hand-added caption text; '
+      'only the data rows are regenerated here]' % OUT)
 print('order:', [(m['mol'],round(m['fd'],2)) for m in M])

@@ -5,6 +5,17 @@ the bond dimension in every family (chi lower-bounds |S|; the geminal witness ch
 deliberately loose lower bound). (b) |S| vs F1: one-body magic does NOT predict the cost -- the Hubbard
 branch runs the WRONG way (U up -> F1 up, |S| down) and the ladder pairs sit at the SAME F1 with very
 different |S|. Reads resource_master.json (built from n19_suite/cost_vs_ent/ladder_vs_chain)."""
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# This figure generator addresses every file it reads and writes by a path relative
+# to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when
+# launched from that root and raised FileNotFoundError from anywhere else.  Rather
+# than rewrite every literal -- which risks changing an output byte -- the process's
+# working directory is anchored to the repository THIS FILE lives in.  Run from a
+# copy of the tree (as src/check_figures.py does), it anchors to that copy, which is
+# the behaviour that check wants.  Paths only; no figure content changed.
+import os as _os
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+# ---------------------------------------------------------------------------
 import json, numpy as np
 d=json.load(open('data/resource_master.json'))
 P=d['points']

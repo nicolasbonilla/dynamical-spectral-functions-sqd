@@ -10,10 +10,73 @@ Result: mean per-momentum rel-L1 = 0.0022, max 0.0033 -- faithful across the Bri
 
 Run:  python sampled_akw.py      (uses the sector engine of akw_lanczos.py; ~5 min, exact)
 """
+# --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
+# Eighteen scripts were repaired earlier today because they hard-coded their output
+# under '/w/', the working directory of the Docker container the published runs were
+# made in.  THIS FILE WAS NOT AMONG THEM, and it was broken in a quieter way: it wrote
+# to the RELATIVE path 'data/...', which lands in whatever directory the reader happens
+# to be standing in, and raises FileNotFoundError from anywhere except the repository
+# root.  The Data Availability Statement claims that every deposited computation script
+# writes into the repository's own data/ directory; that sentence was FALSE for this
+# file until now.  Repaired exactly like the other eighteen: the default is computed
+# from THIS FILE's location, and --out overrides it.
+# Paths only -- no physics and no computational default was changed here.
+import os as _os, sys as _sys
+_REPO = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+
+
+def _flag(name):
+    """Value of a `--name VALUE` (or `-n VALUE`) command-line flag, else None."""
+    a = _sys.argv[1:]
+    for f in ('--' + name, '-' + name[0]):
+        if f in a and a.index(f) + 1 < len(a):
+            return a[a.index(f) + 1]
+    return None
+
+
+def _outpath(name, sub='data'):
+    """Absolute path to write `name` to: --out if given, else <repo>/<sub>/<name>."""
+    p = _os.path.abspath(_flag('out') or _os.path.join(_REPO, sub, name))
+    _os.makedirs(_os.path.dirname(p), exist_ok=True)
+    return p
+
+
+def _repopath(name, sub='data'):
+    """Absolute path <repo>/<sub>/<name>.  Never overridden: for a script's SECOND
+    output, which --out (a single flag) cannot address unambiguously."""
+    p = _os.path.abspath(_os.path.join(_REPO, sub, name))
+    _os.makedirs(_os.path.dirname(p), exist_ok=True)
+    return p
+# ---------------------------------------------------------------------------
 import sys, os, json, time, numpy as np
+# --- NUMPY_TRAPEZOID_BRIDGE ------------------------------------------------
+# numpy 2.0 ADDED np.trapezoid and REMOVED np.trapz.  Files in this repository use
+# both names, so without this bridge no single numpy version runs the whole deposit:
+# numpy 1.x breaks the files that call trapezoid, numpy 2.x breaks the files that call
+# trapz (this guardian included).  requirements.txt asks for numpy>=1.24; with the
+# bridge that is true again.
+if not hasattr(np, "trapezoid"):
+    np.trapezoid = np.trapz          # numpy < 2.0
+if not hasattr(np, "trapz"):
+    np.trapz = np.trapezoid          # numpy >= 2.0
+# ---------------------------------------------------------------------------
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import akw_lanczos as AK
 from scipy.sparse.linalg import eigsh
+# --- DETERMINISTIC ARPACK START VECTOR (added 2026-09-18, second pass) ------
+# eigsh() with no v0= lets ARPACK draw its own start vector from an UNSEEDED
+# generator, so E0 converges to a slightly different point on every run (the last
+# few digits move) and every quantity derived from it moves with it.  Measured, not
+# hypothetical: three consecutive calls on the same matrix gave
+# -2.0481308860914536 / ...504 / ...522, and in the leakage certificate a small
+# subspace selection moved by 3.2%.  The eigenpair is the same to ARPACK's
+# tolerance -- no physics changes -- but a deposit must be bit-reproducible.
+# Deliberately NOT a numpy global seed: this touches only the ARPACK start vector.
+# The seed 20260918 is the one used by scaling_lanczos.py and the certificate suite.
+def _v0(n):
+    """Fixed, dimension-dependent ARPACK start vector (never orthogonal to the GS)."""
+    return np.random.default_rng(20260918).standard_normal(n)
+# ---------------------------------------------------------------------------
 
 t0 = time.time()
 L, U, t, eta, K, dt = 8, 8.0, 1.0, 0.18, 16, 0.5
@@ -21,7 +84,7 @@ FR = 0.85                       # subspace fraction of the (N+-1) sector
 nup = nd = L // 2
 
 Hexpl, Du, Dd = AK.build_H_explicit(L, U, nup, nd, t)
-E0, V0 = eigsh(Hexpl, k=1, which='SA'); E0 = float(E0[0]); Psi = V0[:, 0].reshape(Du, Dd)
+E0, V0 = eigsh(Hexpl, k=1, which='SA', v0=_v0(Hexpl.shape[0])); E0 = float(E0[0]); Psi = V0[:, 0].reshape(Du, Dd)
 wg = np.linspace(-9, 9, 600)
 
 
@@ -74,5 +137,5 @@ import statistics as st
 res['mean_relL1'] = st.mean(v['relL1'] for v in res['per_k'].values())
 res['max_relL1'] = max(v['relL1'] for v in res['per_k'].values())
 print("\nMEAN per-k rel-L1 @frac %.2f: %.4f   MAX: %.4f" % (FR, res['mean_relL1'], res['max_relL1']))
-json.dump(res, open('data/sampled_akw_L8.json', 'w'))
+json.dump(res, open(_outpath('sampled_akw_L8.json'), 'w'))
 print("wrote sampled_akw_L8.json  [%.1fs]" % (time.time() - t0))
