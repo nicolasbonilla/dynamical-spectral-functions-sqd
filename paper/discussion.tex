@@ -66,10 +66,20 @@ would dequantize the method exactly as the classical selectors of the introducti
 do~\cite{belagali2026,hinqs2026,review}. We put the strongest candidate to a stringent test. A
 generative tail-completer---an orbital-native generative flow network~\cite{bengio2021}
 trained to sample high-weight $(N{+}1)$-sector configurations---is asked to complete an under-sampled
-device head, in both device-seeded and from-scratch conditions (Fig.~\ref{fig:gflow}). A cheap
-classical CIPSI~\cite{cipsi1973} tail captures most of the gain; the learned generator's point estimate
-edges below the classical control but not by a statistically resolved margin (the $\sim\!4$~mHa
-fused-vs-control difference is $\sim\!1.2$~s.d.\ over five seeds; Fig.~\ref{fig:gflow}), and the residual
+device head, in both device-seeded and from-scratch conditions (Fig.~\ref{fig:gflow}).
+
+The result that carries the effect size here is not the generator but the baseline it fails to clear, and we
+state it in its own right rather than as a foil. Adding a cheap classical Epstein--Nesbet perturbative
+(CIPSI) tail~\cite{cipsi1973} to the \emph{same} device histogram---no additional shots, no additional
+quantum processing, and a first-order selection score that requires a single application of $H$ to the
+sampled wavefunction---cuts the energy error from $39.24\pm3.95$ to $26.98\pm0.66$~mHa (mean$\pm$s.d.\ over five
+seeds), a $31\%$ reduction and $3.1$~s.d.\ of the pre-correction spread. That $12.26$~mHa is three times
+the $4.04$~mHa the generative model then contributes on top of it, and it costs no quantum resources at
+all; it should be the default post-processing step on any under-sampled sample-based head; a demonstration that omits it is
+comparing against a baseline that is too weak. Only against that corrected baseline is the generative
+question well posed---and there the learned generator's point estimate edges lower still but not by a
+statistically resolved margin (the further $4.0$~mHa fused-vs-control difference is $1.2$~s.d.\ of the
+generator's own five-seed spread, against $3.1$ for the classical step; Fig.~\ref{fig:gflow}), and the residual
 error is closed by drawing more device samples, not by the generator. This is a
 \emph{null result}: on this single instance a learned generator does not beat the cheap classical baseline
 that the quantum sampling already enables---it does not, on the evidence here, manufacture dominant
@@ -108,12 +118,14 @@ both---any advantage, if it exists, would be confined to the high-noise, high-co
 where the classical prior already wins.
 
 \begin{figure}[htbp]\centering\includegraphics[width=0.80\textwidth]{figs/fig_gflownet.pdf}
-\caption{\textbf{Dequantization guard: the learned generator does not beat the cheap classical baseline.} At an under-sampled device head ($\mathrm{N_2}$,
-$1000$ shots, $5$ seeds), a cheap classical CIPSI~\cite{cipsi1973} tail already closes most of the gap
-($39.2\!\to\!27.0$~mHa). A generative GFlowNet tail-completer edges the point estimate lower still
-($26.0$~mHa from scratch, $22.9$~mHa fused onto the classical prior), but the $\sim\!4$~mHa
-fused-vs-control ($27.0$) improvement is only $\sim\!1.2$~s.d.\ over five seeds---not a statistically
-resolved win. The residual error is closed by drawing more device samples, not by the generator: on this
+\caption{\textbf{The large effect is the free classical tail; the learned generator adds no resolved
+gain.} At an under-sampled device head ($\mathrm{N_2}$, $1000$ shots, $5$ seeds), a cheap classical
+Epstein--Nesbet (CIPSI) tail~\cite{cipsi1973}, drawing no additional shots, cuts the error from
+$39.24\pm3.95$ to $26.98\pm0.66$~mHa---a $31\%$ reduction and $3.1$~s.d.\ of the pre-correction spread.
+A generative GFlowNet tail-completer then edges the point estimate lower still ($25.96\pm3.40$~mHa from
+scratch, $22.94\pm3.30$~mHa fused onto the classical prior), but that further $4.0$~mHa fused-vs-control
+improvement---a third the size of the classical step---is only $1.2$~s.d.\ over five seeds, not a
+statistically resolved win. The residual error is closed by drawing more device samples, not by the generator: on this
 single instance the quantum sampling, not a learned generator, supplies the dominant determinants that
 additional device shots recover.}\label{fig:gflow}\end{figure}
 

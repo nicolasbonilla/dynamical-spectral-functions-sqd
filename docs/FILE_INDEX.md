@@ -92,7 +92,7 @@ Each emits a native pgfplots fragment or table into `paper/figs/` / `paper/` fro
 | File | Feeds |
 |---|---|
 | `n19_suite.json` | Figs. 1, 8, 9 + Table 1 (19-molecule `F₁`/`\|S\|`/χ). |
-| `resource_master.json` | Fig. 2 (74 exact states; chain L=6 `F₁` = 9.3851, ED-certified). |
+| `resource_master.json` | Fig. 2 (74 exact states; open chain L=6 `F₁` = 9.6047, ED — the periodic-ring 9.3851 belongs to `scaling_data.json`, a different system). |
 | `cost_vs_ent.json` | Fig. 1(b) (Hubbard sweeps). |
 | `method_max.json` | Fig. 3 (validation + convergence). |
 | `akw_lanczos_L12.json` | Fig. 4 (exact `A(k,ω)`). |
@@ -126,7 +126,7 @@ The two hardware notebooks have the API **token and instance CRN removed** (plac
 | File | Purpose |
 |---|---|
 | `README.md` | Front page + figure gallery + quick start. |
-| `src/verify.py` | Fast (seconds, numpy/scipy-only) reproducibility check: `F₁(L=6)=9.3851` + the geminal witness; prints PASS/FAIL. What CI runs. |
+| `src/verify.py` | Fast (seconds, numpy/scipy-only) reproducibility check: `F₁(L=6)` for BOTH boundary conditions (open chain 9.6047, periodic ring 9.3851) + the geminal witness; prints PASS/FAIL. What CI runs. |
 | `src/build_repro_notebook.py` | Assembles `notebooks/00_Reproduce_Everything.ipynb` from source (the notebook is generated, not hand-edited). |
 | `docs/REPRODUCE.md` | Figure/number → script → command. |
 | `docs/FIGURE_PROVENANCE.md` | Figure → data-source → job-id single source of truth + stale-file list. |

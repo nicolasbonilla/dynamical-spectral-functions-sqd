@@ -246,9 +246,12 @@ trails; at small $|\mathcal S|$ there is no robust advantage.}\label{fig:bench}\
 
 \subsection{Scaling of the sampling cost with system size}
 Across $L=4$--$14$ ($8$ to $28$ qubits---the three largest, $20$--$28$ qubits, reached by matrix-free
-Lanczos/Haydock beyond the dense-diagonalization frontier and validated against it at $L\le8$) two
+Lanczos/Haydock beyond the dense-diagonalization frontier and validated against it at $L\le8$; these
+lattices are periodic rings, in contrast to the open chains of Sec.~\ref{sec:resource}) two
 trends coexist (Fig.~\ref{fig:scaling}): the fermionic magic of the correlated ground state grows with
-system size ($\mathcal F_1=6.6\to9.4\to12.8\to16.0\to19.3\to22.5$)---the static correlation strengthens---while
+system size ($\mathcal F_1=6.6\to9.4\to12.8\to16.0\to19.3\to22.5$)---but only \emph{extensively}: per site
+it is flat ($\mathcal F_1/L=1.65,1.56,1.60,1.60,1.61,1.61$), so a fixed amount of static correlation
+accumulates with the sites and does not strengthen with size---while
 the $(N{+}1)$-sector subspace \emph{fraction} needed to reconstruct $A(\omega)$ to relative-$L_1<0.05$
 \emph{falls} steeply ($0.92\to0.82\to0.56\to0.36\to0.17\to0.08$, i.e.\ from $92\%$ to $8\%$), the favourable
 face of the polynomial-shot bound of Theorem~\ref{thm:b2} (App.~\ref{app:b2}) and consistent with the
@@ -266,8 +269,8 @@ absolute size is not the magic but the entanglement, as a direct chain-versus-la
 a chain of the same site count have near-identical $\mathcal F_1$ ($12.82$ vs $12.91$ at $16$ qubits, half
 filling, $U/t=8$), since $\mathcal F_1$ is a geometry-blind one-body invariant---the ladder's
 perpendicular cut carries an area-law boundary of two legs rather than one, so its minimal bond dimension
-is far larger ($\chi=8\to38$ at $16$ qubits; the ratio grows with size, $\times2.6\to\times4.8\to\times6.3$
-from $12$ to $20$ qubits) and its response-targeted $(N{\pm}1)$ fraction correspondingly higher
+is far larger ($\chi=8\to38$ at $16$ qubits; the chain-to-ladder ratio reads $\times2.6$, $\times4.8$, $\times6.3$
+at $12$, $16$ and $20$ qubits, the ladder $\chi$ saturating at $38$ while the chain $\chi$ is non-monotone ($5,8,6$), so the last step arises from the chain falling $8\to6$ rather than from ladder growth) and its response-targeted $(N{\pm}1)$ fraction correspondingly higher
 ($0.43\to0.63$). The cost is lower-bounded and tracked by the bond dimension $\chi$, not by $\mathcal F_1$---the
 decoupling of Sec.~\ref{sec:resource}, now exhibited as a controlled contrast in which the classical cost
 tracks $\chi$ and not $\mathcal F_1$. We are explicit about scope: a two-leg ladder with
@@ -277,16 +280,17 @@ frontier, which lies in genuinely two-dimensional (wide-cylinder) geometries and
 graphs of quantum chemistry. What the ladder isolates is the \emph{resource} statement---that entanglement,
 not one-body magic, lower-bounds and tracks the determinant support. Because $\chi$ is precisely the bond dimension a
 (dynamical) density-matrix renormalization-group calculation must carry~\cite{paeckel2019,jeckelmann2002},
-panel~(a) is a direct classical-cost comparison: the $\times4.8$ chain-to-ladder growth at fixed
-$\mathcal F_1$ is the growth of the tensor-network spectral cost itself, and by Prop.~\ref{prop:chibound}
-it is a rigorous lower bound on the sampled support $|\mathcal S|$---a resource contrast, with no
+panel~(a) is a direct classical-cost comparison: the $\times4.8$ chain-to-ladder gap at fixed
+$\mathcal F_1$ ($16$ qubits) is a gap in the tensor-network spectral cost itself, and by Prop.~\ref{prop:chibound}
+it is a rigorous lower bound on the raw determinant support---a resource contrast, with no
 beyond-classical claim asserted.
 
 \begin{figure}[htbp]\centering\input{figs/fig_scaling2_native.tex}
 \caption{\textbf{Scaling of the sampling cost with system size} ($L=4$--$14$; 8--28 qubits, half-filled
-Hubbard $U/t=8$; the three largest sizes ($20$--$28$ qubits) computed by matrix-free Lanczos/Haydock,
-validated against dense diagonalization at $L\le8$). (a)~The fermionic magic $\mathcal F_1$ of the correlated
-ground state grows with system size ($6.6\to22.5$). (b)~The $(N{+}1)$-sector subspace fraction
+\emph{periodic} Hubbard rings at $U/t=8$; the three largest sizes ($20$--$28$ qubits) computed by matrix-free
+Lanczos/Haydock, validated against dense diagonalization at $L\le8$). (a)~The fermionic magic $\mathcal F_1$ of the
+correlated ground state grows with system size ($6.6\to22.5$), extensively---$\mathcal F_1/L$ is flat at
+$\approx\!1.6$, so this is accumulation, not strengthening, of static correlation. (b)~The $(N{+}1)$-sector subspace fraction
 $|\mathcal S|/\dim$ needed to reconstruct $A(\omega)$ to relative-$L_1<0.05$ \emph{falls} steeply
 ($0.92\to0.08$)---the sampled reconstruction becomes relatively cheaper as the state grows
 harder to represent classically. \textbf{(c)}~The absolute sizes nonetheless both grow
@@ -298,14 +302,14 @@ picture.}\label{fig:scaling}\end{figure}
 \begin{figure}[htbp]\centering\input{figs/fig_ladder_native.tex}
 \caption{\textbf{The cost is tracked by entanglement, not one-body magic---a controlled chain-versus-ladder
 contrast.} A two-leg Hubbard ladder versus a chain of the \emph{same} site count (half filling,
-$U/t=8$; exact diagonalization). At matched fermionic magic $\mathcal F_1$ (chain vs.\ ladder: $9.39/9.69$,
+$U/t=8$; exact diagonalization). At matched fermionic magic $\mathcal F_1$ (open chain vs.\ ladder: $9.60/9.69$,
 $12.82/12.91$, $16.03/16.09$ at $12/16/20$ qubits---$\mathcal F_1$ is a geometry-blind one-body invariant)
 the ladder's perpendicular cut has an area-law boundary of two rather than one. \textbf{(a)}~Its minimal
 matrix-product-state bond dimension $\chi$ is far larger; the chain-to-ladder ratio grows over
-$12\to20$ qubits ($\times2.6,\times4.8,\times6.3$), the ladder $\chi$ saturating at $38$ and the chain
-$\chi$ remaining small and growing only slowly ($5\to8\to6$ over these sizes, consistent with the
-logarithmic entanglement of the gapless spin sector)---the reported $\chi$ are
-threshold-truncated Schmidt ranks. \textbf{(b)}~The response-targeted $(N{\pm}1)$ fraction needed for spectral
+$12\to20$ qubits ($\times2.6,\times4.8,\times6.3$), the ladder $\chi$ saturating at $38$ while the chain
+$\chi$ stays small and does \emph{not} grow ($5,8,6$ at $12/16/20$ qubits---non-monotone, with no systematic
+increase over this range, consistent with the at most logarithmic entanglement growth of the gapless spin
+sector)---the reported $\chi$ are threshold-truncated Schmidt ranks. \textbf{(b)}~The response-targeted $(N{\pm}1)$ fraction needed for spectral
 relative-$L_1<0.05$ is correspondingly higher for the ladder (these union $(N{\pm}1)$ response fractions
 differ from the single-sector $(N{+}1)$ $A(\omega)$ fractions of Fig.~\ref{fig:scaling}, a different
 observable). Same one-body magic, higher cost: the

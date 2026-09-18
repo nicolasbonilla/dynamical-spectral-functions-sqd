@@ -1,5 +1,5 @@
 {
- "note": "74 exact Hubbard/molecular/ladder ground states; (F1,|S|,chi). |S|=eps-support, chi=eps-Schmidt-rank (family-specific eps noted in text). [L=6 chain F1 corrected 9.6047->9.3851 to match ED (scaling_data.json); see recompute]",
+ "note": "74 exact Hubbard/molecular/ladder ground states; (F1,|S|,chi). |S|=eps-support (molecules: 99% weight; lattice: eps=0.05), chi=eps-Schmidt-rank. [2026-09-05 provenance fix: the 2026-08-17 note claimed the L=6 chain F1 was 'corrected 9.6047->9.3851 to match ED (scaling_data.json)'. That was REVERSED. 9.6047 is the OPEN-chain (OBC) value, which is what this row is: it comes from cost_vs_entanglement.py, whose chain_bonds() is open, and its |S|=147, chi=5 are the open-chain values. 9.3851 is the PERIODIC-ring value from scaling_data.json (akw_lanczos.hop uses j=(i+1)%L). Both recomputed independently: OBC 9.604689 (E0=-1.768099), PBC 9.385082 (E0=-2.048131). Restored to 9.604689. Rank-preserving: no F1 value in the 74 lies between the two, so every published Spearman coefficient is unchanged (pooled chi-|S| 0.7224, F1-|S| 0.5992, verified after the edit).]",
  "pooled_spearman_chi_S": 0.7223607689415286,
  "pooled_spearman_F1_S": 0.5991983669238197,
  "points": [
@@ -250,7 +250,7 @@
    "family": "hubbard"
   },
   {
-   "F1": 9.3851,
+   "F1": 9.604689,
    "S": 147,
    "chi": 5,
    "family": "hubbard"
@@ -412,7 +412,7 @@
    "family": "hubbard"
   },
   {
-   "F1": 9.3851,
+   "F1": 9.604689,
    "S": 147,
    "chi": 5,
    "family": "chain2"

@@ -88,14 +88,21 @@ spin-restricted natural orbitals), the effectively-unpaired-electron index and o
 linear entropy. Being an orbital-rotation (Gaussian) invariant while $|\mathcal S|$ is basis dependent,
 $\mathcal F_1$ is provably \emph{decoupled} from the cost, two-sidedly and without a stable sign. The
 cost is instead \emph{lower-bounded and empirically tracked} by the basis-dependent entanglement---the
-minimal bond dimension $\chi$ (Spearman $\rho=0.90$, $n=38$). One-body fermionic magic is thus a
+minimal bond dimension $\chi$. On the molecular suite the two candidate resources are not distinguishable
+(Spearman $\rho=0.90$ for $\chi$ versus $0.86$ for $\mathcal F_1$, $n=38$, where both merely track static
+correlation); what separates them is the Hubbard interaction sweep, where $\chi$ holds at $\rho=0.57$
+while $\mathcal F_1$ falls to $\rho=-0.11$ ($n=30$, not significant). One-body fermionic magic is thus a
 faithful multireference diagnostic but an unreliable predictor of the sampling cost; any genuine
 advantage lives one stratum above, in the high-rank non-Gaussianity of the connected higher-body
 cumulants in the operative sampling frame. We prove moment exactness and a sampling-capture bound
 polynomial in $|\mathcal S|$ and independent of the Hilbert-space dimension. On the
 artificial-intelligence side of the hybrid loop, self-consistent configuration recovery improves the
-sampled subspace under realistic device noise, while a \emph{learned} generative model does not beat
-that classical baseline---delimiting the quantum--AI frontier.
+sampled subspace under realistic device noise, while in the dequantization test the large effect is
+classical and free: on an under-sampled device head an Epstein--Nesbet perturbative tail, drawing no
+additional shots, cuts the
+energy error by $31\%$ ($39.24\pm3.95\to26.98\pm0.66$~mHa over five seeds, $3.1$~s.d.\ of the
+pre-correction spread), whereas a \emph{learned} generative model adds a further $4.0$~mHa at only
+$1.2$~s.d.\ of its own spread and does not beat that baseline---delimiting the quantum--AI frontier.
 \end{abstract}
 
 \input{introduction.tex}

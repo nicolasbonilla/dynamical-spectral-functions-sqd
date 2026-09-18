@@ -126,11 +126,18 @@ rank $\chi$---is therefore at most $|\mathcal S|$.
 says that \emph{in the sampler's own basis a tensor network is never less compact than the sampled
 subspace}: this is why we make no beyond-classical claim in one dimension, where $\chi$ is small, and why
 any advantage must live in the higher-entanglement regime where $\chi$ itself---and with it the classical
-tensor-network cost---grows (the chain-to-ladder jump of Fig.~\ref{fig:ladder}). Empirically the bound is
-also tight: across the $74$ exact ground states of Fig.~\ref{fig:master} the support tracks $\chi$
-(pooled Spearman $\rho=0.72$; $\rho=0.90$ within the $n=38$ molecular suite), so $\chi$ is not only a
-rigorous floor but the operative empirical correlate of the cost (though, per the geminal witness, a
-sometimes exponentially loose one), whereas $\mathcal F_1$ is decoupled from it.
+tensor-network cost---grows (the chain-to-ladder jump of Fig.~\ref{fig:ladder}). Empirically $\chi$ is also the
+operative correlate of the \emph{measured} cost: across the $74$ exact ground states of
+Fig.~\ref{fig:master} the thresholded support $|\mathcal S|_\varepsilon$ tracks $\chi$ (pooled Spearman
+$\rho=0.72$; $\rho=0.90$ within the $n=38$ molecular suite, where however one-body magic scores a
+comparable $\rho=0.86$---the two resources are separated not there but by the Hubbard sweep, $\rho=0.57$
+versus $-0.11$). Two caveats belong with that number. A rank correlation is not a statement of tightness,
+and per the geminal witness the bound can be exponentially loose. And the proposition is proved for the
+raw support: once amplitudes are thresholded the inequality need not survive---here $|\mathcal S|$ is cut
+at $99\%$ of the weight while $\chi$ is cut at $\varepsilon=0.05$, a tighter tolerance---and
+$|\mathcal S|_\varepsilon$ falls below $\chi$ in $7$ of the $38$ molecular points. What stands is that $\chi$ is a rigorous floor on
+the raw support and an empirical correlate of the measured one, whereas $\mathcal F_1$ is decoupled from
+both.
 
 \subsection{A provably-simulable witness: magic without cost}
 \label{app:witness}
@@ -205,10 +212,10 @@ silent on whether magic is \emph{necessary} for hardness (it may well be, and th
 residual structure is where~\cite{oh2026} locates tractability); it refutes only that magic is
 \emph{sufficient} for, or \emph{determines}, the cost---the coefficient-insensitivity of
 Prop.~\ref{prop:obstruction} made constructive. What does track the cost is the bond dimension in the
-operative sampling basis---not orbit-invariant. It \emph{lower-bounds} $|\mathcal S|$ and can be
+operative sampling basis---not orbit-invariant. It \emph{lower-bounds} the raw $|\mathcal S|$ and can be
 exponentially loose (this very witness has $\chi=2$ while $|\mathcal S|_{\mathrm{pair}}=2^{K}$), yet
-across the realized molecular suite and Hubbard set it co-varies with $|\mathcal S|$ (Spearman
-$\rho=0.90/0.57$) and with the natural-orbital participation entropy that upper-bounds Gaussian-basis
+across the realized molecular suite and Hubbard set it co-varies with the measured
+$|\mathcal S|_\varepsilon$ (Spearman $\rho=0.90/0.57$) and with the natural-orbital participation entropy that upper-bounds Gaussian-basis
 simulation cost~\cite{tarabunga2026}. Fermionic magic diagnoses correlation; entanglement in the sampler's frame
 lower-bounds and tracks its price.
 

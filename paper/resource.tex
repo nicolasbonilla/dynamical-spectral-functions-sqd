@@ -63,7 +63,11 @@ anomalous correlators and keeps $\mathcal F_1=0$.)
 
 \paragraph{Decoupling from the cost.} That invariance is exactly what severs $\mathcal F_1$ from the
 sampling cost. The cost of a sample-based method is the determinant support $|\mathcal S|_\varepsilon$:
-the number of fixed-basis Slater determinants that carry $1-\varepsilon^2$ of the weight. Unlike
+the number of fixed-basis Slater determinants that carry $1-\varepsilon^2$ of the weight (concretely,
+$99\%$ of the weight for the molecular suite and $\varepsilon=0.05$ for the lattice families). Throughout,
+$|\mathcal S|$ without a subscript denotes this thresholded count; where the \emph{raw} support---the
+determinants of nonzero amplitude---is meant we say so explicitly, because the two do not obey the same
+bounds. Unlike
 $\mathcal F_1$, $|\mathcal S|$ is \emph{basis dependent}---a single Slater determinant has
 $|\mathcal S|=1$ in its own natural orbitals and exponentially many terms in a generic basis. An
 orbital rotation is a free (Gaussian) operation that leaves the occupation spectrum, hence
@@ -111,8 +115,8 @@ amplitudes do not shrink. The two-determinant cat $(\ket{1\cdots10\cdots0}+\ket{
 has $\gamma=\tfrac12\mathbb 1$, hence $\mathcal F_1=2n_{\rm o}$ (maximal) yet Slater rank $2$; and a paired (BCS)
 Gaussian state has Gaussian rank $1$ yet fractional occupations. The only computable lower bounds on $|\mathcal S|$ are themselves
 basis dependent---the orbital-Schmidt rank across a bipartition, i.e.\ the tensor-network bond
-dimension~\cite{schollwock2011}, which we prove is a rigorous lower bound, $\chi\le|\mathcal S|$
-(App.~\ref{app:theorem}, Prop.~\ref{prop:chibound}), and, consistently, the basis-dependent non-Gaussianity measures
+dimension~\cite{schollwock2011}, which we prove is a rigorous lower bound on the raw support,
+$\chi\le|\mathcal S|$ (App.~\ref{app:theorem}, Prop.~\ref{prop:chibound}), and, consistently, the basis-dependent non-Gaussianity measures
 (such as the natural-orbital participation entropy) that \emph{do} upper-bound the simulation
 cost~\cite{tarabunga2026}---while a Gaussian-invariant magic measure is blind to them. We make the
 obstruction constructive (App.~\ref{app:witness}, Thm.~\ref{thm:witness}): an antisymmetrized product of
@@ -127,15 +131,23 @@ connected higher-body cumulants, which no orbital-invariant $\mathcal F_k$ can c
 paired stratum, whose amplitudes, overlaps, and number correlators are classically \emph{estimable} to
 additive error under free-fermionic dynamics~\cite{oh2026}.
 This bond dimension---which directly sets the classical cost of a matrix-product-state
-simulation~\cite{schollwock2011}---is a rigorous lower bound on $|\mathcal S|$ (Prop.~\ref{prop:chibound})
-that, unlike the orbital-invariant $\mathcal F_1$, empirically co-varies with it: across both the
-nineteen-molecule suite and Hubbard chains the minimal bond dimension $\chi$ tracks $|\mathcal S|$
-(Spearman $\rho=0.90$ over the $n=38$ molecular equilibrium-and-dissociation points and $\rho=0.57$ over
-the $n=30$ Hubbard points; both $p<0.01$), whereas one-body magic tracks it only in the
-static-correlation regime of dissociating molecules ($\rho=0.86$, $n=38$) and not under the Hubbard
-interaction sweep ($\rho=-0.11$, $n=30$, $p\approx0.56$, not significant, where increasing $U$ raises
-$\mathcal F_1$ but lowers $|\mathcal S|$); the absolute $|\mathcal S|$, sector dimension $D$, and $\chi$
-underlying these coefficients are tabulated per species in App.~\ref{app:repro}. Many-body
+simulation~\cite{schollwock2011}---is a rigorous lower bound on the \emph{raw} support,
+$\chi\le|\mathcal S|$ (Prop.~\ref{prop:chibound}). We are explicit that the quantity we measure is the
+operative thresholded support $|\mathcal S|_\varepsilon$, for which the relation is empirical rather than
+proved: the support and the Schmidt rank are truncated at different tolerances ($99\%$ of the weight for
+$|\mathcal S|$, $\varepsilon=0.05$ for $\chi$), so the thresholded support can fall below $\chi$, and it
+does so in $7$ of the $38$ molecular points. What holds empirically is that, unlike the orbital-invariant
+$\mathcal F_1$, the bond dimension co-varies with the measured cost: across both the nineteen-molecule
+suite and open Hubbard chains, $\chi$ tracks $|\mathcal S|_\varepsilon$ (Spearman $\rho=0.90$ over the
+$n=38$ molecular equilibrium-and-dissociation points and $\rho=0.57$ over the $n=30$ Hubbard points; both
+$p<0.01$). The molecular set by itself does not discriminate between the two candidate resources---one-body
+magic scores a comparable $\rho=0.86$ on the identical $n=38$ points, because there $\mathcal F_1$ and the
+support both merely track static correlation. What discriminates is the Hubbard interaction sweep, where
+$\chi$ holds at $\rho=0.57$ while $\mathcal F_1$ collapses to $\rho=-0.11$ ($n=30$, $p\approx0.56$, not
+significant), increasing $U$ raising $\mathcal F_1$ while lowering $|\mathcal S|_\varepsilon$; that
+contrast, not the molecular coefficient, is the evidence for the title. The absolute
+$|\mathcal S|_\varepsilon$, sector dimension $D$, and $\chi$ underlying these coefficients are tabulated
+per species in App.~\ref{app:repro}. Many-body
 (bond-dimension) entanglement lower-bounds and, across the studied regimes, empirically tracks the
 sampling cost; one-body entanglement---equivalently the one-body magic $\mathcal F_1$---does so only
 where it coincides with static correlation. That single-particle entanglement can be maximal while

@@ -40,8 +40,9 @@ cells.append(md(
 "## 1 · The central identity and the provable witness",
 "",
 "The paper's second contribution: the one-body fermionic magic `F₁ = 4 tr[γ(1−γ)] = 2Nᵤ` is *decoupled*",
-"from the sampling cost `|S|`. We first reproduce the two exact numbers that anchor this — the corrected",
-"`F₁(L=6, U/t=8) = 9.3851` and the geminal witness `F₁=F₂=4K`, `|S|=2^K`, `χ=2` — with `verify.py`.",
+"from the sampling cost `|S|`. We first reproduce the exact numbers that anchor this — the",
+"open-chain `F₁(L=6, U/t=8) = 9.6047` used by the resource figures (the periodic-ring 9.3851 is a",
+"different system, used by the scaling figure) and the geminal witness `F₁=F₂=4K`, `|S|=2^K`, `χ=2`.",
 ))
 cells.append(code(
 "print(subprocess.run([sys.executable, 'src/verify.py'], capture_output=True, text=True).stdout)",

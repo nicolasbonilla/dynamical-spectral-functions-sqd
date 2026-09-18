@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 r"""Native fig_gflownet (honest dequantization guard) from VERIFIED 5-seed results
-(07_Resultados_verificados/GFlowNet_SQD_resultados_verificados.md sec 3.4; N2 CAS(10e,12o), dim=120,
+(P1_review_ML_for_SQD/data/GFlowNet_SQD_resultados_verificados.md sec 3.4; N2 CAS(10e,12o), dim=120,
 1000 shots, real Docker pyscf+torch). Big improvement = cheap CLASSICAL prior (ibm -> ibm+cheap);
 the generative GFlowNet does NOT beat the fair classical control -> a learned generator cannot
 manufacture the dominant determinants."""

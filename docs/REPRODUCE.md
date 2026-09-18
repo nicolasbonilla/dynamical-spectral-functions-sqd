@@ -13,7 +13,7 @@ All scripts live in [`../src/`](../src/) and all committed data in [`../data/`](
 (or `make reproduce`) runs the whole pipeline as one narrated, top-to-bottom notebook — every figure and
 number below, each loaded from the same `data/*.json` that feeds the paper.
 
-**Fastest check (seconds, numpy/scipy only):** `python src/verify.py` — reproduces `F₁(L=6)=9.3851` and the
+**Fastest check (seconds, numpy/scipy only):** `python src/verify.py` — reproduces `F₁(L=6)` for the open chain (9.6047, the resource families) and the periodic ring (9.3851, the scaling figure), and the
 geminal witness (`F₁=F₂=4K`, `|S|=2^K`, `χ=2`) by exact diagonalization and prints PASS/FAIL. This is what CI runs.
 
 > **Honesty note.** The committed `paper/figs/*.tex` and `*.pdf` are **authoritative** and match `main.pdf`.

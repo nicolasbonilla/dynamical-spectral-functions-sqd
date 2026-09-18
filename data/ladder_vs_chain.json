@@ -1,14 +1,14 @@
 {
  "U": 8.0,
  "eps": 0.05,
- "note": "chain(OBC) vs 2-leg ladder, half filling, U=8; F1,|S|,chi,(N+1) response frac [chain F1 synced to ED (scaling_data.json): L6 9.6047->9.3851, L8 ->12.8138, L10 ->16.0183; 2026-08-17]",
+ "note": "chain(OBC) vs 2-leg ladder, half filling, U=8; F1,|S|,chi,(N+1) response frac [2026-09-05 provenance fix: the 2026-08-17 'sync to ED (scaling_data.json)' replaced the OPEN-chain F1 with PERIODIC-ring values. scaling_data.json is a PBC ring (akw_lanczos.hop, j=(i+1)%L); these chain rows are OBC (chain_bonds). Reverted to the recomputed OBC values L6 9.604689, L8 12.816276, L10 16.030613 (PBC would be 9.385082, 12.813821, 16.018265). The |S| and chi in these rows were never touched and were always OBC.]",
  "pairs": [],
  "results": {
   "chain-L6": {
    "L": 6,
    "U": 8.0,
    "N": 6,
-   "F1": 9.3851,
+   "F1": 9.604689,
    "Sdet": 147,
    "D": 400,
    "chi": 5,
@@ -32,7 +32,7 @@
    "L": 8,
    "U": 8.0,
    "N": 8,
-   "F1": 12.8138,
+   "F1": 12.816276,
    "Sdet": 880,
    "D": 4900,
    "chi": 8,
@@ -56,7 +56,7 @@
    "L": 10,
    "U": 8.0,
    "N": 10,
-   "F1": 16.0183,
+   "F1": 16.030613,
    "Sdet": 5084,
    "D": 63504,
    "chi": 6

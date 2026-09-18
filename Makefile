@@ -14,7 +14,9 @@ help:
 	@echo "make all      - figures + paper"
 	@echo "make clean    - remove LaTeX aux files (keeps main.pdf)"
 
-# ---- fast reproducibility check (numpy+scipy only, seconds): F1(L=6)=9.3851 + the geminal witness ----
+# ---- fast reproducibility check (numpy+scipy only, seconds): the geminal witness, plus BOTH L=6,U/t=8
+#      half-filled Hubbard values -- open chain F1=9.6047 (the resource datasets and Figs. fig:decoupling,
+#      fig:master, fig:ladder) and periodic ring F1=9.3851 (fig:scaling). Different systems, not variants.
 verify:
 	$(PYTHON) src/verify.py
 

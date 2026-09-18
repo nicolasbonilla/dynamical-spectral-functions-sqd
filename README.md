@@ -105,7 +105,7 @@ noise-assisted configuration recovery (the same shallow circuit gives 29.5 mHa i
 python -m venv .venv && source .venv/bin/activate      # (Windows: .venv\Scripts\activate)
 pip install -r requirements.txt
 
-# 2. reproduce headline numbers in SECONDS (numpy/scipy only): F₁(L=6)=9.3851 + the geminal witness
+# 2. reproduce headline numbers in SECONDS (numpy/scipy only): F₁(L=6) open chain 9.6047 / ring 9.3851 + witness
 python src/verify.py        # or: make verify   ->   all PASS
 
 # 3. reproduce EVERYTHING in one coherent, narrated pass — every figure and number, top to bottom
