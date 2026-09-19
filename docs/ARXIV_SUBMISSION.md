@@ -218,9 +218,23 @@ This is a **replacement (v3)** of an existing entry, not a new submission.
 | **Cross-list** | `cond-mat.str-el` |
 | **Title** | Captured weight and boundary leakage bound the error of sample-based spectral functions |
 | **Authors** | Nicolás Bonilla Vargas |
-| **Abstract** | copy the `abstract` environment from `paper/main.tex` (**it changed in v3** — v1–2's title and weight-only bound are retracted) |
+| **Abstract** | copy the `abstract` environment from `paper/main.tex` (**it changed in v3**). **Type the ten Greek letters as Unicode characters (η, ρ, γ, Λ) and keep the exponents and subscripts (`10^-3`, `L_1`): so typed it is 1910 characters against arXiv's limit of 1920. Spelled out as `eta`, `rho`, ... it is 1940 and arXiv rejects it.** The margin depends on the convention, so decide the exact string before opening the form; `scratchpad/cierre/abs_paste.py` prints it and counts it both ways. Note that `mide_resumen.py` deletes `^` and `_` and therefore reads 8 characters short. |
 | **License** | CC BY 4.0 |
-| **Comments** | `59 pages, 17 figures, 16 tables. v3 retracts the weight-only bound of v1-2. Code and full reproduction: https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd` |
+| **Comments** | paste the block below verbatim (measured 2026-09-19: 59 pages, 17 figures, 17 tables). arXiv asks that a replacement merge the old comments with the new ones, and that the reason for the replacement appear in this field. |
+
+```
+59 pages, 17 figures, 17 tables. Code, data and full reproduction repository:
+https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd
+v3: major revision, retitled. Theorem 1(iii) of v1-v2, an error bound indexed on the
+captured Born weight alone, does not hold - a two-level counterexample forces its
+constant to the trivial value - and is replaced by a proved two-sided leakage bound,
+evaluated on five Hubbard sectors up to dimension 10306296 and vacuous on all of them
+by factors 1.66-8.61. The two rank correlations that v1-v2 pooled over the thirty
+Hubbard points are Simpson reversals of the six (L,N) strata and are replaced by a
+stratified test. Further claims of v1-v2 are not made here and are listed, item by
+item, in docs/KNOWN_DISCREPANCIES.md of the repository above.
+```
+
 
 ### Steps
 

@@ -41,20 +41,21 @@ The error of a spectral function reconstructed on a subspace of sampled configur
 Theorem~\ref{thm:leakage}, into the Born weight the shots failed to capture and the Hamiltonian
 coupling that leaks across the boundary of that subspace at the resolution asked for; only the
 first of the two is bought by drawing more bitstrings, and this paper measures---subspace by
-subspace, at four system sizes, in a sector of dimension up to $731\,808$---where the resulting
+subspace, at five system sizes, in a sector of dimension up to $10\,306\,296$---where the resulting
 certificate says something and where it does not.
 
 Four things were needed to make that statement, and all four are measurements rather than
-expectations. The bound itself replaces a weight-only bound that versions~1--2 of this preprint
-asserted and that is false, by an analytic counterexample and by counting
-(Sec.~\ref{sec:retraction}); what survives of the original theorem is moment exactness through
-order $2K+1$, restated with the proof the code realizes (Theorem~\ref{thm:moments}). Evaluated,
-the new certificate is vacuous at every published fraction, at each of the four sizes evaluated, by
-factors of $2.8$ to $4.9$, converged in Krylov depth at the largest size---and the same sweep yields the one
+expectations. The bound itself stands where a weight-only bound cannot: no inequality indexed on the
+captured weight alone can hold, by an analytic counterexample and by counting
+(Sec.~\ref{sec:retraction}); what a Krylov-adequate subspace does guarantee is moment exactness
+through order $2K+1$, stated with the proof the code realizes (Theorem~\ref{thm:moments}). Evaluated,
+the new certificate is vacuous at every published fraction, at each of the five sizes evaluated, by
+factors of $1.66$ to $8.61$, converged in Krylov depth at $L=12$---and the same sweep yields the one
 positive property that survived four independent attacks: the crossing of the trivial bound occurs
 at a true relative $L_1$ error between $1.2\times10^{-3}$ and $7.3\times10^{-3}$, median
-$2.8\times10^{-3}$, uniformly over $L=6$--$12$ and $\eta=0.10$--$0.25\,t$, and is computed without
-the answer (Sec.~\ref{sec:frontier}). No orbital-rotation invariant substitutes for it: one-body
+$2.8\times10^{-3}$, over $L=6$--$12$ and $\eta=0.10$--$0.25\,t$---a drift, not scatter: ordered
+without exception in both arguments and conservative in $L$---and is computed without the answer
+(Sec.~\ref{sec:frontier}). No orbital-rotation invariant substitutes for it: one-body
 fermionic magic is constant along an orbit on which the determinant support runs from $O(K)$ to
 $2^{K}$ at bond dimension $2$, and constant on fibers on which the subspace-aware certificate still
 separates (Theorem~\ref{thm:witness}, Proposition~\ref{prop:leakinv}), the general
@@ -67,12 +68,13 @@ $\approx2.1/L$, with an independent effective-Heisenberg control (Table~\ref{tab
 
 Three limits bound all of it, and we state them as flatly as the results. \emph{First, the
 certificate does not certify the reconstructions this paper reports.} It is vacuous at every
-published fraction, at each of the four sizes evaluated, and the obstruction is structural rather than
+published fraction, at each of the five sizes evaluated, and the obstruction is structural rather than
 incidental: the coordinate support of the Krylov space $\mathcal K(H,\phi)$ is $296$ of $300$
 determinants at $L=6$ and all $3920$ of $3920$ at $L=8$, so at $L=8$ the leakage is strictly positive
 for every proper coordinate subspace and no leakage-type certificate in the determinant
-basis---this one or another---can be non-vacuous there at low fraction. Two sizes are what we
-measured and two sizes are what we claim. \emph{Second, the size is $L=12$, by exact diagonalization.}
+basis---this one or another---can be non-vacuous there at low fraction. That support is the whole
+sector at $L=8$, $10$, $12$ and $14$---every size this work reports.
+\emph{Second, the largest momentum-resolved spectrum is $L=12$, by exact diagonalization.}
 The three momentum-resolved responses reported here have been computed classically by dynamical DMRG
 since 2007~\cite{benthien2007}---at $120$, $100$ and $90$ sites in the charge, spin and
 single-particle channels respectively---and at $L=48$ in the Hubbard chain, $L=64$ in the Heisenberg chain, with correction
@@ -82,7 +84,7 @@ kernel-polynomial expansions~\cite{kuehner1999,whitefeiguin2004,holzner2011,kpm2
 the real-time propagation of selected configuration-interaction wavefunctions~\cite{tdasci2024}; one
 dimension is where tensor networks, since White's formulation~\cite{whitedmrg1992}, are
 near-optimal~\cite{schollwock2011}, and nothing in this work competes with that standard; the
-vocabulary of the thermodynamic limit has been withdrawn from it accordingly
+vocabulary of the thermodynamic limit is accordingly absent from it
 (Sec.~\ref{sec:physics}). \emph{Third, the certified regime costs more shots than the method
 saves.} Moving from the published fraction to the non-vacuous band multiplies the shots per
 snapshot needed for the marginal configuration by $7.5$ to $10$ at $L=8$ and by $20$ to $35$ at
@@ -91,16 +93,15 @@ that a device can certify is, on these systems, a regime in which diagonalizing 
 is already the cheaper thing to do.
 
 Two questions follow, and only one of them is a matter of more computing. Whether a certified
-regime exists at low sampled fraction is now a well-posed measurement rather than an expectation,
+regime exists at low sector fraction is now a well-posed measurement rather than an expectation,
 and the calibration above is the instrument for making it; whether it exists at all is decided by
 a prior question that this work can pose but not answer---whether there is any single-particle
 basis in which the coordinate support of $\mathcal K(H,\phi)$ is not the entire sector, since it
 is that support, and not the quality of the sampler, that pins the threshold measured here.
 
-What this paper leaves behind is therefore narrower than what versions~1--2 announced and, we
-think, more useful: a bound on the error of a sample-based spectral function that can be evaluated
-without the answer, a map of where it is informative, and the negative half of that map stated in
-the same voice as the positive one.
+What this paper leaves behind is therefore narrow and, we think, useful: a bound on the error of a
+sample-based spectral function that can be evaluated without the answer, a map of where it is
+informative, and the negative half of that map stated in the same voice as the positive one.
 
 % ---------------------------------------------------------------------------------
 %  ACKNOWLEDGMENTS -- added 2026-09-19 at the end of the last body section, which is

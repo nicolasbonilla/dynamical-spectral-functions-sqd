@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 r"""Native fig_heron from the REAL IBM Heron spectral run (Spectral_Heron_READY.ipynb):
-L=6 Hubbard A(omega) on ibm_fez, 50000 shots, job d9s16avpemts73ct6g8g.
+L=6 Hubbard A(omega) on ibm_fez, 350000 shots (50000 on each of 7 circuits, k=0..6,
+k=0 the t=0 reference), job d9s16avpemts73ct6g8g.
 HONEST framing: the recovered configurations span the COMPLETE (N+-1) sector (|S|=300/300), so the
 sampled-subspace reconstruction is exact BY CONSTRUCTION (rel-L1=0). This is a coverage proof-of-
 principle that the spectral pipeline runs end-to-end on a real device -- NOT a fidelity benchmark and

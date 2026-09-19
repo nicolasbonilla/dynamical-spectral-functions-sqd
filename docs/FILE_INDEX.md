@@ -17,9 +17,9 @@ are described at the end rather than listed.
 | directory | tracked files |
 |---|---|
 | `paper/` | 81 — 23 at the root, 9 in `carried/`, 49 in `figs/` |
-| `src/` | 55 tracked + 2 new = **57** |
-| `data/` | 37 |
-| `docs/` | 16 — 6 Markdown, 10 PNG thumbnails |
+| `src/` | 55 tracked + 2 new = **57**, plus **24 in `src/frontier/`** (the C3 sweep, deposited 2026-09-19) |
+| `data/` | 37, plus **82 in `data/c3_frontier/`** (the C3 sweep, 2.47 MB) |
+| `docs/` | 17 — 7 Markdown, 10 PNG thumbnails |
 | `_superseded/` | 24 |
 | `notebooks/` | 3 |
 | root | 7 — `README.md`, `CITATION.cff`, `LICENSE`, `Makefile`, `requirements.txt`, `.gitignore`, `.github/workflows/ci.yml` |
@@ -100,7 +100,7 @@ line-level `\input` expander finds two floats in this manuscript instead of thir
 
 | File | Purpose |
 |---|---|
-| `verify.py` | **The adversarial guardian** (~10 s, numpy/scipy only). Recomputes the half-filled Hubbard ground states for both boundary conditions (open chain 9.6047, periodic ring 9.3851) and the geminal witness from first principles, then checks **807 checks / 7 454 numeric assertions** across `data/*.json`, `paper/*.tex` (the abstract included), `paper/figs/*.tex` and `paper/figs/*.dat` against them. Exits non-zero and names the defect. `[XFAIL]` lines are registered open defects (`KNOWN_OPEN`), open claims (`CLAIMS_OPEN`) and declared coverage gaps (`COVERAGE_GAP_V3`); they do not set the exit code. `--fast` is for editing loops and **certifies nothing** (it exits 3). |
+| `verify.py` | **The adversarial guardian** (~15 s, numpy/scipy only). Recomputes the half-filled Hubbard ground states for both boundary conditions (open chain 9.6047, periodic ring 9.3851) and the geminal witness from first principles, then checks **831 checks / 9 843 numeric assertions** across `data/*.json`, `data/c3_frontier/*.json`, `paper/*.tex` (the abstract included), `paper/figs/*.tex` and `paper/figs/*.dat` against them. Its section **(10b)** opens the 54 C3 point files and re-derives all 204 grid rows — see [`C3_FRONTIER.md`](C3_FRONTIER.md) §7; seven negative controls for that section fire and name the defect. Exits non-zero and names the defect. `[XFAIL]` lines are registered open defects (`KNOWN_OPEN`), open claims (`CLAIMS_OPEN`) and declared coverage gaps (`COVERAGE_GAP_V3`); they do not set the exit code. `--fast` is for editing loops and **certifies nothing** (it exits 3). |
 | `check_figures.py` | Regenerates six generators into a throw-away tree and diffs 8 artefacts against the committed ones. **Read its PASS as 7, not 8** — one artefact is compared with a copy of itself, and the run rewrites four files in the working tree; measured, with a negative control, in `KNOWN_DISCREPANCIES.md` §25. |
 | `check_provenance.py` | **New, 2026-09-19.** Derives the figure inventory from `paper/main.tex` and fails if `FIGURE_PROVENANCE.md`, the `main.tex` float census or `check_figures.py`'s artefact list no longer describes the manuscript. Prints the orphan inventory. Nine self-tests with negative controls run first; it exits 2 if one does not fire. |
 | `check_tarball.py` | Compares `paper/arxiv-submission.tar.gz` with the current `paper/` tree, so no document has to carry a hand-written count. |
@@ -187,6 +187,33 @@ is deliberately out of `make figures` and out of `check_figures.py` (§3).
 
 **Absent, and named by their own output:** `make_fig_gapscaling.py` (Fig. 10) and `build_n3.py` with
 `fix_n3_caption.py` / `fix_n3_fig5_series.py` (Fig. 17). See `KNOWN_DISCREPANCIES.md` §27.
+
+---
+
+### `src/frontier/` — 24 scripts, the C3 certificate-frontier sweep (deposited 2026-09-19)
+
+Sec. V used to be the one part of the manuscript a reader could not regenerate. This is what closes
+that. Full reproduction instructions, per-file costs and the declared gaps are in
+[`C3_FRONTIER.md`](C3_FRONTIER.md); the module names are kept exactly as they were run, because
+renaming them would have meant rewiring the import graph rather than moving path constants.
+
+| group | files | role |
+|---|---|---|
+| **A — the engine** | `c0_lib.py`, `c0_big.py`, `c0_sweep.py`, `fcore.py`, `frun.py`, `frun12.py`, `fsum.py` | the Hubbard sector (matrix-free above L=8), the Born ranking at the repository's own protocol (K=18, dt=0.5, sub=16), the memory-lean Gram identity that makes the sweep affordable, the two point drivers (`frun12` stores the Krylov basis in `|S|` coordinates), and the aggregation to `C3_grid.json` |
+| **B — the gates** | `fvalid.py`, `fproto.py`, `ftie.py` | six algebraic controls at L=6 and the dense cross-validation of Λ_S at L=8; the proof that the ranking *is* the repository's (set overlap 1.000000 against `L10_order.npy`); the census of zero-Born determinants and `argsort` ties at the cut |
+| **C — the proof ladder** | `fron_lib.py`, `run_ladder.py`, `verdict.py` | the exact five-rung instrumentation of the Theorem-B proof — no Krylov anywhere — and the verdict on how much of the frontier is Cauchy–Schwarz and how much is physics |
+| **D — adversarial re-runs** | `z_fine.py`, `z_rank.py`, `z_e0.py`, `z_suppK.py` | the four re-runs named in the provenance note of `paper/sec_5_body.tex`: fine-grained frontier, ranking sensitivity, an *estimated* E₀, and the support of the Krylov space |
+| **E — published fractions** | `pubsum.py`, `run_L14.py` | the four points at the fractions the manuscript actually publishes, and the L=14 point at FR=0.08 |
+| **F — post-processing** | `calib_oos.py`, `null_ws4.py`, `null_ws5.py`, `null_ws6.py`, `null_ws7.py` | zero new compute: the out-of-sample test of the calibration, and the null a referee will propose — does `1−w_S` locate the error as well as the certificate? |
+
+---
+
+## `data/c3_frontier/` — 82 files, the C3 sweep itself
+
+54 point files, the 204-row grid they aggregate to, three gate outputs, three proof ladders, the
+verdict, and four sub-directories (`published_fraction/`, `adversarial/`, `null/`). Every number in
+Sec. V comes from here. Documented file by file in [`C3_FRONTIER.md`](C3_FRONTIER.md) §1; `data/` is
+excluded from the arXiv package, so the deposit costs the submission nothing.
 
 ---
 

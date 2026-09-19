@@ -34,10 +34,10 @@
 
 A sample-based reconstruction is paid for on three axes, not one: the determinant support
 the sampler must populate, the resolution $\eta$ at which the response is asked for, and
-the shot budget $T$ that populates the support. The previous version of this work priced the first
-two, and quoted the second as though it were a property of the model. It is not. This section reports
+the shot budget $T$ that populates the support. It is easy to price the first two and to quote the
+second as though it were a property of the model. It is not. This section reports
 what each axis costs, states which of the three exponents belongs to the Hubbard chain and which
-belongs to the question we put to it, and adds the axis that was missing.
+belongs to the question we put to it, and prices the third, which is usually left unpriced.
 
 \paragraph{One symbol, three counts.} Because the same letter carries three different objects in this
 paper, we fix the notation before using it. $|\mathcal S|_\eta$, the subject of this section, is
@@ -80,8 +80,8 @@ digit, at all six sizes --- and the sector dimension does not depend on $\eta$. 
 therefore differ by a constant,
 $b_{|\mathcal S|}(\eta)-b_{\rm frac}(\eta)=b_{\dim}=1.291$ on $L=4$--$12$, and they move together:
 across the decade $\eta=0.05\to0.50\,t$ both shift by $0.148$ in absolute value
-(Table~\ref{tab:fracgrid}). There is one resolution-dependent exponent in this analysis, and the
-previous version reported it twice.
+(Table~\ref{tab:fracgrid}). There is one resolution-dependent exponent in this analysis, and quoting
+the fraction and the support separately reports it twice.
 
 What differs is the base it is measured against, and that is not cosmetic. On the fraction exponent
 $0.148$ is three quarters of the quantity itself: $e^{-0.13\,L}$ becomes $e^{-0.27\,L}$, and the
@@ -133,12 +133,12 @@ support exponent, $L{=}6$--$12$  & $1.136$   & --- & $1.088$   & $1.053$   & ---
 \end{tabular}
 \end{table*}
 
-The headline of the previous version---that the fraction needed for a fixed spectral accuracy falls
-from $0.92$ at $L=4$ to $0.08$ at $L=14$, as $e^{-0.25\,L}$---is tunable, and we withdraw it. Over the
-decade of $\eta$ the fraction exponent moves by a factor $2.2$, from $-0.1266$ at $\eta=0.05\,t$
-to $-0.2743$ at $\eta=0.50\,t$. At $\eta=0.50\,t$ the fraction at $L=12$ is already $0.10$, below the
-value the previous version quoted for $L=14$: any headline of this form is reachable by choosing the
-broadening.
+The headline these numbers offer---that the fraction needed for a fixed spectral accuracy falls
+from $0.92$ at $L=4$ to $0.08$ at $L=14$, as $e^{-0.25\,L}$---is tunable, and no headline of that form
+is claimed here. Over the decade of $\eta$ the fraction exponent moves by a factor $2.2$, from
+$-0.1266$ at $\eta=0.05\,t$ to $-0.2743$ at $\eta=0.50\,t$. At $\eta=0.50\,t$ the fraction at $L=12$
+is already $0.10$, a quarter above the $L=14$ value at the resolution used throughout this work and
+reached two sizes earlier: any headline of this form is reachable by choosing the broadening.
 
 Nor is the fraction exponential even at fixed $\eta$. The local logarithmic slopes between consecutive
 published points are $-0.056$, $-0.194$, $-0.214$, $-0.379$, $-0.377$---a factor $6.8$ across five
@@ -147,8 +147,8 @@ drawn through a curve of increasing slope, and the fitted exponent depends on wh
 $L=4$--$10$ gives $-0.159$, $L=4$--$12$ gives $-0.209$, and the published $-0.2477$ requires reaching
 $L=14$.
 
-The mechanism that makes the fraction move with $\eta$ was already stated, without derivation, in
-v1--v2, and Sec.~\ref{sec:moments} restates it as Conjecture~\ref{conj:geom} rather than as a theorem:
+The mechanism that makes the fraction move with $\eta$ is available without derivation, and
+Sec.~\ref{sec:moments} states it as Conjecture~\ref{conj:geom} rather than as a theorem:
 the polynomial-approximation route to a geometric rate in the Krylov order places the kernel poles at
 $\omega\pm i\eta$, so any such rate approaches $1$ as $\eta\to0^{+}$ and any prefactor diverges
 (App.~\ref{app:moments:conj}). At finer resolution more Krylov order---hence more of the sector---is
@@ -176,9 +176,9 @@ the support, Eq.~\eqref{eq:supportexp}, whose exponent is quoted with its fit wi
 
 \subsection{The third price: shots}
 
-The two axes the previous version priced are the fraction and the absolute support, and the caption of
-Fig.~\ref{fig:scaling} called that pair the honest two-sided picture. There is a third, it is the one
-that binds, and---unlike the other two---it had no number at all.
+The two axes usually priced are the fraction and the absolute support, and that pair is easily called
+the honest two-sided picture. There is a third, it is the one that binds, and it is the one priced
+here.
 
 Populating a subspace by measurement is a coupon-collector problem on the Born distribution of the
 time-evolved seed, so the budget exceeds the support it buys. Table~\ref{tab:shots} reports that budget
@@ -239,14 +239,14 @@ same one this section enforces two subsections above, applied to our own new axi
 
 \subsection{What the published curve is, and what a declared budget costs}
 
-Precision about the label matters more here than the retraction. The ranking that produced the
+Precision about the label matters more here than anything else. The ranking that produced the
 published fractions is \texttt{argsort} applied to the Born distribution of the time-evolved state
 accumulated over the $19$ snapshots of the protocol (\texttt{scaling\_lanczos\_mf.py},
 \texttt{stage\_rank})---that is, to the distribution the device would itself measure, in the limit of
 infinitely many shots. It is \emph{not} a clairvoyant ordering by exact eigenvector amplitudes; the
 repository contains such an oracle elsewhere (\texttt{amortized\_recovery.py}) and labels it as one.
-But it is also not a finite-shot reconstruction, and describing it as \emph{sampled} without a shot
-count was wrong. The published curve is the $T\to\infty$ limit of the declared protocol, and it is
+But it is also not a finite-shot reconstruction, and to describe it as \emph{sampled} without a shot
+count is to mislabel it. The published curve is the $T\to\infty$ limit of the declared protocol, and it is
 labelled that way from here on.
 
 \begin{table*}[tp]\centering\small

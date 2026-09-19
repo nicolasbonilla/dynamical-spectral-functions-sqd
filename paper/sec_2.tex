@@ -51,9 +51,9 @@
 
 This section states the measurement primitive, fixes the one definition the rest of the paper turns on,
 and then says --- channel by channel, figure by figure --- which objects here were reconstructed from a
-finite number of measurements and which are full-sector references computed classically. Versions~1
-and~2 of this preprint (arXiv:2608.16436) drew that line nowhere in the text, and one clause of the
-abstract they carry draws it in the wrong place. It is drawn here, before any result is quoted.
+finite number of measurements and which are full-sector references computed classically. That line is
+routinely drawn nowhere in the text, and a single clause of an abstract is enough to draw it in the
+wrong place. It is drawn here, explicitly, before any result is quoted.
 
 \subsection{Construction}
 For a Hamiltonian $\hat H$ with $N$-electron ground state $\lvert 0\rangle$ of energy $E_0$, the
@@ -136,7 +136,8 @@ are per channel and per stream.}
  & \raggedright Fig.~\ref{fig:heron}(a)
  & \raggedright recovered from device bitstrings; $|\mathcal S|=300$ of $300$, the entire sector, so the agreement
    with the exact curve is exact by coverage and is not a fidelity measurement
- & \raggedright $5\times10^{4}$, pooled over the $t{=}0$ reference and $K{=}7$ evolution circuits\tabularnewline
+ & \raggedright $3.5\times10^{5}$: $5\times10^{4}$ on each of $7$ circuits, $k{=}0$ (the $t{=}0$
+   reference) to $k{=}6$\tabularnewline
 \midrule
 \raggedright $A(k,\omega)$; $L{=}12$, $\eta{=}0.18\,t$; $\dim=731\,808$
  & \raggedright Fig.~\ref{fig:lattice}
@@ -145,7 +146,8 @@ are per channel and per stream.}
 \raggedright $A(k,\omega)$; $L{=}8$, $\eta{=}0.18\,t$; $\dim=3920$
  & \raggedright Fig.~\ref{fig:akwsampled}(a,b)
  & \raggedright Born ranking, $3332$ of $3920$ per channel, over $K{=}16$ snapshots
- & \raggedright none attached; the $T\to\infty$ limit. Declared gap, see text\tabularnewline
+ & \raggedright none: (a)--(b) are the $T\to\infty$ limit; at finite shots the same configuration
+   takes $5.2\times10^{6}$ per channel (see text)\tabularnewline
 \raggedright $A(\omega)$; $L{=}8$, $\eta{=}0.15\,t$; $\dim=3920$
  & \raggedright Fig.~\ref{fig:akwsampled}(c)
  & \raggedright observed bitstrings; sector fraction $0.835\pm0.0025$ at the largest budget
@@ -220,7 +222,7 @@ classically through Eq.~\eqref{eq:green} by one continued-fraction
 resolvent~\cite{haydock1972,golub2010}.
 
 \subsection{What the subspace reconstruction is: Rayleigh--Ritz, not restriction}\label{sec:method:rr}
-Step~\emph{(3)} is the definition the rest of this paper turns on, and versions~1--2 never stated it.
+Step~\emph{(3)} is the definition the rest of this paper turns on, and it is stated before it is used.
 With $P_{\mathcal S}$ the orthogonal projector onto the span of the determinants in $\mathcal S$ and
 $\phi$ the seed,
 \begin{widetext}
@@ -239,8 +241,8 @@ S]$ and at the large ones by a matrix-free restricted matrix--vector product ins
 fraction; the consequence is the mechanism of this paper: \emph{spectral weight the subspace retains is
 not kept in place, it is moved in $\omega$}. Truncation does not delete Lehmann poles, it displaces every surviving one, so the
 weight a subspace captures cannot by itself bound how far the reconstruction has moved --- which is why
-the weight-only bound of versions~1--2 is retracted in Sec.~\ref{sec:retraction} and replaced, in
-Theorem~\ref{thm:leakage}, by a bound carrying a second term indexed on the coupling
+no weight-only bound survives contact with Eq.~\eqref{eq:ritz} (Sec.~\ref{sec:retraction}), and why
+Theorem~\ref{thm:leakage} carries a second term indexed on the coupling
 $P_{\mathcal S}\hat HQ_{\mathcal S}$ across the boundary of $\mathcal S$, with $Q_{\mathcal S}$ the
 complementary projector --- exactly what Eq.~\eqref{eq:ritz} discards. Two corollaries are
 used later. A determinant acts on $A_{\mathcal S}$ through $H_{\mathcal S}$ even carrying no seed
@@ -253,20 +255,20 @@ of Eq.~\eqref{eq:ritz} is still $0.43$ at $L=6$ and $0.33$ at $L=8$ at $\eta=0.1
 
 \subsection{Provenance: what was reconstructed from shots, channel by channel}\label{sec:method:provenance}
 Table~\ref{tab:provenance} gives, for every dynamical object in this paper, the subspace it was built on
-and the measurements that built it. Three readings versions~1--2 permitted are corrected with it.
+and the measurements that built it. Three readings the word \emph{sampled} invites are closed off by it.
 
 \paragraph{The neutral channels are references, not reconstructions.} $S(q,\omega)$ and
 $S^{zz}(q,\omega)$ are computed here by a continued fraction over the \emph{entire} $N$-particle sector
 of $853\,776$ determinants at $L=12$, at recursion depth $n_\ell=200$: no subspace is selected and no
-shot is drawn, and the generating scripts say so in their own headers. The abstract of versions~1--2
-states that the primitive \emph{targets} these two channels --- what Fig.~\ref{fig:circ} asserts, and
-what the seed algebra supports --- and does not state that they were reconstructed from measurements;
+shot is drawn, and the generating scripts say so in their own headers. The primitive \emph{targets}
+these two channels --- that is what Fig.~\ref{fig:circ} asserts, and what the seed algebra supports
+--- and targeting a channel is not reconstructing it from measurements;
 they were not, nor were the $A(k,\omega)$ of Fig.~\ref{fig:lattice} or the $\mathrm{N_2}$ series of
 Fig.~\ref{fig:hero}. A reference at finite recursion depth is not the exact spectral function either, so
 its depth is quoted with it, and we quote no error that lies within a factor $20$ of the drift of its
 own reference.
 
-\paragraph{What the Born ranking is, and what it is not.} The two objects versions~1--2 described as
+\paragraph{What the Born ranking is, and what it is not.} The two objects it would be easiest to call
 sampled without a budget --- Fig.~\ref{fig:akwsampled}(a,b) and the dashed curve of
 Fig.~\ref{fig:scaling}(b) --- select $\mathcal S$ by sorting the accumulated Born weight
 $\sum_{k}|\langle d\,|\,e^{-i\hat Ht_k}\phi\rangle|^{2}$ of the evolved state over the $K{+}1$ snapshots
@@ -283,10 +285,10 @@ replacement is measured and quoted with its budget: at $L=8$, $T=2.60\times10^{6
 snapshots reach sector fraction $0.835\pm0.0025$ at relative $L_1$ error $(4.81\pm0.27)\times10^{-3}$
 over eight independent shot streams (Fig.~\ref{fig:akwsampled}(c)), and the measured ladder from
 $2.4\times10^{4}$ to $1.9\times10^{7}$ shots for $L=6$ to $L=12$ is Fig.~\ref{fig:scaling}(c) and
-Table~\ref{tab:shots}. \textbf{Declared gap:} no finite-shot run exists for the literal configuration of
-Fig.~\ref{fig:akwsampled}(a,b) --- $\eta=0.18\,t$, $K=16$ snapshots, all sixteen momentum channels.
-Panel~(c) is a measured surrogate at one seed and one resolution, not the same experiment, and nothing
-here extrapolates from the one to the other.
+Table~\ref{tab:shots}. The literal configuration of Fig.~\ref{fig:akwsampled}(a,b)---$\eta=0.18\,t$,
+$K=16$, all sixteen channels---has since been run at finite shots: $5.2\times10^{6}$ per channel buy
+panel~(b)'s accuracy, but on a \emph{larger} subspace, so at the announced fraction the penalty is a
+measured $2.80$ and not the $2.05$ Table~\ref{tab:finiteshot} would transfer.
 
 \paragraph{What the a posteriori checks establish.} The branch sum rules $\int A_p^{\pm}\,d\omega$ are
 identities of the ground state, not measurements of a reconstruction. Integrated on the grid the figures

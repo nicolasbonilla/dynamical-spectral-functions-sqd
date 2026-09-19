@@ -3,16 +3,16 @@
 %  Move verbatim into the appendix, after the moment appendix of sec_4.tex.
 % =====================================================================================
 
-\section{Counterexamples to the retracted bound, and the pooled sweep}
+\section{Counterexamples to the weight-only bound, and the pooled sweep}
 \label{app:counterex}
 
 \paragraph{The three-level family.} Section~\ref{sec:retraction} exhibits a two-level instance forcing
-the constant of the retracted bound~\eqref{eq:retracted} to its trivial value at $w_S=1$. With $w_S<1$
+the constant of the weight-only bound~\eqref{eq:weightonly} to its trivial value at $w_S=1$. With $w_S<1$
 strictly the failure is unbounded. Take
 $H=\operatorname{diag}\bigl(\bigl(\begin{smallmatrix}0&g\\ g&0\end{smallmatrix}\bigr),\delta\bigr)$,
 $\phi=e_0+\varepsilon e_2$ and $S=\{0\}$, so that $1-w_S=\varepsilon^{2}/(1+\varepsilon^{2})$ may be
 made as small as wished while the weight displaced to $\pm g$ stays $O(1)$. The ratio of the measured
-error to the retracted bound then diverges as $\delta^{-2}$ in the displacement $\delta$ of the
+error to the weight-only bound then diverges as $\delta^{-2}$ in the displacement $\delta$ of the
 discarded component; we measured it to $7.6\times10^{7}$ before double precision limits the family.
 
 \paragraph{The pooled sweep behind Fig.~\ref{fig:thm1iii-violation}.} Five machine-readable scans,
@@ -23,8 +23,8 @@ double-precision round-off (relative $L_1\le10^{-10}$) and define no ratio, leav
 subspaces over four Hamiltonian families --- Hubbard chains, XXZ, $t$--$V$, Anderson and sparse random
 matrices --- and eight construction rules, of which $156$ are finite-shot realizations at $4000$ shots
 per snapshot and the remainder deterministic weight-ordered or structured selections. On those $606$:
-the retracted bound fails on $468$; among the $363$ with $w_S\ge0.99$ --- the regime versions~1--2
-invoked --- it fails on all $363$, the mildest by a factor $2.10$, with $50$ of them carrying $w_S=1$
+the weight-only bound fails on $468$; among the $363$ with $w_S\ge0.99$ --- the regime a sampling
+experiment aims for --- it fails on all $363$, the mildest by a factor $2.10$, with $50$ of them carrying $w_S=1$
 exactly, so that the bound is identically zero and the ratio infinite; below $w_S=0.99$ it survives on
 $138$ of $243$, in every case where the relative error is already of order unity and the bound excludes
 nothing. Theorem~\ref{thm:leakage} is violated by none of the $606$; the largest ratio of error to
@@ -36,5 +36,5 @@ on only $61$ of the $606$: the sweep shows that the bound \emph{holds}, not that
 for this version by a script sharing no code with the one that produced them. It confirms $378$ of
 $378$ for each side of Eq.~\eqref{eq:twobudget}; a largest error-to-bound ratio of $0.9999999997$ over
 the $376$ rows that define one; the exclusion lemma~\eqref{eq:exclusion} on $378$ of $378$, with $357$
-rows at $K_S=-1$ and $21$ at $w_S=1$ exactly; and violations of the retracted bound on $219$ of the
+rows at $K_S=-1$ and $21$ at $w_S=1$ exactly; and violations of the weight-only bound on $219$ of the
 $219$ finite-ratio rows with $w_S\ge0.99$, the mildest by a factor $2.00$.

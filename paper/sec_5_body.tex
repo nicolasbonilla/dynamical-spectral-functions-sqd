@@ -93,7 +93,8 @@ actually needs: at $L=8$, $\eta=0.18\,t$, a relative $L_1$ error of $0.05$---the
 used throughout this paper---is reached at $\mathrm{FR}\approx0.52$, while the certificate does not
 reach $0.05$ until $\mathrm{FR}\approx0.98$, and the intervening shift of $\approx0.45$ in fraction is
 the looseness of the proof. Second, the threshold cannot be lowered by choosing a better subspace: from
-$L=8$ on, the coordinate support of the Krylov space $\mathcal K(H,\phi)$ is the whole sector, so
+$L=8$ on, the coordinate support of the Krylov space $\mathcal K(H,\phi)$ is the whole sector---measured
+at $L=8$, $10$, $12$ and $14$, which is every size this work reports---so
 $\Lambda_S>0$ strictly for every proper coordinate subspace, and a Krylov-diagonal oracle ranking gives
 a \emph{worse} certificate than the Born ranking the device realizes.
 Section~\ref{sec:frontier:obstruction} measures both. What is a property of the method, and is new, is
@@ -127,6 +128,20 @@ are converged in Krylov depth, $6$ marginal and $11$ not converged, at a total c
 a peak of $1.64$\,GiB. \emph{No row flagged not converged is quoted anywhere in this section}; the
 tables mark the ones that are marginal.
 
+To that grid we add twenty evaluations that are not on it. A grid point near a published fraction is
+not the published subspace, and the difference is not cosmetic: this sweep reads $0.80$, $0.56$,
+$0.40$ and $0.18$ against published fractions of $0.8200$, $0.5561$, $0.3625$ and $0.1700$. The rows
+of Table~\ref{tab:published} are placed instead at the integer determinant count
+$\lvert\mathcal S\rvert=\mathrm{round}(\mathrm{frac}\times\dim)$ that Fig.~\ref{fig:scaling}
+reports---$246$, $2180$, $19\,183$, $124\,407$ and $824\,504$ determinants at $L=6$, $8$, $10$, $12$
+and $14$---at the same four resolutions and under the same protocol, at depths $n_\ell=245$
+(exhausting the subspace), $900$, $700$, $300$ and $250$, with orthogonality defect at most
+$4.9\times10^{-15}$ and $\lvert w_{\mathcal K}-w_{\mathcal S}\rvert$ at most $6.4\times10^{-15}$. All
+twenty pass the depth test, and all twenty clear the reference-drift rule of App.~\ref{app:hyp}, the
+weakest---$L=14$ at $\eta=0.10\,t$, where the reference itself drifts by $1.9\times10^{-3}$ on
+halving its depth---by a factor $51$. They cost $129$\,s of core time up to $L=12$ and $2238$\,s of
+wall time at $L=14$, and they add the size the sweep never reached.
+
 Three conventions are fixed before any number is read. Full reorthogonalization is used throughout,
 without which the projector is not a projector: the orthogonality defect is at most
 $4.7\times10^{-15}$, and $P_{\mathcal K}\phi=\phi_S$ to $1.1\times10^{-14}$. What is certified is the
@@ -157,28 +172,75 @@ at a declared depth, against a reference whose drift is declared and enforced.
 \subsection{The threshold, measured: at every published fraction the certificate is vacuous}
 \label{sec:frontier:threshold}
 
-The result is negative and we state it first. At every published fraction the leakage branch of the
-bound exceeds the trivial bound $\lVert\phi\rVert^{2}(1+w_S)$: by $3.35$ at $L=6$
-($\mathrm{FR}=0.80$), $3.65$ at $L=8$ ($0.56$), $3.62$ at $L=10$ ($0.40$) and $4.86$ at $L=12$
-($0.18$) at $\eta=0.15\,t$, and by $2.76$, $3.02$, $2.99$ and $4.00$ at $\eta=0.18\,t$. At $L=8$ and
-$L=12$ these are the published fractions exactly; at $L=6$ and $L=10$ the nearest grid points are
-$0.80$ and $0.40$ against published $0.82$ and $0.36$, and at $L=10$ the published fraction is the
-worse of the two.
+The result is negative and we state it first. Evaluated on the published subspaces themselves, the
+leakage branch of the bound exceeds the trivial bound $\lVert\phi\rVert^{2}(1+w_S)$ at all five sizes
+and all four resolutions, by factors running from $1.66$ ($L=6$, $\eta=0.25\,t$) to $8.61$ ($L=14$,
+$\eta=0.10\,t$), and by $2.40$ to $4.61$ at the $\eta=0.18\,t$ of the momentum-resolved channel;
+Table~\ref{tab:published} carries the twenty values. They are monotone in both
+arguments---rising with $L$ at every resolution, falling with $\eta$ at every size---so the trend runs
+against us: the certificate is furthest from saying anything at the largest sector and the finest
+resolution, which is where the method is aimed.
 
-The largest case carries the evidence. At $L=12$, $\mathrm{FR}=0.18$, $\eta=0.18\,t$---that is,
-$\lvert S\rvert=131\,725$ of $731\,808$ determinants---the captured weight is $w_S=0.998804$, so
-Eq.~\eqref{eq:tau} asks for $\widehat\Lambda_S/\eta<\tau(w_S)=0.965$ and the measured value is $3.96$,
-putting the leakage branch at $7.986$ against a trivial branch of $1.9988$. That is converged in depth
-three ways: $\Lambda_{\rm in}/\Lambda_{\rm out}=3.0\times10^{-3}$; $\Lambda_{\rm out}$ changes by
-$7.5\times10^{-7}$ between depths $250$ and $300$; and an independently written re-implementation moves
-it by $8.6\times10^{-5}$ between depths $100$ and $300$. Since $\Lambda$ \emph{decreases} with depth,
+The largest classically converged case carries the evidence. At $L=12$ and the published subspace
+itself---$\lvert S\rvert=124\,407$ of $731\,808$ determinants---the captured weight is
+$w_S=0.998622$, so Eq.~\eqref{eq:tau} asks for $\widehat\Lambda_S/\eta<\tau(w_S)=0.9625$ and the
+measured value is $4.236$ at $\eta=0.18\,t$, putting the leakage branch at $8.544$ against a trivial
+branch of $1.9986$. That is converged in depth: the depth indicator is
+$\Lambda_{\rm in}/\Lambda_{\rm out}=2.8\times10^{-3}$ and the bound moves by $3.7\times10^{-7}$
+relative across the depth plateau, while at the neighbouring grid point $\mathrm{FR}=0.18$ the same
+quantity was checked twice more---$\Lambda_{\rm out}$ changing by $7.5\times10^{-7}$ between depths
+$250$ and $300$, and an independently written re-implementation moving it by $8.6\times10^{-5}$
+between depths $100$ and $300$. Since $\Lambda$ \emph{decreases} with depth,
 the bound at any shallower depth---including the depth $150$ at which Fig.~\ref{fig:scaling} is
 drawn---is larger still, so the vacuity is not an artifact of Lanczos truncation in either direction.
-The same fraction gives $7.51$, $4.86$ and $2.81$ at $\eta=0.10$, $0.15$, $0.25\,t$; and over the $606$
+Nor is it peculiar to these subspaces: over the $606$
 live subspaces of the pooled sweep of App.~\ref{app:counterex}, Fig.~\ref{fig:thm1iii-violation}, the
 leakage branch is the smaller of the two on only $61$. \textbf{The reconstructions this paper
 reports---Fig.~\ref{fig:akwsampled}, Fig.~\ref{fig:scaling} and the operating points of
 Secs.~\ref{sec:prices} and~\ref{sec:physics}---are therefore, at present, uncertified.}
+
+One row is quoted with two caveats attached. $L=14$ is the size at which Fig.~\ref{fig:scaling}
+reports its headline fraction of $0.08$, and the certificate had never been evaluated there; it now
+is, at $\lvert S\rvert=824\,504$ of $10\,306\,296$ determinants---one determinant above the
+$\mathrm{round}(\mathrm{frac}\times\dim)=824\,503$ of the deposited grid---with $w_S=0.998388$ and a
+leakage branch of $17.21$, $11.18$, $9.21$ and $6.50$ against a trivial branch of $1.9984$. Ground
+state, seed and order there are the repository's stored checkpoint---residual $2.7\times10^{-9}$, the
+order verified to be a permutation of the sector---and the $K=18$ ranking protocol was \emph{not}
+re-run at that size; it was re-run at $L=10$, where the two selections agree as sets to
+$1.000000$. And the
+depth indicator $\Lambda_{\rm in}/\Lambda_{\rm out}=0.0453$ at $\eta=0.10\,t$ is the loosest value
+quoted anywhere in this section, comparable to the $4.7\times10^{-2}$ of the last row of
+Table~\ref{tab:certified}. Neither caveat is repaired, and the row is reported because it makes the
+verdict of this section worse rather than better.
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{The certificate on the subspaces this paper publishes, including the size the sweep
+never reached.} Each row is Theorem~\ref{thm:leakage} evaluated at the integer determinant count
+$\lvert\mathcal S\rvert=\mathrm{round}(\mathrm{frac}\times\dim)$ that Fig.~\ref{fig:scaling} reports,
+not at the nearest point of the grid of Table~\ref{tab:thresholds}. Columns~$5$--$8$ are the vacuity
+factor---the leakage branch of Eq.~\eqref{eq:twobudget} over the trivial branch
+$\lVert\phi\rVert^{2}(1+w_S)$---so a value above $1$ means the certificate says nothing the trivial
+bound does not. All twenty evaluations are the $T\to\infty$ limit of the ranking protocol and pass
+the depth test; controls and costs are in App.~\ref{app:hyp}. The last column is the measured
+relative $L_1$ error at the resolution and against the threshold that \emph{define} the published
+fraction ($\eta=0.15\,t$, rel-$L_1<0.05$), from code sharing neither reference, normalization nor
+recursion depth with the scan that produced the fractions. At $L=14$ the count is one determinant
+above the deposited $824\,503$ and the ranking was not re-run; see the text.}\label{tab:published}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lcccccccc}
+\toprule
+ & & \multicolumn{2}{c}{published subspace} & \multicolumn{4}{c}{vacuity factor at $\eta/t=$} & rel-$L_1$\\
+\cmidrule(lr){3-4}\cmidrule(lr){5-8}
+$L$ & $\dim(N{+}1)$ & fraction & $\lvert\mathcal S\rvert$ & $0.10$ & $0.15$ & $0.18$ & $0.25$ & at $\eta=0.15\,t$\\
+\midrule
+$6$  & $300$          & $0.8200$ & $246$      & $4.54$ & $2.94$ & $2.40$ & $1.66$ & $0.0477$\\
+$8$  & $3\,920$       & $0.5561$ & $2\,180$   & $5.65$ & $3.69$ & $3.05$ & $2.17$ & $0.0478$\\
+$10$ & $52\,920$      & $0.3625$ & $19\,183$  & $6.50$ & $4.28$ & $3.54$ & $2.52$ & $0.0484$\\
+$12$ & $731\,808$     & $0.1700$ & $124\,407$ & $8.04$ & $5.20$ & $4.27$ & $3.00$ & $0.0485$\\
+$14$ & $10\,306\,296$ & $0.0800$ & $824\,504$ & $8.61$ & $5.59$ & $4.61$ & $3.26$ & $0.0463$\\
+\bottomrule
+\end{tabular}
+\end{table*}
 
 \begin{table*}[tp]\centering\small
 \caption{\textbf{Where the certificate stops being vacuous, and what the reconstruction actually
@@ -223,10 +285,24 @@ $L=6$--$12$, against the published $0.82$, $0.56$, $0.36$ and $0.18$: agreement 
 to under $2\%$ at every size once each value is compared with the fraction the scan itself reports
 rather than with the two-figure entry of the replication grid ($0.5561$, $0.3625$, $0.1700$ at
 $L=8,10,12$). None of the three ingredients is shared. Figure~\ref{fig:scaling} is thereby reproduced
-independently. What fails in this section is not the reconstruction and not that curve; it is the word
+independently.
+
+The last column of Table~\ref{tab:published} is that control taken one step further, and it is the
+sharper of the two: instead of re-deriving the fraction it evaluates the relative $L_1$ error
+\emph{at} the published subspace, at the resolution and against the threshold that define it
+($\eta=0.15\,t$, rel-$L_1<0.05$). The five values---$0.0477$, $0.0478$, $0.0484$, $0.0485$ and
+$0.0463$---all sit just below the threshold and are flat to within $5\%$ of one another across a
+sector dimension running from $300$ to $10\,306\,296$, $L=14$ included. The criterion that
+\emph{defines} the published fractions is therefore reproduced at the subspaces themselves, at every
+size the figure plots above $L=4$, again with nothing shared. What fails in this section is not the
+reconstruction and not that curve; it is the word
 \emph{certificate} attached to the fractions at which the curve is read.
 
-\begin{table*}[tp]\centering\small
+% [t] and not [tp], MEASURED 2026-09-19: with [tp] this table and
+% tab:shotfrontier each qualified for a float-only page, and the queue spent a whole
+% page on one small table with 60 %% of it blank.  Denying them 'p' costs nothing
+% (no float is stuck, none is too large) and takes the manuscript 60 -> 59 pages.
+\begin{table*}[t]\centering\small
 \caption{\textbf{The threshold in the only currency a sampler has.} $T_{\rm marg}$ is the shots per snapshot at
 which the marginal determinant of the cut appears once in expectation---the reciprocal of its Born
 probability in the accumulated distribution of the $19$ snapshots, from the protocol's own cut
@@ -270,7 +346,11 @@ statement whose bracket is converged---at $L=12$, that $60\%$ of a $731\,808$-di
 relative $L_1\le0.717$, tightening to $\le0.218$ at $70\%$ and $\eta=0.25\,t$. Each row is a statement
 about $A_{\mathcal K}$ at the declared depth, and none of them uses the exact spectrum.
 
-\begin{table*}[tp]\centering\small
+% [t] and not [tp], MEASURED 2026-09-19: with [tp] this table and
+% tab:shotfrontier each qualified for a float-only page, and the queue spent a whole
+% page on one small table with 60 %% of it blank.  Denying them 'p' costs nothing
+% (no float is stuck, none is too large) and takes the manuscript 60 -> 59 pages.
+\begin{table*}[t]\centering\small
 \caption{\textbf{The strongest certified statements available from converged data.} Each row is the
 tightest certified value at that size whose bracket is delimited by evaluations passing the depth
 test; rows that would be stronger but rest on evaluations failing it are not listed. ``True error'' is
@@ -323,14 +403,22 @@ $1.2\times10^{-3}$ to $7.3\times10^{-3}$, median $2.8\times10^{-3}$: a spread of
 whose true errors span five decades, and in every cell at least $47$ times the drift of our own
 reference. $\widehat\Lambda_S(\eta)/\eta$ is therefore a calibrated a posteriori risk tracker---its
 crossing of the trivial bound locates a true error of ${\approx}3\times10^{-3}$ to within a factor of
-three, uniformly over $L=6$--$12$ and $\eta=0.10$--$0.25\,t$, and it is computed from $H$, $S$, $\phi$
-and $\eta$ alone, without the answer. The objection to anticipate is that this is
+three over $L=6$--$12$ and $\eta=0.10$--$0.25\,t$, and it is computed from $H$, $S$, $\phi$
+and $\eta$ alone, without the answer. That factor of three is a drift and not scatter, and the
+deposited grid settles it in a few lines: the sixteen crossing errors are ordered without a single
+exception, falling with $L$ at every resolution---$5.65$, $3.50$, $2.52$ and $1.60\times10^{-3}$ at
+$\eta=0.18\,t$ for $L=6$--$12$, a factor $2.8$--$3.7$---and rising with $\eta$ at every size by
+$1.6$--$2.1$, the product of the two being the observed $5.9$. The drift runs the conservative way in
+the variable one would extrapolate: the larger the system, the smaller the true error at which the
+certificate first says anything, so reading the crossing as ${\approx}3\times10^{-3}$ beyond the sizes
+measured overstates the error rather than understating it. In $\eta$, which the user chooses and which
+lies inside the measured range, it does not. The objection to anticipate is that this is
 Fig.~\ref{fig:scaling} relabelled. It is not, and the difference is the content: that figure is built
 knowing the exact spectrum and this quantity is computed without it. That the two track each other to
 within a factor $5.9$ across five decades of error is not a redundancy---it is the calibration, and it
 is what makes the quantity usable where the second curve cannot be drawn.
 
-Three limits are declared with it. The crossing is one point per cell, so the tracker locates one error
+Four limits come with it. The crossing is one point per cell, so the tracker locates one error
 level and does not estimate the error away from it: at a \emph{fixed} subspace the looseness of the
 bound against the measured error is constant to within $\pm17\%$ ($L=6$) and $\pm25\%$ ($L=8$) over a
 decade in $\eta$, but across subspaces it varies by a factor $51$, and at the threshold itself it is
@@ -340,7 +428,7 @@ $\widehat\Lambda_S/\eta$ against $\tau(w_S)$, and $\tau$ needs $w_S$, which a us
 That dependence can be discharged conservatively, and doing so is what makes the decision itself a
 posteriori. Equation~\eqref{eq:tau} is decreasing in $1-w_S$ with $\tau(1)=1$, so any assumed floor
 on the captured weight yields a usable threshold: at the $L=12$ published operating point
-$w_S=0.998804$ and $\tau=0.9651$, and every subspace with $w_S\ge0.995$ has $\tau\ge0.9280$. A user
+$w_S=0.998622$ and $\tau=0.9625$, and every subspace with $w_S\ge0.995$ has $\tau\ge0.9280$. A user
 willing to assume only that the sampler captured $99.5\%$ of the probe's Born weight can therefore
 run the comparison as $\widehat\Lambda_S(\eta)/\eta<0.928$ and use no other ground-state
 information, at the cost of at most $7\%$ in the threshold. Where not even that floor can be
@@ -349,6 +437,27 @@ optimistically---the test is not conservative and the bound is not a posteriori.
 And sixteen cells over four sizes and four resolutions is the whole of the evidence: no exponent is
 fitted to it and no extrapolation to $L=14$ is made, the local log--log slopes of
 $\mathrm{FR}^{\ast}(L)$ already varying by a factor $4.1$ across the four sizes measured.
+
+The fourth limit is the one a reader holding the deposited grid will test first, and it is a real
+restriction on what the crossing is worth. A sampler already holds the captured Born weight, so the
+question is whether a stopping rule indexed on $1-w_S$ alone locates the same error level, in which
+case the crossing would be that weight relabelled. It is not: over the sixteen cells, $1-w_S$ at the
+crossing ranges over a factor $45$ against the true error's $5.9$, and still over $9.4$ against $3.8$
+once the extreme cell at each end is dropped. A rule with constants fitted to the grid, however, comes
+close enough. Take $1-w_S<c\,\eta^{p}$, fit $c$ and $p$ on some of the four sizes
+with its operating point matched to the certificate's, evaluate it on the sizes held out, and repeat
+over all fourteen train/test splits: out of sample it localizes the crossing error about as tightly as
+the parameter-free certificate does, and more tightly on ten of the fourteen---a count that moves
+between six and twelve as the two constants are fitted differently, so that neither object dominates.
+We therefore claim no superiority for the certificate as a tracker of the error against the captured
+weight; out of sample it has none. The difference lies elsewhere. The fitted rule fires at $1-w_S\sim10^{-5}$--$10^{-4}$, one to two orders of magnitude finer than the floor
+$1-w_S\le5\times10^{-3}$ at which the threshold above still works, and it asks that precision of the one
+quantity this section has already said a user does not have and, estimated against an already-truncated
+$\Psi_0$, has optimistically; strip its second parameter and an $\eta$-blind $1-w_S<c$ is the looser of
+the two on all fourteen splits. Theorem~\ref{thm:leakage}, for its part, is an inequality with a proof:
+it holds at a size no grid has seen, and its decision survives replacing $w_S$ by a floor. The fitted
+rule is a regularity with two constants and no guarantee outside the range it was fitted on, which is
+the only place either would be used.
 
 Within those limits the procedure is operational and identical at every size we measured: assemble
 $\widehat\Lambda_S(\eta)/\eta$ from the Ritz vectors already in hand and compare it with $\tau(w_S)$.
@@ -379,13 +488,29 @@ that Krylov space is a floor under any coordinate subspace of vanishing leakage.
 directly: $296$ of $300$ determinants at $L=6$, where $\dim\mathcal K=65$, and $3920$ of $3920$---the
 entire sector---at $L=8$, where $\dim\mathcal K=596$--$663$. (It is the \emph{coordinate support} of
 $\mathcal K$ that fills the sector, not $\mathcal K$ itself, whose dimension is three orders of
-magnitude smaller; containment, not spanning, is what $\Lambda_S=0$ requires.) At $L=8$ the leakage is
-therefore strictly positive for \emph{every} proper coordinate subspace, and no certificate of leakage
-type, in this paper or another, can be non-vacuous there at low fraction in the determinant basis. That
-is a property of the basis in which the device measures, not of the bound and not of the ranking. We
-measured it at two sizes and state it for two: at $L=6$ four determinants escape the support, and
-whether the $L=8$ behaviour persists at $L=10$ and $L=12$ is open. It is the single cheapest
-measurement that would close this section, and we have not made it. Nor is the
+magnitude smaller; containment, not spanning, is what $\Lambda_S=0$ requires.) At $L=10$ the same
+construction---a Lanczos recursion on the whole sector to depth $700$ with full reorthogonalization,
+orthogonality defect $1.6\times10^{-15}$---leaves not one of the $52\,920$ rows identically zero, so
+there the support is the entire sector at a threshold of exactly $0$.
+
+Beyond $L=10$ that basis cannot be stored, and we use a lower bound instead: every $H^{k}\phi$ lies in
+$\mathcal K$, so the union over $k$ of the coordinate support of $H^{k}\phi/\lVert H^{k}\phi\rVert$ is
+contained in the support of $\mathcal K$. A count of this kind is meaningless without its threshold,
+so both are given. At an amplitude threshold of $10^{-12}$ and $k\le30$ the union is the entire sector
+at $L=8$, $10$, $12$ and $14$: $3920$, $52\,920$, $731\,808$ and $10\,306\,296$ determinants. At the
+stricter $10^{-10}$ and the same $30$ powers it returns $3919$ of $3920$, $52\,919$ of $52\,920$,
+$731\,807$ of $731\,808$ and $10\,306\,063$ of $10\,306\,296$---and $52\,920$ of $52\,920$ at $L=10$
+once the recursion is allowed $36$ powers. At $L=6$ it returns $296$ of $300$, reproducing the row
+count above; the four determinants at issue carry amplitudes between $10^{-14}$ and $10^{-10}$, which
+makes $L=6$ the one size whose answer depends on where the threshold is put. The two estimators are
+independent and they agree, to one determinant in $3920$ and exactly in $52\,920$, wherever both were
+run.
+
+From $L=8$ on the leakage is therefore strictly positive for \emph{every} proper coordinate subspace,
+and no certificate of leakage type, in this paper or another, can be non-vacuous there at low fraction
+in the determinant basis---at every size this work reports, the largest being the $L=14$ sector at
+which Fig.~\ref{fig:scaling} reports a published fraction of $0.08$. That
+is a property of the basis in which the device measures, not of the bound and not of the ranking. Nor is the
 ranking the weak link: replacing the Born ordering by a Krylov-diagonal oracle---determinants ordered
 by the diagonal of the projector onto $\mathcal K(H,\phi)$, an ordering no sampler could
 produce---gives a uniformly \emph{worse} certificate at $L=6$, $\eta=0.18\,t$, $12.97$ against $4.27$
@@ -403,3 +528,22 @@ worst and to under $2\%$ against the scan's own fractions, with nothing shared--
 bounded and measured is the crossing of Sec.~\ref{sec:frontier:calib}. Section~\ref{sec:nogo} closes the picture from the other side: nothing
 cheaper than that crossing---no invariant of the state, computable before the subspace exists---can be
 put in its place.
+
+One route out of the determinant basis has been measured, and it closes this section as an outlook and
+not as a result, because the same measurement shows where it stops. The qualifier \emph{in the
+determinant basis} above is load-bearing, and it is measurable. An orbital rotation is a Givens network
+and the circuit of Sec.~\ref{sec:method} already contains them, so the measurement basis is a choice;
+for the momentum-resolved probe of Fig.~\ref{fig:akwsampled} it is a forced one, since $H$ commutes with
+lattice translation and $\phi_k$ is an eigenvector of it, so that $\mathcal K(H,\phi_k)$ lies inside a
+single momentum block---rigorously, at every $L$---and that block is exactly $\dim(N{+}1)/L$
+determinants. At $L=6$ and $L=8$, the two sizes we measured, the Krylov support fills $96$--$100\%$ of
+it and the certificate becomes non-vacuous at $48$--$54$ of $300$ determinants and at $490$ of
+$3920$---a factor $5$--$7$ fewer than the determinant basis requires and, at matched accuracy,
+$10$--$66$ fewer shots at $L=8$---while on the block itself $\Lambda_S$ vanishes identically and the
+bound is zero rather than vacuous. The gain, though, is $1/L$ against an exponential: as a fraction of
+the fraction Fig.~\ref{fig:scaling} publishes the block is $0.20$ at $L=6$ and then $0.22$, $0.28$,
+$0.49$ and $0.89$ at $L=14$, the two crossing just past $L=14$. It is also a laptop Lanczos---$60\,984$
+determinants at $L=12$, $736\,164$ at $L=14$---so the regime it certifies is one that momentum-resolved
+exact diagonalization has enumerated since the 1970s. Three things are unmeasured here and would have to
+be measured before more is said: whether the support fills the block at $L\ge10$, where the threshold
+then sits, and what the ${\approx}L(L-1)$ extra two-qubit gates do to the sampled distribution.

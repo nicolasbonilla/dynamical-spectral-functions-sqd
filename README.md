@@ -25,8 +25,8 @@
 
 > **And the retraction, in the same breath.** Versions 1–2 of this preprint claimed a *weight-only*
 > bound. An analytic counterexample forces its constant to the trivial value, and it is **withdrawn**.
-> On Hubbard sectors up to dimension 731 808 the replacement is worse than the trivial bound at every
-> published fraction, at all four sizes, by factors of 2.8–4.9 — **so those reconstructions are
+> On Hubbard sectors up to dimension 10 306 296 the replacement is worse than the trivial bound at
+> every published fraction, at all five sizes, by factors of 1.66–8.61 — **so those reconstructions are
 > uncertified**. What survives is a calibration: over sixteen `(L,η)` cells whose true errors span five
 > decades, the bound crosses the trivial one at a true relative error of `1.2–7.3×10⁻³`, median
 > `2.8×10⁻³`, computed without the answer. **No quantum advantage is claimed.**
@@ -100,7 +100,7 @@ simulation).
 
 ```
 .
-├── src/                       # 57 computation & figure scripts (run from repo root as `python src/X.py`)
+├── src/                       # 58 computation & figure scripts (run from repo root as `python src/X.py`)
 │   ├── verify.py              #   the adversarial guardian: recomputes the physics, then checks the deposit
 │   ├── check_figures.py       #   do the committed generators still produce the committed fragments?
 │   ├── check_provenance.py    #   does the documentation still describe the manuscript? (derives it from main.tex)
@@ -180,8 +180,9 @@ the v3 sections replace. Run `python src/check_tarball.py` for the live comparis
 
 | Layer | Reproducible here? | How |
 |---|---|---|
-| **The guardian** | ✅ **PASS** — 807 checks, 0 failures, 7 454 numeric assertions, 4 xfail, 0 xpass, 2 skips, ~10 s *(2026-09-19)* | `python src/verify.py` (or `make verify`) |
-| **The documentation** | ✅ **PASS** — derived from `paper/main.tex`: 33 floats, 17 figures, 16 tables | `python src/check_provenance.py` |
+| **The guardian** | ✅ **PASS** — 831 checks, 0 failures, 9 843 numeric assertions, 5 xfail, 0 xpass, 2 skips, ~9 s *(2026-09-19, after the C3 frontier deposit added section (10b))* | `python src/verify.py` (or `make verify`) |
+| **The documentation** | ✅ **PASS** — derived from `paper/main.tex`: 34 floats, 17 figures, 17 tables | `python src/check_provenance.py` |
+| **Manuscript coherence** | ✅ **PASS** — 10 cross-section claims, 20 synthetic controls, all 20 fire *(2026-09-19)*. New that day, because the other three guardians were green while seven sections contradicted each other: they compare a printed number against a deposited file, not a claim against a claim | `python src/check_coherence.py` |
 | **The figure generators** | ✅ **PASS on 8 artefacts, all 8 genuinely guarded** *(2026-09-19)*. Until that day the eighth was compared with a copy of itself, because its generator hard-coded two absolute paths; both are gone and the repair is measured, with controls, in `KNOWN_DISCREPANCIES.md` §25 | `python src/check_figures.py` |
 | **Exact diagonalization, numpy/scipy only** (`A(ω)`, `A(k,ω)`, `S(q,ω)`, `S^zz`, the two gaps, the χ–\|S\| resource map, the geminal witness, the scaling) | ✅ **verified locally**, minutes | `python src/<script>.py`; see `docs/REPRODUCE.md` |
 | **The 19-molecule suite** | ⚠️ runs, but needs `pyscf`; **untested in this pass**, so the molecular checks are transcription checks, not recomputations | `python src/n19_suite.py` etc. |
@@ -191,10 +192,11 @@ the v3 sections replace. Run `python src/check_tarball.py` for the live comparis
 | **IBM Heron hardware runs** | ⚠️ needs an IBM Quantum account, and the jobs are closed | `notebooks/` (tokens scrubbed; **no raw counts are deposited**) |
 
 > **`paper/main.pdf` is current.** Rebuilt 2026-09-19 with three `pdflatex` passes after the last
-> source edit: **57 pages, 0 errors, 0 undefined references, 0 undefined citations, 6 Overfull
-> \hbox**. Checked, not assumed: no file under `paper/` is newer than it, and its extracted text
-> is identical page for page to an independent compile of the same sources made outside the
-> repository (same 275 354 characters, same SHA-1). It now prints `R_eq(H₂O) = 0.958`, the value
+> source edit: **59 pages, 0 errors, 0 undefined references, 0 undefined citations, 5 Overfull
+> \hbox** (worst 6.96 pt), 2 Overfull `\vbox` of 7.68 pt, 39 Underfull `\hbox`, no float too
+> large and no float stuck. Checked, not assumed: no file under `paper/` is newer than it, and
+> its extracted text is identical page for page to the arXiv package built in a clean room by
+> `src/build_arxiv_bundle.py` (same 286 195 characters, same text SHA-1 `875e939f03c72e64`). It now prints `R_eq(H₂O) = 0.958`, the value
 > the geometry in `src/n19_suite.py` gives. Run `make paper` after any further source edit.
 >
 > **CI has still never run.** `.github/workflows/ci.yml` is tracked and both its commands pass

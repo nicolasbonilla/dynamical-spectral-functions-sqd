@@ -29,7 +29,7 @@
 \addplot[scBd,mark=square,mark size=2.0pt,line width=1.0pt,mark options={fill=scBd,draw=scBd}] coordinates {(0.4855,2342) (1.6348,2272) (4.3683,2041) (7.9600,1600) (10.4394,1091)};
 \addplot[scCh,mark=triangle*,mark size=2.6pt,line width=1.0pt,mark options={fill=scCh,draw=scCh}] coordinates {(0.9724,35678) (3.6002,30975) (9.8568,17732) (16.0306,5084) (18.8404,1476)};
 \addplot[scCd,mark=triangle,mark size=2.6pt,line width=1.0pt,mark options={fill=scCd,draw=scCd}] coordinates {(0.6329,26503) (2.1803,25235) (5.9969,21203) (11.0065,13832) (14.3023,7527)};
-\node[inkPrim,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.02,0.97) {$U=1\to16$ along each curve\\within each sweep: $\rho=-1.000$\\pooled ($n=30$): $\rho=-0.109$ (withdrawn)};
+\node[inkPrim,font=\scriptsize,anchor=north east,align=left] at (rel axis cs:0.985,0.97) {$U=1\to16$ along each curve\\within each sweep: $\rho=-1.000$\\pooled ($n=30$): $\rho=-0.109$\\(Simpson reversal)};
 % ---- (c) the same six strata against chi ----
 \nextgroupplot[title={(c)~Hubbard: $\chi$ runs forwards},
   xlabel={minimal bond dimension $\chi$},
@@ -49,7 +49,7 @@
 \addlegendentry{$(10{,}10)$}
 \addplot[scCd,mark=triangle,mark size=2.6pt,line width=1.0pt,mark options={fill=scCd,draw=scCd}] coordinates {(13,26503) (13,25235) (13,21203) (11,13832) (9,7527)};
 \addlegendentry{$(10{,}8)$}
-\node[inkPrim,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.02,0.97) {$\chi$ falls as $U$ rises\\within each sweep: $\rho=0.894$ to $1.000$\\pooled ($n=30$): $\rho=+0.569$ (withdrawn)};
+\node[inkPrim,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.02,0.97) {$\chi$ falls as $U$ rises\\within each sweep: $\rho=0.894$ to $1.000$\\pooled ($n=30$): $\rho=+0.569$\\(Simpson reversal)};
 % ---- (d) Simpson panel ----
 \nextgroupplot[title={(d)~stratified vs pooled},
   xlabel={stratum $(L,N)$}, ylabel={Spearman $\rho$ vs $|\mathcal S|$},
@@ -73,7 +73,7 @@
 \node[inkPrim,font=\scriptsize,anchor=north west] at (rel axis cs:0.02,0.995) {$\bullet$\; $\rho(\chi,|\mathcal S|)$ per stratum};
 % D12: this key used to sit at the bottom-left, corner-to-corner with the (6,6) datum.
 \node[inkPrim,font=\scriptsize,anchor=north west] at (rel axis cs:0.02,0.90) {$\blacksquare$\; $\rho(\mathcal F_1,|\mathcal S|)$ per stratum};
-\node[dcPool,font=\scriptsize,anchor=north west] at (rel axis cs:0.035,0.578) {pooled ($n=30$): $\rho=+0.569$ (withdrawn)};
-\node[dcPool,font=\scriptsize,anchor=north west] at (rel axis cs:0.035,0.377) {pooled ($n=30$): $\rho=-0.109$ (withdrawn)};
+\node[dcPool,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.035,0.578) {pooled ($n=30$): $\rho=+0.569$\\(Simpson reversal)};
+\node[dcPool,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.035,0.377) {pooled ($n=30$): $\rho=-0.109$\\(Simpson reversal)};
 \end{groupplot}
 \end{tikzpicture}

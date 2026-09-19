@@ -392,7 +392,14 @@ def main(argv=None):
                 out[r] = open(p, encoding="utf-8", errors="replace").read()
         return out
 
+    # src/frontier/ is deposited code too (the C3 frontier sweep, 2026-09-19).  A checker
+    # that reads only the top level of src/ has a blind spot the size of a subdirectory,
+    # and blind spots are how the documents this file exists to fix went stale.  Measured
+    # when it was added: it moves nothing today -- no data/*.json and no paper/figs
+    # artefact is named by any frontier script -- so the tiers below are unchanged and
+    # the counts quoted in FILE_INDEX.md still hold.
     code = load(["src/" + n for n in rel_files("src", {".py"})]
+                + ["src/frontier/" + n for n in rel_files("src/frontier", {".py"})]
                 + ["Makefile", ".github/workflows/ci.yml",
                    "notebooks/00_Reproduce_Everything.ipynb",
                    "notebooks/Spectral_Heron.ipynb",

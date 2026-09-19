@@ -235,9 +235,9 @@ for k in strata_keys:
     d = S_OBS[k]
     A(r"\addplot[%s,mark=%s,mark size=%s,line width=1.0pt,mark options={fill=%s,draw=%s}] coordinates {%s};"
       % (nm, mk, ms, nm, nm, coords(d["F1"], d["S"])))
-A(r"\node[inkPrim,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.02,0.97) "
+A(r"\node[inkPrim,font=\scriptsize,anchor=north east,align=left] at (rel axis cs:0.985,0.97) "
   r"{$U=1\to16$ along each curve\\within each sweep: $\rho=%.3f$"
-  r"\\pooled ($n=30$): $\rho=%.3f$ (withdrawn)};" % (within_F1[0], pool_F1))
+  r"\\pooled ($n=30$): $\rho=%.3f$\\(Simpson reversal)};" % (within_F1[0], pool_F1))
 A(r"% ---- (c) the same six strata against chi ----")
 A(r"\nextgroupplot[title={(c)~Hubbard: $\chi$ runs forwards},")
 A(r"  xlabel={minimal bond dimension $\chi$},")
@@ -253,7 +253,7 @@ for k in strata_keys:
     A(r"\addlegendentry{%s}" % LBL[k])
 A(r"\node[inkPrim,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.02,0.97) "
   r"{$\chi$ falls as $U$ rises\\within each sweep: $\rho=%.3f$ to $%.3f$"
-  r"\\pooled ($n=30$): $\rho=+%.3f$ (withdrawn)};" % (min(within_chi), max(within_chi), pool_chi))
+  r"\\pooled ($n=30$): $\rho=+%.3f$\\(Simpson reversal)};" % (min(within_chi), max(within_chi), pool_chi))
 A(r"% ---- (d) Simpson panel ----")
 A(r"\nextgroupplot[title={(d)~stratified vs pooled},")
 A(r"  xlabel={stratum $(L,N)$}, ylabel={Spearman $\rho$ vs $|\mathcal S|$},")
@@ -277,9 +277,9 @@ A(r"\node[inkPrim,font=\scriptsize,anchor=north west] at (rel axis cs:0.02,0.995
 A(r"% D12: this key used to sit at the bottom-left, corner-to-corner with the (6,6) datum.")
 A(r"\node[inkPrim,font=\scriptsize,anchor=north west] at (rel axis cs:0.02,0.90) "
   r"{$\blacksquare$\; $\rho(\mathcal F_1,|\mathcal S|)$ per stratum};")
-A(r"\node[dcPool,font=\scriptsize,anchor=north west] at (rel axis cs:0.035,%.3f) {pooled ($n=30$): $\rho=+%.3f$ (withdrawn)};"
+A(r"\node[dcPool,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.035,%.3f) {pooled ($n=30$): $\rho=+%.3f$\\(Simpson reversal)};"
   % ((pool_chi + 1.42) / span - 0.012, pool_chi))
-A(r"\node[dcPool,font=\scriptsize,anchor=north west] at (rel axis cs:0.035,%.3f) {pooled ($n=30$): $\rho=-%.3f$ (withdrawn)};"
+A(r"\node[dcPool,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.035,%.3f) {pooled ($n=30$): $\rho=-%.3f$\\(Simpson reversal)};"
   % ((pool_F1 + 1.42) / span - 0.012, abs(pool_F1)))
 A(r"\end{groupplot}")
 A(r"\end{tikzpicture}")

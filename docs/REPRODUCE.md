@@ -27,13 +27,14 @@ environment of [`requirements.txt`](../requirements.txt). The two-step pattern i
 
 ---
 
-## The three checks, and what each is worth
+## The four checks, and what each is worth
 
 | command | what it proves | measured 2026-09-19 |
 |---|---|---|
-| `python src/verify.py` (`make verify`) | recomputes the physics — `F₁(L=6)` for the open chain (9.6047) and the periodic ring (9.3851), the geminal witness `F₁=F₂=4K`, `\|S\|=2^K`, `χ=2` — from first principles, then checks the deposited `.json`, `.dat` and `.tex` (the abstract included) against it | **PASS**, 807 checks, 0 failures, **7 454 numeric assertions**, 4 xfail, 0 xpass, 2 skips *(2026-09-19)* |
+| `python src/verify.py` (`make verify`) | recomputes the physics — `F₁(L=6)` for the open chain (9.6047) and the periodic ring (9.3851), the geminal witness `F₁=F₂=4K`, `\|S\|=2^K`, `χ=2` — from first principles, then checks the deposited `.json`, `.dat` and `.tex` (the abstract included) against it. Since 2026-09-19 its section **(10b)** also opens the 54 C3 point files and re-derives every column of the 204-row frontier grid, including **Theorem B itself on all 204 rows** | **PASS**, 831 checks, 0 failures, **9 843 numeric assertions**, 5 xfail, 0 xpass, 2 skips *(2026-09-19)* |
 | `python src/check_figures.py` (`make check-figures`) | re-runs six generators in a scratch tree and diffs 8 artefacts against the committed ones | **PASS**, **all 8 guarded** *(2026-09-19)*. Until the §25 repair one artefact was compared with a copy of itself and the run rewrote four files in the working tree; both are measured, with controls, in §25 |
-| `python src/check_provenance.py` | derives the figure inventory from `paper/main.tex` and fails if this document, `FIGURE_PROVENANCE.md` or the `main.tex` float census no longer describes the manuscript | **PASS** — 50 source files reached, 33 floats (17 figures + 16 tables), all double-column |
+| `python src/check_coherence.py` (`make check-coherence`) | expands `\input` from `paper/main.tex` and checks the manuscript against **itself**: the vacuity range, the number of published sizes and the largest sector are re-derived from `data/c3_frontier/published_fraction/` and must be stated the same way in the abstract, Sec. I, Sec. V, Sec. IX and Sec. X; the hardware shot budget must be one number in all four places; and Sec. IX F must quote the guardian counts `verify.py` actually prints. Each check has an absence half and two synthetic controls | **PASS**, 10 checks, **20 of 20 controls fire** *(2026-09-19; written that day, after seven contradictions between sections survived a green run of the other three)* |
+| `python src/check_provenance.py` | derives the figure inventory from `paper/main.tex` and fails if this document, `FIGURE_PROVENANCE.md` or the `main.tex` float census no longer describes the manuscript | **PASS** — 50 source files reached, 34 floats (17 figures + 17 tables), all double-column |
 
 > **`--fast` certifies nothing.** It skips the `L=10` diagonalisations and the checks that depend on
 > them, and it exits 3 even when nothing fails. Use it while editing; never quote it.
@@ -43,11 +44,14 @@ environment of [`requirements.txt`](../requirements.txt). The two-step pattern i
 > not set the exit code, and they are the honest agenda. An `[XPASS]` means a registered defect has
 > been repaired and the registry entry should now be deleted so the slot becomes a hard check.
 
-> **One `[XPASS]` is expected.** `paper/app_carried_repro.tex` now prints the correct
-> `R_eq(H₂O) = 0.958`, so the registered defect `tab_repro.H2O.R_eq` reports
-> *REPAIRED*. Deleting `KNOWN_OPEN['tab_repro.H2O.R_eq']` from `src/verify.py` turns that
-> slot into a hard check; until someone does, the guardian keeps pinning both values and
-> says so on every run.
+> **No `[XPASS]` is expected, and the count of `[XFAIL]` is five.** `paper/app_carried_repro.tex`
+> now prints the correct `R_eq(H₂O) = 0.958`; `KNOWN_OPEN['tab_repro.H2O.R_eq']` was deleted and
+> that slot is a hard check again. The fifth registered defect is new on 2026-09-19 and belongs to
+> the C3 deposit: `data/c3_frontier/ladder_L4.json` was written four minutes before
+> `src/frontier/fron_lib.make_grid` widened its integration window, so re-running it today gives a
+> different ω grid. The registry pins both values; the measured consequence — L=4 rows of
+> `verdict_frontier.json` move by ≤ 2.8 % relative, L=6 and L=8 unchanged, no manuscript number
+> affected — is in [`C3_FRONTIER.md`](C3_FRONTIER.md) §4.
 
 ---
 
@@ -100,6 +104,10 @@ Every entry below is checked by `src/verify.py` against the file named, on every
 | Open-chain `F₁(L=6)` (the resource families) | 9.6047 | recomputed from first principles inside `verify.py` |
 | Periodic-ring `F₁(L=6)` (the scaling figure) | 9.3851 | *a different system* — `scaling_data.json`; see `KNOWN_DISCREPANCIES.md` §4 |
 | Subspaces in the certificate sweep | 621 pooled, 606 live, 468 violations | `cert_*.json`, Fig. 17's caption |
+| **Everything in Sec. V** — Tables III–V, the frontier, the calibration, the convergence census | 204 evaluations, 187 CONVERGED / 6 MARGINAL / 11 NOT-CONVERGED | `data/c3_frontier/` (54 point files → `C3_grid.json`), re-derived in `verify.py` §(10b). **Deposited 2026-09-19**; before that date this row read *not deposited* |
+| At L=12 and the **published** fraction 0.18, the certificate is vacuous | leak/trivial = 7.51, 4.86, 4.00, 2.81 at η = 0.10, 0.15, 0.18, 0.25 | `C3_grid.json`, asserted in `verify.py` §(10b) |
+| Theorem B holds on every measured row | `(1−w_S) ≤ rel-L₁ ≤ min{leak, trivial}`, **0 violations in 204 rows** | `C3_grid.json`, checked in `verify.py` §(10b) |
+| The cost of the C3 sweep | **2 873.9 s = 0.80 h**, peak **1.64 GiB** over 51 subspaces | recomputed from `data/c3_frontier/` on every `verify.py` run and compared with the stanza in [`C3_FRONTIER.md`](C3_FRONTIER.md) §2. The pre-run estimate was 20–40 h and 9 GB |
 | Within-stratum Spearman `ρ(F₁,\|S\|)` | exactly −1 in all six strata | `cost_vs_ent.json`, recomputed in `verify.py` |
 | Exact one-sided permutation p | `3.3×10⁻¹³` | `stats_resource.json` → `hubbard_stratified` |
 | Mott gap Δ = μ⁺ − μ⁻ at L=12 | 4.97 t | `charge_gap.json` (and independently `gap_scaling.json`) |
@@ -138,7 +146,7 @@ the 2026-09-18 pass and say so.
 
 | command | result |
 |---|---|
-| `python src/verify.py` | **PASS** — 807 checks, 0 failures, 7 454 numeric assertions, 4 registered xfail, 0 xpass, 2 skips *(2026-09-19, after the repaired `tab_repro.H2O.R_eq` entry was deleted from `KNOWN_OPEN`)* |
+| `python src/verify.py` | **PASS** — 831 checks, 0 failures, 9 843 numeric assertions, 5 registered xfail, 0 xpass, 2 skips *(2026-09-19, after section (10b) and the `ladder_L4` open defect arrived with the C3 frontier deposit; the 807 / 7 454 / 4 reading of earlier the same day is superseded)* |
 | `python src/check_provenance.py` | **PASS** — the documentation describes the manuscript in the tree *(2026-09-19)* |
 | `python src/check_tarball.py` | runs; reports 9 byte-identical / 17 differ / 21 bundle-only against the frozen v2 bundle *(2026-09-19)* |
 | `python src/check_figures.py` | **PASS** on 8 artefacts, **all 8 genuinely guarded** since the §25 repair — verified by seeding each artefact with a sentinel line and checking it is gone after the run, and by snapshotting sha256 + mtime of all 231 files to confirm the run writes nothing into the repository *(2026-09-19)* |
@@ -146,6 +154,9 @@ the 2026-09-18 pass and say so.
 | the two commands of the `data` recipe | **exit 0** — rebuilds `figs/sqw_edges.dat` and `data/charge_gap.json` from the deposited spectra, ~4 min of L=4…12 exact diagonalization *(2026-09-18)* |
 | `python src/sqw_lanczos.py 12 --eta 0.18` | reproduces the **physics** of `data/sqw_L12.json` to `max|dS| = 8.2e-05`, `rel-L1 = 3.0e-06`, `|dE0| = 3.1e-15` — **not** byte for byte; the deposited file predates the seeded ARPACK start vector *(re-measured 2026-09-19, 425 s; §12, which withdraws the earlier bit-identity claim)*. Without `--eta 0.18` it **exits 2 and computes nothing**, instead of running ~700 s and overwriting the deposit at η = 0.20 |
 | `python src/akw_lanczos.py <L>`, `spin_lanczos.py`, `sampled_akw.py`, `scaling_data.py`, `ladder_vs_chain.py`, `spectral_validation_max.py`, `gap_scaling.py` | run with numpy/scipy only; minutes at the deposited sizes *(2026-09-18)* |
+| `python src/frontier/fsum.py` | **regenerates `data/c3_frontier/C3_grid.json` exactly** — deep-equal to the committed file, 204 grid rows and 16 frontier rows, in under a second from the 54 deposited point files *(2026-09-19)* |
+| `python src/frontier/verdict.py 4 6 8`, `pubsum.py`, `calib_oos.py`, `null_ws4.py` | **regenerate `verdict_frontier.json`, `published_fraction/PUB_rows.json`, `null/CALIB_OOS.json` and `null/NULL_WS4.json` exactly** *(2026-09-19)* |
+| `python src/frontier/frun.py`, `frun12.py`, `ftie.py`, `fvalid.py`, `run_ladder.py`, `z_fine.py`, `z_rank.py`, `z_e0.py`, `z_suppK.py`, `null_ws5/6/7.py` | all run; the recomputed points agree with the deposited ones to **3×10⁻¹⁶ … 6×10⁻⁹** on the headline columns (w_S, Λ̂/η, both bounds, rel-L₁). The residual is ARPACK's unseeded start vector. Per-file commands, arguments and costs: [`C3_FRONTIER.md`](C3_FRONTIER.md) §3 *(2026-09-19)* |
 
 ### Does **not** reach it, and why
 
@@ -157,6 +168,9 @@ the 2026-09-18 pass and say so.
 | **Fig. 17's generator and two of its inputs** | `build_n3.py`, `fix_n3_caption.py`, `fix_n3_fig5_series.py`, `thm3_results.json` and `n3_fig5_summary.json` are all absent. The eight `n3_*.dat` tables it plots are committed and readable; nothing recomputes them. §27. |
 | `src/recolor_akw_v2.py` | **neither of its two inputs is deposited.** It fails at the first `imread`, and nothing can be done about that from inside this repository. §13. |
 | `src/gate1_ladder.py`, `src/rigor_floor.py` | they run, but their outputs were never deposited, so there is nothing to compare against. §13. |
+| `src/frontier/fproto.py` — the C3 protocol gate | it needs `ckpt/L10_order.npy`, a by-product of `src/scaling_lanczos_mf.py`, and `ckpt/` is `.gitignore`d. **It exits 3 with a message naming the file**, not a traceback. With `P2_CKPT` pointed at a tree that has it, the set overlap with the repository's own ranking is **1.000000** at every fraction *(measured 2026-09-19)*. [`C3_FRONTIER.md`](C3_FRONTIER.md) §5. |
+| `src/frontier/run_L14.py` — the L=14 certificate point | it reuses `ckpt/L14_gs.npz` (94 MB) and `L14_order.npy` (39 MB) rather than spending three hours on a ground state; both are too large to deposit. The **result** is deposited (`data/c3_frontier/published_fraction/L14_FR008.json` with its run log), and that file records that the ranking protocol was **not** re-run at L=14. Same exit-3 behaviour. |
+| `src/frontier/run_ladder.py 4` | reproduces every field of `data/c3_frontier/ladder_L4.json` **except the ω grid**, which the library widened four minutes after that file was written. Registered as a `KNOWN_OPEN` defect, consequence measured: [`C3_FRONTIER.md`](C3_FRONTIER.md) §4. |
 | everything requiring `pyscf` — `n19_suite.py`, `n19_spectral.py`, `n2_hero_data.py`, `molecular_noise_*.py` | `pyscf` is a hard dependency and is **not installed** in the environment these checks were run in. They are **untested here**; no claim is made about them beyond the fact that their output paths were repaired. The 269 molecular assertions of `verify.py` are therefore *transcription* checks against the deposited JSON, not recomputations. §11.2 item 3. |
 | `make reproduce` | executes `notebooks/00_Reproduce_Everything.ipynb`, which needs `pyscf`. **Not verified in this pass.** |
 | `data/gflow.json` | **no script in `src/` produces it.** Five summary rows; the note in the file says per-seed raw data is available on request. Its figure was withdrawn in v3. |

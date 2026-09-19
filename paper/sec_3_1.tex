@@ -16,7 +16,7 @@
 %    sec:prices     the three prices                                [Sec. 7, defined in sec_7.tex]
 %    tab:fracgrid   frac(L,eta) grid                                [Sec. 7, defined in sec_7.tex]
 %    sec:method, sec:honest, fig:akwsampled, fig:scaling            [already in the tree]
-%  This file defines only sec:retraction, eq:retracted, eq:exclusion, eq:mu2.
+%  This file defines only sec:retraction, eq:weightonly, eq:exclusion, eq:mu2.
 %  Sec. 3's own label is sec:leakage -- agreed across sec_4.tex, sec_6.tex and sec_7.tex.
 %  The obsolete alternative "sec:budgets" is used NOWHERE; do not reintroduce it.
 %  NO \cite key exists for this preprint itself; arXiv:2608.16436 is given in prose.
@@ -33,21 +33,22 @@
 %        itself estimated on a sampled subspace.  It has never been tested that way.
 % =====================================================================================
 
-\subsection{Retraction of Theorem~1(iii): the captured weight is not the controlling magnitude}
+\subsection{The captured weight is not the controlling magnitude}
 \label{sec:retraction}
 
-Versions~1 and~2 of this preprint (arXiv:2608.16436) carried, as Theorem~1(iii), an error bound indexed
-on the captured weight alone,
+The certificate one would want for a sampled reconstruction indexes the error on the captured
+weight alone,
 \begin{equation}
 \lVert A-A_S\rVert_{1}\;\le\;2\lVert\phi\rVert^{2}(1-w_S)\;+\;C\,\rho^{-K_S},
-\label{eq:retracted}
+\label{eq:weightonly}
 \end{equation}
-$w_S=\lVert P_S\phi\rVert^{2}/\lVert\phi\rVert^{2}$, $K_S$ the largest Krylov order contained in
-$\operatorname{span}(S)$ (we set $K_S=-1$ when $\phi\notin\operatorname{span}(S)$). The main text invoked
-it as the certificate controlling the reconstruction once $w_S\to1$, the discussion as the claim that
-the error ``is bounded by the captured spectral weight''. Equation~\eqref{eq:retracted} is false, and we
-retract it together with both invocations; Theorem~\ref{thm:leakage} replaces it, keeping the one
-inequality of the published argument that was correct, with the direction it always had.
+with $w_S=\lVert P_S\phi\rVert^{2}/\lVert\phi\rVert^{2}$ and $K_S$ the largest Krylov order
+contained in $\operatorname{span}(S)$ (we set $K_S=-1$ when $\phi\notin\operatorname{span}(S)$).
+It is false, for every constant $C$ and every $\rho$, and it fails hardest in exactly the regime
+a sampling experiment aims for. (An inequality of this form was stated as Theorem~1(iii) of
+arXiv:2608.16436v1--v2, of which the present text is version~3; Theorem~\ref{thm:leakage}
+replaces it and keeps the one inequality of that argument that was correct, with the direction
+it always had.)
 
 \paragraph{A two-level counterexample forces the trivial constant.}
 Take $H=\big(\begin{smallmatrix}0&g\\ g&0\end{smallmatrix}\big)$, $\phi=e_0$, $S=\{0\}$, $E_0=0$. Then
@@ -57,20 +58,20 @@ $\mathcal K_1\not\subseteq\operatorname{span}(S)$, so $K_S=0$ exactly and the se
 constant $C$. The exact $A$ is a pair of Lorentzians of weight $\tfrac12$ at $\pm g$; the
 reconstruction, built on $H_S=P_SHP_S=0$, is one Lorentzian of weight $1$ at the origin, so
 $\lVert A-A_S\rVert_{1}\to2\lVert\phi\rVert^{2}$ as $g/\eta\to\infty$. Since $g$ is free,
-\eqref{eq:retracted} requires $C\ge2\lVert\phi\rVert^{2}$: false if $C$ is a constant, vacuous if it may
+\eqref{eq:weightonly} requires $C\ge2\lVert\phi\rVert^{2}$: false if $C$ is a constant, vacuous if it may
 depend on the instance. With $w_S<1$ strictly the failure is unbounded: in a three-level family the
 violation diverges as $\delta^{-2}$ in the displacement $\delta$ of the discarded component, measured to
 $7.6\times10^{7}$ (App.~\ref{app:counterex}). By contrast
 $\lVert A-A_S\rVert_{1}\le\lVert\phi\rVert^{2}(1+w_S)$ holds for every $S$ under no hypothesis at all,
 $A$ and $A_S$ being nonnegative with known integrals: that trivial bound is the only surviving member of
-the family \eqref{eq:retracted}, and Theorem~\ref{thm:leakage} keeps it explicitly, as the first branch
+the family \eqref{eq:weightonly}, and Theorem~\ref{thm:leakage} keeps it explicitly, as the first branch
 of its minimum.
 
 \paragraph{The violation is systematic, and worst where this work operated.}
 The pooled sweep behind Fig.~\ref{fig:thm1iii-violation} contributes $621$ subspaces from four
 Hamiltonian families and eight construction rules, written by two independent implementations; $15$
 reproduce their target to double-precision round-off and define no ratio. On the $606$ that remain the
-retracted bound fails on $468$, and restricted to the regime the paper invoked, $w_S\ge0.99$, it fails
+weight-only bound fails on $468$, and restricted to the regime this work operates in, $w_S\ge0.99$, it fails
 on $363$ of $363$, the mildest by a factor $2.10$ (App.~\ref{app:counterex}). The compliant cases are
 subspaces so poor that the relative error is already of order unity, where the bound asserts nothing.
 In the configuration of Fig.~\ref{fig:akwsampled} itself --- $L=8$, $\eta=0.18t$, the $3920$-dimensional
@@ -80,7 +81,7 @@ fractions $0.50$, $0.70$, $0.85$, $0.95$ is $18.5$, $23.6$, $26.5$, $29.9$, the 
 $15.1$ to $57.3$ overall and $15.1$ to $33.7$ at the published fraction $0.85$. Those medians
 \emph{rise} monotonically, by a factor $1.6$, while the measured error over the same range falls by
 three orders of magnitude, from the $10^{-1}$ level at the lowest fraction to $1.0\times10^{-4}$ at
-$0.95$: the retracted bound fails worst exactly where the reconstruction is best, which is the opposite
+$0.95$: the weight-only bound fails worst exactly where the reconstruction is best, which is the opposite
 of what an error bound is for. That is a defect of the functional form and not a pathology at an edge of
 parameter space, and it is therefore measurable: Fig.~\ref{fig:thm1iii-violation} plots it against
 sector fraction and against $\eta$, beside the replacement bound on the same subspaces.
@@ -95,7 +96,7 @@ across fractions is read as a direction and not as a rate. (That $\pm20\%$ is th
 \emph{measured error} over tie-breakings of a zero-amplitude cut. It is a different quantity from the
 $6.6\times10^{-4}$ by which ties move the \emph{bound} in the sweep of Sec.~\ref{sec:frontier}, where
 the cut falls below the support floor and only two determinants are tied.) And the error at fraction $0.85$ has two independent determinations that differ by a
-factor $2.3$, so only its order of magnitude is quoted. None of this touches the retraction: the
+factor $2.3$, so only its order of magnitude is quoted. None of this touches the conclusion: the
 two-level counterexample is analytic, and the counting argument of the next paragraph but one uses no
 ranking, no protocol and no numerics at all. The sweep is corroboration of a conclusion that does not
 depend on it.
@@ -103,16 +104,16 @@ depend on it.
 \paragraph{Why it fails: the retained mass is displaced, not discarded.}
 The reconstruction is Rayleigh--Ritz on $H_S=P_SHP_S$ (Sec.~\ref{sec:method}), not the restriction of
 $A$ to a subset of its own eigenpairs: the Ritz energies $\tilde E_m$ are not eigenvalues of $H$, so
-weight the subspace \emph{keeps} is nonetheless moved in $\omega$. The published sketch elided exactly
+weight the subspace \emph{keeps} is nonetheless moved in $\omega$. The obvious sketch elides exactly
 this. Having correctly noted $\int A=\lVert\phi\rVert^{2}$ and $\int A_S=\lVert P_S\phi\rVert^{2}$, it
-bounded the $L_1$ discrepancy by twice the missing weight --- a step legitimate when $[P_S,H]=0$, where
+bounds the $L_1$ discrepancy by twice the missing weight --- a step legitimate when $[P_S,H]=0$, where
 $A_S$ is $A$ with the outside contributions deleted and
 $\lVert A-A_S\rVert_1=\lVert\phi\rVert^{2}(1-w_S)$ identically, and controlling nothing otherwise. The
 two-level example is the extreme: nothing is discarded there, and every unit of retained weight is
 displaced by $g$. What the integrals do give, with no commutator hypothesis, is
 $\lvert\int A-\int A_S\rvert\le\lVert A-A_S\rVert_{1}$, that is
 $\lVert\phi\rVert^{2}(1-w_S)\le\lVert A-A_S\rVert_{1}$ --- a \emph{lower} bound, with $0$ violations
-across the same $239$ subspaces on which the upper form fails. It survives the retraction as the
+across the same $239$ subspaces on which the upper form fails. It survives intact as the
 left-hand half of Theorem~\ref{thm:leakage}: the captured weight does say how wrong the reconstruction
 must be, it never said how wrong it can be.
 
@@ -125,7 +126,7 @@ K_S\ \ge\ 0\qquad\Longleftrightarrow\qquad w_S\ =\ 1 ,
 \label{eq:exclusion}
 \end{equation}
 verified with $0$ discrepancies across $239$ subspaces, of which $195$ have $K_S=-1$. The two terms of
-\eqref{eq:retracted} are therefore never both informative: either $w_S=1$ and the whole bound is the
+\eqref{eq:weightonly} are therefore never both informative: either $w_S=1$ and the whole bound is the
 second term --- the two-level counterexample --- or $K_S=-1$ and $C\rho^{-K_S}=C\rho$, an undefined
 constant with no decay in it. Counting settles which branch applies here. The seed is
 $\phi=\hat c^{\dagger}_{0\uparrow}\ket{\Psi_0}$ at half filling, so $\operatorname{supp}(\phi)$ is the
@@ -133,13 +134,15 @@ set of $(N{+}1)$ determinants with orbital $0\!\uparrow$ occupied and
 $\lvert\operatorname{supp}(\phi)\rvert/D=n_\uparrow/L=\tfrac12+\tfrac1L$ exactly; by
 \eqref{eq:exclusion}, $K_S\ge0$ demands $|S|/D\ge\tfrac12+\tfrac1L$, a floor of $0.625$, $0.600$,
 $0.583$, $0.571$ at $L=8,10,12,14$ against the sector fractions $0.5561$, $0.3625$, $0.1700$, $0.0800$
-that v1--v2 used there (Fig.~\ref{fig:scaling}; the coarser replication grid of
-Table~\ref{tab:fracgrid} reads $0.180$ at $L=12$ for the same operating point). From $L=8$ on, every
-operating point v1--v2 published lies below its own floor, so $K_S=-1$ by counting alone, with no
+at which the resource scan of Sec.~\ref{sec:prices} operates (Fig.~\ref{fig:scaling}; the coarser
+replication grid of Table~\ref{tab:fracgrid} reads $0.180$ at $L=12$ for the same operating point).
+From $L=8$ on, every operating point of that scan lies below its own floor, so $K_S=-1$ by counting
+alone, with no
 numerics, no ranking and no protocol, and any point below the same line inherits the verdict
 (App.~\ref{app:counterex}). Neither $w_S$ nor $K_S$, we note, is computed in any
-file of the reproduction repository: the retracted bound was quoted, never applied, which is how a
-statement false by counting reached a published version. Theorem~\ref{thm:leakage} carries no such
+file of the reproduction repository: a certificate written in quantities the pipeline never forms can
+be quoted but never applied, which is how a statement false by counting survives unexamined.
+Theorem~\ref{thm:leakage} carries no such
 bookkeeping and is held to the opposite standard. Its two terms are defined and simultaneously active
 for every $S$; the weight term is the half this work cannot compute without $\Psi_0$ ---
 $\lVert\phi_Q\rVert=\lVert\phi\rVert\sqrt{1-w_S}$, and estimating $w_S$ against an already-truncated
@@ -148,7 +151,7 @@ assembled from the Ritz vectors the reconstruction already forms plus one matrix
 evaluated, subspace by subspace, in Sec.~\ref{sec:frontier}.
 
 \paragraph{The magnitude, not the constant.}
-Two measurements at the same, exactly unit, captured weight show that \eqref{eq:retracted} was indexed
+Two measurements at the same, exactly unit, captured weight show that \eqref{eq:weightonly} was indexed
 not on a bad constant but on the wrong quantity. First, let $S^\star=\operatorname{supp}(\phi)$, the
 smallest determinant subspace of unit captured weight --- fixed by the seed, with no ranking, no
 tie-breaking and no zero-amplitude padding --- of size exactly $(\tfrac12+\tfrac1L)D$. Its weight term

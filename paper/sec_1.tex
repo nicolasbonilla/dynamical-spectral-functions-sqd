@@ -54,9 +54,13 @@
 %       unstable sign (Sec. 6.5), which is a different statement.
 %   (d) No claim of quantum advantage is made; the explicit disclaimer is the seventh
 %       paragraph and must survive copy-editing.
-%   (e) The word "sampled" is used only where a budget is declared, where the object is
-%       named as the infinite-shot limit of the declared protocol (Sec. 7), or in the
-%       fixed phrase "sampled fraction" that Sec. 5 uses for a fraction of the sector.
+%   (e) The word "sampled" is used only where a budget is declared or where the object
+%       is named as the infinite-shot limit of the declared protocol (Sec. 7).  The
+%       fraction of the sector is the "published fraction" everywhere -- the name of
+%       Sec. 5's table and of Sec. 7.5, which forbids calling it sampled without a shot
+%       count.  "sampled fraction" was still used in seven places (the abstract among
+%       them) until 2026-09-19; it is now used in none.  Generic uses say "sector
+%       fraction", the phrase Table XI already carried.
 % =====================================================================================
 
 \section{The operational question}
@@ -143,24 +147,25 @@ $A_{\mathcal S}$ (Sec.~\ref{sec:retraction}).
 A certificate that is never evaluated is a claim and not a result, and the retracted one was never
 evaluated: neither of the two quantities it is written in is computed anywhere in the reproduction
 repository. We evaluate the replacement on the subspaces this work actually used, at
-$L=6,8,10,12$ (sector dimensions $300$ to $731\,808$), and report the outcome negative end first.
-\emph{At every published fraction, at each of the four sizes evaluated, the leakage branch of the
+$L=6,8,10,12,14$ (sector dimensions $300$ to $10\,306\,296$), and report the outcome negative end
+first.
+\emph{At every published fraction, at each of the five sizes evaluated, the leakage branch of the
 bound is worse than the trivial bound $\lVert\phi\rVert^{2}(1+w_{\mathcal S})$}---vacuous by factors
-of $2.8$ to $4.9$---and at $L=12$ that verdict is converged in Krylov depth, so it cannot be moved by
+of $1.66$ to $8.61$---and at $L=12$ that verdict is converged in Krylov depth, so it cannot be moved by
 computing harder. The reconstructions reported in this paper are therefore, at present,
 uncertified. Two measurements replace that sentence rather than soften it. The obstruction is
 structural: the coordinate support of the Krylov space $\mathcal K(H,\phi)$ is $296$ of $300$
 determinants at $L=6$ and all $3920$ of $3920$ at $L=8$, so at $L=8$ the leakage is strictly positive
 for \emph{every} proper coordinate subspace and no leakage-type certificate in this basis can be
-non-vacuous there at low fraction. That support has been measured at two sizes and we state it for
-two: whether it persists at $L=10$ and $L=12$ is open, and the cost of settling it is one sparse
-Krylov run per size. And the certificate is calibrated: across all sixteen
+non-vacuous there at low fraction. That support is now measured at $L=8$, $10$, $12$ and $14$---every
+size this work reports---and at each it is the whole sector at the declared threshold, by two
+estimators that agree wherever both ran. And the certificate is calibrated: across all sixteen
 $(L,\eta)$ cells of the sweep its crossing of the trivial bound occurs at a true relative $L_1$
 error between $1.2\times10^{-3}$ and $7.3\times10^{-3}$, median $2.8\times10^{-3}$, on a table
 whose true errors span five decades---computed from $H$, $\mathcal S$, $\phi$ and $\eta$ alone,
 without the answer (Sec.~\ref{sec:frontier}). The reconstruction itself is untouched: an
 independent implementation, with different code, normalization and reference, recovers the
-published acceptance fractions at all four sizes, the largest discrepancy being $7\%$---at $L=12$,
+published acceptance fractions at the four sizes it covers, the largest discrepancy being $7\%$---at $L=12$,
 against the coarse replication-grid value $0.18$, and under $2\%$ against the $0.17$ the scan itself
 reports. What the measurement
 retires is the word \emph{certified} applied to those fractions, not the fractions themselves.

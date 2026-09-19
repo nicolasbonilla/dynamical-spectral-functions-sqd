@@ -1,0 +1,19 @@
+[    1.0s] L=14 D=10306296 E0=-4.6131026260 |phi|^2=0.499999999822  [checkpoint, gs residual 2.656e-09]
+[    1.0s] order from checkpoint: permutation of 10306296 (verified), int32
+[ 1228.6s] reference bare Lanczos m=500 [1228s]; drift 250->500: eta=0.10:1.94e-03 eta=0.15:2.32e-04 eta=0.18:6.75e-05 eta=0.25:4.42e-06
+[ 1229.2s] FR=0.08 |S|=824504 (0.08000) w_S=0.998387504078  V=1.54 GiB (memmap)
+[ 1335.7s]    lanczos 50/250 [103s]
+[ 1472.0s]    lanczos 100/250 [240s]
+[ 1631.9s]    lanczos 150/250 [399s]
+[ 1794.6s]    lanczos 200/250 [562s]
+[ 1953.7s]    G1 50/250 [87s]
+[ 2024.9s]    G1 100/250 [158s]
+[ 2097.0s]    G1 150/250 [230s]
+[ 2166.3s]    G1 200/250 [300s]
+[ 2236.3s]    G1 250/250 [370s]
+[ 2237.5s]   done [lanczos 633s + G1 370s = 1009s] orth=4.9e-15 |wK-wS|=2.3e-15
+[ 2237.5s]     eta=0.10  Lam/eta=8.5691  B=17.2116  triv=1.9984  VACUITY x8.613  relL1=9.8763e-02  slack=20  in/out=4.53e-02
+[ 2237.5s]     eta=0.15  Lam/eta=5.5506  B=11.1771  triv=1.9984  VACUITY x5.593  relL1=4.6323e-02  slack=43  in/out=1.82e-02
+[ 2237.5s]     eta=0.18  Lam/eta=4.5656  B=9.2078  triv=1.9984  VACUITY x4.608  relL1=3.4137e-02  slack=59  in/out=1.08e-02
+[ 2237.5s]     eta=0.25  Lam/eta=3.2136  B=6.5050  triv=1.9984  VACUITY x3.255  relL1=2.2951e-02  slack=87  in/out=3.56e-03
+[ 2237.5s] WROTE L14_FR008.json

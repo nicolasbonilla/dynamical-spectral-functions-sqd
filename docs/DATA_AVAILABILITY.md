@@ -38,10 +38,10 @@ published and this file is the one that is wrong.**
 > are deposited in `src/`, and `docs/REPRODUCE.md` gives the reproduction commands together with a
 > measured table of what a clean clone does and does not reach. An automated guardian
 > (`python src/verify.py`) recomputes the underlying physics by exact diagonalization and checks the
-> deposited artefacts against it — 807 checks over 7 454 numeric assertions, exiting non-zero on any
+> deposited artefacts against it — 831 checks over 9 843 numeric assertions, exiting non-zero on any
 > discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in the
 > tables and in the abstract; it is not a proof that every sentence of this manuscript is verified, and
-> four known open defects are printed by name on every run.
+> five known open defects are printed by name on every run.
 >
 > The quantum-hardware results are deposited as the arrays that enter the figures, together with the
 > backend name, the shot count and the IBM Quantum job identifier for each of the two runs

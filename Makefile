@@ -5,13 +5,16 @@ PYTHON ?= python
 LATEX  ?= pdflatex
 PAPER  := paper/main
 
-.PHONY: all ci verify check-figures figures data paper clean help
+.PHONY: all ci verify check-figures check-coherence figures data paper clean help
 
 help:
 	@echo "make verify        - adversarial guardian: recompute the physics, then check every"
 	@echo "                     deposited artefact against it (~15 s, numpy+scipy only)"
 	@echo "make check-figures - regenerate every generated fragment in a scratch tree and diff"
 	@echo "                     it against the committed one (writes nothing)"
+	@echo "make check-coherence - does the manuscript still agree with ITSELF?  the range,"
+	@echo "                     the size count, the shot budget and the guardian counts,"
+	@echo "                     checked across sections and against the deposited grid"
 	@echo "make figures       - regenerate the native pgfplots fragments IN PLACE"
 	@echo "make data          - regenerate the deposited tables that have a generator (~4 min)"
 	@echo "make ci            - what .github/workflows/ci.yml runs: verify + check-figures"
@@ -39,6 +42,13 @@ verify:
 # ---- do the deposited generators still produce the committed figures?  (writes nothing)
 check-figures:
 	$(PYTHON) src/check_figures.py
+
+# ---- does the manuscript still agree with ITSELF?  verify.py compares a printed
+#      number against a deposited file; it does not compare a claim against a claim,
+#      and on 2026-09-19 seven contradictions between sections survived a green run.
+#      This is the guardian for that class.  Two synthetic controls per check.
+check-coherence:
+	$(PYTHON) src/check_coherence.py
 
 # ---- regenerate the deposited tables that DO have a committed generator ----
 data:
@@ -88,7 +98,7 @@ paper:
 all: figures paper
 
 # `make ci` is what .github/workflows/ci.yml runs, in the order it runs it.
-ci: verify check-figures
+ci: verify check-figures check-coherence
 
 clean:
 	rm -f paper/*.aux paper/*.log paper/*.out paper/*.toc paper/*.fls paper/*.fdb_latexmk \

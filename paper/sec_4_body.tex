@@ -46,11 +46,11 @@
 \section{What the structure does certify: moment exactness}
 \label{sec:moments}
 
-Section~\ref{sec:retraction} retracted the error bound the subspace construction was claimed to
-satisfy. It did not retract the construction. One part of Theorem~1 of v1--v2 survives the audit
-intact, and it is the part that says what a Krylov-adequate subspace actually buys: a finite list of
-spectral moments, exactly. We restate it with the proof the code realizes, measure its exact reach, and
-separate it from two claims that were attached to it and do not follow from it.
+Section~\ref{sec:retraction} rules out an error bound the subspace construction was supposed to
+satisfy. It rules out nothing about the construction itself. One structural guarantee does hold, and
+it is the one that says what a Krylov-adequate subspace actually buys: a finite list of spectral
+moments, exactly. We state it with the proof the code realizes, measure its exact reach, and separate
+it from two claims that attach themselves to it and do not follow from it.
 
 \subsection{The statement that survives, and the proof it actually has}
 \label{sec:moments:exact}
@@ -89,10 +89,10 @@ and every $j\le 2K+1$ is such an $a+b$. Both measures are shifted by the same $E
 survives term by term in the binomial expansion of $(H-E_0)^{j}$.
 \end{proof}
 
-That proof is three lines of Rayleigh--Ritz, and it is not the one v1--v2 published. What fails there
-is the route and not the reach, and the distinction matters: v1--v2 states that an order-$(K{+}1)$
-quadrature ``matches the first $2K+1$ moments exactly'', and $2K+1$ is exactly what
-Table~\ref{tab:moments} measures. The published \emph{prediction} is confirmed. What does not survive
+That proof is three lines of Rayleigh--Ritz, and it is not the proof this statement is usually given.
+The usual route argues that an order-$(K{+}1)$ quadrature ``matches the first $2K+1$ moments
+exactly'', and $2K+1$ is exactly what Table~\ref{tab:moments} measures: the \emph{reach} is right,
+the route is not. What does not hold here
 is the identification of $A_{\mathcal S}$ with a Gaussian-quadrature rule built by a nonorthogonal
 Lanczos/Krylov construction. No such object is built anywhere in this work: every reconstruction
 diagonalizes $P_{\mathcal S}HP_{\mathcal S}$ on a coordinate subspace, so $d\mu_{\mathcal S}$ carries
@@ -158,16 +158,17 @@ next order.
 \subsection{What moment exactness does not buy}
 \label{sec:moments:notbuy}
 
-Attached to Eq.~\eqref{eq:momex} in v1--v2 is a corollary: ``consequently, at fixed broadening
+Equation~\eqref{eq:momex} invites a corollary: ``consequently, at fixed broadening
 $\eta>0$, the smoothed reconstruction converges geometrically,
-$\lVert A-A_{\mathcal K_K}\rVert_{1}\le C(\eta)\,\rho(\eta)^{-K}$.'' It does not follow, and we
-withdraw it as a corollary. Moment exactness is a list of $2K+2$ linear identities, and the $L_1$
+$\lVert A-A_{\mathcal K_K}\rVert_{1}\le C(\eta)\,\rho(\eta)^{-K}$.'' It does not follow, and it is
+not a corollary here. Moment exactness is a list of $2K+2$ linear identities, and the $L_1$
 distance between two Lorentzian-broadened measures is not a finite linear functional of them;
 converting one into the other needs a polynomial approximation theorem for the kernel
-$x\mapsto\mathcal L_\eta(\omega-x)$ together with a tail estimate, and v1--v2 supplies neither. The
-natural tool, a Bernstein-ellipse bound, is also where the resolution enters, through the poles of the
-kernel at $x=\omega\pm i\eta$ (App.~\ref{app:moments:conj}); but neither $C(\eta)$ nor $\rho(\eta)$ is
-derived or exhibited anywhere in v1--v2 or in the deposit. We therefore state the claim as what it is.
+$x\mapsto\mathcal L_\eta(\omega-x)$ together with a tail estimate, and moment exactness supplies
+neither. The natural tool, a Bernstein-ellipse bound, is also where the resolution enters, through the
+poles of the kernel at $x=\omega\pm i\eta$ (App.~\ref{app:moments:conj}); and neither $C(\eta)$ nor
+$\rho(\eta)$ is derived or exhibited anywhere in this work or in the deposit. We therefore state the
+claim as what it is.
 
 \begin{conjecture}[Geometric convergence in the Krylov order]
 \label{conj:geom}
@@ -182,23 +183,24 @@ has $\mathcal K_0=\operatorname{span}\{\phi\}$, and by direct integration at $\e
 $\lVert A-A_{\mathcal K_0}\rVert_{1}$ is $1.983$ at $g/\eta=2\times10^{2}$ and $1.998$ at
 $g/\eta=6.7\times10^{3}$, rising to $2\lVert\phi\rVert^{2}$. Evaluating Conjecture~\ref{conj:geom} at
 $K=0$ therefore forces $C(\eta)\ge2\lVert\phi\rVert^{2}$: the same family that forces the trivial
-constant on the retracted bound forces it here on the prefactor. Whatever content the conjecture has
+constant on the weight-only bound forces it here on the prefactor. Whatever content the conjecture has
 must be carried by $\rho(\eta)^{-K}$ alone, and in particular it cannot be non-vacuous at the small $K$
 at which a shot-limited subspace operates.
 
-One published figure asserts the withdrawn corollary and is corrected with it. Panel~(b) of
+One figure of this work is read against that conjecture and not against a theorem. Panel~(b) of
 Fig.~\ref{fig:method} fits a geometric collapse $\text{rel-}L_1\sim\rho^{-K}$ with $\rho\approx1.7$,
-and its caption calls that ``precisely the geometric convergence guaranteed by the moment-exactness
-theorem''. It is not guaranteed by moment exactness---that is the corollary withdrawn above---and the
-fit does not carry the claim on its own either. The panel is one of the two places in this work where
+and a fit of that shape is easily reported as ``precisely the geometric convergence guaranteed by the
+moment-exactness theorem''. It is guaranteed by no such thing---that is the corollary ruled out
+above---and the fit does not carry the claim on its own either. The panel is one of the two places in this work where
 the sampling is genuine and its budget is declared---multinomial draws at $4000$ shots per time step,
 eight seeds, $\eta=0.15\,t$, so $T=4000(K{+}1)$ and $T=5.2\times10^{4}$ at the last
 point---and the fit uses six of its thirteen measured points, inside a window selected after the fact
 ($4\le K\le9$, set as a literal in \texttt{spectral\_validation\_max.py}). Across that window the mean
 subspace the sampler returns grows from $179$ to $236$ determinants of the $300$-dimensional sector, so
 decay in the Krylov order is confounded with growth in $|\mathcal S|$; and the $K$ of the abscissa is
-the number of measured time slices, not the $K_{\mathcal S}$ of the retracted bound, which is $-1$ at
-all thirteen points by Eq.~\eqref{eq:exclusion}. We withdraw the fitted rate and the caption sentence.
+the number of measured time slices, not the $K_{\mathcal S}$ of the weight-only bound, which is $-1$ at
+all thirteen points by Eq.~\eqref{eq:exclusion}. No rate is fitted to that window here, and the
+caption claims none.
 What the panel does show, over all thirteen points, with its eight-seed band and with $T$ attached, is
 that the error falls by a factor $32$ as the measured Krylov order is climbed at fixed $\eta$, from
 $0.59$ at $K=0$ to $0.0185$ at $K=12$, with a single non-monotone step at $K=3$ inside the discovery
@@ -247,8 +249,8 @@ T\;\ge\;\varepsilon^{-1}\log\!\bigl(1/(\varepsilon\delta)\bigr)
 suffices (Prop.~\ref{prop:shots}). This is non-circular, and wherever the sampler returns more than
 $\varepsilon^{-1}$ distinct configurations its logarithm is the smaller of the two as well.
 
-What Eq.~\eqref{eq:shots} does \emph{not} say belongs in the same breath, because v1--v2 says it only
-in an appendix. The parameter $\varepsilon$ thresholds a Born probability; it is not a spectral
+What Eq.~\eqref{eq:shots} does \emph{not} say belongs in the same breath, and in the main text rather
+than in an appendix. The parameter $\varepsilon$ thresholds a Born probability; it is not a spectral
 accuracy, and no step of the argument connects it to $\lVert A-A_{\mathcal S}\rVert_{1}$. Arbitrarily
 many configurations may each carry $p(x)<\varepsilon$ while jointly carrying most of the mixture; and,
 decisively, even at $w_{\mathcal S}=1$ exactly---nothing left to capture at any $\varepsilon$---the
@@ -256,18 +258,18 @@ relative error is $O(1)$, as Sec.~\ref{sec:leakage} measures and the first row o
 Table~\ref{tab:moments} exhibits. Capturing the high-probability configurations is a statement about
 the sampler, not about the spectrum.
 
-Two compositions of the bound made elsewhere in v1--v2 follow from that, and both are corrected here.
-The abstract advertises ``a sampling-capture bound polynomial in $|\mathcal S|$ and independent of the
-Hilbert-space dimension''; both clauses are literally true and jointly empty, because the same work
+Two compositions of the bound follow easily from it, and neither is made here. ``A sampling-capture
+bound polynomial in $|\mathcal S|$ and independent of the Hilbert-space dimension'' is a pair of
+clauses that are literally true and jointly empty, because this same work
 measures $|\mathcal S|\sim e^{1.05L}$ for these lattices, Eq.~\eqref{eq:supportexp}, so a budget
 polynomial in $|\mathcal S|$ is exponential in $L$, and independence of the Hilbert-space dimension is
 no saving when the quantity the budget is polynomial in grows exponentially itself. And the fall of the
-required sector fraction with $L$ is described in v1--v2 as ``the favourable face of the
-polynomial-shot bound''; it is not a face of that bound at all. Equation~\eqref{eq:shots} relates a
+required sector fraction with $L$ is not ``the favourable face of the
+polynomial-shot bound'': it is not a face of that bound at all. Equation~\eqref{eq:shots} relates a
 shot budget to a Born-probability threshold and contains no statement about $|\mathcal S|/D$, about
 $L$, or about any trend in either.
 
-What replaces both is the narrower statement Eq.~\eqref{eq:shots} does support, and it is the stronger
+What stands in their place is the narrower statement Eq.~\eqref{eq:shots} does support, and it is the stronger
 one for being narrow: that many shots buy, at confidence $1-\delta$, every configuration above Born
 weight $\varepsilon$, and nothing further. What the resulting subspace costs, and what it is worth, are
 separate measurements, reported as three independent prices---support, resolution and shots---in

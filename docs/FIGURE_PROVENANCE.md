@@ -15,8 +15,13 @@ Before editing any figure, check this table. Before trusting any `.json`, check 
 > omitted two it had started (`fig:gapscaling`, `fig:thm1iii-violation`). Nothing noticed, because
 > nothing derived the table from the manuscript. Run the checker before believing this page.
 
-**Measured state of the manuscript (2026-09-19, by `src/check_provenance.py`):** 50 source files
-reached from `paper/main.tex`; **33 floats — 17 figures and 16 tables, all double-column.**
+**Measured state of the manuscript — run `python src/check_provenance.py` for the current census;
+do not quote this paragraph instead of running it.** At the time of the C3 deposit (2026-09-19) it
+reported 50 source files reached from `paper/main.tex` and **34 floats — 17 figures and 17 tables,
+all double-column** — and *failed*, because the preamble census comment of `paper/main.tex` still
+reads `33 of the 17+16 floats are starred`. The edit that added the seventeenth table did not update
+that comment. That is a `paper/` file and is not this document's to fix; the checker names it on
+every run until it is.
 
 Paths: figure sources live in `paper/figs/` and their float wrappers in `paper/figs/float_*.tex`,
 `paper/figs/captions.tex` and `paper/carried/`; generating scripts in `src/`, data in `data/`.
@@ -118,6 +123,34 @@ Confirmed authoritative by Nicolás (2026-08-17); per-seed trajectories restored
 
 ---
 
+## Sec. V has no figure — and, since 2026-09-19, it has a source
+
+This file is a figure map, and Sec. V typesets no figure, so nothing about it ever appeared here.
+That silence was doing real damage: **Tables III, IV and V, the frontier, the calibration and the
+convergence census had no deposited source at all**, and `sec_5_body.tex` said so in its own
+provenance comment — *"this section is still the one part of the paper a reader cannot regenerate"*.
+
+It is closed. The 204-row sweep those tables summarise is in **`data/c3_frontier/`** and the code
+that produced it in **`src/frontier/`**, documented file by file in
+[`C3_FRONTIER.md`](C3_FRONTIER.md). The map for Sec. V, in the same form as the figure table above:
+
+| Sec. V object | authoritative file | producer |
+|---|---|---|
+| Tables III–V, the frontier, the calibration, the 204 evaluations | `data/c3_frontier/C3_grid.json` | `src/frontier/fsum.py`, from the 54 `data/c3_frontier/pt_L*_FR*_nl*.json` |
+| the convergence census (187 / 6 / 11) | same | classifier in `fsum.conv_flag`, re-derived in `verify.py` §(10b) |
+| the zero-Born / tie audit of the cut | `data/c3_frontier/ties.json` | `src/frontier/ftie.py` |
+| the cross-validation against a dense Λ_S | `data/c3_frontier/validation.json`, `validation_full.json` | `src/frontier/fvalid.py` |
+| the proof-ladder displacement (how much of the frontier is Cauchy–Schwarz) | `data/c3_frontier/verdict_frontier.json` ← `ladder_L{4,6,8}.json` | `src/frontier/verdict.py` ← `run_ladder.py`, `fron_lib.py` |
+| the rows at the fractions the manuscript publishes, and L=14 | `data/c3_frontier/published_fraction/` | `src/frontier/pubsum.py`, `run_L14.py` |
+| the four adversarial re-runs named in `sec_5_body.tex` | `data/c3_frontier/adversarial/` | `src/frontier/z_{fine,rank,e0,suppK}.py` |
+| the null a referee will propose (`1−w_S`) and the out-of-sample calibration | `data/c3_frontier/null/` | `src/frontier/null_ws4-7.py`, `calib_oos.py` |
+
+`src/check_provenance.py` does not police this table: it validates `fig:` labels against the
+manuscript, and there are none here. What polices it is `src/verify.py` §(10b), which opens the 54
+point files and re-derives all 204 rows — 2 387 assertions, seven negative controls.
+
+---
+
 ## The exceptions to "every plotted value is deposited"
 
 The Data Availability Statement ([`DATA_AVAILABILITY.md`](DATA_AVAILABILITY.md)) points at this file
@@ -188,8 +221,12 @@ reader is `src/verify.py`) is printed by the checker and itemised in
   They are written by `make_akw_sampled_honest_fig.py`, nothing reads them, and their finite-shot
   penalties (`1.46×` at L=6, `2.05×` at L=8) predate the ones the paper prints. The caption the
   manuscript typesets is `figs/fig5_caption.tex` (`1.50±0.25`, `1.96±0.12`, `2.05±0.07`), and those
-  three numbers are exactly the `ratio` row of Table IX. **Substituting the generator's caption
-  because it is machine-written would reinstate withdrawn numbers.** `KNOWN_DISCREPANCIES.md` §26.
+  three numbers are exactly the `ratio` row of Table IX. They also still open with *“Declared gap: no
+  finite-shot run exists for the configuration of (a)–(b)”*, which stopped being true on 2026-09-19,
+  when that configuration was run at finite shots ($5.2×10⁶$ shots per channel) and both Sec. 2 and
+  `fig5_caption.tex` replaced the declaration with the measured budget. **Substituting the
+  generator's caption because it is machine-written would reinstate withdrawn numbers and a gap that
+  is now closed.** `KNOWN_DISCREPANCIES.md` §26.
 - **`paper/figs/fig_amort_native.tex` — RETIRED.** The body of `fig:amort`, which Sec. 9.4 withdraws.
   It stays in `paper/figs/` only because `src/verify.py` names it; nothing typesets it.
 - `figs/scaling.dat`, `figs/conv_method.dat`, `figs/resource_axis.dat` — all three **DELETED 2026-09-18** as stale orphans; rationale in `KNOWN_DISCREPANCIES.md` §8. Do not restore them from `_superseded/` or from the arXiv v2 bundle, which still contains two of them.

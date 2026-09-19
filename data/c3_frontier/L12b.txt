@@ -1,0 +1,28 @@
+[   19.4s] L=12 D=731808 E0=-3.96256303 |phi|^2=0.50000000  [gs 19.4s]
+[  235.9s] ranking (repo protocol K=18,dt=0.5,sub=16) [216.5s]; exact-zero Born weights: 0/731808
+[  279.4s] reference: bare Lanczos m=800 [43.5s]; drift nref/2->nref: eta=0.10:2.63e-05 eta=0.15:1.32e-06 eta=0.18:2.80e-07 eta=0.25:1.11e-08
+[  279.5s] L=12 FR=0.10 |S|=73181 (0.100) w_S=0.9947466806  V = 0.16 GiB (memmap)
+[  299.9s]     G1 column 50/300  [6s]
+[  304.5s]     G1 column 100/300  [10s]
+[  307.4s]     G1 column 150/300  [13s]
+[  310.1s]     G1 column 200/300  [16s]
+[  314.7s]     G1 column 250/300  [21s]
+[  319.1s]     G1 column 300/300  [25s]
+[  320.6s]   done [lanczos 14s + G1 25s = 41s] orth=1.2e-15 |wK-wS|=1.1e-16 ties@cut 2/2 zeroBorn 0
+[  320.6s]     eta=0.10  Lam/eta=12.6857  B=25.4828  triv=1.9947  cert=1.9947  relL1=2.4378e-01  slack=8.2  in/out=1.168e-02  B_out=25.4811
+[  320.6s]     eta=0.15  Lam/eta=8.3154  B=16.7538  triv=1.9947  cert=1.9947  relL1=1.3143e-01  slack=15.2  in/out=3.649e-03  B_out=16.7537
+[  320.6s]     eta=0.18  Lam/eta=6.8778  B=13.8822  triv=1.9947  cert=1.9947  relL1=1.0139e-01  slack=19.7  in/out=1.930e-03  B_out=13.8822
+[  320.6s]     eta=0.25  Lam/eta=4.8887  B=9.9094  triv=1.9947  cert=1.9947  relL1=6.9640e-02  slack=28.6  in/out=4.861e-04  B_out=9.9094
+[  320.7s] L=12 FR=0.14 |S|=102453 (0.140) w_S=0.9976410947  V = 0.23 GiB (memmap)
+[  341.0s]     G1 column 50/300  [3s]
+[  348.7s]     G1 column 100/300  [11s]
+[  354.9s]     G1 column 150/300  [17s]
+[  357.7s]     G1 column 200/300  [20s]
+[  360.8s]     G1 column 250/300  [23s]
+[  365.1s]     G1 column 300/300  [27s]
+[  368.4s]   done [lanczos 17s + G1 27s = 48s] orth=1.1e-15 |wK-wS|=1.2e-15 ties@cut 1/2 zeroBorn 0
+[  368.4s]     eta=0.10  Lam/eta=9.8535  B=19.7924  triv=1.9976  cert=1.9976  relL1=1.5237e-01  slack=13.1  in/out=1.559e-02  B_out=19.7900
+[  368.4s]     eta=0.15  Lam/eta=6.3927  B=12.8749  triv=1.9976  cert=1.9976  relL1=7.5434e-02  slack=26.5  in/out=4.786e-03  B_out=12.8748
+[  368.4s]     eta=0.18  Lam/eta=5.2586  B=10.6081  triv=1.9976  cert=1.9976  relL1=5.5661e-02  slack=35.9  in/out=2.549e-03  B_out=10.6081
+[  368.4s]     eta=0.25  Lam/eta=3.6967  B=7.4861  triv=1.9976  cert=1.9976  relL1=3.5184e-02  slack=56.8  in/out=6.776e-04  B_out=7.4861
+[  368.4s] L=12 ALL DONE in 368.4s

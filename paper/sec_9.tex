@@ -51,6 +51,18 @@
 %  PROVENANCE.  Every number in this section is read from the deposit:
 %    9.1  release/data/heron_spectral.json  (hw_relL1 = 0.0, hw_S = 300,
 %         nsector = 300, shots = 50000, eta = 0.15, backend ibm_fez,
+%           *** shots = 50000 in that JSON is the PER-PUB value.  Verified in
+%           release/notebooks/Spectral_Heron.ipynb: cell 7 builds SEVEN circuits
+%           (K=7; circuits=[build_circuit(k) for k in range(K)], k=0..6, and
+%           build_circuit(0) has dt=0, so k=0 IS the t=0 reference and carries no
+%           evolution); cell 13 runs sampler.run(isa, shots=50000) on the LIST of
+%           seven, and SamplerV2 applies shots per pub; cell 15 pools every pub
+%           into ONE subspace.  The budget behind |S|=300 is therefore 3.5e5, and
+%           the text says 3.5e5.  Do NOT 'correct' it back to 5e4, and do not
+%           write '7 evolution circuits plus a t=0 reference' (that is eight;
+%           _superseded/v2_paper/hardware.tex:31 said it and it was wrong).
+%           Still uncorrected elsewhere, in files this section does not own:
+%           paper/sec_2.tex:139 and paper/carried/fig_heron.tex:20. ***
 %         job d9s16avpemts73ct6g8g, and its own provenance string) and
 %         release/data/hw_lucj_n2_result.json (dE_mean_mHa 0.588398,
 %         dE_std 0.142154, dE_min 0.396898, e_sim_dE_mHa 29.5459, backend
@@ -108,8 +120,9 @@ has no advantage over a classical one.
 Both device runs are preserved in full and they are the entirety of the quantum hardware used in this
 work. The first was executed on the IBM~Heron processor \texttt{ibm\_fez} (job
 \texttt{d9s16avpemts73ct6g8g}): the $L=6$ Hubbard chain at $U/t=4$, $\eta=0.15\,t$, $12$ qubits,
-$5\times10^{4}$ computational-basis shots pooled over the $t=0$ reference and $K=7$
-real-time-evolution circuits, under TREX readout twirling, Pauli twirling and dynamical decoupling and
+$3.5\times10^{5}$ computational-basis shots---$5\times10^{4}$ on each of seven circuits
+$k=0,\dots,6$, of which $k=0$ is the $t=0$ reference---pooled into one subspace,
+under TREX readout twirling, Pauli twirling and dynamical decoupling and
 with no zero-noise extrapolation (Fig.~\ref{fig:circ} is the primitive, Fig.~\ref{fig:heron}(a) the
 result). Self-consistent configuration recovery returned $|\mathcal S|=300$ determinants of an
 $(N{+}1)$ sector of dimension $300$; the recorded relative $L_1$ is $0.0$, and the deposited provenance
@@ -170,18 +183,24 @@ result of this work.
 executed elsewhere at larger scale---retarded spin Green's functions of the one-dimensional
 Fermi--Hubbard model on IBM~Heron~r2 at up to $30$ qubits~\cite{vilchez2025}, an ARPES-type
 $A(k,\omega)$ on a $27$-site chain at $54$ qubits~\cite{granet2026akw}, dynamical structure factors
-on trapped ions against scattering data~\cite{quantinuum_dsf2026,greenediniz2024}---so our device
-record is the smallest in its comparison class and is not offered as a scale result. What is new in it
+on trapped ions against scattering data~\cite{quantinuum_dsf2026}---so our device record is smaller
+than every entry in that class and is not offered as a scale result. It is not the smallest such record
+either, and we name the one below it: a spectral function was reconstructed on a trapped-ion device
+from a four-qubit Hubbard dimer~\cite{greenediniz2024}. What is new in our run
 is the object assembled, the $(N{\pm}1)$-sector Lehmann construction from a bitstring-sampled subspace,
 at a size where the coverage question is degenerate, and Sec.~\ref{sec:prices} says how degenerate in
-shots: the $5\times10^{4}$ spent are about twice the $(2.43\pm0.34)\times10^{4}$ that
-Table~\ref{tab:shots} measures for one orbital seed and one branch at $L=6$, so complete coverage of a
-$300$-dimensional sector is what the budget predicts rather than a surprise.\footnote{The device run
-used $K=7$ evolution circuits and the replication of Table~\ref{tab:shots} the repository protocol,
-$K=18$ with $19$ snapshots; this is a consistency statement between two budgets, not an identity.} The
-first size at which a device run would test the reconstruction rather than the pipeline is $L=8$:
-sector $3\,920$, and $(2.70\pm0.13)\times10^{5}$ shots per orbital seed and branch, a factor $5.4$
-above what was spent here.
+shots: the $3.5\times10^{5}$ spent---seven circuits at $5\times10^{4}$ shots each, pooled into one
+subspace---are $14.4$ times the $(2.43\pm0.34)\times10^{4}$ that Table~\ref{tab:shots} measures for one
+orbital seed and one branch at $L=6$, so complete coverage of a $300$-dimensional sector is what the
+budget predicts rather than a surprise.\footnote{The seven circuits are indexed $k=0,\dots,6$, and the
+$k=0$ circuit carries no evolution: it is the $t=0$ reference, so six of the seven are evolution
+circuits. Table~\ref{tab:shots} instead replicates the repository protocol, $K=18$ with $19$ snapshots,
+at $U/t=8$ rather than the $U/t=4$ of the device run; this is a consistency statement between two
+budgets, not an identity.} The first size at which a device run would test the reconstruction rather
+than the pipeline is $L=8$: sector $3\,920$, at $(2.70\pm0.13)\times10^{5}$ shots per orbital seed and
+branch---a factor $1.3$ \emph{below} what was already spent here, so what confined this run to $L=6$
+was not the shot budget. The momentum-resolved observable at that size is a different matter: sixteen
+channels, ${\approx}4\times10^{6}$ shots, an order of magnitude above this job.
 
 \subsection{The molecular suite, and the size of its sectors}
 \label{sec:scope:mol}
@@ -289,8 +308,8 @@ years ago~\cite{benthien2007}---at $L=120$ in the charge channel, $L=100$ in the
 $L=90$ in the single-particle channel---and the correction-vector and optical branches of the same
 literature reach $L=64$ and $N=256$~\cite{nocera2016,jeckelmann2002}, at the sizes
 Sec.~\ref{sec:physics} tabulates.
-Dynamics in one dimension is where classical methods arrived first, and the framing sentence is
-withdrawn. Within the region this work measures---one-dimensional Hubbard rings at $L\le12$, the
+Dynamics in one dimension is where classical methods arrived first, and no framing of this work
+says otherwise. Within the region this work measures---one-dimensional Hubbard rings at $L\le14$, the
 nineteen active spaces, and a largest minimal bond dimension of $42$ over the $74$ deposited exact
 ground states, attained on a molecular active space, the largest on the lattice being $38$ in the
 two-leg ladder---there is no computation performed
@@ -308,7 +327,7 @@ geometry and orbital connectivity rather than of dimensionality, so two-dimensio
 molecular orbital graphs are where it would be measured, and nothing here measures it.
 Section~\ref{sec:frontier} supplies the second coordinate of that search: in the determinant basis the
 Krylov space of the probe already has full coordinate support at $L=8$, so a non-vacuous leakage
-certificate at small sampled fraction requires a different working basis, not a better ranking within
+certificate at small sector fraction requires a different working basis, not a better ranking within
 this one.
 
 \subsection{The dequantization test, and a resolution floor that five seeds cannot cross}
@@ -381,8 +400,8 @@ withdraws the three terms it did not license instead of enlarging $\eta$: the si
 indefensible part, the words were. The published subspace curves are the infinite-shot limit of the
 declared ranking protocol, and finite-shot fractions are reported only where
 Table~\ref{tab:finiteshot} attaches a measured budget and a seed count. The certificate of
-Theorem~\ref{thm:leakage} is vacuous at every fraction this work publishes, by factors of $2.8$ to
-$4.9$ at the four sizes measured, so the reconstructions reported here are at present uncertified and
+Theorem~\ref{thm:leakage} is vacuous at every fraction this work publishes, by factors of $1.66$ to
+$8.61$ at the five sizes measured, so the reconstructions reported here are at present uncertified and
 the non-vacuity threshold is given as a bracket rather than as a number (Sec.~\ref{sec:frontier}). The device record is the two runs of Sec.~\ref{sec:scope:hw}, at $12$ and
 $24$ qubits, the first exact by coverage; the chemistry record is Table~\ref{tab:molscope}. No result
 in this work is offered as evidence of an advantage over a classical method, at any size reached here.
@@ -390,7 +409,7 @@ in this work is offered as evidence of an advantage over a classical method, at 
 What the work does claim is four things, each with its measurement attached: one sampling primitive
 returning four frequency-resolved channels from a single measurement protocol (Fig.~\ref{fig:circ}); a
 two-sided a posteriori bound on the error of the reconstruction, with its non-vacuity threshold
-measured at four sizes up to a sector of dimension $731\,808$ and its crossing calibrated to a true
+measured at five sizes up to a sector of dimension $10\,306\,296$ and its crossing calibrated to a true
 relative error of ${\approx}3\times10^{-3}$ within a factor of three (Sec.~\ref{sec:frontier}); an
 obstruction theorem showing that no orbital-rotation invariant supplies a cheaper a priori predictor of
 that bound (Sec.~\ref{sec:nogo}); and three measured prices---support, resolution and shots---of which
@@ -463,22 +482,6 @@ the third had no number at all before this version (Sec.~\ref{sec:prices}).
 %      Fig. 17 PLOTS are the deposited n3_*.dat tables.  What is missing is what BUILT them.
 %      That is a regenerability gap, not a deposit gap, and the guardian registers it.
 %
-%  MEASURED 12:50, AGAINST docs/FIGURE_PROVENANCE.md AS REBUILT AT 12:43.  That file's
-%  exceptions table lists THREE exceptions to "every plotted value is deposited"; this
-%  statement says ONE, and the difference is deliberate, not an oversight:
-%    * Fig. 1, the schematic -- both agree.
-%    * "Fig. 6, panel (c): the four free-fermion support sizes 35, 336, 3496, 37361 are
-%      constants typed into src/make_decoupling_native.py and written from there into the
-%      fragment" -- NOT TRUE OF v3.  That row was carried over from the v2 table and
-%      renumbered from Fig. 1 to Fig. 6 without being re-measured.  grep over every .tex
-%      and .dat under paper/ finds the four numbers as a set in exactly ONE place, the
-%      PROSE of paper/sec_6_body.tex:329; panel (c) of fig_decoupling_native.tex now plots
-%      (chi, |S|) for six Hubbard strata, and make_decoupling_native.py no longer contains
-%      them either.  A figure that does not plot them cannot be an exception for them.
-%    * "Fig. 17: two of the four JSONs behind the plotted ratios are not deposited" -- true,
-%      and it is in this statement, in the known-gaps sentence, where it belongs: the ratios
-%      Fig. 17 PLOTS are the deposited n3_*.dat tables.  What is missing is what BUILT them.
-%      That is a regenerability gap, not a deposit gap, and the guardian registers it.
 % ---------------------------------------------------------------------------------
 \subsection{Data availability statement}
 \label{sec:scope:data}
@@ -496,10 +499,10 @@ the resource statistics---are additionally \emph{regenerable}: the computation s
 them are deposited in \texttt{src/}, and \texttt{docs/REPRODUCE.md} gives the reproduction commands
 together with a measured table of what a clean clone does and does not reach. An automated guardian
 (\texttt{python src/verify.py}) recomputes the underlying physics by exact diagonalization and checks
-the deposited artefacts against it---$807$ checks over $7\,454$ numeric assertions, exiting non-zero on
+the deposited artefacts against it---$831$ checks over $9\,843$ numeric assertions, exiting non-zero on
 any discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in
 the tables and in the abstract; it is not a proof that every sentence of this manuscript is verified,
-and four known open defects are printed by name on every run.
+and five known open defects are printed by name on every run.
 
 The quantum-hardware results are deposited as the arrays that enter the figures, together with the
 backend name, the shot count and the IBM~Quantum job identifier for each of the two runs

@@ -1,0 +1,68 @@
+[   21.0s] L=12 D=731808 E0=-3.96256303 |phi|^2=0.50000000  [gs 21.0s]
+[  381.2s] ranking (repo protocol K=18,dt=0.5,sub=16) [360.3s]; exact-zero Born weights: 0/731808
+[  499.8s] reference: bare Lanczos m=800 [118.5s]; drift nref/2->nref: eta=0.10:2.63e-05 eta=0.15:1.32e-06 eta=0.18:2.80e-07 eta=0.25:1.11e-08
+[  499.9s] L=12 FR=0.45 |S|=329314 (0.450) w_S=0.9999635439  V = 1.23 GiB (memmap)
+[  651.6s]     G1 column 50/500  [8s]
+[  658.7s]     G1 column 100/500  [15s]
+[  665.7s]     G1 column 150/500  [22s]
+[  672.6s]     G1 column 200/500  [29s]
+[  679.4s]     G1 column 250/500  [36s]
+[  686.2s]     G1 column 300/500  [42s]
+[  693.6s]     G1 column 350/500  [50s]
+[  699.8s]     G1 column 400/500  [56s]
+[  706.3s]     G1 column 450/500  [62s]
+[  712.7s]     G1 column 500/500  [69s]
+[  719.7s]   done [lanczos 143s + G1 69s = 220s] orth=3.1e-15 |wK-wS|=4.4e-16 ties@cut 2/2 zeroBorn 0
+[  719.7s]     eta=0.10  Lam/eta=1.6434  B=3.2989  triv=2.0000  cert=2.0000  relL1=3.5324e-03  slack=566.2  in/out=1.462e-02  B_out=3.2985
+[  719.7s]     eta=0.15  Lam/eta=1.0475  B=2.1071  triv=2.0000  cert=2.0000  relL1=1.6458e-03  slack=1215.2  in/out=4.237e-03  B_out=2.1071
+[  719.7s]     eta=0.18  Lam/eta=0.8553  B=1.7226  triv=2.0000  cert=1.7226  relL1=1.1851e-03  slack=1453.5  in/out=2.005e-03  B_out=1.7226
+[  719.7s]     eta=0.25  Lam/eta=0.5941  B=1.2003  triv=2.0000  cert=1.2003  relL1=6.9619e-04  slack=1724.0  in/out=3.409e-04  B_out=1.2003
+[  719.8s] L=12 FR=0.50 |S|=365904 (0.500) w_S=0.9999797136  V = 1.36 GiB (memmap)
+[  840.3s]     G1 column 50/500  [9s]
+[  848.7s]     G1 column 100/500  [17s]
+[  856.8s]     G1 column 150/500  [25s]
+[  864.1s]     G1 column 200/500  [33s]
+[  871.8s]     G1 column 250/500  [40s]
+[  878.2s]     G1 column 300/500  [47s]
+[  884.7s]     G1 column 350/500  [53s]
+[  891.9s]     G1 column 400/500  [60s]
+[  900.0s]     G1 column 450/500  [68s]
+[  908.8s]     G1 column 500/500  [77s]
+[  913.6s]   done [lanczos 111s + G1 77s = 194s] orth=3.9e-15 |wK-wS|=1.1e-16 ties@cut 1/2 zeroBorn 0
+[  913.6s]     eta=0.10  Lam/eta=1.2380  B=2.4849  triv=2.0000  cert=2.0000  relL1=1.9417e-03  slack=1030.0  in/out=2.226e-02  B_out=2.4843
+[  913.6s]     eta=0.15  Lam/eta=0.7931  B=1.5952  triv=2.0000  cert=1.5952  relL1=9.1780e-04  slack=1738.1  in/out=6.944e-03  B_out=1.5952
+[  913.6s]     eta=0.18  Lam/eta=0.6494  B=1.3078  triv=2.0000  cert=1.3078  relL1=6.6060e-04  slack=1979.8  in/out=3.415e-03  B_out=1.3078
+[  913.6s]     eta=0.25  Lam/eta=0.4538  B=0.9167  triv=2.0000  cert=0.9167  relL1=3.8905e-04  slack=2356.2  in/out=6.332e-04  B_out=0.9167
+[  913.7s] L=12 FR=0.55 |S|=402494 (0.550) w_S=0.9999904564  V = 1.50 GiB (memmap)
+[ 1054.5s]     G1 column 50/500  [9s]
+[ 1062.6s]     G1 column 100/500  [17s]
+[ 1071.4s]     G1 column 150/500  [25s]
+[ 1080.7s]     G1 column 200/500  [35s]
+[ 1090.0s]     G1 column 250/500  [44s]
+[ 1098.4s]     G1 column 300/500  [52s]
+[ 1107.2s]     G1 column 350/500  [61s]
+[ 1116.1s]     G1 column 400/500  [70s]
+[ 1125.3s]     G1 column 450/500  [79s]
+[ 1132.9s]     G1 column 500/500  [87s]
+[ 1137.9s]   done [lanczos 131s + G1 87s = 224s] orth=3.8e-15 |wK-wS|=7.8e-16 ties@cut 2/2 zeroBorn 0
+[ 1137.9s]     eta=0.10  Lam/eta=0.9338  B=1.8739  triv=2.0000  cert=1.8739  relL1=1.0687e-03  slack=1753.4  in/out=3.450e-02  B_out=1.8727
+[ 1137.9s]     eta=0.15  Lam/eta=0.5978  B=1.2018  triv=2.0000  cert=1.2018  relL1=5.0696e-04  slack=2370.5  in/out=1.046e-02  B_out=1.2017
+[ 1137.9s]     eta=0.18  Lam/eta=0.4891  B=0.9843  triv=2.0000  cert=0.9843  relL1=3.6243e-04  slack=2715.8  in/out=5.177e-03  B_out=0.9843
+[ 1137.9s]     eta=0.25  Lam/eta=0.3408  B=0.6878  triv=2.0000  cert=0.6878  relL1=2.0731e-04  slack=3317.7  in/out=9.845e-04  B_out=0.6878
+[ 1138.0s] L=12 FR=0.60 |S|=439085 (0.600) w_S=0.9999954203  V = 1.64 GiB (memmap)
+[ 1275.9s]     G1 column 50/500  [7s]
+[ 1283.8s]     G1 column 100/500  [15s]
+[ 1291.9s]     G1 column 150/500  [23s]
+[ 1302.5s]     G1 column 200/500  [34s]
+[ 1311.2s]     G1 column 250/500  [42s]
+[ 1319.7s]     G1 column 300/500  [51s]
+[ 1328.5s]     G1 column 350/500  [60s]
+[ 1337.0s]     G1 column 400/500  [68s]
+[ 1344.2s]     G1 column 450/500  [75s]
+[ 1350.9s]     G1 column 500/500  [82s]
+[ 1354.6s]   done [lanczos 122s + G1 82s = 217s] orth=2.9e-15 |wK-wS|=1.2e-15 ties@cut 2/2 zeroBorn 0
+[ 1354.6s]     eta=0.10  Lam/eta=0.6846  B=1.3736  triv=2.0000  cert=1.3736  relL1=5.6450e-04  slack=2433.2  in/out=4.706e-02  B_out=1.3720
+[ 1354.6s]     eta=0.15  Lam/eta=0.4368  B=0.8779  triv=2.0000  cert=0.8779  relL1=2.6600e-04  slack=3300.2  in/out=1.404e-02  B_out=0.8778
+[ 1354.6s]     eta=0.18  Lam/eta=0.3565  B=0.7173  triv=2.0000  cert=0.7173  relL1=1.8850e-04  slack=3805.4  in/out=6.991e-03  B_out=0.7173
+[ 1354.6s]     eta=0.25  Lam/eta=0.2470  B=0.4983  triv=2.0000  cert=0.4983  relL1=1.0435e-04  slack=4775.2  in/out=1.364e-03  B_out=0.4983
+[ 1354.6s] L=12 ALL DONE in 1354.6s

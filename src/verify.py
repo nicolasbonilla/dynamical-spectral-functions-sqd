@@ -121,6 +121,17 @@ KNOWN_OPEN = {
             "0.4865 and no caption says 'to machine precision' (see CLAIMS_RETRACTED). "
             "What remains open is the DATA file, which still stores the analytic identity "
             "under the name 'sumrule'."),
+    "ladder_L4.ngrid_eta050": dict(
+        wrong=1497.0, right=2265.0, tol=0.5, pin_tol=0.5,
+        why="data/c3_frontier/ladder_L4.json was computed at 17:32 on 2026-09-18, four "
+            "minutes before src/frontier/fron_lib.make_grid widened its integration "
+            "window from pad=4.0 to pad=max(4, 40*eta).  Re-running "
+            "`PER_ETA=12 python src/frontier/run_ladder.py 4 0.2,0.4,0.6,0.8,0.9` today "
+            "reproduces every other field of that file but integrates over a wider "
+            "window, giving ngrid=2265 at eta=0.50.  Measured consequence: only the L=4 "
+            "rows of verdict_frontier.json move, by at most 2.8 per cent relative on d_CS "
+            "(7e-4 absolute in fraction units); every L=6 and L=8 row is unchanged.  The "
+            "L=6 and L=8 ladders postdate the change and reproduce exactly at PER_ETA=16."),
 }
 
 # Historical note, deliberately left here: until 2026-09-18 this registry also carried
@@ -828,6 +839,7 @@ SECTION_FLOORS = [
     ("(7) MOLECULAR SUITE", 263),
     ("(8) SPECTRAL ARTEFACTS", 69),
     ("(9) THE FILES", 3855),
+    ("(10b) C3 FRONTIER", 2387),
     ("(10) RETRACTED CLAIMS", 7),   # the header was renamed when the registry was inverted;
                                    # the floor of 7 is unchanged and is met by the seven
                                    # absence assertions, not by lowering it.
@@ -1097,11 +1109,24 @@ def section9(rep, root, ctx):
                float(_sr["exact_perm_p_one_sided_F1"]), 5e-15,
                "the abstract prints an exact permutation p that is not "
                "exact_perm_p_one_sided_F1 of data/stats_resource.json")
-    rep.truth("abstract: the two pooled coefficients are declared withdrawn",
-              "pooled coefficients are withdrawn" in mt,
-              "the abstract says so in words",
-              "the abstract no longer withdraws the two pooled coefficients, and Sec. 6 "
-              "and App. F both say they are withdrawn: the abstract would contradict them")
+    # v3, 2026-09-19.  The manuscript no longer announces a withdrawal anywhere; it
+    # states positively what the two pooled coefficients ARE -- Simpson reversals of the
+    # six (L,N) strata -- and that neither is used.  The old check here asserted the
+    # presence of the sentence "pooled coefficients are withdrawn"; it was named for the
+    # abstract but searched read_body(), and it was in fact satisfied by a paragraph
+    # heading in app_stats.tex.  It could not detect the failure that matters now: a
+    # pooled coefficient quietly deleted, leaving Fig. 6(d) and App. F printing a number
+    # the text never explains.  Both halves are asserted instead.
+    _simpson_named = "Simpson reversal" in mt
+    _declared_unused = ("Neither reading is used here" in mt
+                        and "Why neither pooled coefficient is used" in mt)
+    rep.truth("the two pooled coefficients are named Simpson reversals and declared unused",
+              _simpson_named and _declared_unused,
+              "the body says what the two pooled coefficients are, and that neither is used",
+              "the manuscript stopped explaining the two pooled coefficients "
+              "(named as a Simpson reversal: %s; declared unused: %s). Deleting them "
+              "instead of explaining them leaves Fig. 6(d) and App. F printing numbers "
+              "the text does not account for." % (_simpson_named, _declared_unused))
     abstract_rhos = []
     for pat, value, label in abstract_rhos:
         m = re.search(pat, mt)
@@ -1801,6 +1826,267 @@ def section10(rep, root):
     rep.head("(10) RETRACTED CLAIMS -- seven sentences that must stay out of the manuscript")
     for key in sorted(CLAIMS_RETRACTED):
         claim_check(rep, root, key)
+
+
+def section_c3(rep, root):
+    r"""The C3 frontier sweep: 204 rows, 54 point files, deposited 2026-09-19.
+
+    Until that date Sec. V of the manuscript was the one part of the paper a reader
+    could not regenerate: its three tables came from a sweep that lived only in a
+    working tree.  The sweep is now in data/c3_frontier/ and its code in src/frontier/.
+    This section is what makes the deposit worth having.  It does NOT read the grid and
+    echo it back.  It opens the 54 POINT files, re-derives every derived column of the
+    204-row grid from the primitives measured in them (w_S, Lambda_in, Lambda_out,
+    rel-L1), and then checks Theorem B itself on all 204 rows.  Six things are checked:
+
+      (a) closure      -- every grid row is backed by a deposited point file, and every
+                          deposited point file is either used or SUPERSEDED by a deeper
+                          Krylov depth at the same (L, FR).  A file that is neither is a
+                          FAIL: it would be a measurement in the deposit that the grid
+                          silently ignores.
+      (b) arithmetic   -- bound_leak, bound_trivial, cert, in/out, slack, the
+                          non-triviality flag and the convergence flag are RECOMPUTED
+                          here from Theorem B's own algebra and from the classifier, and
+                          compared with what the grid stores.
+      (c) Theorem B    -- ||phi||^2 (1-w_S) <= ||A-A_S||_1 <= min{leak, trivial}, in
+                          relative form (1-w_S) <= rel-L1 <= cert, on every row that
+                          carries a measured error.  This is the manuscript's central
+                          inequality and this is the only place it is checked against a
+                          measured error rather than against a synthetic sweep.
+      (d) normalisation-- Lambda_hat = Lambda/||phi|| (NOT Lambda), re-derived from each
+                          point file's own norm_phi2.  The factor sqrt(2) between the two
+                          is exactly the sort of silent convention error that would make
+                          every certificate in Sec. V wrong by 41 per cent.
+      (e) the cost     -- the run cost is recomputed from the point files (sum of
+                          t_point over the distinct (L, FR, n_l) points; max peak) and
+                          checked against the numbers docs/C3_FRONTIER.md prints.  The
+                          estimate this deposit replaces was 20-40 h and 9 GB; the
+                          measurement is 0.8 h and 1.6 GiB, and a document that drifts
+                          back towards the estimate now fails the build.
+      (f) the vacuity  -- at the fraction the manuscript published for L=12 the
+                          certificate must be VACUOUS (leak > trivial) at all four
+                          resolutions.  That is Sec. V's headline negative result; if it
+                          ever stops being true the section is wrong, not the data.
+
+    The point files are opened, not stat'ed: a deleted or truncated one fails here.
+    """
+    import glob as _glob
+
+    rep.head("(10b) C3 FRONTIER SWEEP -- 204 rows re-derived from the 54 deposited points")
+
+    ddir = os.path.join(root, "data", "c3_frontier")
+    if not os.path.isdir(ddir):
+        rep.missing("data/c3_frontier",
+                    "the C3 frontier deposit is absent. Sec. V of the manuscript is then "
+                    "unreproducible again and its three tables have no source in this "
+                    "repository. Restore data/c3_frontier/ and src/frontier/.")
+        return
+
+    grid_file = "data/c3_frontier/C3_grid.json"
+    G = read_json(root, grid_file)
+    grid, front = G["grid"], G["frontier"]
+
+    # -- (a) closure ---------------------------------------------------------
+    files = sorted(os.path.basename(p) for p in _glob.glob(os.path.join(ddir, "pt_*.json")))
+    pts = {}
+    for n in files:
+        d = read_json(root, "data/c3_frontier/" + n)
+        pts[n] = d
+    keys_file = {}
+    for n, d in pts.items():
+        keys_file[n] = (d["meta"]["L"], round(d["FR"], 4), d["nl"])
+    deepest = {}
+    for n, (L, FR, nl) in keys_file.items():
+        if (L, FR) not in deepest or nl > deepest[(L, FR)][1]:
+            deepest[(L, FR)] = (n, nl)
+    used = {v[0] for v in deepest.values()}
+    keys_grid = {(g["L"], round(g["FR"], 4), g["nl"]) for g in grid}
+    backed = {keys_file[n] for n in used}
+    rep.truth("C3 closure: every grid row is backed by a deposited point file",
+              keys_grid <= backed,
+              "%d distinct (L,FR,n_l) rows, all present in data/c3_frontier/" % len(keys_grid),
+              "grid rows with no deposited point file: %s" % sorted(keys_grid - backed),
+              n=len(keys_grid))
+    stray = []
+    for n in files:
+        if n in used:
+            continue
+        L, FR, nl = keys_file[n]
+        win, wnl = deepest[(L, FR)]
+        if not (win in used and wnl > nl):
+            stray.append(n)
+    rep.truth("C3 closure: no point file is orphaned", not stray,
+              "%d point files: %d aggregated, %d superseded by a deeper n_l at the same "
+              "(L,FR) -- %s" % (len(files), len(used), len(files) - len(used),
+                                ", ".join(sorted(set(files) - used)) or "none"),
+              "point files that are neither aggregated nor superseded: %s" % stray,
+              n=len(files))
+    # the row count is DERIVED from the etas each point actually carries, never typed
+    etas = sorted({round(g["eta"], 4) for g in grid})
+    expect = sum(1 for n in used for e in etas
+                 if any(abs(r["eta"] - e) < 1e-9 and r["n"] == pts[n]["nl"]
+                        for r in pts[n]["rows"]))
+    rep.eq_int("C3_grid.json row count", len(grid), expect,
+               "the grid no longer has one row per (deposited point) x (resolution). "
+               "Either a point file was dropped or a row was added by hand")
+    rep.eq_int("C3_grid.json frontier-block row count", len(front),
+               len({(g["L"], round(g["eta"], 4)) for g in grid}),
+               "the frontier block must carry exactly one crossing per (L, eta) cell")
+
+    # -- (b) every derived column is the arithmetic of the primitives --------
+    worst = (0.0, "")
+    nbad = 0
+    for g in grid:
+        w = g["w_S"]
+        B = (1.0 + math.sqrt(w)) * (math.sqrt(max(1.0 - w, 0.0)) + g["Lam_over_eta"])
+        triv = 1.0 + w
+        io = g["Lam_in"] / max(g["Lam_out"], 1e-300)
+        want = dict(bound_leak=B, bound_trivial=triv, cert=min(B, triv), in_over_out=io)
+        if g["relL1"]:
+            want["slack"] = g["cert"] / g["relL1"]
+            want["slack_leakbranch"] = g["bound_leak"] / g["relL1"]
+        for k, v in want.items():
+            d = abs(g[k] - v) / max(abs(v), 1e-300)
+            if d > worst[0]:
+                worst = (d, "L=%d FR=%.2f eta=%.2f %s: stored %.12g, recomputed %.12g"
+                         % (g["L"], g["FR"], g["eta"], k, g[k], v))
+            if d > 1e-12:
+                nbad += 1
+        if bool(B < triv) != bool(g["nontrivial"]):
+            nbad += 1
+        pr = g["plateau_relspread"]
+        conv = ("CONVERGED" if (io < 0.05 and pr < 1e-3)
+                else ("MARGINAL" if io < 0.30 else "NOT-CONVERGED"))
+        if conv != g["conv"]:
+            nbad += 1
+            worst = (float("inf"), "L=%d FR=%.2f eta=%.2f conv: stored %s, classifier says %s"
+                     % (g["L"], g["FR"], g["eta"], g["conv"], conv))
+    rep.truth("C3 grid: every derived column recomputed from Theorem B's algebra",
+              nbad == 0,
+              "204 rows x 8 columns, max relative deviation %.2e" % worst[0],
+              "%d column(s) do not follow from the stored primitives. Worst: %s"
+              % (nbad, worst[1]), n=len(grid) * 8)
+
+    # -- (c) Theorem B on every row with a measured error --------------------
+    lo_bad, hi_bad, nrows = [], [], 0
+    for g in grid:
+        if not g["relL1"]:
+            continue
+        nrows += 1
+        tag = "L=%d FR=%.2f eta=%.2f" % (g["L"], g["FR"], g["eta"])
+        if g["relL1"] < (1.0 - g["w_S"]) - 1e-12:
+            lo_bad.append(tag)
+        if g["relL1"] > g["cert"] + 1e-12:
+            hi_bad.append(tag)
+    rep.truth("Theorem B lower bound (1-w_S) <= rel-L1 on every deposited row",
+              not lo_bad, "%d rows, 0 violations" % nrows,
+              "%d violation(s): %s" % (len(lo_bad), lo_bad[:4]), n=nrows)
+    rep.truth("Theorem B upper bound rel-L1 <= min{leak, trivial} on every deposited row",
+              not hi_bad, "%d rows, 0 violations" % nrows,
+              "%d violation(s) -- THE THEOREM OF SEC. III FAILS ON THE DEPOSIT: %s"
+              % (len(hi_bad), hi_bad[:4]), n=nrows)
+
+    # -- (d) the normalisation of Lambda_hat ---------------------------------
+    worstn = (0.0, "")
+    nn = 0
+    for n in sorted(used):
+        d = pts[n]
+        nphi = math.sqrt(d["meta"]["norm_phi2"])
+        for r in d["rows"]:
+            if r["n"] != d["nl"]:
+                continue
+            nn += 1
+            lam = math.hypot(r["Lambda_K_in"], r["Lambda_K_out"])
+            got = r["LamHat_over_eta"] * r["eta"] * nphi
+            dev = abs(got - lam) / max(lam, 1e-300)
+            if dev > worstn[0]:
+                worstn = (dev, "%s eta=%.2f: Lambda_hat*eta*||phi|| = %.12g, "
+                               "hypot(in,out) = %.12g" % (n, r["eta"], got, lam))
+    rep.truth("Lambda_hat = Lambda/||phi|| and Lambda^2 = in^2 + out^2, on every point",
+              worstn[0] < 1e-9, "%d (point, eta) pairs, max deviation %.2e" % (nn, worstn[0]),
+              "the certificate's normalisation does not hold: %s. A missing ||phi|| is a "
+              "factor sqrt(2) on every bound in Sec. V" % worstn[1], n=nn)
+
+    # -- (e) the measured cost, and the document that prints it --------------
+    uniq = {}
+    for g in grid:
+        uniq[(g["L"], g["FR"], g["nl"])] = (g["t_point"], g["peak_GiB"])
+    tot = sum(v[0] for v in uniq.values())
+    peak = max(v[1] for v in uniq.values())
+    cens = {}
+    for g in grid:
+        cens[g["conv"]] = cens.get(g["conv"], 0) + 1
+    measured = {
+        "C3_COST_SECONDS": round(tot, 1),
+        "C3_COST_HOURS": round(tot / 3600.0, 3),
+        "C3_PEAK_GIB": round(peak, 4),
+        "C3_UNIQUE_POINTS": len(uniq),
+        "C3_GRID_ROWS": len(grid),
+        "C3_POINT_FILES": len(files),
+        "C3_CONVERGED": cens.get("CONVERGED", 0),
+        "C3_MARGINAL": cens.get("MARGINAL", 0),
+        "C3_NOTCONVERGED": cens.get("NOT-CONVERGED", 0),
+    }
+    doc_rel = "docs/C3_FRONTIER.md"
+    doc_path = os.path.join(root, "docs", "C3_FRONTIER.md")
+    if not os.path.isfile(doc_path):
+        rep.missing(doc_rel, "the C3 deposit has no reproduction document; Sec. V would be "
+                             "regenerable only by reading the source of src/frontier/")
+    else:
+        txt = read(root, doc_rel)
+        for key, want in sorted(measured.items()):
+            m = re.search(r"^\s*" + key + r"\s*=\s*([0-9.]+)\s*$", txt, re.M)
+            if m is None:
+                rep.missing("%s: %s" % (doc_rel, key),
+                            "the machine-readable cost stanza of %s has no line %r. The "
+                            "estimate this deposit replaced (20-40 h, 9 GB) was 25-50x "
+                            "pessimistic; the measurement has to stay checkable."
+                            % (doc_rel, key))
+                continue
+            rep.eq("%s: %s" % (doc_rel, key), float(m.group(1)), float(want), tol=5e-4,
+                   defect="the document prints a cost/census the deposited points do not "
+                          "support (recomputed from data/c3_frontier/ on this run)")
+
+    # -- (f) the published fraction of L=12 is uncertified --------------------
+    pub = [g for g in grid if g["L"] == 12 and abs(g["FR"] - 0.18) < 1e-9]
+    rep.truth("Sec. V headline: at L=12, FR=0.18 the certificate is VACUOUS at every eta",
+              bool(pub) and all(g["bound_leak"] > g["bound_trivial"] for g in pub),
+              "4 resolutions, leak/trivial = %s"
+              % ", ".join("%.2f" % (g["bound_leak"] / g["bound_trivial"]) for g in pub),
+              "the negative result of Sec. V no longer holds on the deposited grid: %s"
+              % [(g["eta"], g["bound_leak"], g["bound_trivial"]) for g in pub],
+              n=len(pub))
+
+    # -- the proof ladder, and the one stale artefact in the deposit ---------
+    # ladder_L4.json predates a change to the integration window of
+    # src/frontier/fron_lib.make_grid by four minutes; the registry pins that, so the
+    # deposit declares its one stale artefact instead of hiding it.  ladder_L6 and
+    # ladder_L8 postdate the change and are checked against the CURRENT convention.
+    lad = {L: read_json(root, "data/c3_frontier/ladder_L%d.json" % L) for L in (4, 6, 8)}
+    ng = {}
+    for L, d in lad.items():
+        per = d["per_eta"]
+        rows = d["cases"][0]["rows"]
+        ng[L] = {round(r["eta"], 4): r["ngrid"] for r in rows}
+        # ngrid = 2*ntail + ceil((hi-lo)/(eta/per_eta)) + 1 is a pure function of the
+        # pole span and eta, so it is the cheapest witness of which window was used.
+        ratio = ng[L][0.5] / float(ng[L][0.05])
+        rep.truth("ladder_L%d.json: per_eta = %g recorded and its grid is monotone in eta"
+                  % (L, per), 0.0 < ratio < 1.0,
+                  "ngrid(eta=0.05)=%d > ngrid(eta=0.50)=%d" % (ng[L][0.05], ng[L][0.5]),
+                  "the omega grid does not coarsen with eta: %s" % ng[L], n=len(ng[L]))
+    rep.known("ladder_L4.ngrid_eta050", "ladder_L4.json: integration grid at eta=0.50",
+              float(ng[4][0.5]))
+    vf = read_json(root, "data/c3_frontier/verdict_frontier.json")
+    rep.eq_int("verdict_frontier.json rows", len(vf),
+               len({r["L"] for r in vf}) * len({r["eta"] for r in vf})
+               * len({r["thr"] for r in vf}),
+               "the proof-ladder verdict must carry one row per (L, eta, threshold)")
+    rep.truth("verdict_frontier.json covers the three deposited ladders",
+              {r["L"] for r in vf} == set(lad), "L = %s" % sorted(lad),
+              "verdict_frontier.json was computed from a different set of ladder files "
+              "than the three deposited ones: %s vs %s" % (sorted({r["L"] for r in vf}),
+                                                           sorted(lad)), n=len(lad))
 
 
 def coverage_floor(rep):
@@ -2821,6 +3107,7 @@ def main(argv=None):
     section9(rep, root, dict(obc=OBC, pbc=PBC, mF=mF, mS=mS, mX=mX, hF=hF, hS=hS, hX=hX,
                              mol_pts=mol_pts, hub_pts=hub_pts, lvc=lvc, mm=mm, her=her))
     section10(rep, root)
+    section_c3(rep, root)
     if not args.fast:
         coverage_floor(rep)
     else:

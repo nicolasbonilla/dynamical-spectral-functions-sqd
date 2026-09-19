@@ -1,0 +1,16 @@
+[   21.8s] L=12 D=731808 E0=-3.96256303 |phi|^2=0.50000000  [gs 21.8s]
+[  262.8s] ranking (repo protocol K=18,dt=0.5,sub=16) [241.0s]; exact-zero Born weights: 0/731808
+[  318.4s] reference: bare Lanczos m=800 [55.6s]; drift nref/2->nref: eta=0.10:2.64e-05 eta=0.15:1.32e-06 eta=0.18:2.80e-07 eta=0.25:1.11e-08
+[  318.4s] L=12 FR=0.17 |S|=124407 (0.170) w_S=0.9986220944  V = 0.28 GiB (memmap)
+[  340.9s]     G1 column 50/300  [4s]
+[  344.7s]     G1 column 100/300  [8s]
+[  348.5s]     G1 column 150/300  [11s]
+[  352.2s]     G1 column 200/300  [15s]
+[  355.9s]     G1 column 250/300  [19s]
+[  359.9s]     G1 column 300/300  [23s]
+[  361.6s]   done [lanczos 19s + G1 23s = 43s] orth=1.3e-15 |wK-wS|=8.9e-16 ties@cut 2/2 zeroBorn 0
+[  361.6s]     eta=0.10  Lam/eta=8.0035  B=16.0758  triv=1.9986  cert=1.9986  relL1=1.0120e-01  slack=19.7  in/out=1.689e-02  B_out=16.0735
+[  361.6s]     eta=0.15  Lam/eta=5.1631  B=10.3968  triv=1.9986  cert=1.9986  relL1=4.8469e-02  slack=41.2  in/out=5.242e-03  B_out=10.3966
+[  361.6s]     eta=0.18  Lam/eta=4.2363  B=8.5439  triv=1.9986  cert=1.9986  relL1=3.5375e-02  slack=56.5  in/out=2.818e-03  B_out=8.5438
+[  361.6s]     eta=0.25  Lam/eta=2.9645  B=6.0011  triv=1.9986  cert=1.9986  relL1=2.1944e-02  slack=91.1  in/out=7.667e-04  B_out=6.0011
+[  361.6s] L=12 ALL DONE in 361.6s

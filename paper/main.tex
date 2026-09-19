@@ -9,10 +9,11 @@
 %      one-column source   \textwidth = 472.32 pt, body 10.95 pt
 %      revtex4-2 aps pra   \textwidth = 510.00 pt, \columnwidth = 246.00 pt, body 10 pt
 %  So a float promoted to figure*/table* is 8.0 % WIDER than it was, not 52 % narrower.
-%  That is why 33 of the 17+16 floats are starred -- all of them: it is the assignment
+%  That is why 34 of the 17+17 floats are starred -- all of them: it is the assignment
 %  that leaves the validated figures at (or above) the size they were validated at.
 %  (Counted by src/check_provenance.py, which expands \input from this file; the
-%  comment said '35 of the 19+16' until 2026-09-19, two figures after the fact.)
+%  comment said '35 of the 19+16' until 2026-09-19, and '33 of the 17+16' until the
+%  L=14 table of Sec. 5 landed later the same day.  Each was one float behind.)
 % =====================================================================================
 
 \documentclass[
@@ -32,7 +33,7 @@
                     % and this manuscript ships a hand-written thebibliography.  Kept
                     % so that a later switch to BibTeX needs no option change; delete
                     % it if you prefer the option list to carry nothing inert.
-  floatfix          % REVTeX's own fix for deferred double-column floats (all 33)
+  floatfix          % REVTeX's own fix for deferred double-column floats (all 34)
 ]{revtex4-2}
 
 % ---- fonts ---------------------------------------------------------------------
@@ -107,7 +108,7 @@
 \sloppy                         % 246pt columns: without it the overfull count explodes
 
 % ---- float placement in two columns ---------------------------------------------
-% All 33 floats are double-column, and a figure* can only reach the top of a
+% All 34 floats are double-column, and a figure* can only reach the top of a
 % later page.  These are the standard loosened fractions plus their double-column
 % twins, which do not exist in a one-column document.
 \setcounter{topnumber}{2}
@@ -121,13 +122,20 @@
 \renewcommand{\dbltopfraction}{0.92}
 % MEASURED 2026-09-19.  \@fpmin for double-column floats is
 % \dblfloatpagefraction x \textheight; at 0.70 that is 470.4 pt, and SEVEN of the
-% 33 floats are taller than that on their own, so each of them qualified to fill a
+% floats are taller than that on their own, so each of them qualified to fill a
 % float-only page by itself.  That, and not a missing 'p', is what emptied fifteen
 % pages of every line of text.  At 0.99 (665.3 pt) a float page has to be all but
 % full before LaTeX will build one, so the queue drains onto the tops of text pages
 % instead.  Nothing else was loosened: \dbltopfraction stays at 0.92, so every page
 % that carries a top float still keeps at least 53.8 pt -- about five lines -- of
-% text, exactly as before.  Measured on this tree: 13 text-free pages -> 2, 59 -> 57.
+% text, exactly as before.  Measured on that tree: 13 text-free pages -> 2, 59 -> 57.
+% RE-MEASURED 2026-09-19, after Sec. 5 grew a fifth size and a fourth table: the
+% loosened fractions were no longer enough by themselves -- tab:shotfrontier and
+% tab:certified still each qualified for a float-only page, and one of those pages
+% carried a single small table over 60 %% blank.  Both are now [t] rather than [tp]
+% (the only two floats of the 34 that are); nothing is stuck, nothing is too large,
+% and the manuscript is 59 pages with no half-empty page and three text-free pages,
+% all three of them full-page figures.
 \renewcommand{\dblfloatpagefraction}{0.99}
 
 % ---- theorem environments -------------------------------------------------------
@@ -145,6 +153,14 @@
 % are NOT loaded: both patch machinery revtex4-2 owns, and APS wants REVTeX's own
 % caption and section styling anyway.
 \usepackage[colorlinks=true,allcolors=blue,breaklinks=true]{hyperref}
+% The data-availability URL is 63 characters and the column is 246 pt: with url.sty's
+% default break set it is one unbreakable box, and it stretched the three lines above
+% it by factors of 3.2-4.3 (word gaps of 10.65-14.05 pt against a normal 3.3 pt).
+% \UrlOrds lets it break after ordinary letters, which is the only break class a bare
+% host+path offers.  Measured before/after on the composed page, not assumed.
+\makeatletter
+\g@addto@macro\UrlBreaks{\UrlOrds}
+\makeatother
 \hypersetup{
   pdftitle={Captured weight and boundary leakage bound the error of sample-based spectral functions},
   pdfauthor={Nicolas Bonilla Vargas},
@@ -189,13 +205,13 @@ normalized coupling of $H$ across the subspace boundary at resolution $\eta$, fr
 Shots buy the first term down, not the second. On the subspace that \emph{is} the probe's Born support,
 where that term vanishes identically, the relative error is still $0.33$--$0.43$ at $\eta=0.18\,t$ and
 $0.90$--$1.15$ at $0.05\,t$, against a ceiling of $2$. No bound indexed on the captured weight alone
-can do this: an analytic counterexample forces the constant of any such bound to its trivial value, and
-none of $606$ subspaces violates the bound proved here. On Hubbard sectors to dimension $731\,808$ ours
-is worse than the trivial bound at every sampled fraction, at all four sizes, by $2.8$--$4.9$, converged
-in depth at $L=12$, so those reconstructions are uncertified, though independent code recovers those
-fractions to $7\%$. The obstruction is structural: at $L=8$ the probe's Krylov space touches every
+can do this: an analytic counterexample forces any such constant to its trivial value; none of $606$
+subspaces violates the bound proved here. On Hubbard sectors to dimension $10\,306\,296$
+ours is worse than the trivial bound at every published fraction, at all five sizes, by
+$1.66$--$8.61$, converged in depth at $L=12$, so those reconstructions are uncertified, though
+independent code recovers the fractions to $7\%$. The obstruction is structural: at $L=8$ the probe's Krylov space touches every
 determinant of the sector. What survives is a calibration: over sixteen $(L,\eta)$ cells spanning five
-decades of true error, the bound crosses the trivial one at a true relative error of
+decades of true error, the bound crosses the trivial one at a true relative error
 $1.2$--$7.3\times10^{-3}$, median $2.8\times10^{-3}$, computed without the answer. No orbital-rotation
 invariant substitutes: one-body fermionic magic collapses to $4\,\mathrm{tr}[\gamma(1-\gamma)]$,
 constant along an orbit where the determinant support runs from $O(K)$ to $2^{K}$ at bond dimension
