@@ -21,7 +21,25 @@
   pra,              % Physical Review A
   10pt,             % PRA's own size; stated explicitly so the class stops warning
                     % "No type size specified, using default 10"
-  twocolumn,        % required by PRA
+  onecolumn,        % MEASURED CHOICE, 2026-09-19, not a default.
+                    % APS does not require the journal's two-column layout at
+                    % submission: "A PDF version of your paper is all that's needed
+                    % for it to be sent for peer review", and REVTeX's own guide says
+                    % the one-column forms are "the look used for the review process".
+                    % The journal sets the two-column version at production.
+                    % Three builds of this same source, measured:
+                    %   twocolumn  59 pp, 5 overfull   -- the journal look
+                    %   onecolumn  62 pp, 2 overfull   -- this one
+                    %   preprint  118 pp, 6 overfull   -- 12pt double-spaced, doubles it
+                    % One column costs three pages and removes three overfull boxes,
+                    % because the 17 \widetext blocks -- which exist only to let wide
+                    % mathematics escape a 246 pt column, and which leave half-column
+                    % bands of white when they do -- become no-ops here. The figures
+                    % were drawn and validated at 472 pt and are read at 472 pt again
+                    % instead of being set at 246.
+                    % Switch back to `twocolumn` to see the journal layout; nothing
+                    % else in this preamble needs to change, and the starred floats
+                    % and \widetext blocks are inert rather than wrong in one column.
   amsmath,amssymb,  % REVTeX loads them itself, in the order it wants
   groupedaddress,   % NOT superscriptaddress.  With one author and one affiliation the
                     % superscript form prints "Nicolas Bonilla Vargas^{1,*}" over
