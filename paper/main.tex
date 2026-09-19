@@ -181,30 +181,27 @@ sample-based spectral functions}
 % at all -- verified against the class, not assumed.
 
 \begin{abstract}
-Sample-based quantum diagonalization is moving from energies to dynamics. Given the subspace the shots
-populated, how wrong is the spectral function built on it? We prove a two-sided bound on the relative
-$L_1$ error of Rayleigh--Ritz reconstruction: with $w$ the captured Born weight of the probe, the error
-is at least $1-w$ and at most
-$(1+\sqrt{w})\bigl(\sqrt{1-w}+\widehat\Lambda(\eta)/\eta\bigr)$, $\widehat\Lambda$ the normalized
-coupling of $H$ across the subspace boundary at resolution $\eta$, from the Ritz vectors in hand. Shots
-buy the first term down, not the second. On the subspace that \emph{is} the probe's Born support, where
-that term vanishes identically, the relative error is still $0.33$--$0.43$ at $\eta=0.18\,t$ and
-$0.90$--$1.15$ at $0.05\,t$, against a ceiling of $2$.
-
-We retract the weight-only bound of versions~1--2 of this preprint: an analytic counterexample forces
-its constant to the trivial value; none of $606$ subspaces violates the replacement. On Hubbard sectors
-up to dimension $731\,808$ it is worse than the trivial bound at every published fraction, at all four
-sizes, by $2.8$--$4.9$, converged in depth at $L=12$, so those reconstructions are uncertified, though
-independent code recovers those fractions to $7\%$. The obstruction is structural: at $L=8$ the probe's
-Krylov space touches every determinant of the sector. What survives is a calibration: over sixteen
-$(L,\eta)$ cells whose true errors span five decades, the bound crosses the trivial one at a true
-relative error of $1.2$--$7.3\times10^{-3}$, median $2.8\times10^{-3}$, computed without the answer.
-
-No orbital-rotation invariant substitutes for it: one-body fermionic magic collapses to
-$4\,\mathrm{tr}[\gamma(1-\gamma)]$, constant along an orbit on which the determinant support runs from
-$O(K)$ to $2^{K}$ at bond dimension $2$, and on fibers on which our bound separates. Within each of six
-$(L,N)$ strata its rank correlation with that support is exactly $-1$, exact $p=3.3\times10^{-13}$;
-both pooled coefficients are withdrawn. We claim no quantum advantage.
+Sample-based quantum diagonalization is moving to dynamics. Given the subspace the shots populated,
+how wrong is the spectral function built on it? We prove a two-sided bound on the relative $L_1$ error
+of Rayleigh--Ritz reconstruction: with $w$ the captured Born weight of the probe, the error is at least
+$1-w$ and at most $(1+\sqrt{w})\bigl(\sqrt{1-w}+\widehat\Lambda(\eta)/\eta\bigr)$, $\widehat\Lambda$ the
+normalized coupling of $H$ across the subspace boundary at resolution $\eta$, from the Ritz vectors.
+Shots buy the first term down, not the second. On the subspace that \emph{is} the probe's Born support,
+where that term vanishes identically, the relative error is still $0.33$--$0.43$ at $\eta=0.18\,t$ and
+$0.90$--$1.15$ at $0.05\,t$, against a ceiling of $2$. No bound indexed on the captured weight alone
+can do this: an analytic counterexample forces the constant of any such bound to its trivial value, and
+none of $606$ subspaces violates the bound proved here. On Hubbard sectors to dimension $731\,808$ ours
+is worse than the trivial bound at every sampled fraction, at all four sizes, by $2.8$--$4.9$, converged
+in depth at $L=12$, so those reconstructions are uncertified, though independent code recovers those
+fractions to $7\%$. The obstruction is structural: at $L=8$ the probe's Krylov space touches every
+determinant of the sector. What survives is a calibration: over sixteen $(L,\eta)$ cells spanning five
+decades of true error, the bound crosses the trivial one at a true relative error of
+$1.2$--$7.3\times10^{-3}$, median $2.8\times10^{-3}$, computed without the answer. No orbital-rotation
+invariant substitutes: one-body fermionic magic collapses to $4\,\mathrm{tr}[\gamma(1-\gamma)]$,
+constant along an orbit where the determinant support runs from $O(K)$ to $2^{K}$ at bond dimension
+$2$, and on fibers where our bound separates. Within each of six $(L,N)$ strata its rank correlation
+with that support is exactly $-1$, exact $p=3.3\times10^{-13}$; pooled, the same thirty points give
+$\rho=-0.11$, a Simpson reversal, not an absence of signal. We claim no quantum advantage.
 \end{abstract}
 
 \maketitle
