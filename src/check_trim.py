@@ -88,9 +88,26 @@ MARCAS = (
     r"\bat most\b", r"\bno more than\b", r"\bupper bound\b", r"\bonly if\b",
     r"\bonly when\b", r"\brestricted to\b", r"\bconfined to\b",
     # -- priority attribution
-    r"\bprior work\b", r"\bearlier work\b", r"\bindependent", r"\bconcurrent",
+    #    THIS BLOCK WAS WIDENED ON 2026-09-19 AFTER IT FAILED.  The first version
+    #    carried only "prior work" and "earlier work", and the paragraph it therefore
+    #    ranked as the MOST cuttable in the whole manuscript -- 129 words, no number,
+    #    no marker -- was this, in sec_3_body:
+    #        "Nor is ``a posteriori'' ours to claim, and we name the prior art rather
+    #         than wait to be shown it. [...] That is the framing of this section,
+    #         established earlier and by others, and the priority is theirs."
+    #    which is a priority attribution naming four prior works.  The manuscript says
+    #    "prior art", not "prior work"; "established earlier and by others", not
+    #    "earlier work".  A cut driven by the old list would have deleted a priority
+    #    concession first.  Phrase-matching honesty is brittle; widen on every miss.
+    r"\bprior (?:work|art|literature)\b", r"\bearlier work\b",
+    r"\bindependent", r"\bconcurrent", r"\bpriorit", r"\bours to claim\b",
+    r"\bnot ours\b", r"\bestablished earlier\b", r"\bby others\b",
+    r"\bbefore (?:this|version|our)\b", r"\bword for word\b",
+    r"\bwe name the\b", r"\bthe(?:ir)?s\b(?=[^.]{0,20}$)",
     r"\bfirst (?:demonstrat|report|prov|observ)", r"\bfollowing \\cite",
     r"\bdue to \\cite", r"\bas shown in \\cite", r"\bcredit\b",
+    r"\battribut", r"\bwho (?:first|already)\b", r"\bpredates?\b",
+    r"\banticipated by\b", r"\bset out\b", r"\bsix weeks before\b",
     # -- retraction / correction of the record
     r"\bsupersed", r"\bcorrects?\b", r"\bearlier version\b", r"\bretract",
     r"\bpreviously (?:claimed|stated|reported)\b", r"\ban error\b",
@@ -175,8 +192,19 @@ def frases(t):
               "Tab.", "cf.", "e.g.", "i.e.", "vs.", "Phys.", "Rev.", "Lett.",
               "approx.", "no.", "Nos.", "et al."):
         t = t.replace(a, a.replace(".", "\x00"))
-    piezas = re.split(r"(?<=[.!?])\s+", t)
-    return [p.replace("\x00", ".").strip() for p in piezas if p.strip()]
+    piezas = [p.replace("\x00", ".").strip()
+              for p in re.split(r"(?<=[.!?])\s+", t) if p.strip()]
+    # A very short sentence cannot carry a signature of its own, and dropping it
+    # loses real content: "It is not." following a claim IS the refutation of that
+    # claim, and sec_7 carries exactly that construction.  Attach short pieces to
+    # their predecessor rather than discarding them.
+    fundidas = []
+    for p in piezas:
+        if fundidas and len(p) < 25:
+            fundidas[-1] = fundidas[-1] + " " + p
+        else:
+            fundidas.append(p)
+    return fundidas
 
 
 def firma(f):
