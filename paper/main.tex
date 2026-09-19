@@ -181,14 +181,36 @@ sample-based spectral functions}
 %    Colombia; M.Sc. Applied Data Science & AI, SRH University Heidelberg / Munich;
 %    Daita AI.  ngbonillav@unal.edu.co}}
 %  REVTeX redefines \thanks (it is \@AF@join, the affiliation-joining macro), so that
-%  form is not merely unidiomatic here, it is wrong.  The e-mail becomes \email and
-%  the employer becomes \affiliation.  The two degrees are NOT affiliations and REVTeX
-%  has no field for them; they are dropped.  \affiliation also wants a postal address.
-%  *** BOTH POINTS NEED NICOLAS'S DECISION BEFORE SUBMISSION. ***
+%  form is wrong here, not merely unidiomatic.  The e-mail becomes \email and the
+%  three institutions become three \affiliation lines.  The two degrees are NOT
+%  affiliations and REVTeX has no field for them; they are dropped.
+%
+%  ORDER, given by the author 2026-09-19 and deliberate: Universidad Nacional de
+%  Colombia first.  It is also the corresponding address, and that is what carries
+%  the Research4Life country waiver -- which is granted by the corresponding
+%  author's country, not by the institution being registered.  Signing from the
+%  German affiliation instead would forfeit it.  APS's rule for the eligible author
+%  is that it "cannot be changed after initial submission", so the order below is
+%  the one that has to be right the first time.
+%
+%  FORM.  APS Style Basics, verbatim: "Addresses should consist of department or
+%  division, institution, city, state (if relevant), and country, in this order",
+%  and -- checked, because an earlier note here claimed the opposite -- "Street
+%  addresses, post office boxes, ZIP or postal codes, etc., are not required but
+%  may be included".  So city and country suffice; no postal address is owed.
+%
+%  groupedaddress (see the class options) stacks all three under the name, which is
+%  the right form for one author with several affiliations.
+%
+%  All three cities supplied by the author 2026-09-19.  "Munich" is spelled in
+%  English in both German entries: APS sets addresses in English, and the two would
+%  otherwise disagree with each other on the same page.
 % --------------------------------------------------------------------------------
 \author{Nicol\'as Bonilla Vargas}
 \email{ngbonillav@unal.edu.co}
-\affiliation{Daita AI}
+\affiliation{Universidad Nacional de Colombia, Bogot\'a, Colombia}
+\affiliation{SRH University, Munich, Germany}
+\affiliation{Daita AI, Munich, Germany}
 
 % \date{\today} was here until 2026-09-19.  Two reasons, both measured:
 % arXiv's submission help still lists \today among the things not to use, and a
