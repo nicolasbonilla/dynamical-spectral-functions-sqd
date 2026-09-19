@@ -1,0 +1,89 @@
+% =====================================================================================
+%  APPENDIX: the full statistical re-analysis promised by Sec. 6.5.  WRITTEN 2026-09-18.
+%  app:stats was referenced by sec_6.tex and defined nowhere.
+%  Every number below is read from release/data/stats_resource.json (stats_resource.py,
+%  2026-09-18T18:53Z) and was re-read from that file while this appendix was written.
+%  NOTE: the Williams statistic is t = 0.9449, i.e. 0.94 -- Sec. 6.5 previously printed
+%  0.95 and Fig. 2's caption printed 0.94; the file says 0.94 and both now agree with it.
+% =====================================================================================
+
+\section{The resource statistics, stratified}
+\label{app:stats}
+
+Section~\ref{sec:nogo:chi} reports the correlation evidence within the design that produced it. This
+appendix gives the design, the per-stratum coefficients and the three tests, so that the retraction of
+the two pooled coefficients of versions~1--2 can be checked rather than taken.
+
+\paragraph{The lattice design.} The $30$ Hubbard points are six $(L,N)$ strata swept over the same five
+on-site repulsions $U=1,2,4,8,16$; they are not $30$ independent observations, and the effective number
+of independent sweeps is six. Table~\ref{tab:strata} gives each stratum. The rank correlation of
+$\mathcal F_1$ with the static support $|\mathcal S|_{\varepsilon_w}$ is $-1$ in all six, exactly; that
+of $\chi$ runs from $+0.894$ to $+1.000$ with mean $+0.948$, its departures from unity being ties in
+$\chi$ and not inversions.
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{The six Hubbard strata.} Each is a five-point sweep in $U$ at fixed $(L,N)$. The
+one-sided exact permutation probability of a perfect reversal within one stratum of five distinct
+values is $1/120=0.0083$; ties in $\chi$ raise it. ``distinct $\chi$'' counts how many of the five
+$\chi$ values differ, which is what caps $\rho(\chi,|\mathcal S|)$ below unity in four of the
+six.}\label{tab:strata}
+\begin{tabular}{cccccc}
+\toprule
+$L$ & $N$ & $\rho(\mathcal F_1,|\mathcal S|)$ & $\rho(\chi,|\mathcal S|)$ & $\chi$ over $U=1,2,4,8,16$ & distinct $\chi$\\
+\midrule
+$6$  & $6$  & $-1.000$ & $+1.000$ & $12,10,6,5,4$   & $5$\\
+$6$  & $4$  & $-1.000$ & $+0.894$ & $11,10,9,9,9$   & $3$\\
+$8$  & $8$  & $-1.000$ & $+0.949$ & $11,11,8,8,7$   & $3$\\
+$8$  & $6$  & $-1.000$ & $+0.975$ & $16,16,15,14,13$& $4$\\
+$10$ & $10$ & $-1.000$ & $+0.975$ & $17,14,10,6,6$  & $4$\\
+$10$ & $8$  & $-1.000$ & $+0.894$ & $13,13,13,11,9$ & $3$\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\paragraph{Three tests, and what each assumes.} The stratified Kendall statistics are $\tau=-1.000$ for
+$\mathcal F_1$, with $0$ concordant and $60$ discordant within-stratum pairs and no ties, and
+$\tau=+1.000$ for $\chi$, with $50$ concordant, $0$ discordant and $10$ tied. Because each
+$\mathcal F_1$ stratum is a perfect reversal of five distinct points, the exact one-sided stratified
+permutation probability is the product of the six per-stratum chances,
+$(1/120)^{6}=3.35\times10^{-13}$, over a relabelling space of $2.99\times10^{12}$; the same test
+applied to $\chi$, which has ties, gives $1.93\times10^{-10}$. Fisher's combination of the six
+per-stratum probabilities is conservative here and returns $6.56\times10^{-8}$ and
+$1.14\times10^{-5}$ ($\chi^{2}=57.4$ and $44.7$ on $12$ degrees of freedom); we quote the permutation
+values and record Fisher's beside them. All are \emph{one-sided}---a perfect reversal is one of the
+$120$ orderings, not two---and all take a product across strata, so all assume the six strata
+independent. They are not six independent experiments: they are three lengths crossed with two
+fillings, on one code path and one $U$ grid. What the numbers establish is that the direction is
+reproduced six times out of six, not that it generalizes beyond this family.
+
+\paragraph{Why the pooled coefficients are withdrawn, both of them.} Pooled over the same $30$ points
+the coefficients are $\rho(\chi,|\mathcal S|)=+0.569$ and
+$\rho(\mathcal F_1,|\mathcal S|)=-0.109$, the second with a nominal two-sided $p=0.57$ and the first
+with $p=0.0010$. Pooling six deterministic five-point sweeps with different offsets destroys the
+within-stratum structure that carries the signal; it is a Simpson reversal in both cases. It happens to
+destroy the signal in our favour on $\chi$ and against us on $\mathcal F_1$, and that is exactly why
+neither may be kept: a rule that is applied to one coefficient and not to the other is not a rule.
+
+\paragraph{The molecular set.} The $n=38$ molecular points are $19$ molecules at two geometries, i.e.\
+dependent pairs. The intraclass correlation of $\log_2|\mathcal S|$ within a molecule is $0.214$, a
+design effect of $1.214$ and a design-corrected effective $n$ of $31.3$. Ties are pervasive: $29$ of
+the $38$ ($76\%$) lie in some tied group of $|\mathcal S|_{\varepsilon_w}$ and $11$ are pinned at the
+floor $|\mathcal S|=1$, which caps the attainable Spearman coefficient at $\rho_{\max}=0.9863$;
+against that ceiling $\chi$ reaches $91.4\%$ and $\mathcal F_1$ $87.4\%$. Under a molecule-level
+cluster permutation ($10^{6}$ resamples) both coefficients are beyond the resolution floor of the
+test, $p\le1.0\times10^{-6}$. The comparison versions~1--2 rested on is not resolvable, and three
+procedures agree that it is not: $\rho=0.9011$ for $\chi$ against $0.8618$ for $\mathcal F_1$ differ by
+$0.0393$; a molecule-level cluster bootstrap ($2\times10^{4}$ resamples) puts a $95\%$ interval on the
+difference of $[-0.070,+0.189]$, which contains zero; Williams's test for dependent correlations gives
+$t=0.94$ on $35$ degrees of freedom, $p=0.35$, and Steiger's $z=0.94$, $p=0.35$. Both parametric tests
+assume bivariate normality and untied ranks while $76\%$ of these points sit in a tie, which is why the
+bootstrap is quoted first; at the cluster-level effective $n$ of $19$, Williams gives $p=0.53$. Pooled
+over all $74$ rows the pair is $0.722$ against $0.599$ and is likewise unresolved. Recomputed over the
+$71$ \emph{distinct} states---three chain rows duplicate three Hubbard rows---it is $0.746$ against
+$0.592$.
+
+\paragraph{One artefact of the deposit, recorded because it changes a digit.} The pooled
+$\rho(\mathcal F_1,|\mathcal S|)$ stored in the deposit is $0.5991984$ and recomputing it from the
+per-species values gives $0.5992028$. The difference is not a bug in either: it is a tie in
+$\mathcal F_1$ created when two rows that are the same state are stored at different precisions. The
+quantity is quoted to three figures throughout for that reason.

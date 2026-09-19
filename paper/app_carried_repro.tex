@@ -1,0 +1,48 @@
+\section{Reproducibility data for the molecular suite}
+\label{app:repro}
+Table~\ref{tab:repro} lists, for every molecule of Table~\ref{tab:molecules}, the equilibrium and
+dissociation bond lengths, the active space, the $N$-electron (neutral, ground-state) sector dimension $D$, the ground-state
+determinant support $|\mathcal S|$ (the number of determinants carrying $\ge99\%$ of the FCI weight), and
+the minimal matrix-product-state bond dimension $\chi$ at both geometries. These are the quantities that
+enter the $\mathcal F_1$--$|\mathcal S|$ and $\chi$--$|\mathcal S|$ correlations of
+Sec.~\ref{sec:nogo}, pooled over the $n=38$ equilibrium-and-dissociation points (Spearman
+$\chi$--$|\mathcal S|$ $\rho=0.90$, $\mathcal F_1$--$|\mathcal S|$ $\rho=0.86$; Pearson
+$\mathcal F_1$--$\log_2|\mathcal S|$ $r=0.80$). The $|\mathcal S|/D$ reported in
+Table~\ref{tab:molecules} is a \emph{distinct} quantity---the fraction of the $(N{+}1)$ sector used in
+the spectral \emph{reconstruction}, not the ground-state support tabulated here. Every active-space FCI
+energy is converged to better than $10^{-12}$~Ha (the largest residual across all $38$ points is
+$1.1\times10^{-13}$~Ha), comfortably below the $10^{-5}$~Ha quoted in the main text; the ground-state
+energies, full Cartesian geometries, and orbital active-space indices are provided as ancillary files.
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{Reproducibility data for the nineteen-molecule suite} (cc-pVDZ, valence bond-breaking
+active spaces). $R_{\rm eq},R_{\rm diss}$ in \AA{}; for the polyatomics ($\mathrm{BeH_2},\mathrm{H_2O},
+\mathrm{NH_3},\mathrm{H_4},\mathrm{H_6}$) the representative varied bond length is shown and full
+Cartesians are in the ancillary data. $D$: dimension of the $N$-electron (neutral, ground-state) sector,
+in which the tabulated $|\mathcal S|$ lives; $|\mathcal S|$: ground-state determinant support ($\ge99\%$
+FCI weight); $\chi$: minimal MPS bond dimension across the central spin-orbital cut. The $|\mathcal S|/D$
+of Table~\ref{tab:molecules} is a distinct ratio, taken in the $(N{\pm}1)$ spectral sector.}
+\label{tab:repro}
+\begin{tabular}{llccccccc}\hline\hline
+Molecule & CAS$(n_e,n_{\rm o})$ & $R_{\rm eq}$ & $R_{\rm diss}$ & $D$ & $|\mathcal S|^{\rm eq}$ & $|\mathcal S|^{\rm diss}$ & $\chi^{\rm eq}$ & $\chi^{\rm diss}$ \\ \hline
+F$_2$ & (1+1,2) & 1.412 & 3.00 & 4 & 1 & 2 & 2 & 2 \\
+N$_2$ & (3+3,6) & 1.098 & 2.40 & 400 & 7 & 80 & 7 & 32 \\
+H$_2$O & (2+2,4) & 0.957 & 2.30 & 36 & 1 & 13 & 1 & 13 \\
+HF & (1+1,2) & 0.917 & 2.30 & 4 & 1 & 4 & 1 & 4 \\
+NH$_3$ & (3+3,6) & 1.012 & 2.33 & 400 & 1 & 68 & 4 & 42 \\
+CO & (3+3,6) & 1.128 & 2.40 & 400 & 8 & 46 & 14 & 30 \\
+H$_6$ & (3+3,6) & 0.900 & 2.00 & 400 & 9 & 91 & 8 & 36 \\
+H$_4$ & (2+2,4) & 0.900 & 2.00 & 36 & 2 & 11 & 4 & 8 \\
+H$_2$ & (1+1,2) & 0.741 & 2.00 & 4 & 1 & 2 & 1 & 2 \\
+BeH$_2$ & (2+2,4) & 1.334 & 2.90 & 36 & 1 & 6 & 1 & 8 \\
+C$_2$ & (4+4,6) & 1.243 & 2.60 & 225 & 13 & 6 & 11 & 2 \\
+NO & (4+3,6) & 1.151 & 2.50 & 300 & 5 & 25 & 11 & 7 \\
+O$_2$ & (5+3,6) & 1.208 & 2.60 & 120 & 11 & 4 & 4 & 2 \\
+CN & (4+3,6) & 1.172 & 2.50 & 300 & 27 & 9 & 17 & 7 \\
+OH & (3+2,4) & 0.970 & 2.40 & 24 & 1 & 5 & 1 & 4 \\
+BH & (2+2,4) & 1.232 & 2.60 & 36 & 5 & 3 & 2 & 2 \\
+BeH & (2+1,3) & 1.343 & 2.70 & 9 & 1 & 2 & 1 & 2 \\
+LiH & (1+1,2) & 1.596 & 3.20 & 4 & 1 & 2 & 1 & 4 \\
+LiF & (1+1,2) & 1.564 & 3.20 & 4 & 1 & 1 & 1 & 1 \\
+\hline\hline\end{tabular}
+\end{table*}

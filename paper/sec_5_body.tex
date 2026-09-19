@@ -1,0 +1,405 @@
+% =====================================================================================
+%  Sec. 5 -- WHAT THE CERTIFICATE CAN AND CANNOT ASSERT:
+%            THE NON-VACUITY THRESHOLD OF THE LEAKAGE BOUND
+%
+%  NEW section; no predecessor in the v2 tree.  It resolves the live internal contradiction
+%  between discussion.tex:55-58 ("demands a large fraction of the sector") and
+%  results.tex:253-256 ("falls to 8 per cent"), today two opposite arguments in one paper.
+%
+%  This file contains TWO blocks, separated by the marked rule near the end, on the pattern
+%  sec_4.tex already uses:
+%    [BODY]     -> main body, after Sec. 4.  Measured: 4.1 pages at the main.tex preamble
+%                  (11pt a4, margin 2.2cm, \textwidth 472.32pt), three tables included.
+%                  For calibration, sec_7.tex -- also labelled "approx. 3 pp" in the plan --
+%                  measures 4.0 pages in the same preamble.
+%    [APPENDIX] -> after \appendix: the pipeline audit, ~1.1 pages.  NOT body text.  It
+%                  carries (H1)-(H3) of the leakage bound checked against this pipeline, the
+%                  ranking/tie/support declaration, and the anatomy of the displacement.
+%                  If Sec. 3 ends up stating the three hypotheses with the theorem -- see the
+%                  %TODO already standing in sec_3_1.tex -- this appendix becomes the pipeline
+%                  CHECK of hypotheses stated there, and only its first sentence needs
+%                  rewording.  Do not delete it: (H1) and (H3) are the two a referee attacks
+%                  first, and neither is checked anywhere else in the manuscript.
+%
+%  HEADING.  The mandated heading names "Theorem B".  That name does not exist in the v3
+%  numbering (the theorem is \ref{thm:leakage}, numbered by \newtheorem in main.tex), and a
+%  \ref inside \section is copied into the PDF bookmarks and warns.  The heading is kept
+%  verbatim except that "Theorem B" reads "the leakage bound"; the framing paragraph names
+%  Theorem~\ref{thm:leakage} in its first line.  ONE-WORD INTEGRATION DECISION: if Sec. 3
+%  does christen it "Theorem B" in prose, restore the original heading.
+%
+%  NEW labels introduced here (none exist in the v2 tree):
+%     sec:frontier                (owned here; already referenced from sec_3_1.tex,
+%                                  sec_4.tex, sec_6.tex, sec_7.tex)
+%     sec:frontier:hyp, sec:frontier:threshold, sec:frontier:certified,
+%     sec:frontier:calib, sec:frontier:obstruction
+%     eq:tau, tab:thresholds, tab:shotfrontier, tab:certified
+%     app:hyp  (the appendix block at the end of this file)
+%
+%  EXTERNAL labels used (owned elsewhere -- reconcile in one pass at integration):
+%     sec:leakage    Sec. 3, the two-budget decomposition        [Sec. 3, NOT YET WRITTEN]
+%     thm:leakage    Theorem B, the leakage bound                [Sec. 3, NOT YET WRITTEN]
+%     eq:twobudget   the two-sided bound displayed in Sec. 3     [Sec. 3, NOT YET WRITTEN]
+%     sec:retraction Sec. 3.1                                    [sec_3_1.tex]
+%     sec:nogo       Sec. 6                                      [sec_6.tex]
+%     sec:prices     Sec. 7                                      [sec_7.tex]
+%     tab:shots      Sec. 7, the measured shot budgets           [sec_7.tex]
+%     sec:physics    Sec. 8                                      [sec_8.tex]
+%     fig:akwsampled, fig:scaling                                [rebuilt; MANIFIESTO F5 / F12]
+%     fig:thm1iii-violation   appendix figure N3                 [MANIFIESTO N3]
+%     app:counterex  Appendix B, counterexamples + pooled sweep  [NOT YET DEFINED]
+%
+%  tau(w_S) is DEFINED here, Eq.~\eqref{eq:tau}.  sec_6.tex currently re-derives the same
+%  expression inline inside Prop.~\ref{prop:leakinv}; at integration that inline definition
+%  should point here instead.  The two agree.
+%
+%  FIGURE THAT DOES NOT EXIST.  The plan lists a new figure N1 (the certified region in the
+%  (fraction, eta) plane).  IT HAS NOT BEEN BUILT and is NOT referenced anywhere below; the
+%  section is self-contained on its three tables.  See the report: it can be built from the
+%  same 204-row sweep and would carry the convergence flags of Table~\ref{tab:thresholds} as
+%  hatching rather than as footnote marks.  Do NOT add a \ref to it until it exists.
+%
+%  PROVENANCE.  Every number below is from the C3 sweep (204 evaluations: out/C3_grid.json,
+%  the 54 pt_*.json point files, ties.json, validation.json, verdict_frontier.json) and the
+%  four adversarial re-runs (atk2/z_*.json, z_suppK_L8.log, z_fine_L8.log, z_rank_L6.json),
+%  as adjudicated in P2_FRONTERA.md.  Where a report and the adjudication disagree, the
+%  adjudication is used.
+%  *** %TODO(deposit), narrowed 2026-09-18 after listing release/: the leakage evaluator IS
+%  deposited (src/leakage_certificate.py, src/leakage_certificate_suite.py) and so are the
+%  606-subspace scans (data/cert_akw.json, cert_stress.json, cert_teqsci.json,
+%  cert_frontier_6-8.json, cert_frontier_10.json, leakage_certificate_selftest.json).
+%  WHAT IS STILL MISSING is the 204-row frontier sweep itself -- C3_grid.json, the 54
+%  pt_*.json point files, ties.json, validation.json, verdict_frontier.json and the four
+%  adversarial re-runs -- i.e. the source of every number in Sections 5.2 to 5.5.  This
+%  section is still the one part of the paper a reader cannot regenerate. ***
+%  *** %TODO(calc): there is NO finite-shot run at the literal configuration of this section.
+%  Every subspace here is the T -> infinity limit of the declared protocol; that is stated in
+%  Sec. 5.1 and must not be dropped anywhere these tables are quoted. ***
+% =====================================================================================
+
+% ======================================= [BODY] ======================================
+
+\section{What the certificate can and cannot assert: the non-vacuity threshold of the leakage bound}
+\label{sec:frontier}
+
+Throughout this section we call $\mathrm{FR}^{\ast}$ the \emph{non-vacuity threshold of the certificate
+of Theorem~\ref{thm:leakage}}: the sector fraction above which the leakage branch of the bound first
+improves on the trivial bound $\lVert\phi\rVert^{2}(1+w_S)$. We do not call it a frontier of the
+method, and it is not one. It is a property of the inequality chain that proves
+Theorem~\ref{thm:leakage}, measured here for the first time, together with one structural obstruction
+that no leakage-type certificate avoids. Two measurements separate the two contributions. First, at
+fixed system and fixed accuracy target the threshold sits far above the fraction the reconstruction
+actually needs: at $L=8$, $\eta=0.18\,t$, a relative $L_1$ error of $0.05$---the acceptance criterion
+used throughout this paper---is reached at $\mathrm{FR}\approx0.52$, while the certificate does not
+reach $0.05$ until $\mathrm{FR}\approx0.98$, and the intervening shift of $\approx0.45$ in fraction is
+the looseness of the proof. Second, the threshold cannot be lowered by choosing a better subspace: from
+$L=8$ on, the coordinate support of the Krylov space $\mathcal K(H,\phi)$ is the whole sector, so
+$\Lambda_S>0$ strictly for every proper coordinate subspace, and a Krylov-diagonal oracle ranking gives
+a \emph{worse} certificate than the Born ranking the device realizes.
+Section~\ref{sec:frontier:obstruction} measures both. What is a property of the method, and is new, is
+the calibration of Sec.~\ref{sec:frontier:calib}: the crossing occurs at an essentially fixed level of
+true error, so the crossing itself is worth computing even where the bound around it is not.
+
+Non-vacuity is a condition on one number. With $\widehat\Lambda_S=\Lambda_S/\lVert\phi\rVert$, the
+leakage branch of Eq.~\eqref{eq:twobudget} improves on the trivial branch exactly when
+\begin{widetext}
+\begin{equation}
+\frac{\widehat\Lambda_S(\eta)}{\eta}\;<\;\tau(w_S)\;:=\;\frac{1+w_S}{1+\sqrt{w_S}}-\sqrt{1-w_S},
+\qquad \tau(1)=1 ,
+\label{eq:tau}
+\end{equation}
+\end{widetext}
+so a subspace holding the entire Born weight of the probe certifies something as soon as its leakage,
+in units of the resolution it was asked for, drops below unity. This section is that one comparison,
+made $204$ times.
+
+\subsection{What is evaluated}
+\label{sec:frontier:hyp}
+
+We evaluate Theorem~\ref{thm:leakage} on the subspaces of Fig.~\ref{fig:scaling} at $L=6$, $8$, $10$
+and $12$---sector dimensions $300$, $3920$, $52\,920$, $731\,808$---with the ranking protocol of
+Sec.~\ref{sec:prices} ($K=18$, $\delta t=0.5$, $16$ substeps, $19$ snapshots), over fractions
+$0.20$--$0.95$ and $\eta=0.10$--$0.25\,t$. Those subspaces are the $T\to\infty$ limit of that protocol
+and not finite-shot draws, and every statement below inherits that limit: the marginal determinant at
+the $L=12$ threshold carries Born probability $1$--$2\times10^{-9}$, so at the budgets of
+Table~\ref{tab:shots} that subspace barely exists as a sampled object. Of the $204$ evaluations, $187$
+are converged in Krylov depth, $6$ marginal and $11$ not converged, at a total cost of $2874$\,s with
+a peak of $1.64$\,GiB. \emph{No row flagged not converged is quoted anywhere in this section}; the
+tables mark the ones that are marginal.
+
+Three conventions are fixed before any number is read. Full reorthogonalization is used throughout,
+without which the projector is not a projector: the orthogonality defect is at most
+$4.7\times10^{-15}$, and $P_{\mathcal K}\phi=\phi_S$ to $1.1\times10^{-14}$. What is certified is the
+object the code forms---$\Lambda$ on $\mathcal K=\mathrm{Krylov}(H_S,\phi_S,n_\ell)$ bounds the error
+of $A_{\mathcal K}$ at that depth and of nothing else, the convenient inequality
+$\Lambda_{\mathcal K}\ge\Lambda_S$ that would extend it to the dense $A_S$ being false ($1169$ of
+$6000$ random triples violate it, minimum ratio $0.5258$); at $L=12$ the certificate is evaluated at
+$n_\ell=300$--$500$ on up to $658\,627$ determinants, and $A_S$ is never formed. And depth is certified
+per point by the internal indicator $\Lambda_{\rm in}/\Lambda_{\rm out}$ rather than
+assumed~\cite{haydock1972,epperly2022}: recomputing $\mathrm{FR}^{\ast}$ with $L=12$ capped at
+$n_\ell=300$ moves it by at most $0.0024$, an eighth of the narrowest grid interval.
+
+Three hypotheses carry the bound, each a statement about the pipeline rather than about the theorem,
+and all three are checked against this pipeline in App.~\ref{app:hyp} along with the ranking, tie and
+support declarations of the cut: (H1) $A$ and $A_P$ share $E_0$---satisfied here by construction, and
+worth $+0.20\%$ on the bound but a factor $16$ on the measured error when it is not; (H2) the $L_1$
+norm is taken on the whole line and normalized by $\lVert\phi\rVert^{2}$, differing from the
+repository's windowed convention by factors $1.010$--$1.037$; (H3) the reference is exact, which
+enforces the rule that no measured error is quoted within a factor $20$ of its own reference drift.
+One asymmetry runs through every table: of the two terms of Eq.~\eqref{eq:twobudget} only the leakage
+is a posteriori, assembled from the Ritz vectors the reconstruction already produces plus one
+matrix--vector product each, while the weight term needs $\Psi_0$, and estimating $w_S$ against an
+already-truncated $\Psi_0$ is biased optimistically (Sec.~\ref{sec:leakage}). What the tables report is
+accordingly one object and not a family of them: a bound on
+$\lVert A-A_{\mathcal K}\rVert_1/\lVert\phi\rVert^{2}$ for the reorthogonalized Krylov reconstruction
+at a declared depth, against a reference whose drift is declared and enforced.
+
+\subsection{The threshold, measured: at every published fraction the certificate is vacuous}
+\label{sec:frontier:threshold}
+
+The result is negative and we state it first. At every published fraction the leakage branch of the
+bound exceeds the trivial bound $\lVert\phi\rVert^{2}(1+w_S)$: by $3.35$ at $L=6$
+($\mathrm{FR}=0.80$), $3.65$ at $L=8$ ($0.56$), $3.62$ at $L=10$ ($0.40$) and $4.86$ at $L=12$
+($0.18$) at $\eta=0.15\,t$, and by $2.76$, $3.02$, $2.99$ and $4.00$ at $\eta=0.18\,t$. At $L=8$ and
+$L=12$ these are the published fractions exactly; at $L=6$ and $L=10$ the nearest grid points are
+$0.80$ and $0.40$ against published $0.82$ and $0.36$, and at $L=10$ the published fraction is the
+worse of the two.
+
+The largest case carries the evidence. At $L=12$, $\mathrm{FR}=0.18$, $\eta=0.18\,t$---that is,
+$\lvert S\rvert=131\,725$ of $731\,808$ determinants---the captured weight is $w_S=0.998804$, so
+Eq.~\eqref{eq:tau} asks for $\widehat\Lambda_S/\eta<\tau(w_S)=0.965$ and the measured value is $3.96$,
+putting the leakage branch at $7.986$ against a trivial branch of $1.9988$. That is converged in depth
+three ways: $\Lambda_{\rm in}/\Lambda_{\rm out}=3.0\times10^{-3}$; $\Lambda_{\rm out}$ changes by
+$7.5\times10^{-7}$ between depths $250$ and $300$; and an independently written re-implementation moves
+it by $8.6\times10^{-5}$ between depths $100$ and $300$. Since $\Lambda$ \emph{decreases} with depth,
+the bound at any shallower depth---including the depth $150$ at which Fig.~\ref{fig:scaling} is
+drawn---is larger still, so the vacuity is not an artifact of Lanczos truncation in either direction.
+The same fraction gives $7.51$, $4.86$ and $2.81$ at $\eta=0.10$, $0.15$, $0.25\,t$; and over the $606$
+live subspaces of the pooled sweep of App.~\ref{app:counterex}, Fig.~\ref{fig:thm1iii-violation}, the
+leakage branch is the smaller of the two on only $61$. \textbf{The reconstructions this paper
+reports---Fig.~\ref{fig:akwsampled}, Fig.~\ref{fig:scaling} and the operating points of
+Secs.~\ref{sec:prices} and~\ref{sec:physics}---are therefore, at present, uncertified.}
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{Where the certificate stops being vacuous, and what the reconstruction actually
+needs, measured on the same sweep.} Protocol of Sec.~\ref{sec:prices}, full reorthogonalization, depth
+certified per point. Column~3 is the fraction Fig.~\ref{fig:scaling} reports; column~4 the control,
+where this sweep---independent code, the normalization of Theorem~\ref{thm:leakage}, the whole line,
+a deep reference---first reaches relative $L_1<0.05$, the parenthesized value being the log-linear
+interpolation inside the bracket and not a measurement at three digits; column~5 is
+$\mathrm{FR}^{\ast}$; columns~6--7 are where the certified value itself first falls below $0.50$ and
+$0.20$. Every bracket is delimited by two converged evaluations unless marked: $^{\ast}$ means the
+upper end is marginal in depth, \emph{n.c.}\ that the bracket rests only on evaluations failing the
+depth test and is therefore not quoted. Columns~5--7 are statements about $A_{\mathcal K}$ at the
+declared depth, not about the dense $A_S$. Columns~4 and~5 must be read together: $\mathrm{FR}^{\ast}$
+alone falls with size and would suggest the certificate improves as the problem grows, whereas what
+the reconstruction needs falls with it and the gap widens---a gap we do not quote as a ratio, both
+columns being interpolations inside brackets $0.02$--$0.10$ wide.}\label{tab:thresholds}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccccc}
+\toprule
+$L$ & $\dim(N{+}1)$ & published & rel-$L_1<0.05$ & $\mathrm{FR}^{\ast}$ & cert $<0.50$ & cert $<0.20$\\
+\midrule
+\multicolumn{7}{l}{\emph{$\eta=0.18\,t$, the resolution of the momentum-resolved channel}}\\
+$6$  & $300$     & $0.82$ & $[0.70,0.80]$ & $[0.90,0.92]$ & $>0.97$ & $>0.97$\\
+$8$  & $3\,920$  & $0.56$ & $[0.50,0.56]$ & $[0.75,0.80]$ & $[0.90,0.92]$ & $>0.95$\\
+$10$ & $52\,920$ & $0.36$ & $[0.30,0.40]$ & $[0.60,0.70]$ & $[0.80,0.85]$ & $[0.85,0.90]$\\
+$12$ & $731\,808$& $0.18$ & $[0.14,0.18]$ & $[0.40,0.45]$ & $[0.60,0.70]^{\ast}$ & \emph{n.c.}\\
+\midrule
+\multicolumn{7}{l}{\emph{$\eta=0.15\,t$, the resolution at which Fig.~\ref{fig:scaling} is drawn}}\\
+$6$  & $300$     & $0.82$ & $[0.80,0.85]$ $(0.816)$ & $[0.92,0.95]$ & $>0.97$ & $>0.97$\\
+$8$  & $3\,920$  & $0.56$ & $[0.50,0.56]$ $(0.553)$ & $[0.80,0.82]$ & $[0.92,0.95]$ & $>0.95$\\
+$10$ & $52\,920$ & $0.36$ & $[0.30,0.40]$ $(0.356)$ & $[0.60,0.70]$ & $[0.80,0.85]$ & $[0.85,0.90]$\\
+$12$ & $731\,808$& $0.17$--$0.18$ & $[0.14,0.18]$ $(0.168)$ & $[0.45,0.50]$ & $[0.60,0.70]^{\ast}$ & \emph{n.c.}\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+One column of Table~\ref{tab:thresholds} is a positive control and has to be read before the rest.
+Applying this paper's own acceptance criterion to the same sweep---independent code, the theorem's
+normalization, the whole line rather than a window, a deep reference rather than one recomputed at the
+subspaces' own depth---returns $0.816$, $0.553$, $0.356$ and $0.168$ at $\eta=0.15\,t$ for
+$L=6$--$12$, against the published $0.82$, $0.56$, $0.36$ and $0.18$: agreement to $7\%$ at worst, and
+to under $2\%$ at every size once each value is compared with the fraction the scan itself reports
+rather than with the two-figure entry of the replication grid ($0.5561$, $0.3625$, $0.1700$ at
+$L=8,10,12$). None of the three ingredients is shared. Figure~\ref{fig:scaling} is thereby reproduced
+independently. What fails in this section is not the reconstruction and not that curve; it is the word
+\emph{certificate} attached to the fractions at which the curve is read.
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{The threshold in the only currency a sampler has.} $T_{\rm marg}$ is the shots per snapshot at
+which the marginal determinant of the cut appears once in expectation---the reciprocal of its Born
+probability in the accumulated distribution of the $19$ snapshots, from the protocol's own cut
+weights; covering all of $S$ costs a further factor $\log\lvert S\rvert$. \emph{It is a different
+quantity from the measured budgets $T$ of Table~\ref{tab:shots}}, which are totals over the $19$
+snapshots at which the finite-shot reconstruction reaches relative $L_1<0.05$; the two carry different
+names for that reason, they are not interchangeable, and only ratios within this table are used.
+Column~2 uses the grid point nearest the published fraction: $0.80$ against a published $0.82$ at
+$L=6$, and $0.40$ against $0.36$ at $L=10$, where the published fraction is the worse of the two.
+Factors are from unrounded budgets and need not reproduce from the two-figure entries. The marginal Born probability at
+the $L=12$ threshold is $2.2\times10^{-9}$ at $\mathrm{FR}=0.40$, $1.2\times10^{-9}$ at
+$0.45$.}\label{tab:shotfrontier}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lccc}
+\toprule
+$L$ & published fraction $\to T_{\rm marg}$ & $\mathrm{FR}^{\ast}\to T_{\rm marg}$ & factor\\
+\midrule
+$6$  & $0.80\to2.2\times10^{4}$ & $[0.90,0.92]\to3.1$--$3.6\times10^{4}$ & $1.4$--$1.6$\\
+$8$  & $0.56\to2.1\times10^{5}$ & $[0.75,0.80]\to1.6$--$2.1\times10^{6}$ & $7.5$--$10$\\
+$10$ & $0.40\to5.2\times10^{6}$ & $[0.60,0.70]\to3.4\times10^{7}$--$1.1\times10^{8}$ & $6.7$--$21$\\
+$12$ & $0.18\to2.3\times10^{7}$ & $[0.40,0.45]\to4.7$--$8.1\times10^{8}$ & $20$--$35$\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+In shots the distance between those two columns is a budget and not a rhetorical gap
+(Table~\ref{tab:shotfrontier}): reaching the non-vacuous band multiplies the shots per snapshot needed
+for the marginal determinant by $7.5$--$10$ at $L=8$ and by $20$--$35$ at $L=12$, and only by
+$1.4$--$1.6$ at $L=6$, where the sector is small. Driving the certified value down to $0.10$ costs more
+again---a further factor $241$ at $L=8$ (fraction $0.95$) and $634$ at $L=10$ (fraction $0.90$), the
+corresponding $L=12$ fraction resting only on evaluations that failed the depth test, so that no budget
+is quoted for it. Where the previous version of this work asserted a regime of validity it had never
+evaluated, this section reports the measurement: four sizes, four resolutions, $204$ evaluations, every
+bracket delimited by converged rows, and a shot budget attached to each.
+
+\subsection{The strongest certified statements, and what this paper's own criterion would cost}
+\label{sec:frontier:certified}
+
+Table~\ref{tab:certified} collects what the sweep does certify, taking at each size the strongest
+statement whose bracket is converged---at $L=12$, that $60\%$ of a $731\,808$-dimensional sector gives
+relative $L_1\le0.717$, tightening to $\le0.218$ at $70\%$ and $\eta=0.25\,t$. Each row is a statement
+about $A_{\mathcal K}$ at the declared depth, and none of them uses the exact spectrum.
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{The strongest certified statements available from converged data.} Each row is the
+tightest certified value at that size whose bracket is delimited by evaluations passing the depth
+test; rows that would be stronger but rest on evaluations failing it are not listed. ``True error'' is
+the measured relative $L_1$ at the same point, in the normalization of Theorem~\ref{thm:leakage},
+given only where it exceeds its own reference drift by more than a factor $20$ (App.~\ref{app:hyp},
+H3); at $L=10$ it does not, and is withheld rather than rounded. At $L=6$ the recursion runs to
+$n_\ell=\lvert S\rvert$, so the evaluation is exact and the depth indicator is not defined. The gap
+between the certified value and the true error is three to four decades: the object is a certificate
+and not an error estimate, and Sec.~\ref{sec:frontier:calib} states what it is good
+for.}\label{tab:certified}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lccccc}
+\toprule
+$L$ & $\eta/t$ & fraction & certified rel-$L_1\le$ & true rel-$L_1$ & $\Lambda_{\rm in}/\Lambda_{\rm out}$\\
+\midrule
+$6$  & $0.18$ & $291/300=0.97$            & $0.502$ & $3.94\times10^{-4}$ & exact ($n_\ell=\lvert S\rvert$)\\
+$8$  & $0.18$ & $3\,724/3\,920=0.95$      & $0.219$ & $4.33\times10^{-5}$ & $8\times10^{-4}$\\
+$10$ & $0.18$ & $47\,628/52\,920=0.90$    & $0.136$ & withheld (H3)       & $1.6\times10^{-3}$\\
+$12$ & $0.18$ & $439\,085/731\,808=0.60$  & $0.717$ & $1.89\times10^{-4}$ & $7.0\times10^{-3}$\\
+$12$ & $0.15$ & $0.60$                    & $0.878$ & $2.66\times10^{-4}$ & $1.4\times10^{-2}$\\
+$12$ & $0.25$ & $512\,266/731\,808=0.70$  & $0.218$ & $1.99\times10^{-5}$ & $4.7\times10^{-2}$\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+The concession that belongs with that table is one a referee would make, so we make it first and in
+full. At the acceptance criterion this paper uses everywhere else---relative $L_1<0.05$---the
+certificate requires at least $0.98$ of the sector at $L=8$, measured at integer subspace size rather
+than interpolated: the certified value is $0.084$ at $3802$ of $3920$ determinants, $0.060$ at $3830$
+and $0.039$ at $3855$, so the crossing lies in $[0.977,0.983]$; on our grid it is not reached at all at
+$L=6$, $L=10$ or $L=12$. At such fractions diagonalizing the whole sector is already what one would do
+instead, and a certificate informative only there does not certify the regime in which sampling is of
+interest. We state it without qualification: at the accuracy this paper accepts elsewhere,
+Theorem~\ref{thm:leakage} does not certify the operating points of Fig.~\ref{fig:scaling}, and the shot
+cost of the regime where it would exceeds the saving that figure reports.
+
+What the table does certify at a fraction a sampler can plausibly reach is weaker, and it is not
+empty. The trivial bound caps the relative error at $1+w_S\le2$ for \emph{any} subspace, a
+reconstruction of pure noise included; at $L=12$ and $60\%$ of a $731\,808$-dimensional sector the
+certified $0.717$ sits a factor $2.8$ below that cap, and at $70\%$ and $\eta=0.25\,t$ a factor $9.2$
+below it. Those are exclusions of gross failure made from the subspace alone, at a dimension where the
+exact spectrum is expensive and, at the sizes this method is aimed at, unavailable.
+
+\subsection{Where the certificate is informative, and where it is not}
+\label{sec:frontier:calib}
+
+One positive result survives the sweep, and it is the reason we report the sweep. Across all sixteen
+$(L,\eta)$ cells the crossing of the trivial bound occurs at a true relative $L_1$ error of
+$1.2\times10^{-3}$ to $7.3\times10^{-3}$, median $2.8\times10^{-3}$: a spread of $5.9$ over a table
+whose true errors span five decades, and in every cell at least $47$ times the drift of our own
+reference. $\widehat\Lambda_S(\eta)/\eta$ is therefore a calibrated a posteriori risk tracker---its
+crossing of the trivial bound locates a true error of ${\approx}3\times10^{-3}$ to within a factor of
+three, uniformly over $L=6$--$12$ and $\eta=0.10$--$0.25\,t$, and it is computed from $H$, $S$, $\phi$
+and $\eta$ alone, without the answer. The objection to anticipate is that this is
+Fig.~\ref{fig:scaling} relabelled. It is not, and the difference is the content: that figure is built
+knowing the exact spectrum and this quantity is computed without it. That the two track each other to
+within a factor $5.9$ across five decades of error is not a redundancy---it is the calibration, and it
+is what makes the quantity usable where the second curve cannot be drawn.
+
+Three limits are declared with it. The crossing is one point per cell, so the tracker locates one error
+level and does not estimate the error away from it: at a \emph{fixed} subspace the looseness of the
+bound against the measured error is constant to within $\pm17\%$ ($L=6$) and $\pm25\%$ ($L=8$) over a
+decade in $\eta$, but across subspaces it varies by a factor $51$, and at the threshold itself it is
+$3\times10^{2}$ to $2.4\times10^{3}$---the object is a certificate, not an error estimate, and calling
+it the latter would be refutable in one line. Only one of its two terms is a posteriori: the comparison is
+$\widehat\Lambda_S/\eta$ against $\tau(w_S)$, and $\tau$ needs $w_S$, which a user does not have.
+That dependence can be discharged conservatively, and doing so is what makes the decision itself a
+posteriori. Equation~\eqref{eq:tau} is decreasing in $1-w_S$ with $\tau(1)=1$, so any assumed floor
+on the captured weight yields a usable threshold: at the $L=12$ published operating point
+$w_S=0.998804$ and $\tau=0.9651$, and every subspace with $w_S\ge0.995$ has $\tau\ge0.9280$. A user
+willing to assume only that the sampler captured $99.5\%$ of the probe's Born weight can therefore
+run the comparison as $\widehat\Lambda_S(\eta)/\eta<0.928$ and use no other ground-state
+information, at the cost of at most $7\%$ in the threshold. Where not even that floor can be
+assumed, or where $w_S$ is estimated against an already-truncated $\Psi_0$---an estimate biased
+optimistically---the test is not conservative and the bound is not a posteriori.
+And sixteen cells over four sizes and four resolutions is the whole of the evidence: no exponent is
+fitted to it and no extrapolation to $L=14$ is made, the local log--log slopes of
+$\mathrm{FR}^{\ast}(L)$ already varying by a factor $4.1$ across the four sizes measured.
+
+Within those limits the procedure is operational and identical at every size we measured: assemble
+$\widehat\Lambda_S(\eta)/\eta$ from the Ritz vectors already in hand and compare it with $\tau(w_S)$.
+Above $\tau$ the certificate says nothing, which is the regime Fig.~\ref{fig:scaling} operates in; at
+$\tau$ the true relative error is ${\approx}3\times10^{-3}$ within a factor of three; below $\tau$ it
+is smaller than that, by an amount the bound states loosely and the calibration does not sharpen. That
+is the whole content of the certificate, and it is a number a user can compute before knowing whether
+the reconstruction is right.
+
+\subsection{Why the threshold cannot be lowered: a structural obstruction}
+\label{sec:frontier:obstruction}
+
+Where does the ${\approx}0.45$ of sector fraction between what the reconstruction needs and what the
+certificate certifies go? We measured the displacement rung by rung along the chain of inequalities
+that proves Theorem~\ref{thm:leakage}, at $L=8$, and the answer removes the one repair that looked
+available: the pointwise step from a scalar distance to a distance in the Hilbert space accounts for
+$44\%$ of it, the operator-norm step $\lVert R(z)\rVert\le1/\eta$ applied to a source that depends on
+$\omega$ for $38\%$, the Feshbach/Minkowski split for $11\%$, and the Cauchy--Schwarz step in $\omega$
+for $4.6\%$ (medians over $15$ of $18$ cells; App.~\ref{app:hyp}). The working hypothesis that
+Cauchy--Schwarz is what places the threshold is therefore refuted by its own measurement: its total
+margin for tightening is a factor $1.05$ typically and $3.29$ at the worst point measured, which moves
+the threshold by a fraction of one grid interval.
+
+The second measurement says that no rearrangement of the subspace helps either, and it is the one that
+turns the result into a statement about the problem. $\Lambda_S=0$ holds if and only if
+$\operatorname{span}(S)$ contains the Krylov space $\mathcal K(H,\phi)$, so the coordinate support of
+that Krylov space is a floor under any coordinate subspace of vanishing leakage. We measured it
+directly: $296$ of $300$ determinants at $L=6$, where $\dim\mathcal K=65$, and $3920$ of $3920$---the
+entire sector---at $L=8$, where $\dim\mathcal K=596$--$663$. (It is the \emph{coordinate support} of
+$\mathcal K$ that fills the sector, not $\mathcal K$ itself, whose dimension is three orders of
+magnitude smaller; containment, not spanning, is what $\Lambda_S=0$ requires.) At $L=8$ the leakage is
+therefore strictly positive for \emph{every} proper coordinate subspace, and no certificate of leakage
+type, in this paper or another, can be non-vacuous there at low fraction in the determinant basis. That
+is a property of the basis in which the device measures, not of the bound and not of the ranking. We
+measured it at two sizes and state it for two: at $L=6$ four determinants escape the support, and
+whether the $L=8$ behaviour persists at $L=10$ and $L=12$ is open. It is the single cheapest
+measurement that would close this section, and we have not made it. Nor is the
+ranking the weak link: replacing the Born ordering by a Krylov-diagonal oracle---determinants ordered
+by the diagonal of the projector onto $\mathcal K(H,\phi)$, an ordering no sampler could
+produce---gives a uniformly \emph{worse} certificate at $L=6$, $\eta=0.18\,t$, $12.97$ against $4.27$
+at fraction $0.85$ and $5.82$ against $0.911$ at $0.95$. The ordering the device realizes by measuring
+is the better of the two at every fraction we checked, which is the opposite of what an oracle
+comparison is usually for.
+
+Together the two measurements say what the threshold is made of, and neither component is a frontier of
+the method. At fixed size the displacement is the looseness of the proof, only a twentieth of it in the
+step that looked easiest to tighten; the position of the threshold near unity is geometry, the Krylov
+space of the probe filling the sector in the basis where a leakage certificate is by construction a
+statement about what a subspace fails to contain. The reconstructions themselves are untouched by
+either---the control column of Table~\ref{tab:thresholds} reproduces Fig.~\ref{fig:scaling} to $7\%$ at
+worst and to under $2\%$ against the scan's own fractions, with nothing shared---and what is new,
+bounded and measured is the crossing of Sec.~\ref{sec:frontier:calib}. Section~\ref{sec:nogo} closes the picture from the other side: nothing
+cheaper than that crossing---no invariant of the state, computable before the subspace exists---can be
+put in its place.

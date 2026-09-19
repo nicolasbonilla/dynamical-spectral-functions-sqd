@@ -1,0 +1,197 @@
+
+% ===================================== [APPENDIX] ====================================
+
+\section{Moment exactness: statement, proof, sharpness, and the shot count}
+\label{app:moments}
+
+We make the two surviving parts of Theorem~1 of v1--v2 precise. Fix the seed
+$\ket{\phi}=\hat c^{\dagger}_{p}\ket{0}$ (the electron-addition branch; removal is identical), with
+weight $\lVert\phi\rVert^{2}=\braket{\phi|\phi}$, and let
+$A(\omega)=\sum_{n}\lvert\braket{n|\phi}\rvert^{2}\,\mathcal L_{\eta}\!\big(\omega-(E_n-E_0)\big)$ be
+the exact spectral function, where $\{\ket{n},E_n\}$ diagonalize $H$ in the $(N{+}1)$-particle sector
+and $\mathcal L_{\eta}(x)=\tfrac{\eta/\pi}{x^{2}+\eta^{2}}$. For a configuration set $\mathcal S$ let
+$P=P_{\mathcal S}$ be the orthogonal projector onto $\operatorname{span}(\mathcal S)$, let
+$H_{\mathcal S}=PHP$ with eigenpairs $\{\ket{\tilde m},\tilde E_m\}$, and let
+$A_{\mathcal S}(\omega)=\sum_{m}\lvert\braket{\tilde m|\phi}\rvert^{2}\,
+\mathcal L_{\eta}\!\big(\omega-(\tilde E_m-E_0)\big)$ be the reconstruction. Write
+$\mathcal K_K=\operatorname{span}\{\phi,H\phi,\dots,H^{K}\phi\}$ and
+$w_{\mathcal S}=\lVert P\phi\rVert^{2}/\lVert\phi\rVert^{2}$. Moments are taken on the point measures
+$d\mu=\sum_n\lvert\braket{n|\phi}\rvert^{2}\delta(\omega-(E_n-E_0))$ and
+$d\mu_{\mathcal S}=\sum_m\lvert\braket{\tilde m|\phi}\rvert^{2}\delta(\omega-(\tilde E_m-E_0))$, not on
+the broadened $A$, whose moments of order $\ge2$ diverge.
+
+\subsection{What the proof uses}
+\label{app:moments:exact}
+
+Theorem~\ref{thm:moments} and its proof are stated in Sec.~\ref{sec:moments:exact}. The proof uses
+$P=P^{\dagger}=P^{2}$, $H=H^{\dagger}$ and $\mathcal K_K\subseteq\operatorname{span}(\mathcal S)$, and
+nothing else. In particular it does not use that $\mathcal S$ is a coordinate subspace, that it was
+obtained by drawing bitstrings, or that any Lanczos basis is well conditioned; it holds verbatim for
+the orthogonal projector onto a Krylov space, which is the form evaluated in Sec.~\ref{sec:frontier}.
+The single asymmetry in Eq.~\eqref{eq:rrsplit}---$a$ runs to $K$ while $b$ runs to $K+1$---is what
+produces the odd reach $2K+1$ rather than $2K$. Two structural remarks follow at no cost.
+
+\emph{(a) The node count.} $d\mu_{\mathcal S}$ has $|\mathcal S|$ atoms, one per Ritz pair, not $K+1$.
+Equation~\eqref{eq:momex} is therefore a weak quadrature statement for a rule of that size: a Gauss
+rule of $n$ nodes for $d\mu$ is exact through order $2n-1$~\cite{golub2010}, so the $K=1$ row of
+Table~\ref{tab:moments}, with $280$ nodes, would reach order $559$ if its nodes were the Gauss nodes of
+$d\mu$. They are not, and it reaches order $3$. This is the measurable content of the correction to the
+published proof: identifying $A_{\mathcal S}$ with an order-$(K{+}1)$ Gauss rule misdescribes both the
+object and its reach.
+
+\emph{(b) Unit captured weight is implied, not assumed.} For a coordinate subspace $P$ is diagonal, so
+$P\phi=\phi\iff\operatorname{supp}(\phi)\subseteq\mathcal S\iff w_{\mathcal S}=1$. Since
+$\mathcal K_0=\operatorname{span}\{\phi\}$, the hypothesis of Theorem~\ref{thm:moments} at any $K\ge0$
+already implies $w_{\mathcal S}=1$. Every subspace admissible for moment exactness therefore sits at
+the extreme of the weight budget of Sec.~\ref{sec:leakage}, where the shot term vanishes identically
+and the whole residual error is leakage---which is why the two statements are complementary rather
+than competing.
+
+\subsection{Sharpness, control, and the limits of the validation system}
+\label{app:moments:sharp}
+
+Table~\ref{tab:moments} is computed by exact diagonalization of the $(N{+}1,S_z{=}{+}1)$ sector of the
+open $L=6$, $U/t=8$ Hubbard chain ($D=300$, $\lVert\phi\rVert^{2}=1/2$), with
+$\mathcal S=\bigcup_{a\le K}\operatorname{supp}(H^{a}\phi)$. Four measurements support it.
+
+\emph{Reach.} Through order $2K+1$ the relative discrepancy is $\le3.2\times10^{-15}$ for $K=0,1$ and
+$\le7.5\times10^{-15}$ for $K=2$. At order $2K{+}2$ it is $9.5\times10^{-4}$ ($K=0$) and
+$6.0\times10^{-8}$ ($K=1$), eleven and seven decades above the arithmetic floor. The absolute
+discrepancies at that order, $3.104583\times10^{-2}$ and $1.340167\times10^{-4}$, agree to six
+significant figures across all six implementations listed below and are properties of the
+construction, not of the arithmetic. The $K=2$ row carries no entry there, for a structural reason and
+not a numerical one: the ladder has filled the sector, $A_{\mathcal S}=A$ identically, and their
+relative $L_1$ distance is $0$ to machine arithmetic. One run of one of the six routes does report a
+nonzero residue in that row; the same run reports a cyclic-subspace dimension of $301$ inside a sector
+of dimension $300$ and emits floating-point overflow while forming the high powers. It is discarded,
+and the corrected run is the one quoted.
+
+\emph{Reproducibility of the residues.} The relative discrepancies are quoted, and the absolute ones
+below order $2K{+}2$ are not, for a reason worth recording. The exact moments
+$\mu_j=\braket{\phi|(H-E_0)^{j}|\phi}$ run from $5.0\times10^{-1}$ at $j=0$ to $1.6\times10^{5}$ at
+$j=6$, so an absolute residue at the top of the ladder is a roundoff quantity whose size depends on the
+route taken to the same identity. Across six equivalent routes---Rayleigh--Ritz on the shifted or on
+the unshifted matrix, crossed with exact moments obtained from the Lehmann sum, from the shifted
+matrix--vector recursion, or by binomial recombination of unshifted powers---the relative residue below
+order $2K{+}2$ stays inside $[1.1,1.8]\times10^{-15}$ at $K=0$ and $[1.0,3.2]\times10^{-15}$ at $K=1$,
+a spread under a factor $3.3$, while the absolute residue at the same orders is not stable to two
+significant figures. We therefore quote relative residues below $2K{+}2$, and absolute ones only at
+$2K{+}2$, where the discrepancy is physical and route independent.
+
+\emph{Negative control.} Over $300$ uniformly drawn coordinate subspaces of the same size
+$|\mathcal S|=200$, the zeroth moment is wrong by between $1.86\times10^{-2}$ and $4.18\times10^{-1}$
+(median $1.67\times10^{-1}$), i.e.\ by $3.7\%$ to $84\%$ of $\lVert\phi\rVert^{2}$, with every one of
+the $300$ draws failing; the Krylov-support subspace of identical size is exact to
+$4.4\times10^{-16}$. At $|\mathcal S|=280$ the random draws fail by $4.8\times10^{-5}$ to
+$2.6\times10^{-1}$ (median $1.12\times10^{-2}$), again without exception, against
+$5.0\times10^{-16}$. The discriminating variable is the identity of the determinants, not their number.
+
+\emph{Scale.} The Krylov ladder at $L=6$ occupies $0.667$, $0.933$ and $1.000$ of the sector at
+$K=0,1,2$, so it exhausts the sector at $K=2$ and the table has exactly three rows. This system can
+verify Eq.~\eqref{eq:momex} and locate its exact reach; it cannot exhibit the behaviour of
+$\lVert A-A_{\mathcal K_K}\rVert_1$ at large $K$, which is the regime Conjecture~\ref{conj:geom}
+concerns, and we make no claim there.
+
+\emph{Why the open chain.} The ladder terminates when the coordinate subspace contains the cyclic
+subspace generated by $\phi$---not when it fills the sector---and at that point the reconstruction is
+exact, because $\operatorname{span}(\mathcal S)$ then carries every eigenvector of nonzero Lehmann
+weight. On the periodic rings of Sec.~\ref{sec:prices} that happens early: at $L=6$ the ladder runs
+$200\to296$ and stalls at $296$ of $300$ determinants, where $A_{\mathcal S}=A$ to
+$1.0\times10^{-14}$ in relative $L_1$ and the moments are exact past order $2K{+}1$ at every $K\ge1$.
+The ring therefore offers a single row in which the reach of Eq.~\eqref{eq:momex} is visible at all
+($K=0$: relative discrepancy $4.4\times10^{-16}$ through order $1$, $4.6\times10^{-3}$ at order $2$);
+the open chain offers two, and is the system on which the method validation of Sec.~\ref{sec:method} is
+performed. Within the reach they cover, both agree: the identity is exact, sharp at the next order, and
+decidable from the subspace alone.
+
+\subsection{The geometric-convergence claim, and why it is left open}
+\label{app:moments:conj}
+
+Conjecture~\ref{conj:geom} was asserted as a consequence of Eq.~\eqref{eq:momex} in v1--v2. It is not
+one: moment exactness gives $2K+2$ linear identities, and $\lVert A-A_{\mathcal K_K}\rVert_1$ is not a
+finite linear functional of them. A proof would require (i) a polynomial approximation theorem for
+$x\mapsto\mathcal L_\eta(\omega-x)$, uniform in $\omega$, on a real set containing
+$\operatorname{spec}(H)$ and $\operatorname{spec}(H_{\mathcal K_K})$, and (ii) a tail estimate
+controlling the complement. For (i) the natural route is a Bernstein-ellipse bound, in which the
+resolution enters through the poles of the kernel at $x=\omega\pm i\eta$: the largest admissible
+ellipse has semi-minor axis below $\eta$, so its parameter---and with it any geometric rate---approaches
+$1$ as $\eta\to0^{+}$. That is the mechanism v1--v2 describes. It is not a derivation, and no $C(\eta)$
+or $\rho(\eta)$ appears in v1--v2 or in the deposit.
+
+The prefactor is moreover pinned from below by the two-level family of Sec.~\ref{sec:retraction}. With
+$H=\bigl(\begin{smallmatrix}0&g\\ g&0\end{smallmatrix}\bigr)$ and $\phi=e_0$ one has
+$\braket{\phi|H|\phi}=0$, so $\mathcal K_0=\operatorname{span}\{\phi\}$ carries a single pole at the
+origin while $A$ carries two at $\pm g$; by direct integration at $\eta=0.15$,
+$\lVert A-A_{\mathcal K_0}\rVert_1=1.5197,\ 1.8352,\ 1.9503,\ 1.9832,\ 1.9943,\ 1.9974,\ 1.9984$ for
+$g=1,3,10,30,100,300,1000$ at $\lVert\phi\rVert^{2}=1$, approaching the trivial ceiling
+$2\lVert\phi\rVert^{2}=2$ monotonically. Any $C(\eta)$
+valid uniformly on this family therefore satisfies $C(\eta)\ge2\lVert\phi\rVert^{2}$. A geometric bound
+with a trivial prefactor is not worthless---it would still decay in $K$---but it cannot be non-vacuous
+at small $K$, and small $K$ is where a shot-limited subspace lives.
+
+Conjecture~\ref{conj:geom} therefore remains open, and we name its two missing ingredients
+explicitly so that it can be attacked rather than left unremarked. What this work offers in its place
+is not a rate in $K$ at all but a bound on $\lVert A-A_{\mathcal S}\rVert_1$ itself, at the $\eta$ of
+the figure and on the subspace actually in hand (Theorem~\ref{thm:leakage}), measured subspace by
+subspace, together with a measurement of where that bound is non-vacuous (Sec.~\ref{sec:frontier}).
+That is a weaker statement than a rate and a stronger one than a conjecture, and it is the one the
+deposit can reproduce.
+
+\subsection{The sample-complexity bound}
+\label{app:moments:shots}
+
+\begin{proposition}[Sampling capture]
+\label{prop:shots}
+Let $p(x)=\tfrac{1}{K+1}\sum_{k=0}^{K}\lvert\braket{x|e^{-iHt_k}\phi}\rvert^{2}/
+\lVert\phi\rVert^{2}$, draw $T$ bitstrings independently from $p$, and let $\mathcal S$ be the
+set of distinct outcomes. For $\varepsilon,\delta\in(0,1)$, if
+$T\ge\varepsilon^{-1}\log\bigl(1/(\varepsilon\delta)\bigr)$ then with probability at least $1-\delta$
+the set $\mathcal S$ contains every configuration $x$ with $p(x)\ge\varepsilon$.
+\end{proposition}
+
+\begin{proof}
+Let $\mathcal N_\varepsilon=\{x:p(x)\ge\varepsilon\}$. Since $\sum_x p(x)=1$ and each member
+contributes at least $\varepsilon$, $|\mathcal N_\varepsilon|\le1/\varepsilon$. For fixed
+$x\in\mathcal N_\varepsilon$, $\Pr[x\notin\mathcal S]=(1-p(x))^{T}\le(1-\varepsilon)^{T}\le
+e^{-\varepsilon T}$. A union bound gives
+$\Pr[\mathcal N_\varepsilon\not\subseteq\mathcal S]\le\varepsilon^{-1}e^{-\varepsilon T}$, which is at
+most $\delta$ for the stated $T$.
+\end{proof}
+
+The cardinality bound $|\mathcal N_\varepsilon|\le1/\varepsilon$ is deterministic, and it is what
+removes the circularity of the published form $T=O(\varepsilon^{-1}\log(|\mathcal S|/\delta))$, in
+which the random size of the sampler's own output appears inside a bound on the number of draws that
+produce it. Where $\varepsilon^{-1}\le|\mathcal S|$, the new logarithm is also the smaller one, so
+nothing is conceded by the repair.
+
+The scope of $\varepsilon$ needs the same care. It thresholds a Born probability of the time-averaged
+mixture, and Proposition~\ref{prop:shots} makes no statement about $\lVert A-A_{\mathcal S}\rVert_1$.
+Two independent obstructions stand between the two quantities. First, the weight left uncaptured is
+bounded only by $|\{x:p(x)<\varepsilon\}|\cdot\varepsilon$, which for a delocalized state is $O(1)$:
+many small probabilities can sum to most of the mixture. Second, and decisively, a subspace holding the
+\emph{entire} Born support of the probe---$w_{\mathcal S}=1$ exactly, nothing left to capture at any
+$\varepsilon$---still has relative $L_1$ error $0.28$ at $L=6$ on the open chain of
+Table~\ref{tab:moments}, and $0.43$ at $L=6$ and $0.33$ at $L=8$ on the periodic rings, all at
+$\eta=0.18\,t$ and all relative to $\lVert\phi\rVert^{2}$ (Sec.~\ref{sec:leakage}); it is the $K=0$
+row of Table~\ref{tab:moments}.
+Proposition~\ref{prop:shots} is a statement about the sampler and about nothing else. The spectral
+error at fixed $\eta$ is the subject of Theorem~\ref{thm:leakage}, and what the composition of the two
+actually costs is reported as three separate prices in Sec.~\ref{sec:prices}.
+
+% =====================================================================================
+%  DROP-IN CAPTION REPLACEMENT for panel (b) of \ref{fig:method} (results.tex lines 46-51).
+%  Not part of Sec. 4; move into the figure file.  It removes the sentence that calls the
+%  geometric collapse "guaranteed by the moment-exactness theorem" -- Sec. 4 withdraws that
+%  corollary -- and it attaches the shot budget to the word "sampled".
+%
+% \textbf{(b)}~Relative-$L_1$ error against the number of measured time slices $K$, for the
+% finite-shot reconstruction: multinomial draws at $4000$ shots per step, eight independent
+% seeds (band $=$ standard deviation), $\eta=0.15\,t$, so the budget is $T=4000(K{+}1)$ and
+% reaches $5.2\times10^{4}$ at $K=12$. The error falls by a factor $32$ across the thirteen
+% points, from $0.59$ at $K=0$ to $0.0185$ at $K=12$, with one non-monotone step at $K=3$
+% inside the discovery phase, while the mean subspace returned grows from $75$ to $242$
+% determinants of the $300$-dimensional sector. A geometric rate fitted to the window
+% $4\le K\le9$ is withdrawn in Sec.~\ref{sec:moments:notbuy}: it is not implied by moment
+% exactness, and inside that window the decay in $K$ is confounded with the growth of
+% $|\mathcal S|$.
+% =====================================================================================

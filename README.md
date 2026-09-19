@@ -140,7 +140,7 @@ make paper                              # -> paper/main.pdf
 **Posting to arXiv?** The upload-ready bundle `paper/arxiv-submission.tar.gz` compiles clean-room with
 `pdflatex` alone (39 pp, 0 undefined refs) — see **[`docs/ARXIV_SUBMISSION.md`](docs/ARXIV_SUBMISSION.md)**
 for the verification, metadata, and step-by-step. **Note:** that bundle is a frozen snapshot of what was
-posted as **v2**; nine files in `paper/` have since moved ahead of it and two more have been deleted
+posted as **v2**; 17 files in `paper/` have since moved ahead of it and two more have been deleted
 from the tree. Run `python src/check_tarball.py` for the live comparison. **The bundle still contains the
 two fabricated rows of `figs/sqw_edges.dat`**, so it must be rebuilt before any new submission — see
 [`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md) §7.

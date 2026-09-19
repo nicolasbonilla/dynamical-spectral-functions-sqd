@@ -4,26 +4,29 @@
 \begin{tikzpicture}[font=\rmfamily]
 \begin{groupplot}[
   group style={group size=2 by 1, horizontal sep=1.9cm},
-  width=7.7cm, height=5.9cm,
+  width=7.7cm, height=5.9cm, paperaxis,
+  label style={font=\small}, tick label style={font=\footnotesize},
   axis line style={inkPrim, line width=0.6pt}, tick style={inkPrim, line width=0.6pt},
   title style={yshift=1pt},
 ]
 % ---- (a) A(w): exact vs bitstring-sampled ----
 \nextgroupplot[
   xlabel={frequency \; $\omega/t$}, ylabel={$A(\omega)$},
-  title={(a)\quad bitstring reconstruction of $A(\omega)$},
+  title={(a)\quad reconstruction of $A(\omega)$ from $5.2\times10^{4}$ shots},
   xmin=3, xmax=14, ymin=0, ymax=0.50, ymajorgrids, y grid style={gridClr},
   legend style={draw=none, fill=white, fill opacity=0.75, text opacity=1, at={(0.985,0.985)}, anchor=north east}, legend cell align=left,
 ]
-  \addplot[draw=none, fill=clExact, fill opacity=0.16] table[x=w,y=Aex]{aw_method.dat} \closedcycle;
+  \addplot[draw=none, fill=clExact, fill opacity=0.16, forget plot] table[x=w,y=Aex]{aw_method.dat} \closedcycle;
   \addplot[clExact, line width=1.3pt] table[x=w,y=Aex]{aw_method.dat}; \addlegendentry{exact}
   \addplot[coral, line width=1.1pt, dash pattern=on 3pt off 2.2pt] table[x=w,y=Asm]{aw_method.dat}; \addlegendentry{bitstring-sampled}
   \node[anchor=north east, align=right, inkPrim] at (rel axis cs:0.985,0.56)
-     {rel-$L_1=0.017$\\[-1pt] $\int\! A=0.500$};
-% ---- (b) convergence: two regimes + geometric law (Thm 1) ----
+     {rel-$L_1=0.017$\\[-1pt] $\int_W\! A_{\mathcal S}=0.4865$};
+% ---- (b) convergence: the measured curve only.  The dashed 'geometric (Thm 1)' series
+%      and the rho ~ 1.7 label are REMOVED: Sec. 4.2 withdraws that fit and its
+%      attribution to the moment theorem. ----
 \nextgroupplot[
   xlabel={Krylov order \; $K$ \; (time-evolution steps)}, ylabel={rel-$L_1$ error},
-  title={(b)\quad geometric convergence, verified},
+  title={(b)\quad error versus Krylov order},
   xmin=-0.4, xmax=12.4, ymode=log, ymin=0.013, ymax=2.6, ymajorgrids, y grid style={gridClr},
   ytick={0.02,0.05,0.1,0.2,0.5}, yticklabels={$2\%$,$5\%$,$10\%$,$20\%$,$50\%$},
   legend style={draw=none, fill=white, fill opacity=0.85, text opacity=1, at={(0.985,0.985)}, anchor=north east}, legend cell align=left,
@@ -33,9 +36,7 @@
   \addplot[name path=lo, draw=none, forget plot] coordinates {(0,0.5495) (1,0.5169) (2,0.5125) (3,0.5072) (4,0.3953) (5,0.1346) (6,0.0822) (7,0.0481) (8,0.0297) (9,0.0227) (10,0.0191) (11,0.0172) (12,0.0132)};
   \addplot[name path=hi, draw=none, forget plot] coordinates {(0,0.6261) (1,0.6267) (2,0.5807) (3,0.5948) (4,0.4793) (5,0.1820) (6,0.1081) (7,0.0713) (8,0.0402) (9,0.0307) (10,0.0275) (11,0.0259) (12,0.0239)};
   \addplot[coral, fill opacity=0.16, forget plot] fill between[of=lo and hi];
-  \addplot[thm, line width=1pt, dashed] coordinates {(4,0.3281) (5,0.1908) (6,0.1110) (7,0.0645) (8,0.0375) (9,0.0218) (10,0.0127) (11,0.0074) (12,0.0043)}; \addlegendentry{geometric (Thm 1)}
   \addplot[coral, line width=1.3pt, mark=*, mark size=2.2pt,
            mark options={fill=coral, draw=white, line width=0.4pt}] coordinates {(0,0.5878) (1,0.5718) (2,0.5466) (3,0.5510) (4,0.4373) (5,0.1583) (6,0.0951) (7,0.0597) (8,0.0350) (9,0.0267) (10,0.0233) (11,0.0216) (12,0.0185)}; \addlegendentry{sampled (8 seeds)}
-  \node[inkPrim, anchor=south east] at (axis cs:12.2,0.033) {$\rho\approx1.7$};
 \end{groupplot}
 \end{tikzpicture}

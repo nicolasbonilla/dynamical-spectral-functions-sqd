@@ -4,32 +4,32 @@
 % (a width-38 ladder is still classically near-exact for DMRG; no beyond-classical claim).
 \definecolor{ldChain}{HTML}{0072B2}\definecolor{ldLad}{HTML}{D55E00}\definecolor{ldInk}{HTML}{1B1B1B}
 \begin{tikzpicture}
-\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.9cm},
-  width=8.0cm, height=6.0cm, paperaxis,
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.75cm},
+  width=7.15cm, height=6.0cm, paperaxis,
   xmin=10.5, xmax=21.5, xtick={12,16,20}, xtick align=outside,
   title style={at={(0,1)},anchor=south west,font=\normalsize\bfseries,yshift=2pt},
   label style={font=\normalsize}, tick label style={font=\normalsize},
   legend style={font=\footnotesize,draw=black!25,fill=white,fill opacity=0.9,text opacity=1},legend cell align=left]
 % ---------- (a) minimal bond dimension chi ----------
 \nextgroupplot[title={(a)~minimal bond dimension $\chi$},
-  xlabel={qubits $\;2L$}, ylabel={$\chi$ (min.\ MPS bond dim.)}, ymin=0, ymax=48,
+  xlabel={qubits $\;2L$}, ylabel={$\chi$ (min.\ MPS bond dim.)}, ymin=0, ymax=62,
   ytick={0,10,20,30,40}, ymajorgrids, grid style={draw=black!10},
   legend pos=north west]
 \addplot[ldLad,line width=1.5pt,mark=*,mark size=3pt,mark options={fill=ldLad,draw=white,line width=0.8pt}]
   coordinates {(12,13)(16,38)(20,38)}; \addlegendentry{2-leg ladder}
 \addplot[ldChain,line width=1.5pt,mark=square*,mark size=2.8pt,mark options={fill=ldChain,draw=white,line width=0.8pt}]
   coordinates {(12,5)(16,8)(20,6)}; \addlegendentry{chain}
-\node[ldInk,font=\scriptsize,anchor=north east] at (axis cs:21.3,46.5) {$\mathcal F_1$ matched};
-\node[ldInk,font=\scriptsize,anchor=south] at (axis cs:16,41.0) {$\times4.8$};
+\node[ldInk,font=\scriptsize,anchor=north east] at (axis cs:21.0,55.0) {$\mathcal F_1$ matched};
+\node[ldInk,font=\scriptsize,anchor=west] at (axis cs:16.55,27.0) {$\times4.8$};
 % ---------- (b) required (N+-1) fraction ----------
-\nextgroupplot[title={(b)~sampled $(N{\pm}1)$ fraction},
+\nextgroupplot[title={(b)~response-targeted $(N{\pm}1)$ fraction},
   xlabel={qubits $\;2L$}, ylabel={$|\mathcal S|/D$ for rel-$L_1<0.05$}, ymin=0, ymax=1.0,
   xmin=10.5, xmax=17.5, xtick={12,16}, ytick={0,0.25,0.5,0.75,1}, ymajorgrids, grid style={draw=black!10},
   legend pos=south west]
 \addplot[ldLad,line width=1.5pt,mark=*,mark size=3pt,mark options={fill=ldLad,draw=white,line width=0.8pt}]
-  coordinates {(12,0.807)(16,0.626)}; \addlegendentry{2-leg ladder}
+  coordinates {(12,0.807)(16,0.626)};
 \addplot[ldChain,line width=1.5pt,mark=square*,mark size=2.8pt,mark options={fill=ldChain,draw=white,line width=0.8pt}]
-  coordinates {(12,0.717)(16,0.426)}; \addlegendentry{chain}
+  coordinates {(12,0.717)(16,0.426)};
 \node[ldInk,font=\scriptsize,anchor=north east] at (axis cs:17.3,0.97) {same $\mathcal F_1$};
 \end{groupplot}
 \end{tikzpicture}

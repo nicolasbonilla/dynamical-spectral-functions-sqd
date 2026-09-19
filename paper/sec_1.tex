@@ -1,0 +1,216 @@
+% =====================================================================================
+%  Sec. 1 -- THE OPERATIONAL QUESTION.  Replaces paper/introduction.tex in full.
+%
+%  WRITTEN LAST, against the numbers that came out.  Every quantity quoted here is
+%  quoted somewhere else in the manuscript with its provenance; this section adds no
+%  measurement of its own.  Measured length: 2.1 pages in the real preamble.
+%
+%  EXTERNAL LABELS USED (all owned by other sections; reconcile at integration):
+%    sec:method     Sec. 2, the primitive; what is sampled and what is exact [exists, method.tex]
+%    sec:leakage    Sec. 3, the two budgets / the leakage bound              [Sec. 3, not yet written]
+%    thm:leakage    the two-sided bound of Sec. 3                           [Sec. 3, not yet written]
+%    sec:retraction Sec. 3.1, retraction of Theorem 1(iii)                  [sec_3_1.tex]
+%    sec:moments    Sec. 4, moment exactness                                [sec_4.tex]
+%    thm:moments, prop:shots                                                [sec_4.tex]
+%    sec:frontier   Sec. 5, the non-vacuity threshold, measured             [Sec. 5, not yet written]
+%    sec:nogo       Sec. 6, the obstruction and its witness                 [sec_6.tex]
+%    sec:nogo:chi   Sec. 6.5, the statistics the right way up               [sec_6.tex]
+%    thm:witness, prop:leakinv, eq:collapse                                 [sec_6.tex]
+%    sec:prices     Sec. 7, the three prices                                [sec_7.tex]
+%    sec:physics    Sec. 8, the two gaps                                    [sec_8.tex]
+%    tab:gaps                                                               [sec_8.tex]
+%    sec:honest     Sec. 9, hardware, scope, priority                       [exists, discussion.tex]
+%    fig:thm1iii-violation  new Fig. N3, Appendix B                         [p2_figs, caption written]
+%    fig:gapscaling         new Fig. N2                                     [p2_figs, caption written]
+%  This file defines only: sec:intro.
+%
+%  *** SEVEN \cite KEYS USED HERE DO NOT EXIST IN paper/bibliography.tex ***
+%  They are real papers whose identifier fields are verified in this project's
+%  state-of-the-art review; the TITLES are not verified here and must be pulled from
+%  arXiv/Crossref before the \bibitem entries are written.  Do not guess a title.
+%    \cite{patel2026}       Patel, Rangi, Tam, arXiv:2609.09147 (8 Sep 2026)
+%    \cite{benthien2007}    Benthien, Jeckelmann, PRB 75, 205128 (2007),
+%                           DOI 10.1103/PhysRevB.75.205128   [ALSO requested by sec_8.tex]
+%    \cite{vilchez2025}     Vilchez-Estevez, Santos, Wang, Gambetta, PRB 112, 045143 (2025),
+%                           DOI 10.1103/ydfw-k83n
+%    \cite{granet2026akw}   Granet et al. (Quantinuum), arXiv:2605.01440 (2026)
+%    \cite{lee2026sqw}      Lee, ..., Kandala, Banerjee, arXiv:2603.15608 (2026)
+%    \cite{millar2026}      Millar et al., arXiv:2607.02673 (2026)
+%    \cite{leonebittel2026} Leone, Bittel, arXiv:2607.29670 (31 Jul 2026)
+%                           [ALSO requested by sec_6.tex.  Do NOT reuse \cite{bittel2025},
+%                            which is Bittel-Mele-Eisert-Leone, arXiv:2409.17953.]
+%  Existing keys reused here, all verified present in bibliography.tex:
+%    quantinuum_dsf2026 (= Granet et al., arXiv:2607.07138), tarabunga2026, nocera2016.
+%
+%  GREP NOTES for the mechanical audit of this file:
+%   (a) The arXiv identifier of this preprint appears NOWHERE in this file.  It is named
+%       once in the manuscript, in Sec. 3.1, and once is the rule.
+%   (b) The banned unity argument -- that one half of the paper could not be published on
+%       its own -- is NOT made here in any form, and must not be reintroduced: it is a fact
+%       about the arXiv calendar, not about the paper.  The join between the two halves is
+%       made only where it is measured: the "+" of the bound, evaluated on S* = supp(phi).
+%   (c) The words "decoupled" and "decoupling" appear nowhere in this file.  The measured
+%       relation between F_1 and the support is a deterministic monotone one with an
+%       unstable sign (Sec. 6.5), which is a different statement.
+%   (d) No claim of quantum advantage is made; the explicit disclaimer is the seventh
+%       paragraph and must survive copy-editing.
+%   (e) The word "sampled" is used only where a budget is declared, where the object is
+%       named as the infinite-shot limit of the declared protocol (Sec. 7), or in the
+%       fixed phrase "sampled fraction" that Sec. 5 uses for a fraction of the sector.
+% =====================================================================================
+
+\section{The operational question}
+\label{sec:intro}
+
+A sample-based quantum calculation returns a list of bitstrings. Diagonalizing the Hamiltonian
+inside the span of the configurations they name yields an energy, and---as this work and, now,
+several others show---a frequency-resolved response as well. What it does not yield is any
+statement about how wrong that response is. This paper is built around the question a user is left
+with once the shots are spent: \emph{given the subspace those shots populated, how wrong is the
+spectral function built on it?}
+
+The answer splits in two, and the split is a theorem rather than a metaphor. Let $\phi$ be the
+probe vector, $A(\omega)$ the spectral function broadened to resolution $\eta$, $\mathcal S$ a set
+of determinants and $A_{\mathcal S}$ the Rayleigh--Ritz reconstruction on its span. The $L_1$
+error is bounded below by the Born weight the subspace failed to capture, and above by that same
+weight together with the Hamiltonian coupling that leaks across the boundary of the subspace,
+averaged over the resolution window (Theorem~\ref{thm:leakage}, Sec.~\ref{sec:leakage}). The two
+terms of the upper bound are two budgets, and only the first is bought by drawing more bitstrings.
+That is measured rather than argued: on the subspace that \emph{is} the Born support of the probe,
+$\mathcal S^{\star}=\operatorname{supp}(\phi)$---of size exactly $(\tfrac12+\tfrac1L)$ of the
+sector, fixed by the probe and not by any ranking, so that the captured weight is unity by
+construction with no tie-breaking and no zero-amplitude padding---the first term vanishes
+identically while the relative $L_1$ error is still $0.43$ at $L=6$ and $0.33$ at $L=8$ at
+$\eta=0.18\,t$, rising to $1.15$ and $0.90$ at $\eta=0.05\,t$, against a hard ceiling of $2$. (These
+are the periodic rings; the open chain on which Sec.~\ref{sec:moments} measures the same witness gives
+$0.28$ at $L=6$, and the two lattices are never pooled into one range in this paper.) The second budget is a property of the
+boundary of the subspace in the basis in which the device measures, and the rest of this paper is
+an account of what can and cannot be said about it.
+
+Four bodies of work bound what is new here, and we state them before stating our own claims.
+\emph{(i)~Concurrent and independent.} Patel, Rangi and Tam~\cite{patel2026} construct Green's
+functions from sampled Krylov subspaces for dynamical mean-field theory~\cite{dmft1996}, at the same
+system size
+this work reaches, and cite it as ``a closely related sample-based approach to dynamical spectral
+functions, constructed directly from bitstring-sampled subspaces.'' Their construction is
+independent of ours; we make no priority claim against it, and none is needed.
+\emph{(ii)~Classical dynamical DMRG arrived first.} Benthien and Jeckelmann~\cite{benthien2007}
+computed the dynamical spin and charge structure factors and the one-particle spectral function of the
+half-filled one-dimensional \emph{extended} Hubbard model in the Mott regime---three channels, on the
+$V=0$ line the plain Hubbard model, and \emph{all three} are channels this paper reports: their spin
+factor, our $S^{zz}(q,\omega)$, at $L=100$; their charge factor, our $S(q,\omega)$, at $L=120$; and
+their $A(q,\omega)$, our $A(k,\omega)$, at $L=90$---nineteen years ago, and the
+correction-vector literature treats the Hubbard chain at $L=48$ with $\eta=0.1\,t$, and
+reaches $L=64$ in the Heisenberg chain and $48\times2$ sites in the $t$--$J$ ladder~\cite{nocera2016}. The sentence in the abstract of versions~1--2, that the
+ground-state energy is where classical methods have caught up and dynamics is therefore the
+defensible target, is \emph{inverted} in one dimension and is withdrawn: here, dynamics is where
+the classical methods arrived first. \emph{(iii)~Hardware.} Frequency-resolved responses of
+correlated lattice models have already been measured on devices far larger than the one used
+here---a retarded spin Green's function of the one-dimensional Fermi--Hubbard model on an IBM
+Heron processor at up to $30$ qubits~\cite{vilchez2025}; an angle-resolved-photoemission-like
+$A(k,\omega)$ on a $27$-site chain at $54$ qubits~\cite{granet2026akw}; $S(q,\omega)$ of a
+$20$-site Heisenberg chain benchmarked against a real copper-sulfate
+crystal~\cite{quantinuum_dsf2026}; $S(q,\omega)$ on $50$ qubits against neutron scattering in
+$\mathrm{KCuF_3}$~\cite{lee2026sqw}; and quench spectroscopy of $L=101$ spins with no ground-state
+preparation at all~\cite{millar2026}. Our own device run is at $L=6$, and the subspace it recovers
+spans its entire sector, so its agreement with exact diagonalization is exact by coverage rather
+than a test of the method (Sec.~\ref{sec:honest}). \emph{(iv)~The invariant versus basis-dependent
+dichotomy.} Tarabunga \emph{et al.}~\cite{tarabunga2026}, six weeks before version~1 of this work,
+set out the same division on general grounds: occupation entropies are Gaussian invariants and
+lower-bound the non-Gaussian gate count, while participation entropies in the natural-orbital
+basis are basis dependent and upper-bound the classical simulation cost. Leone and
+Bittel~\cite{leonebittel2026} gave a Gaussian monotone of the same class seventeen days before
+version~1 of this work.
+The priority for the dichotomy is theirs; what this work adds is the constructive instance those
+papers do not contain, and the extension of that division from the determinant support to the
+leakage term above (Sec.~\ref{sec:nogo}).
+
+What versions~1 and~2 of this preprint published in place of Theorem~\ref{thm:leakage} was
+different. They carried a weight-only error bound, Theorem~1(iii), and invoked it as the
+certificate governing the reconstruction. It is false---by an analytic two-level counterexample,
+which forces its constant to the trivial value
+$2\lVert\phi\rVert^{2}$, and by counting, since from $L=8$ onward every operating point those
+versions published lies below the combinatorial floor at which its second term has any content at
+all. It fails wherever it was invoked: in $126$ of $126$ subspaces of the original sweep with
+captured weight above $0.99$, and in $363$ of $363$ such subspaces of the pooled sweep behind
+Fig.~\ref{fig:thm1iii-violation}. We retract it explicitly, together with the sentence that
+repeated it in prose in the discussion, and replace it by Theorem~\ref{thm:leakage}: proved from
+the resolvent identity alone, violated by none of the $606$ subspaces of that sweep, and stated
+with the three hypotheses---common energy origin, normalization and support of the $L_1$ norm, and
+exactness of the reference---that a user must check against the pipeline that produced
+$A_{\mathcal S}$ (Sec.~\ref{sec:retraction}).
+
+A certificate that is never evaluated is a claim and not a result, and the retracted one was never
+evaluated: neither of the two quantities it is written in is computed anywhere in the reproduction
+repository. We evaluate the replacement on the subspaces this work actually used, at
+$L=6,8,10,12$ (sector dimensions $300$ to $731\,808$), and report the outcome negative end first.
+\emph{At every published fraction, at each of the four sizes evaluated, the leakage branch of the
+bound is worse than the trivial bound $\lVert\phi\rVert^{2}(1+w_{\mathcal S})$}---vacuous by factors
+of $2.8$ to $4.9$---and at $L=12$ that verdict is converged in Krylov depth, so it cannot be moved by
+computing harder. The reconstructions reported in this paper are therefore, at present,
+uncertified. Two measurements replace that sentence rather than soften it. The obstruction is
+structural: the coordinate support of the Krylov space $\mathcal K(H,\phi)$ is $296$ of $300$
+determinants at $L=6$ and all $3920$ of $3920$ at $L=8$, so at $L=8$ the leakage is strictly positive
+for \emph{every} proper coordinate subspace and no leakage-type certificate in this basis can be
+non-vacuous there at low fraction. That support has been measured at two sizes and we state it for
+two: whether it persists at $L=10$ and $L=12$ is open, and the cost of settling it is one sparse
+Krylov run per size. And the certificate is calibrated: across all sixteen
+$(L,\eta)$ cells of the sweep its crossing of the trivial bound occurs at a true relative $L_1$
+error between $1.2\times10^{-3}$ and $7.3\times10^{-3}$, median $2.8\times10^{-3}$, on a table
+whose true errors span five decades---computed from $H$, $\mathcal S$, $\phi$ and $\eta$ alone,
+without the answer (Sec.~\ref{sec:frontier}). The reconstruction itself is untouched: an
+independent implementation, with different code, normalization and reference, recovers the
+published acceptance fractions at all four sizes, the largest discrepancy being $7\%$---at $L=12$,
+against the coarse replication-grid value $0.18$, and under $2\%$ against the $0.17$ the scan itself
+reports. What the measurement
+retires is the word \emph{certified} applied to those fractions, not the fractions themselves.
+
+Section~\ref{sec:leakage} leaves one question open, and the second half of this paper answers it:
+can the a posteriori certificate be replaced by an a priori predictor, computed from the state
+before any circuit runs? The natural candidates are the efficiently measurable monotones of
+fermionic non-Gaussianity, and on number-conserving states the one-body member of that family
+collapses to a single one-particle-density-matrix invariant,
+$\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$ (Eq.~\eqref{eq:collapse}), equal to twice the
+effectively-unpaired-electron index for spin-restricted natural orbitals and not for the
+spin-polarized members of the suite. An
+invariant of the occupation spectrum cannot see a boundary. Along a geminal orbit every order of
+it is fixed while the determinant support runs from $O(K)$ to $2^{K}$ at bond dimension $2$
+(Theorem~\ref{thm:witness}); and on fibers where every invariant \emph{and} the captured weight
+are frozen to $10^{-14}$, the subspace-aware certificate still separates a non-vacuous value from
+the trivial bound (Proposition~\ref{prop:leakinv}). The statement is one of non-determination and
+non-vacuity, not of non-existence: an invariant upper bound on the leakage does exist, and it is
+the trivial one. The same discipline applies to our own statistics, which were reported the wrong
+way up. Analysed within the six $(L,N)$ strata it contains, the Hubbard interaction sweep gives a
+rank correlation of $\mathcal F_1$ with the determinant support of exactly $-1$ in all six:
+stratified Kendall $\tau=-1.000$, zero concordant pairs out of $60$, exact one-sided permutation
+$p=3.3\times10^{-13}$. That is not an absence of relation but a deterministic monotone one with
+the opposite sign, whose sign is not stable from family to family---exactly what an orbital
+invariant compared against a basis-dependent count must do. Both pooled readings of versions~1--2
+are withdrawn in Sec.~\ref{sec:nogo:chi}; one of the two was in our own favour.
+
+\emph{We claim no quantum advantage in this paper.} No result reported here would support one; the
+classical-simulability boundary is charted rather than contested (Sec.~\ref{sec:honest}); and the
+one quantitative statement this work makes about its own cost---that the basis-dependent bond
+dimension empirically tracks the determinant support---argues, wherever that bond dimension is
+small, for a tensor network rather than for a sampler.
+
+The paper is organized around that division. Section~\ref{sec:method} fixes the primitive and
+states, channel by channel, which reconstructions carry a declared shot budget and which are exact
+Haydock references. Section~\ref{sec:leakage} proves the bound and retracts its predecessor;
+Sec.~\ref{sec:moments} isolates what the subspace structure does certify---moment exactness
+through order $2K+1$ and no further, with the proof the code actually realizes
+(Theorem~\ref{thm:moments}) and a non-circular shot count replacing the published one
+(Proposition~\ref{prop:shots}). Section~\ref{sec:frontier} measures where the certificate is
+informative; Sec.~\ref{sec:nogo} closes the search for a cheaper a priori substitute;
+Sec.~\ref{sec:prices} prices support, resolution and shots; Sec.~\ref{sec:physics} validates the
+primitive against the opposite finite-size behaviour of the charge and spin scales of the Hubbard
+chain (Table~\ref{tab:gaps}, Fig.~\ref{fig:gapscaling}); and Sec.~\ref{sec:honest} reports the
+device runs, the scope of the molecular suite, and the region in which this work's own thesis
+argues against a quantum advantage. The systems throughout are the half-filled one-dimensional
+Hubbard model at $U/t=8$---rings and open chains at $L=4$ to $14$, by exact diagonalization and
+matrix-free Lanczos---and a suite of nineteen molecular active spaces. Three different counts
+share the symbol $\mathcal S$ in this literature and are kept apart here: the static ground-state
+support of Sec.~\ref{sec:nogo}, the dynamical support of Sec.~\ref{sec:prices}, and the set of
+configurations the sampler actually returned, which is the $\mathcal S$ of
+Theorem~\ref{thm:leakage}.
+

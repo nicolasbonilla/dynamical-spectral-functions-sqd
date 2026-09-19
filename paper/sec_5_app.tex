@@ -1,0 +1,77 @@
+
+% ===================================== [APPENDIX] ====================================
+
+\section{The leakage certificate: hypotheses, protocol, and the anatomy of the threshold}
+\label{app:hyp}
+
+Theorem~\ref{thm:leakage} holds under three hypotheses. Each is a statement about the pipeline that
+produced the reconstruction rather than about the theorem, so each has to be checked against the
+pipeline, and none of the three is checked anywhere in the deposit of versions~1--2. We check all
+three here, with numbers, for the sweep of Sec.~\ref{sec:frontier}, and add the two protocol
+declarations and the decomposition that section quotes.
+
+\paragraph{(H1) Common origin.} $A$ and $A_P$ must be referred to the same $E_0$. A shift common to
+both cancels exactly---verified to $1.000000$ for shifts of $10^{-3}$, $10^{-2}$ and
+$10^{-1}\,t$---which is how the hypothesis is satisfied here, a single $E_0$ being used for both
+objects. If $A_P$ is instead referred to $E_0+\delta$, the discrepancy acquires an additive
+$\lVert\phi_P\rVert^{2}(4/\pi)\arctan(\lvert\delta\rvert/2\eta)$, verified to $2\times10^{-5}$ in all
+$48$ cases tested, \emph{which the certificate does not control}. A ground state obtained by
+Rayleigh--Ritz on $60\%$ of the $N$-electron sector at $L=8$ gives $\delta=6.7\times10^{-4}\,t$, which
+adds $0.0024$ to a bound of $1.2036$---$+0.20\%$---while multiplying the \emph{measured} error by
+$16$; and the dependence is not even monotone, a shift of $10^{-2}\,t$ lowering the measured error at
+$L=6$, fraction $0.85$, $\eta=0.18\,t$ from $2.7\times10^{-2}$ to $1.2\times10^{-2}$. The measured
+errors quoted beside a bound in Sec.~\ref{sec:frontier} are therefore those of a pipeline handed the
+exact $E_0$, and they bound the error of a pipeline that estimates it from neither side. No cheap a
+posteriori control on $\delta$ is available: residual (Weinstein) and Temple
+bounds~\cite{weinstein1934,temple1928} computed on
+ground-state subspaces of $20$--$80\%$ of the $N$ sector at $L=6$ give $\arctan$ terms of $1.76$,
+$1.64$, $1.40$ and $0.92$, all vacuous against the ceiling of $2$. In a shot-based pipeline $E_0$ is
+itself estimated on whatever subspace the shots populated, and the certificate has never been tested
+that way.
+
+\paragraph{(H2) Normalization and support of the $L_1$ norm.} The bound is on
+$\int_{\mathbb R}\lvert A-A_P\rvert\,d\omega$ normalized by
+$\lVert\phi\rVert^{2}=\int_{\mathbb R}A\,d\omega$. A relative error normalized instead by $\int_W A$
+over a finite window $W$ and evaluated by finite quadrature---the convention of the repository, in
+which Sec.~\ref{sec:prices} reports---is a different quantity, differing by the product of
+$\int_W\lvert A-A_P\rvert/\int_{\mathbb R}\lvert A-A_P\rvert$ and $\lVert\phi\rVert^{2}/\int_W A$.
+Both factors are measured here: the second is $1.0100$, $1.0309$ and $1.0373$ at $\eta=0.05$, $0.15$
+and $0.18\,t$ at $L=6$ and $1.0110$, $1.0278$ and $1.0335$ at $L=8$, while the first lies between
+$1.0040$ and $1.0115$ across the $204$ configurations of this study. Every number in
+Sec.~\ref{sec:frontier} is in the normalization of Theorem~\ref{thm:leakage}, and the two conventions
+are nowhere interchanged.
+
+\paragraph{(H3) Exact reference.} $A$ denotes the exact spectral function of the full $(N\pm1)$
+sector. If the reference is itself a Lanczos reconstruction of finite depth $n_\ell$, the theorem does
+\emph{not} bound $\lVert A^{(n_\ell)}-A_P^{(n_\ell)}\rVert_1$, and a measured error below the
+reference's own drift measures the reference rather than the reconstruction. That drift runs from
+$2.6\times10^{-5}$ ($L=12$, $\eta=0.10\,t$) to $2.8\times10^{-7}$ ($\eta=0.18\,t$), and at $L=10$ the
+reorthogonalization gap, $1.71\times10^{-5}$, is of the same order as the depth drift. We therefore
+quote no measured error anywhere in Sec.~\ref{sec:frontier} within a factor of $20$ of its own
+reference drift: twelve rows at $L\ge10$ fall under that rule and are left blank rather than rounded,
+the weakest surviving cell---$L=12$, $\eta=0.10\,t$---standing at a factor $47$. One gap is declared
+and not bounded. The reconstructions this paper publishes are produced by bare Lanczos at depth $150$,
+while the certificate is evaluated on the reorthogonalized Krylov space; the difference between the
+two has been measured at a single point at $L=8$---relative $L_1$ of $1.2454\times10^{-3}$ against
+$1.2464\times10^{-3}$---and never bounded, and at $L=12$ it has never been measured at all.
+
+\paragraph{Ranking, ties and support.} Two properties of the cut are declared with the protocol, a
+tie-breaking defect having cost this work numbers before. No determinant of any of the four sectors
+carries exactly zero accumulated Born weight, so the cut is never filled with configurations the
+device would never sample in the infinite-shot limit; ties at the cut involve two determinants (four
+at $L=6$, at fractions $0.80$ and $0.85$) and move the bound by at most $6.6\times10^{-4}$ relative.
+Above the support floor $\tfrac12+\tfrac1L$ of Sec.~\ref{sec:retraction}, on the other hand, the
+ranking selects among determinants outside $\operatorname{supp}(\phi)$: at fraction $0.85$ that is
+$30.2\%$ of $S$ at $L=6$, $36.9\%$ at $L=8$ and ${\approx}39.6\%$ at $L=10$. Those contribute nothing
+to $w_S$, and they do change $H_S$. The depth uncertainty quoted in Sec.~\ref{sec:frontier} is the
+full recomputation of $\mathrm{FR}^{\ast}$ with $L=12$ capped at $n_\ell=300$: it moves by $0.0024$,
+$0.0021$, $0.0012$ and $0.0000$ at $\eta=0.10$, $0.15$, $0.18$ and $0.25\,t$.
+
+\paragraph{Anatomy of the displacement.} The percentages quoted in
+Sec.~\ref{sec:frontier:obstruction} are medians over $15$ of the $18$ $(\eta,\text{target})$ cells at
+$L=8$; three cells are censored from above, the certificate never reaching the target inside the grid,
+and are excluded rather than imputed. Pooling $L=6$ with $L=8$ shifts them to $52\%$, $31\%$, $11\%$
+and $4.1\%$, which is why the $L=8$ figures are the ones quoted. One caveat travels with them, and it
+is why they are reported as a diagnosis and not as a quantity: of the rungs of the inequality chain
+only the last is computable by a user from $(H,S,\phi,\eta)$, so the decomposition is of an object the
+user never sees.

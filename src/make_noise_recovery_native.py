@@ -45,14 +45,37 @@ lines.append(r"% self-contained native pgfplots fragment (fig:noiserec)")
 for lab,c in show: lines.append(f"\\definecolor{{nr{lab}}}{{HTML}}{{{c[1:]}}}")
 lines.append(r"\definecolor{nrOK}{HTML}{0E7C7B}\definecolor{nrBad}{HTML}{5E4B8B}\definecolor{nrNv}{HTML}{D1495B}\definecolor{nrChem}{HTML}{2E7D32}")
 lines.append(r"\begin{tikzpicture}")
-lines.append(r"\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.7cm}, height=9.5cm, paperaxis,")
+# `group name=nrg` is load-bearing, not cosmetic.  pgfplots names the panels of a
+# groupplot <group name> c<col>r<row>, and panel (b) positions itself against panel
+# (a) through that node.  Giving the first \\nextgroupplot an explicit name=
+# REPLACES that automatic node: panel (b) then finds no anchor and is composed on top
+# of panel (a) (that is exactly what happened, and it reached a rendered page).  An
+# explicit GROUP name leaves the automatic panel nodes intact and still gives the
+# out-of-axis annotation below something stable to hang from.
+lines.append(r"\begin{groupplot}[group style={group size=2 by 1, group name=nrg, horizontal sep=1.45cm}, height=9.5cm, paperaxis,")
 lines.append(r"  title style={at={(0,1)},anchor=south west,font=\bfseries,yshift=1pt}]")
 # ---- (a) ----
-lines.append(r"\nextgroupplot[width=0.54\linewidth, ymode=log, xmin=-1, xmax=31, ymin=3e-3, ymax=80,")
+# 0.505 + 0.425 (was 0.54 + 0.46): inside a figure* the linewidth is 510pt, and the
+# widened horizontal sep has to come out of the panels, not out of the margin.
+lines.append(r"\nextgroupplot[width=0.505\linewidth, ymode=log, xmin=-1, xmax=31, ymin=3e-3, ymax=80,")
 lines.append(r"  xlabel={per-qubit bit-flip rate $\varepsilon$ (\%)}, ylabel={energy error vs FCI (mHa)}, title={(a)},")
-lines.append(r"  legend style={at={(0.03,0.97)},anchor=north west,font=\normalsize,draw=black!20},legend columns=2,legend cell align=left]")
+# The legend used to sit at the top left (0.03,0.97).  Measured, not eyeballed: an A/B
+# render at 600 dpi with the legend fill made transparent recovered 590 ink pixels of
+# nrH6 (#6A4C93) under the box -- the H6 naive curve, hidden by the legend at its own
+# bottom-right corner.  The floor of the panel is the C2 band lower edge, which never
+# comes below 0.024 mHa for eps in [6,24] while the axis starts at 3e-3, so the bottom
+# centre has ~49pt of clear height for a 2-row box.  The same A/B probe recovers 0 px
+# there.  Panel (b) was probed the same way and already hid nothing.
+lines.append(r"  legend style={at={(0.5,0.03)},anchor=south,font=\normalsize,draw=black!20},legend columns=3,legend cell align=left]")
 lines.append(rf"\draw[nrChem,dashed,line width=0.6pt] (axis cs:-1,{CHEM}) -- (axis cs:31,{CHEM});")
-lines.append(rf"\node[black,font=\normalsize,anchor=north east,fill=white,fill opacity=0.7,text opacity=1,inner sep=1pt] at (axis cs:30.6,{CHEM*0.95}) {{chemical accuracy}};")
+# The label used to sit INSIDE the plot area with a white fill at 70% opacity, which
+# washed out the lower edge of the N2 band and the upper edge of the CO band.  Two
+# in-plot placements were then tried and both rejected by measurement (600 dpi render
+# differenced against a no-label render): near y=1.6 the panel has no ink-free window
+# anywhere, and the nearest one at all is 0.7 decades below the rule, reachable only
+# by a leader that crosses the CO band.  It is emitted outside the axis instead, at
+# the end of this file; the rule itself runs the full width again.
+lines.append(r"% chemical-accuracy label: emitted after the groupplot, see below.")
 for lab,c in show:
     lo,hi=band(lab)
     lines.append(f"\\addplot[name path={lab}lo,draw=none,forget plot] coordinates {{{lo}}};")
@@ -62,7 +85,7 @@ for lab,c in show:
     lines.append(f"\\addplot[nr{lab},line width=1.4pt,mark=*,mark size=1.3pt,mark options={{fill=nr{lab},draw=white,line width=0.4pt}}] coordinates {{{coords(lab,'score')}}}; \\addlegendentry{{{lab.replace('2','$_2$').replace('3','$_3$').replace('6','$_6$')}}}")
     lines.append(f"\\addplot[nr{lab},line width=0.9pt,densely dashed,forget plot] coordinates {{{coords(lab,'naive')}}};")
 # ---- (b) ----
-lines.append(r"\nextgroupplot[width=0.46\linewidth, xmode=log, xmin=2.2e-3, xmax=14, enlarge y limits=0.03,")
+lines.append(r"\nextgroupplot[width=0.425\linewidth, xmode=log, xmin=2.2e-3, xmax=14, enlarge y limits=0.03,")
 lines.append(rf"  ytick={{{ytk}}}, yticklabels={{{ylb}}}, y tick label style={{font=\normalsize}},")
 lines.append(r"  xtick={0.01,0.1,1,10}, xticklabels={$0.01$,$0.1$,$1$,$10$}, xminorticks=false,")
 lines.append(r"  xlabel={energy error at $\varepsilon=2\%$ (mHa)}, title={(b)},")
@@ -75,6 +98,10 @@ lines.append(rf"\addplot[only marks,mark=o,mark size=1.9pt,nrNv,line width=0.8pt
 lines.append(rf"\addplot[only marks,mark=*,mark size=2.1pt,nrOK] coordinates {{{score_pts}}}; \addlegendentry{{S-CoRe}}")
 lines.append(rf"\node[black,font=\normalsize,anchor=north east] at (axis cs:{CHEM*0.92},{len(suite)-0.7}) {{$1.6$ mHa}};")
 lines.append(r"\end{groupplot}")
+# OUTSIDE the axis: pgfplots clips nodes to the plot box.  It hangs off the automatic
+# groupplot node, which is why the group carries an explicit `group name` above.
+lines.append(r"\node[nrChem,font=\footnotesize,anchor=south east,inner sep=1pt]")
+lines.append(r"      at (nrg c1r1.north east) {chemical accuracy ($1.6$\,mHa)};")
 lines.append(r"\end{tikzpicture}")
 open('paper/figs/fig_noise_recovery_native.tex','w',encoding='utf-8').write("\n".join(lines)+"\n")
 print("wrote fig_noise_recovery_native.tex")

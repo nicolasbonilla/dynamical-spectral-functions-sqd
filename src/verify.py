@@ -116,9 +116,11 @@ KNOWN_OPEN = {
             "ground-state identity, under the name 'sumrule'.  The integral of the "
             "deposited A_exact over the deposited window is 0.48659 (the reconstruction "
             "gives 0.48647): a finite-window effect, not machine precision.  The "
-            "caption of the method figure still says '0.500 to machine precision': the gap "
-            "is 2.7 per cent of the sum rule, a finite-window effect, and the companion "
-            "figure's caption already admits about 2 per cent."),
+            "gap is 2.7 per cent of the sum rule, a finite-window effect.  The manuscript "
+            "half of this defect is CLOSED: the figure now labels the windowed integral "
+            "0.4865 and no caption says 'to machine precision' (see CLAIMS_RETRACTED). "
+            "What remains open is the DATA file, which still stores the analytic identity "
+            "under the name 'sumrule'."),
 }
 
 # Historical note, deliberately left here: until 2026-09-18 this registry also carried
@@ -450,6 +452,71 @@ COORD = re.compile(r"\(\s*(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)\s*,\s*(-?\d+(?:\.\d
 NUMTOK = re.compile(r"-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?")
 
 
+# ---------------------------------------------------------------------------
+# THE v3 MANUSCRIPT BODY
+#
+# v2 was eight body files; v3 is ten sections plus seven appendices, and the prose
+# this guardian pins moved rather than vanished -- often split, so that one v2 file's
+# sentences now live in two or three v3 files.  read_body() therefore hands the
+# sentence-level checks the WHOLE body, expanded from paper/main.tex in driver order.
+#
+# This is not a relaxation.  Every check still has to find its sentence, and the number
+# in that sentence still has to match the recomputation; only the haystack grew from
+# one file to the body.  Deriving the list from main.tex also means a section added
+# later is searched automatically, and one removed stops being searched -- neither can
+# happen without this list changing.
+# ---------------------------------------------------------------------------
+_BODY_CACHE = {}
+
+
+def body_files(root):
+    """Every .tex paper/main.tex reaches, in the order the driver inputs them."""
+    out, seen = [], set()
+
+    def walk(rel):
+        rel = rel.replace("\\", "/")
+        if rel in seen:
+            return
+        seen.add(rel)
+        path = os.path.join(root, "paper", rel.replace("/", os.sep))
+        if not os.path.exists(path):
+            return
+        out.append("paper/" + rel)
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            txt = fh.read()
+        txt = "\n".join(l for l in txt.split("\n") if not l.lstrip().startswith("%"))
+        for m in re.finditer(re.escape(chr(92)) + r"input\{([^}]+)\}", txt):
+            s = m.group(1)
+            if not s.endswith(".tex"):
+                s += ".tex"
+            for cand in (s, os.path.dirname(rel) + "/" + s if os.path.dirname(rel) else s):
+                if os.path.exists(os.path.join(root, "paper", cand.replace("/", os.sep))):
+                    walk(cand)
+                    break
+
+    walk("main.tex")
+    return out
+
+
+def read_body(root):
+    """The concatenated manuscript body, comments stripped."""
+    key = os.path.abspath(root)
+    if key not in _BODY_CACHE:
+        chunks = []
+        for rel in body_files(root):
+            with open(os.path.join(root, rel.replace("/", os.sep)),
+                      encoding="utf-8", errors="replace") as fh:
+                txt = fh.read()
+            chunks.append("\n".join(l for l in txt.split("\n")
+                                    if not l.lstrip().startswith("%")))
+        _BODY_CACHE[key] = "\n".join(chunks)
+    return _BODY_CACHE[key]
+
+
+def lines_body(root):
+    return read_body(root).split("\n")
+
+
 def read(root, rel):
     path = os.path.join(root, rel.replace("/", os.sep))
     with open(path, encoding="utf-8", errors="replace") as fh:
@@ -586,7 +653,12 @@ def system_check(rep, name, printed, L, system, obc, pbc, ndp=None, where=""):
 
 
 # ---------------------------------------------------------------------------
-# Registry of KNOWN OPEN *CLAIMS* -- sentences, not scalars.
+# Registry of RETRACTED CLAIMS -- sentences, not scalars.
+#
+# 2026-09-19: all seven were still printed by the v2 manuscript and none is printed by
+# the v3 one, so the registry was inverted rather than deleted.  Each entry now asserts
+# that its sentence is ABSENT; its return is a hard failure.  The text of each entry is
+# left exactly as it was, because the `why` is the record of why the sentence went.
 #
 # KNOWN_OPEN pins a wrong NUMBER in one slot.  That is not enough: the sum-rule
 # defect, for instance, lives in three places (a JSON field, a figure label and a
@@ -599,7 +671,7 @@ def system_check(rep, name, printed, L, system, obc, pbc, ndp=None, where=""):
 # and the list is the retraction agenda for v3, carried by the guardian rather than by a
 # note somebody has to remember to read.
 # ---------------------------------------------------------------------------
-CLAIMS_OPEN = {
+CLAIMS_RETRACTED = {
     "sumrule.figure_label": dict(
         where="paper/figs/fig_method_native_frag.tex",
         text=r"$\int\! A=0.500$",
@@ -609,7 +681,7 @@ CLAIMS_OPEN = {
             "the reconstruction 0.48647 (2.7 per cent below, a finite-window effect).  "
             "Repairing data/method_max.json alone does NOT repair this."),
     "sumrule.results_caption": dict(
-        where="paper/results.tex",
+        where="body",
         text=r"to machine precision",
         why="the caption of the method figure says the reconstructed weights obey "
             "\\int A^+ dw = 0.500 'to machine precision'.  The deviation is 2.7 per cent "
@@ -637,7 +709,7 @@ CLAIMS_OPEN = {
             "This is Simpson's paradox: the stratified evidence is far stronger than the "
             "published null, in the opposite direction.  'Not significant' is wrong."),
     "results.qto0_charge_gap": dict(
-        where="paper/results.tex",
+        where="body",
         text=r"as $q\to0$ its lower edge approaches the charge gap",
         why="the smallest accessible momentum is q/pi = 1/6 and its onset is 5.600, which "
             "is 12.7 per cent ABOVE Delta = 4.968759 at the 3 per cent threshold the "
@@ -656,21 +728,33 @@ CLAIMS_OPEN = {
 
 
 def claim_check(rep, root, key):
-    """Check one entry of CLAIMS_OPEN.  Present -> XFAIL; gone -> XPASS."""
-    e = CLAIMS_OPEN[key]
-    try:
-        txt = read(root, e["where"])
-    except IOError:
-        rep.missing("claim %s" % key, "cannot open %s" % e["where"])
-        return
+    """Check one entry of CLAIMS_RETRACTED.  The assertion is ABSENCE.
+
+    These seven sentences were the v2 retraction agenda.  v3 removed all seven, so the
+    useful check is no longer "is it still there" but "has it come back".  A registry
+    entry that is merely deleted once the sentence goes protects nothing; this one keeps
+    protecting.  `where` may be a file, or the sentinel "body", which means the whole
+    manuscript with comment lines stripped -- so a retracted sentence cannot be
+    reinstated by moving it into another section.
+    """
+    e = CLAIMS_RETRACTED[key]
+    if e["where"] == "body":
+        txt = read_body(root)
+    else:
+        try:
+            txt = read(root, e["where"])
+        except IOError:
+            rep.missing("claim %s" % key, "cannot open %s" % e["where"])
+            return
     name = "%s (%s)" % (key, e["where"])
     if e["text"] in txt:
-        rep.emit(XFAIL, name, "OPEN CLAIM, scheduled for retraction in v3: %r is still in "
-                              "%s. %s" % (e["text"], e["where"], e["why"]), 1)
+        rep.emit(FAIL, name,
+                 "RETRACTED CLAIM IS BACK: %r is printed again in %s. It was withdrawn "
+                 "for this reason and the reason has not changed. %s"
+                 % (e["text"], e["where"], e["why"]), 1)
     else:
-        rep.emit(XPASS, name, "the claim %r is GONE from %s. Delete CLAIMS_OPEN['%s'] (and "
-                              "check the retraction is actually written, not just deleted). %s"
-                 % (e["text"], e["where"], key, e["why"]), 1)
+        rep.emit(PASS, name,
+                 "retracted and still absent: %r is not in %s" % (e["text"], e["where"]), 1)
 
 
 # ---------------------------------------------------------------------------
@@ -694,7 +778,37 @@ COVERED_FRAGMENTS = {
     "fig_method_native_frag.tex",
     "fig_hardware_hero_frag.tex",
     "fig_noise_recovery_native.tex",
-    "fig_amort_native.tex",
+    # v3: fig:gapscaling and fig:thm1iii-violation are new floats.  The first is checked
+    # below against data/gap_scaling.json.  The second is NOT, and that is recorded in
+    # COVERAGE_GAP_V3 rather than papered over.
+    "fig_gapscaling_native.tex",
+    "fig_thm1iii_violation_native.tex",
+    # fig_amort_native.tex is no longer \input by anything: Sec. 9.4 withdraws that
+    # figure in the body ("Both figures of this test are therefore withdrawn").  It stays
+    # in paper/figs/ because src/ still names it; nothing typesets it.
+}
+
+# ---------------------------------------------------------------------------
+# COVERAGE GAPS this guardian knows about and does NOT hide.  Unlike KNOWN_OPEN,
+# which pins a wrong number, this pins a MISSING CHECK: an artefact the manuscript
+# typesets and no check in this file anchors to a dataset.
+#
+# It is emitted as XFAIL, exactly the convention KNOWN_OPEN uses -- printed on every
+# run, carried into the summary, and NOT setting the exit code.  (An earlier version of
+# this comment said it set the exit code.  It did not; nothing read the dictionary at
+# all.  Fixed 2026-09-19, and said out loud because a false comment in the guardian is
+# the same defect as a false sentence in the paper.)
+#
+# Close an entry by WRITING THE CHECK, not by deleting the entry.
+# ---------------------------------------------------------------------------
+COVERAGE_GAP_V3 = {
+    "fig_thm1iii_violation_native.tex": (
+        "the fragment plots ten n3_*.dat tables (2432 rows) built by build_n3.py from "
+        "data/cert_stress.json, data/cert_akw.json and two JSONs that are NOT in data/. "
+        "build_n3.py itself is not deposited, so this guardian cannot regenerate the "
+        "tables and will not pretend to check them by re-reading what the figure prints. "
+        "To close this: deposit build_n3.py and its two missing inputs, add the fragment "
+        "to src/check_figures.py, and anchor the plotted ratios to the certificate rows."),
 }
 
 # Minimum number of numeric assertions each section must actually perform.  A guardian
@@ -714,7 +828,9 @@ SECTION_FLOORS = [
     ("(7) MOLECULAR SUITE", 263),
     ("(8) SPECTRAL ARTEFACTS", 69),
     ("(9) THE FILES", 3855),
-    ("(10) OPEN CLAIMS", 7),
+    ("(10) RETRACTED CLAIMS", 7),   # the header was renamed when the registry was inverted;
+                                   # the floor of 7 is unchanged and is met by the seven
+                                   # absence assertions, not by lowering it.
     ("(11) COVERAGE FLOOR", 0),
 ]
 
@@ -853,7 +969,17 @@ def section9(rep, root, ctx):
     # figure (whose engine is data/scaling_data.json, the periodic ring); an OBC literal
     # is illegal inside that figure's plotted lines.  This is what catches the defect
     # when it is reintroduced in prose (results.tex) rather than in a dataset.
-    PBC_HOME = "paper/figs/fig_scaling2_native.tex"
+    # The periodic-ring literals (6.6074, 9.3851, ...) may appear in the ring figure
+    # AND in that figure's own caption, which v3 moved into its own file.  Both are
+    # required to SAY they are the ring, so a file cannot join this set by accident:
+    # the scan below refuses any home that does not carry the word "periodic".
+    PBC_HOMES = ("paper/figs/fig_scaling2_native.tex", "paper/figs/caption_fig12.tex")
+    for _h in PBC_HOMES:
+        rep.truth("PBC home %s declares periodic boundary conditions" % _h,
+                  "periodic" in read(root, _h).lower(),
+                  "the file says so in words, so a ring literal in it is labelled",
+                  "%s is allowed to carry periodic-ring literals but never says it is "
+                  "the ring; a reader cannot tell which system the numbers belong to" % _h)
     pbc_lits, obc_lits = {}, {}
     for L in sorted(obc):
         if L not in pbc:
@@ -877,14 +1003,14 @@ def section9(rep, root, ctx):
         for lit, (L, nd) in pbc_lits.items():
             for m in re.finditer(r"(?<![\d.])" + re.escape(lit) + r"(?![\d])", txt):
                 nscan += 1
-                if rel != PBC_HOME:
+                if rel not in PBC_HOMES:
                     ln = txt[:m.start()].count(chr(10)) + 1
                     misplaced.append((rel, ln, lit, "PERIODIC ring (PBC)", L,
                                       "%.6f" % obc[L]))
         for lit, (L, nd) in obc_lits.items():
             for m in re.finditer(r"(?<![\d.])" + re.escape(lit) + r"(?![\d])", txt):
                 nscan += 1
-                if rel == PBC_HOME:
+                if rel in PBC_HOMES:
                     ln = txt[:m.start()].count(chr(10)) + 1
                     # comments are the place where the note "9.6047 is the OTHER system"
                     # legitimately lives
@@ -903,12 +1029,31 @@ def section9(rep, root, ctx):
               n=max(nscan, 1))
 
     # ---------------------------------------------------------------- 9.2
-    inputs = set()
-    for rel in srcs:
-        if rel.startswith("paper/figs/"):
+    # v3 inserts a float WRAPPER between the body and the fragment
+    # (sec_X.tex -> figs/float_nN.tex -> figs/fig_..._native.tex), so the scan has to
+    # follow \input through paper/figs/ as well.  Reading only the body files found
+    # five wrappers and none of the fragments behind them, i.e. it would have reported
+    # the wrappers as unwatched while the real figure sources went unnoticed.
+    inputs, frontier, seen_in = set(), [r for r in srcs if not r.startswith("paper/figs/")], set()
+    while frontier:
+        rel = frontier.pop()
+        if rel in seen_in:
             continue
+        seen_in.add(rel)
         for m in RE_INPUT.finditer(read(root, rel)):
-            inputs.add(m.group(1) + ".tex")
+            name = m.group(1) + ".tex"
+            sub_rel = "paper/figs/" + name
+            if os.path.exists(os.path.join(root, sub_rel.replace("/", os.sep))) \
+               and ("float_" in name or name.endswith("caption.tex")
+                    or name.startswith("caption") or name == "captions.tex"
+                    or name.endswith("_caption.tex")):
+                frontier.append(sub_rel)       # a wrapper / caption file: keep walking
+            else:
+                inputs.add(name)
+    for _gapkey in sorted(COVERAGE_GAP_V3):
+        rep.emit(XFAIL, "coverage gap: paper/figs/%s" % _gapkey,
+                 "the manuscript typesets this fragment and no check in this file anchors "
+                 "it to a dataset. %s" % COVERAGE_GAP_V3[_gapkey], 1)
     uncovered = sorted(inputs - COVERED_FRAGMENTS)
     rep.truth("every native figure source the paper \\input's is opened here",
               not uncovered,
@@ -920,19 +1065,44 @@ def section9(rep, root, ctx):
 
     # ---------------------------------------------------------------- 9.3  the ABSTRACT
     # Never opened before.  Eight numbers live here and this is the text that is indexed.
-    mt = re.sub(r"\s+", " ", read(root, "paper/main.tex"))
+    mt = re.sub(r"\s+", " ", read_body(root))
     mF, mS, mX = ctx["mF"], ctx["mS"], ctx["mX"]
     hF, hS, hX = ctx["hF"], ctx["hS"], ctx["hX"]
-    abstract_rhos = [
-        (r"Spearman \$" + RBS + r"rho=(-?[\d.]+)\$ for \$" + RBS + r"chi\$",
-         spearmanr(mX, mS).correlation, "abstract rho(chi,|S|) over the 38 molecules"),
-        (r"versus \$(-?[\d.]+)\$ for \$" + RBS + r"mathcal F_1\$",
-         spearmanr(mF, mS).correlation, "abstract rho(F1,|S|) over the 38 molecules"),
-        (r"holds at \$" + RBS + r"rho=(-?[\d.]+)\$",
-         spearmanr(hX, hS).correlation, "abstract rho(chi,|S|) over the 30 Hubbard states"),
-        (r"falls to \$" + RBS + r"rho=(-?[\d.]+)\$",
-         spearmanr(hF, hS).correlation, "abstract rho(F1,|S|) over the 30 Hubbard states"),
-    ]
+    # The v3 abstract no longer prints the four pooled coefficients: it prints the
+    # stratified statement that replaced them ("exactly -1 within each of six strata,
+    # exact p=3.3e-13; both pooled coefficients are withdrawn").  So the four checks are
+    # replaced by checks on what is actually printed, plus an assertion that the four
+    # retracted coefficients stay out of the abstract.
+    _hub_rows = read_json(root, "data/cost_vs_ent.json")["rows"]
+    _st = {}
+    for _r in _hub_rows:
+        _st.setdefault((_r["L"], _r["N"]), []).append(_r)
+    _within = [spearmanr([r["FAF"] for r in rs], [r["S"] for r in rs]).correlation
+               for _, rs in sorted(_st.items())]
+    rep.truth("abstract: 'exactly -1' within each of six strata",
+              re.search(r"exactly \$-1\$", mt) is not None
+              and len(_within) == 6 and all(abs(v + 1.0) < 1e-12 for v in _within),
+              "six strata, every one at rho = -1.000000",
+              "the abstract claims an exact -1 within every stratum; recomputation gives %s"
+              % [round(v, 6) for v in _within], n=6)
+    _sr = read_json(root, "data/stats_resource.json")["hubbard_stratified"]
+    _m = re.search(r"exact \$p=([\d.]+)" + RBS + r"times10\^\{-(\d+)\}\$", mt)
+    if _m is None:
+        rep.missing("abstract exact permutation p",
+                    "the abstract no longer states the exact permutation p-value that "
+                    "replaced the withdrawn pooled coefficients")
+    else:
+        _pp = float(_m.group(1)) * 10 ** (-int(_m.group(2)))
+        rep.eq("abstract exact permutation p", _pp,
+               float(_sr["exact_perm_p_one_sided_F1"]), 5e-15,
+               "the abstract prints an exact permutation p that is not "
+               "exact_perm_p_one_sided_F1 of data/stats_resource.json")
+    rep.truth("abstract: the two pooled coefficients are declared withdrawn",
+              "pooled coefficients are withdrawn" in mt,
+              "the abstract says so in words",
+              "the abstract no longer withdraws the two pooled coefficients, and Sec. 6 "
+              "and App. F both say they are withdrawn: the abstract would contradict them")
+    abstract_rhos = []
     for pat, value, label in abstract_rhos:
         m = re.search(pat, mt)
         if m is None:
@@ -958,13 +1128,35 @@ def section9(rep, root, ctx):
     # ---------------------------------------------------------------- 9.4
     # results.tex, matched-magic chain-vs-ladder, in PROSE.  The previous guardian
     # checked the caption thirty-six lines below and missed this one.
-    rt = re.sub(r"\s+", " ", read(root, "paper/results.tex"))
+    rt = re.sub(r"\s+", " ", read_body(root))   # was paper/results.tex (v2)
     lvc = ctx["lvc"]
     m = re.search(r"\(\$([\d.]+)\$ vs \$([\d.]+)\$ at \$16\$ qubits", rt)
     if m is None:
-        rep.missing("results.tex matched-F1 chain vs ladder (prose)",
-                    "the sentence '($12.82$ vs $12.91$ at $16$ qubits' is gone; it carried "
-                    "the open-chain F1 in prose and was uncovered until now")
+        # v3 rewrote the sentence: it no longer prints the two F1 literals, it states the
+        # relative match ("at one-body magic matched to within 1%").  Check THAT instead,
+        # against the same two deposited numbers, so the claim is still pinned.
+        _mm = re.search(r"one-body magic matched to within \$(\d+)" + RBS + r"%\$", rt)
+        if _mm is None:
+            rep.missing("matched-F1 chain vs ladder (prose)",
+                        "neither the v2 sentence ('$12.82$ vs $12.91$ at $16$ qubits') nor "
+                        "the v3 one ('one-body magic matched to within N%') is in the body; "
+                        "the matched-magic comparison is unpinned")
+        else:
+            _tol = float(_mm.group(1)) / 100.0
+            # inside section9 the two tables arrive through ctx, not as globals
+            _ch = ctx["obc"].get(8)
+            _la = lvc["results"].get("ladder-2x4", {}).get("F1")
+            if _ch is None or _la is None:
+                rep.missing("matched-F1 chain vs ladder (v3 prose)",
+                            "the deposited chain or ladder F1 at 16 qubits is missing")
+            else:
+                _rel = abs(_la - _ch) / _ch
+                rep.truth("matched-F1 chain vs ladder, within the stated %s%%"
+                          % _mm.group(1), _rel <= _tol,
+                          "|%.4f - %.4f| / %.4f = %.4f <= %.2f"
+                          % (_la, _ch, _ch, _rel, _tol),
+                          "the body says the two are matched to within %s%%; the deposited "
+                          "values differ by %.2f%%" % (_mm.group(1), 100 * _rel))
     else:
         system_check(rep, "results.tex matched-F1 prose, chain L=8", float(m.group(1)),
                      8, "OBC", obc, pbc,
@@ -1001,13 +1193,18 @@ def section9(rep, root, ctx):
                "the annotated ladder/chain bond-dimension ratio is not the ratio of the "
                "deposited chi values")
     # panel (b): the required (N+-1) fraction
-    for tag, keys in (("2-leg ladder", ("ladder-2x3", "ladder-2x4")),
-                      ("chain", ("chain-L6", "chain-L8"))):
-        ln = [l for l in lls if ("addlegendentry{" + tag + "}") in l]
-        if len(ln) < 2:
-            rep.missing("fig_ladder (b) %s fraction series" % tag, "series missing")
+    # Panel (b) of the rebuilt fragment carries no legend of its own (the panel-(a)
+    # legend serves both), so the series are identified by the colour macro that draws
+    # them -- ldLad for the ladder, ldChain for the chain -- and by being the ones with
+    # exactly two points.
+    for tag, style, keys in (("2-leg ladder", "ldLad", ("ladder-2x3", "ladder-2x4")),
+                             ("chain", "ldChain", ("chain-L6", "chain-L8"))):
+        ln = [l for l in lls if style in l and len(series_coords(l)) == 2]
+        if not ln:
+            rep.missing("fig_ladder (b) %s fraction series" % tag,
+                        "no two-point %s series found in the fragment" % style)
             continue
-        pts_ = series_coords(ln[1])
+        pts_ = series_coords(ln[0])
         rep.eq_int("fig_ladder (b) %s fraction point count" % tag, len(pts_), 2,
                    "a point was added to or removed from the plotted fraction series")
         for (x, y), k in zip(pts_, keys):
@@ -1601,8 +1798,8 @@ def section9(rep, root, ctx):
 # ===========================================================================
 
 def section10(rep, root):
-    rep.head("(10) OPEN CLAIMS -- sentences this repository still prints and cannot defend")
-    for key in sorted(CLAIMS_OPEN):
+    rep.head("(10) RETRACTED CLAIMS -- seven sentences that must stay out of the manuscript")
+    for key in sorted(CLAIMS_RETRACTED):
         claim_check(rep, root, key)
 
 
@@ -1751,7 +1948,7 @@ def main(argv=None):
 
     # --- the theorem display in paper/theorem_b2.tex ---
     try:
-        th = read(root, "paper/theorem_b2.tex")
+        th = read_body(root)                  # was paper/theorem_b2.tex (v2)
     except Exception as exc:                                    # noqa: BLE001
         rep.missing("paper/theorem_b2.tex", "cannot read: %s" % exc)
         th = ""
@@ -1919,13 +2116,39 @@ def main(argv=None):
 
     # 4.5 paper/figs/fig_decoupling_native.tex -- Hubbard chain series are OBC
     fdc = lines(root, "paper/figs/fig_decoupling_native.tex")
-    for legend, L in (("$(6,6)$", 6), ("$(8,8)$", 8)):
-        i = find_line(fdc, "\\addlegendentry{%s}" % legend)
-        if i < 0 or L not in OBC:
-            if L in OBC:
-                rep.missing("fig_decoupling series %s" % legend, "series not found")
+    # The rebuilt fragment writes the stratum legends with a thin-space brace,
+    # \addlegendentry{$(6{,}6)$}, and repeats each in panels (b) and (c).  The old
+    # spelling matched nothing and the check went quiet -- which is exactly the failure
+    # mode the coverage floor exists to catch, and it did catch it.
+    # The rebuilt fragment puts the stratum LEGENDS in panel (c), where the abscissa is
+    # chi, and repeats the same strata unlabelled in panel (b), where the abscissa is F1.
+    # Taking the line next to the legend therefore read chi as if it were magic.  The
+    # strata are identified here by their DATA instead: a panel-(b) series belongs to the
+    # (L,N) stratum whose (FAF, S) pairs it reproduces.  Nothing is assumed about colours.
+    _ce_rows = read_json(root, "data/cost_vs_ent.json")["rows"]
+    _strata = {}
+    for _r in _ce_rows:
+        _strata.setdefault((_r["L"], _r["N"]), []).append(_r)
+    _dec_b = {}
+    for _ln in fdc:
+        _cs = coords_of(_ln)
+        if len(_cs) != 5:
             continue
-        cs = coords_of(fdc[i])
+        for _k, _rs in _strata.items():
+            if all(any(abs(_r["FAF"] - x) < 6e-4 and abs(_r["S"] - y) < 0.51 for _r in _rs)
+                   for (x, y) in _cs):
+                _dec_b.setdefault(_k, _cs)
+    rep.eq_int("fig_decoupling panel (b) plots all six (L,N) strata", len(_dec_b), 6,
+               "a stratum series of the F1 panel could not be matched to any (L,N) group "
+               "of data/cost_vs_ent.json; found %s" % sorted(_dec_b))
+    for legend, L in (("$(6{,}6)$", 6), ("$(8{,}8)$", 8)):
+        cs = _dec_b.get((L, L))
+        if cs is None or L not in OBC:
+            if L in OBC:
+                rep.missing("fig_decoupling series %s" % legend,
+                            "no panel-(b) series reproduces the (%d,%d) rows of "
+                            "data/cost_vs_ent.json" % (L, L))
+            continue
         # the U/t=8 point is the one whose F1 matches either system's value
         cand = [c for c in cs if min(abs(c[0] - OBC[L]), abs(c[0] - PBC[L])) < 5e-3]
         if not cand:
@@ -1938,9 +2161,10 @@ def main(argv=None):
         # y is log2 of the support carried by data/ladder_vs_chain.json
         row = lvc["results"].get("chain-L%d" % L)
         if row:
-            rep.eq("fig_decoupling (b) %s U=8 log2|S|" % legend, cand[0][1],
-                   math.log2(row["Sdet"]), 5e-4,
-                   "the plotted log2|S| does not match the deposited chain support %d"
+            # the rebuilt panel plots |S| itself on a log axis, not log2|S|
+            rep.eq("fig_decoupling (b) %s U=8 |S|" % legend, cand[0][1],
+                   float(row["Sdet"]), 0.51,
+                   "the plotted support does not match the deposited chain support %d"
                    % row["Sdet"])
 
     # 4.6 paper/figs/fig_scaling2_native.tex -- panel (a) is the PERIODIC ring.
@@ -1968,7 +2192,7 @@ def main(argv=None):
                            "the plotted ring magic does not match data/scaling_data.json")
 
     # 4.7 paper/results.tex -- the chain-vs-ladder caption
-    res = read(root, "paper/results.tex")
+    res = read_body(root)                     # was paper/results.tex (v2)
     m = re.search(r"open chain vs\.?\\?\s*ladder:\s*\$([\d.]+)/([\d.]+)\$,\s*\n?\s*"
                   r"\$([\d.]+)/([\d.]+)\$,\s*\$([\d.]+)/([\d.]+)\$", res)
     if m:
@@ -2028,18 +2252,74 @@ def main(argv=None):
     # -----------------------------------------------------------------------
     # 5.1 fig_scaling2 panels (b) and (c) against data/scaling_data.json
     by_L = {p["L"]: p for p in scal["points"]}
-    for ln in fsc_panels.get("b", []):                        # panel (b): the fraction
+    # Panel (b) now carries TWO curves.  name path=Bpub is the infinite-shot limit,
+    # which is the fraction data/scaling_data.json deposits; name path=Bhon is the
+    # measured finite-shot curve, which is a different quantity and must NOT be compared
+    # with it (they differ by up to 0.07 and comparing them was the failure that first
+    # exposed the rebuild).  The two are told apart by the pgfplots path name, not by
+    # position in the file.
+    hon = read_json(root, "data/honest_sampling.json")
+    hon_by_L = {int(k): v for k, v in hon["per_L"].items()}
+    n_pub = n_hon = 0
+    # In the rebuilt fragment an \addplot spans three physical lines: the options
+    # (which carry name path=) and the coordinates are not on the same line.  Reading
+    # physical lines found the path names and the coordinates in different places and
+    # matched neither -- 0 and 0 points, which the count assertion below caught.
+    for ln in logical_lines("\n".join(fsc_panels.get("b", []))):
+        is_pub = "name path=Bpub" in ln
+        is_hon = "name path=Bhon" in ln
+        if not (is_pub or is_hon):
+            continue
         for (x, y) in coords_of(ln):
             L = int(x) // 2
             if L not in by_L:
                 continue
-            rep.eq("fig_scaling2 (b) L=%d fraction" % L, y, round(by_L[L]["frac"], 4), 5e-5,
-                   "the plotted sector fraction does not match data/scaling_data.json")
-    for ln in fsc_panels.get("c", []):                        # panel (c): dim and |S|
+            if is_pub:
+                n_pub += 1
+                rep.eq("fig_scaling2 (b) T->inf L=%d fraction" % L, y,
+                       round(by_L[L]["frac"], 4), 5e-5,
+                       "the plotted infinite-shot sector fraction does not match "
+                       "data/scaling_data.json")
+            else:
+                n_hon += 1
+                row = hon_by_L.get(L)
+                if row is None:
+                    rep.missing("fig_scaling2 (b) finite-T L=%d fraction" % L,
+                                "data/honest_sampling.json has no per_L entry for L=%d, so "
+                                "the measured curve of panel (b) is unanchored" % L)
+                else:
+                    rep.eq("fig_scaling2 (b) finite-T L=%d fraction" % L, y,
+                           round(float(row["honest_frac_mean"]), 4), 5.1e-4,
+                           "the plotted finite-shot fraction does not match "
+                           "honest_frac_mean in data/honest_sampling.json")
+                    # errbars() returns the sigmas in plotting order, so pair them with
+                    # the coordinates by position -- the same order coords_of() returns.
+                    _eb = errbars(ln)
+                    _cs = coords_of(ln)
+                    if len(_eb) == len(_cs):
+                        _i = [k for k, c in enumerate(_cs) if abs(c[0] - x) < 1e-6]
+                        if _i:
+                            rep.eq("fig_scaling2 (b) finite-T L=%d s.d." % L, _eb[_i[0]],
+                                   round(float(row["honest_frac_std"]), 4), 5.1e-5,
+                                   "the plotted error bar is not honest_frac_std")
+    rep.truth("fig_scaling2 (b) plots both curves the caption describes",
+              n_pub >= 4 and n_hon >= 4,
+              "%d infinite-shot and %d finite-shot points checked" % (n_pub, n_hon),
+              "panel (b) should carry an infinite-shot series (name path=Bpub) and a "
+              "measured finite-shot series (name path=Bhon); found %d and %d points"
+              % (n_pub, n_hon), n=max(n_pub + n_hon, 1))
+    # Panel (c) carries three series in v3 (T, dim, |S|); the old code guessed which
+    # was which from the first y value, which silently mislabels the new shot-budget
+    # curve.  The legend entry that FOLLOWS each \addplot names it.
+    _c_lines = fsc_panels.get("c", [])
+    for _i, ln in enumerate(_c_lines):                        # panel (c): T, dim and |S|
         cs = coords_of(ln)
         if not cs:
             continue
-        is_dim = abs(cs[0][1] - by_L[4]["Np1_sector"]) < 0.5
+        _tail = " ".join(_c_lines[_i:_i + 3])
+        if BS + "addlegendentry{$T$}" in _tail:
+            continue                     # the shot budget: checked in section (8), not here
+        is_dim = (BS + "addlegendentry{$" + BS + "dim$}" in _tail)
         for (x, y) in cs:
             L = int(x) // 2
             if L not in by_L:
@@ -2078,6 +2358,7 @@ def main(argv=None):
     # 5.3 the two scatter figures against data/resource_master.json, point by point
     pts = rmj["points"]
     fam_of = {"rmMol": "molecule", "rmHub": "hubbard", "rmChn": "chain2", "rmLad": "ladder"}
+    n_fam = {}          # (panel, family) -> list of the coordinate lists that draw it
     for panel, xkey in (("a", "chi"), ("b", "F1")):
         for ln in frm_panels.get(panel, []):
             tag = [k for k in fam_of if k in ln and "coordinates" in ln]
@@ -2097,9 +2378,27 @@ def main(argv=None):
                       "every plotted point is a deposited point",
                       "%d plotted point(s) have no counterpart in data/resource_master.json: %s"
                       % (len(unmatched), unmatched[:4]), n=2 * len(cs))
-            rep.eq_int("fig_resource_master (%s) %s point count" % (panel, fam),
-                       len(cs), len(family_pts),
-                       "the figure plots a different number of points than the dataset holds")
+            # The rebuilt figure draws the molecular family as TWO series -- the 27 with
+            # |S| > 1 as filled marks and the 11 pinned at the floor |S| = 1 as open ones,
+            # each labelled with its own count -- so the count assertion is on the union
+            # and on the split, not on one series.  It is now stronger than it was: the
+            # split itself has to be right.
+            n_fam.setdefault((panel, fam), []).append(cs)
+
+    for (panel, fam), groups in sorted(n_fam.items()):
+        allpts = [c for g in groups for c in g]
+        family_pts = [p for p in pts if p["family"] == fam]
+        rep.eq_int("fig_resource_master (%s) %s point count (union of %d series)"
+                   % (panel, fam, len(groups)), len(allpts), len(family_pts),
+                   "the figure plots a different number of points than the dataset holds")
+        if fam == "molecule" and len(groups) == 2:
+            floor = sorted(len([c for c in g if abs(c[1] - 1.0) < 0.51]) for g in groups)
+            due = sorted((len([p for p in family_pts if p["S"] <= 1]),
+                          0))
+            rep.eq_int("fig_resource_master (%s) molecules at the |S|=1 floor" % panel,
+                       max(floor), max(due),
+                       "the open-marker series is supposed to be exactly the molecules "
+                       "pinned at |S| = 1 in data/resource_master.json")
 
     mol_pts = [p for p in pts if p["family"] == "molecule"]
     hub_pts = [p for p in pts if p["family"] == "hubbard"]
@@ -2111,12 +2410,19 @@ def main(argv=None):
             dec_mol += coords_of(ln)
         elif any(t in ln for t in ("dcH1", "dcH2", "dcH3")):
             dec_hub += coords_of(ln)
+    # v3 draws the six Hubbard strata twice -- once against F1 and once against chi -- so
+    # a style-name sweep would feed the chi panel into an F1 comparison.  The panel-(b)
+    # series were already identified above by matching the deposited (FAF, S) rows, and
+    # those are the ones that belong here.
+    if not dec_hub:
+        dec_hub = [c for _cs in _dec_b.values() for c in _cs]
     for label, cs, src in (("molecules", dec_mol, mol_pts), ("Hubbard", dec_hub, hub_pts)):
+        # the rebuild plots |S| on a log axis; v2 plotted log2|S| on a linear one
         unmatched = [(x, y) for (x, y) in cs
                      if not [p for p in src
                              if abs(p["F1"] - x) < 6e-4
-                             and abs(math.log2(max(p["S"], 1)) - y) < 6e-4]]
-        rep.truth("fig_decoupling %s series (F1 vs log2|S|), %d points" % (label, len(cs)),
+                             and abs(max(p["S"], 1) - y) < 0.51]]
+        rep.truth("fig_decoupling %s series (F1 vs |S|), %d points" % (label, len(cs)),
                   not unmatched, "every plotted point is a deposited point",
                   "%d plotted point(s) have no counterpart in data/resource_master.json: %s"
                   % (len(unmatched), unmatched[:4]), n=2 * len(cs))
@@ -2170,25 +2476,39 @@ def main(argv=None):
     rep.known("resource_master.pooled_spearman_F1_S",
               "resource_master.json pooled Spearman F1-|S|", rmj["pooled_spearman_F1_S"])
 
-    rsrc = re.sub(r"\s+", " ", read(root, "paper/resource.tex"))
+    rsrc = re.sub(r"\s+", " ", read_body(root))  # was paper/resource.tex (v2)
     mX = np.array([p["chi"] for p in mol_pts], float)
     hF = np.array([p["F1"] for p in hub_pts])
     hS = np.array([p["S"] for p in hub_pts], float)
     hX = np.array([p["chi"] for p in hub_pts], float)
+    # v3 prints the same six coefficients, in different sentences and in different
+    # files.  Four of them now carry the word "withdrawn" beside them -- which does NOT
+    # exempt them from being right: a retracted number quoted wrongly is still a wrong
+    # number, and a reader checking the retraction is the person most likely to look it up.
     printed = [
         ("chi-|S| over n=38 molecules", spearmanr(mX, mS).correlation,
-         r"\\rho=(-?[\d.]+)\$ over the \$n=38\$ molecular"),
+         r"\\rho=(-?[\d.]+)\$ within the \$n=38\$ molecular suite"),
         ("F1-|S| over n=38 molecules", spearmanr(mF, mS).correlation,
-         r"comparable \$\\rho=(-?[\d.]+)\$ on the identical"),
-        ("chi-|S| over n=30 Hubbard", spearmanr(hX, hS).correlation,
-         r"\\rho=(-?[\d.]+)\$ over the \$n=30\$ Hubbard"),
-        ("F1-|S| over n=30 Hubbard", spearmanr(hF, hS).correlation,
-         r"collapses to \$\\rho=(-?[\d.]+)\$"),
+         r"comparable\s+\$\\rho=(-?[\d.]+)\$"),
+        ("chi-|S| over n=30 Hubbard (withdrawn, still quoted)",
+         spearmanr(hX, hS).correlation,
+         r"over these same \$30\$ points: \$\\rho=(-?[\d.]+)\$"),
+        ("F1-|S| over n=30 Hubbard (withdrawn, still quoted)",
+         spearmanr(hF, hS).correlation,
+         r"and \$\\rho=(-?[\d.]+)\$ for\s+\$\\mathcal F_1\$"),
         ("pooled chi-|S| over the 74", spearmanr(aX, aS).correlation,
-         r"pooled\s*\n?\s*Spearman \$\\rho=(-?[\d.]+)\$, and positive within each"),
-        ("pooled F1-|S| over the 74", spearmanr(aF, aS).correlation,
-         r"Spearman \$\\rho=(-?[\d.]+)\$ for \$\\mathcal F_1\$ vs"),
+         r"pooled Spearman\s+\$\\rho=(-?[\d.]+)\$"),
     ]
+    # The sixth, the pooled F1-|S| over the 74, is no longer printed anywhere: v3 retracts
+    # it instead of quoting it.  Assert that, so it cannot come back unnoticed.
+    _f1_74 = re.search(r"Spearman \$\\rho=(-?[\d.]+)\$ for \$\\mathcal F_1\$ vs", rsrc)
+    rep.truth("pooled F1-|S| over the 74 is no longer asserted in the body",
+              _f1_74 is None,
+              "the sentence that offered the pooled F1 coefficient as evidence is gone, "
+              "which is what Sec. 6 says it did",
+              "the retracted pooled F1-|S| coefficient is printed again (%s); it is a "
+              "Simpson artefact and the manuscript retracts it"
+              % (_f1_74.group(1) if _f1_74 else ""))
     for label, value, pattern in printed:
         m = re.search(pattern, rsrc)
         if m is None:
@@ -2263,7 +2583,7 @@ def main(argv=None):
         return s
 
     # 7.1 tab:molecules  (paper/table_molecules.tex)
-    tm = lines(root, "paper/table_molecules.tex")
+    tm = lines(root, "paper/table_molecules_v3.tex")
     nrows = 0
     for ln in tm:
         if "&" not in ln or "multicolumn" in ln or "Molecule &" in ln:
@@ -2352,7 +2672,7 @@ def main(argv=None):
                  "could not parse the MOLS table (%s); R_eq/R_diss not checked" % exc)
 
     trow = 0
-    for ln in lines(root, "paper/theorem_b2.tex"):
+    for ln in lines(root, "paper/app_carried_repro.tex"):
         if "&" not in ln or "multicolumn" in ln or "Molecule &" in ln:
             continue
         cells = [c.strip() for c in ln.split("\\\\")[0].split("&")]

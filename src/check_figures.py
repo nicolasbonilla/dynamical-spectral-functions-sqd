@@ -44,6 +44,10 @@ GENERATORS = [
 # docs/KNOWN_DISCREPANCIES.md); that comparison is not attempted here.
 ARTEFACTS = [
     "paper/figs/fig_decoupling_native.tex",
+    # Added 2026-09-19.  make_decoupling_native.py now emits BOTH fragments of the resource
+    # section (it is the deposited port of the generator that rebuilt them for v3), so the
+    # second one is checked too.  This widens the guarantee; it does not soften it.
+    "paper/figs/fig_resource_master_native.tex",
     "paper/figs/fig_method_native_frag.tex",
     "paper/figs/aw_method.dat",
     "paper/figs/fig_akw_sampled_honest.tex",

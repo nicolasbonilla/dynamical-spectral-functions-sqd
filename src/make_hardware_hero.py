@@ -46,9 +46,9 @@ frag=r"""% fragment: \input into the figure environment -> \normalsize equals th
 \definecolor{warmFill}{HTML}{E8770C}\definecolor{warmLine}{HTML}{7A1E10}
 \definecolor{hwWarm}{HTML}{C4360C}\definecolor{simSlate}{HTML}{9AA1AC}\definecolor{band}{HTML}{ECE7DF}
 \begin{tikzpicture}[font=\rmfamily]
-\pgfplotsset{hpanel/.style={width=8.5cm,height=6.0cm,axis line style={inkPrim,line width=0.6pt},
-  tick style={inkPrim,line width=0.6pt},tick label style={font=\normalsize},label style={font=\normalsize},
-  title style={font=\normalsize,yshift=1pt},ymajorgrids,major grid style={inkMute,opacity=0.10,line width=0.3pt}}}
+\pgfplotsset{hpanel/.style={width=7.45cm,height=6.0cm,tick align=outside,tick pos=left,axis line style={inkPrim,line width=0.6pt},
+  tick style={inkPrim,line width=0.6pt},tick label style={font=\footnotesize},label style={font=\small},
+  title style={font=\small,yshift=1pt},ymajorgrids,major grid style={inkMute,opacity=0.10,line width=0.3pt}}}
 % ===================== (a) ibm_fez : spectral function A(omega) =====================
 % CLEAN: curve + title only; all technical detail (shots, mitigation, coverage) lives once, in the caption.
 \begin{axis}[name=axa,hpanel,
@@ -66,7 +66,7 @@ frag=r"""% fragment: \input into the figure environment -> \normalsize equals th
   ymode=log,xmin=-0.35,xmax=4.55,ymin=0.28,ymax=90,
   xtick={0,1,2,3,4},ytick={0.5,1,3,10,30},yticklabels={$0.5$,$1$,$3$,$10$,$30$}]
   \fill[band,opacity=0.72] (axis cs:-0.35,0.28) rectangle (axis cs:4.55,1.6);
-  \node[anchor=south west,font=\normalsize,inkPrim] at (axis cs:-0.28,0.42) {chem.\ accuracy};
+  \node[anchor=south west,font=\footnotesize,inkPrim] at (axis cs:-0.28,0.42) {chem.\ accuracy};
   % REAL hardware recovery: MEAN over 8 recovery seeds on the SAME cached ibm_marrakesh counts
   % (job da125f2ein7c73bcsqs0, no new QPU); shaded envelope = +-1 s.d. across the 8 seeds at every step.
   \addplot[draw=none,name path=hwhi,forget plot] coordinates {__HWHI__};
@@ -80,12 +80,12 @@ frag=r"""% fragment: \input into the figure environment -> \normalsize equals th
      error mark=-,error mark options={rotate=90,hwWarm,line width=1.1pt,mark size=4pt}]
      coordinates {__HWCE__};
   % which curve is which: a leader from each label lands ON its own curve; plus the two headline numbers
-  \node[anchor=south,font=\normalsize,inkPrim] (nl) at (axis cs:1.85,44)
+  \node[anchor=south,font=\footnotesize,inkPrim] (nl) at (axis cs:1.85,44)
     {noiseless (same circuit), $29.5$~mHa};
   \draw[-{Stealth[length=1.7mm]},inkPrim,line width=0.5pt] (nl.south) -- (axis cs:1.55,30.0);
-  \node[anchor=south,align=center,font=\normalsize,inkPrim] (nh) at (axis cs:3.05,5.2)
+  \node[anchor=south,align=center,font=\footnotesize,inkPrim] (nh) at (axis cs:3.20,5.2)
     {noisy hardware\\$__DEM__\pm__DES__$~mHa};
-  \draw[-{Stealth[length=1.7mm]},inkPrim,line width=0.5pt] (nh.south) -- (axis cs:3.0,1.15);
+  \draw[-{Stealth[length=1.7mm]},inkPrim,line width=0.5pt] (nh.south) -- (axis cs:3.92,0.70);
 \end{axis}
 \end{tikzpicture}
 """

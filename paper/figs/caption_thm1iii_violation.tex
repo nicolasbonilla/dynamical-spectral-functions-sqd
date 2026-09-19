@@ -1,0 +1,44 @@
+% Caption for fig_thm1iii_violation_native.tex  (appendix figure).
+% Every number below is traceable to the JSON sources.  The counts, factors and ratios
+% are printed by build_n3.py; the two exceptions are 156 and 4000, which that script does
+% NOT emit and which fix_n3_caption.py re-derives here from the deposited files:
+%   156  = 104 live rows of p2_calc/out/cert_teqsci.json  +  52 rows of thm3_results.json
+%          carrying kind = teqsci
+%   4000 = cert_teqsci.json /shots (= 4000), the same value as thm3_run.py:28
+% The min/median/max whiskers of the Fig.-5 series come from n3_fig5_summary.json,
+% written by fix_n3_fig5_series.py from n3_fig5_frac.dat / n3_fig5_eta.dat.
+\caption{\textbf{The published bound of Theorem~1(iii) fails on exactly the subspaces the paper
+relies on; the replacement does not.}
+For each subspace $\mathcal S$ we plot the measured error $\|A-A_{\mathcal S}\|_1$ divided by the
+bound, so every point above the dashed line at $1$ is a violation. Orange: the published weight
+bound $2\|\varphi\|^{2}(1-w_{\mathcal S})$, split by captured weight (filled, $w_{\mathcal S}\ge
+0.99$; open, $w_{\mathcal S}<0.99$). Blue: Theorem~B as stated, $\min\{\|\varphi\|^{2}(1+w_{\mathcal
+S}),\,(\|\varphi\|+\|\varphi_{\mathcal S}\|)(\|\varphi_{\mathcal Q}\|+\Lambda_{\mathcal
+S}(\eta)/\eta)\}$, on the same subspaces. We pooled $621$ subspaces from five machine-readable
+sweeps written by two independent implementations ($239+4$ from the original sweep; $162+112+104$
+from an independent re-implementation); $15$ of them reproduce the target to within double-precision
+round-off (relative $L_1\le 10^{-10}$) and define no ratio, leaving $606$ live subspaces, of which
+$156$ are finite-shot realisations at $4000$ shots per snapshot and the remainder are deterministic
+weight-ordered or structured selections. \emph{The published bound is violated on $468$ of the
+$606$.} On $50$ of them it is identically zero: those subspaces carry the whole weight to double
+precision ($w_{\mathcal S}=1$ exactly, and $K_{\mathcal S}\in\{0,1,2\}$, so the remaining term is the
+undefined constant $C\rho^{-K_{\mathcal S}}$); their ratio is infinite and they are drawn on the row
+marked $\infty$, above the dotted rule. Among the $313$ finite-ratio points with $w_{\mathcal S}\ge
+0.99$---the regime the paper invokes---\emph{every one} is a violation, the mildest by a factor
+$2.10$; with the $50$ infinite ones that is $363$ of $363$, and the finite factors reach
+$3.66\times10^{6}$. Below $w_{\mathcal S}=0.99$ the bound survives on $138$ of $243$ points, but only
+where the relative error is already of order unity, so it excludes nothing there. Diamonds mark the
+configuration of Fig.~\ref{fig:akwsampled} ($L=8$, $U/t=8$, $\eta=0.18t$, momentum seeds
+$c^{\dagger}_{k\uparrow}|\Psi_0\rangle$, subspace fractions $0.50/0.70/0.85/0.95$, both branches,
+eight momenta): that reconstruction reproduces the deposited \texttt{sampled\_akw\_L8.json} to
+$2.1\times10^{-8}$ per momentum, and its violation factor is $15.1$--$57.3$, of which $15.1$--$33.7$
+at the published fraction $0.85$. Those $64$ rows sit at only four abscissae, so they are drawn as a min--median--max whisker at each one rather than as $64$ overlapping markers (medians $18.5, 23.6, 26.5, 29.9$ at fractions $0.50, 0.70, 0.85, 0.95$); each of them is also plotted individually inside the filled orange series, which is where their scatter can be read. Theorem~B is violated on none of the $606$; its ratios span
+$1.18\times10^{-5}$ to $0.9999999997$. That maximum is reached on four subspaces with $w_{\mathcal
+S}=0$ exactly, where $A_{\mathcal S}\equiv 0$ and $\|A-A_{\mathcal S}\|_1=\|\varphi\|^{2}$ equals the
+trivial cap by algebra---the branch that carries no information---and the leakage branch
+$\Lambda_{\mathcal S}(\eta)/\eta$ is the smaller of the two on only $61$ of the $606$ rows: the
+figure shows that Theorem~B \emph{holds}, not that it is tight. In (b) the $\eta$ axis is not a sweep
+within one model: the Hubbard-chain rows exist only at $\eta/t=0.05,\,0.15,\,0.18$ and the stress
+families (XXZ, $t$--$V$, Anderson, sparse random) only at $0.03,\,0.07,\,0.22,\,0.40,\,0.90$, so no
+trend across the full axis may be read from it.}
+\label{fig:thm1iii-violation}

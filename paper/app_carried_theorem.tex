@@ -1,0 +1,66 @@
+\section{One-body magic cannot bound the determinant support}
+\label{app:theorem}
+\begin{proposition}[Coefficient-insensitivity obstruction]
+\label{prop:obstruction}
+Let $\mu$ be any functional of a fixed finite set of reduced density matrices, continuous in the
+state. Then $\mu$ cannot lower-bound the \emph{raw} determinant support (the unthresholded Slater rank);
+like the CP tensor rank, this count is not lower-semicontinuous~\cite{desilvalim2008}: for every $c>0$ there exist states with $\mu$ arbitrarily small and rank arbitrarily large.
+\end{proposition}
+\begin{proof}
+Rank is a coefficient-insensitive count. Take
+$\ket{\Psi_\epsilon}=\ket{D_0}+\epsilon\sum_{k=1}^{K}\ket{D_k}$ with the $D_k$ distinct. As
+$\epsilon\to0$ every reduced density matrix converges to that of $\ket{D_0}$, so any continuous
+$\mu\to\mu(\ket{D_0})$ (for $\mathcal F_1$, to $0$), while the rank remains $\Theta(K)$.
+\end{proof}
+\noindent The obstruction is about the unthresholded rank; the operative, coefficient-\emph{sensitive}
+support $|\mathcal S|_\varepsilon$ of Sec.~\ref{sec:nogo} collapses to $1$ along the same
+$\epsilon\to0$ path, so continuity alone does not obstruct it. What obstructs $|\mathcal S|_\varepsilon$
+itself is the orbital-rotation symmetry---no invariant functional survives it---together with the two
+equal-weight witnesses below, whose amplitudes are $\Theta(1)$ and therefore threshold-robust.
+Two explicit witnesses rule out the natural repairs. The two-determinant cat
+$(\ket{1\cdots10\cdots0}+\ket{0\cdots01\cdots1})/\sqrt2$ has $\gamma=\tfrac12\mathbb 1$, hence
+$\mathcal F_1=2n_{\rm o}$ (maximal) yet Slater rank $2$, so no $\mathcal F_1$-monotone bounds $|\mathcal S|$
+from below; a paired (BCS) Gaussian state has Gaussian rank $1$ yet fractional occupations, so no
+occupation functional bounds it from above. The only computable lower bounds on $|\mathcal S|$ are the
+basis-dependent orbital-Schmidt (matrix-flattening) ranks~\cite{schollwock2011}---the tensor-network
+bond dimension---to which any Gaussian-invariant magic measure is blind. That lower bound is exact:
+
+\begin{proposition}[The bond dimension lower-bounds the support]
+\label{prop:chibound}
+For any state and any bipartition of the spin-orbitals into $(\mathrm L,\mathrm R)$, the Schmidt rank
+$\chi$ across the cut (the minimal matrix-product-state bond dimension there) satisfies
+\begin{equation}
+\chi \;\le\; |\mathcal S|,
+\end{equation}
+where $|\mathcal S|$ is the number of fixed-basis Slater determinants of nonzero amplitude. Hence the
+minimal bond dimension is a rigorous, basis-dependent lower bound on the determinant support. The bound is
+one-sided: the geminal witness of Thm.~\ref{thm:witness} has $\chi=2$ yet $|\mathcal S|_{\mathrm{pair}}=2^{K}$,
+so $|\mathcal S|$ can exceed $\chi$ exponentially in a generic basis (and descends toward $\chi$ in the
+natural-orbital basis), while the orbital-invariant one-body magic $\mathcal F_1$ bounds neither
+(Prop.~\ref{prop:obstruction}).
+\end{proposition}
+\begin{proof}
+Write $\ket{\Psi}=\sum_{D\in\mathcal S}c_D\ket{D}$ over its support. Each determinant factorizes across the
+cut, $\ket{D}=\ket{D_{\mathrm L}}\otimes\ket{D_{\mathrm R}}$, so the matricization
+$A_{D_{\mathrm L},D_{\mathrm R}}=c_D$ has at most $|\mathcal S|$ nonzero entries; its rank---the Schmidt
+rank $\chi$---is therefore at most $|\mathcal S|$.
+\end{proof}
+\noindent Since a matrix-product-state simulation costs $\mathrm{poly}(\chi)$, Prop.~\ref{prop:chibound}
+says that \emph{in the sampler's own basis a tensor network is never less compact than the sampled
+subspace}: this is why we make no advantage claim in one dimension, where $\chi$ is small, and why
+any advantage must live in the higher-entanglement regime where $\chi$ itself---and with it the classical
+tensor-network cost---grows (the chain-to-ladder jump of Fig.~\ref{fig:ladder}). Empirically $\chi$ is also the
+operative correlate of the \emph{measured} cost: across the $74$ exact ground states of
+Fig.~\ref{fig:master} the thresholded support $|\mathcal S|_\varepsilon$ tracks $\chi$ (pooled Spearman
+$\rho=0.72$; $\rho=0.90$ within the $n=38$ molecular suite, where however one-body magic scores a
+comparable $\rho=0.86$---the two resources are separated not there but by the Hubbard sweep, where
+$\mathcal F_1$ anti-orders the support in all six strata while $\chi$ orders it at a mean $\rho$ of
+$0.948$; the two pooled coefficients versions~1--2 quoted for that sweep, $\rho=0.57$ and $-0.11$, are
+withdrawn with the rest of the pooling and are not the evidence here, Sec.~\ref{sec:nogo:chi}). Two caveats belong with that number. A rank correlation is not a statement of tightness,
+and per the geminal witness the bound can be exponentially loose. And the proposition is proved for the
+raw support: once amplitudes are thresholded the inequality need not survive---here $|\mathcal S|$ is cut
+at $99\%$ of the weight while $\chi$ is cut at $\varepsilon=0.05$, a tighter tolerance---and
+$|\mathcal S|_\varepsilon$ falls below $\chi$ in $7$ of the $38$ molecular points. What stands is that $\chi$ is a rigorous floor on
+the raw support and an empirical correlate of the measured one, whereas $\mathcal F_1$ orders the
+support with a sign that is not stable from family to family (Sec.~\ref{sec:nogo:chi}).
+

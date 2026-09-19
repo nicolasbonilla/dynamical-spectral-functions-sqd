@@ -1,0 +1,221 @@
+% =====================================================================================
+%  Sec. 3.1 -- Retraction of Theorem 1(iii).  Goes INSIDE Sec. 3 (Theorem B), in the body.
+%  Supersedes: theorem_b2.tex lines 45-49 (the (iii) statement) and the (iii) clause of
+%              the proof sketch, theorem_b2.tex lines 60-65;
+%              method.tex lines 82-88 ("the genuine certificate ...");
+%              discussion.tex lines 32-36 ("its error is bounded by the captured spectral weight").
+%  Drop-in replacements for the latter two are appended, commented out, at the end of this file.
+%
+%  EXTERNAL LABELS USED HERE (must exist in the v3 tree -- see the report):
+%    thm:leakage    Theorem B, the two-sided replacement            [Sec. 3, new; agreed]
+%    sec:frontier   where the certificate's non-vacuity is mapped   [Sec. 5, new; agreed]
+%    sec:moments    moment exactness, the surviving part (i)        [Sec. 4, defined in sec_4.tex]
+%    sec:nogo       the orbital-invariance obstruction              [Sec. 6, defined in sec_6.tex]
+%    app:counterex  counterexamples + the 292-subspace sweep        [Appendix B, NOT YET DEFINED]
+%    fig:violation  new Fig. N3, violation vs fraction and vs eta   [Appendix B, NOT YET DEFINED]
+%    sec:prices     the three prices                                [Sec. 7, defined in sec_7.tex]
+%    tab:fracgrid   frac(L,eta) grid                                [Sec. 7, defined in sec_7.tex]
+%    sec:method, sec:honest, fig:akwsampled, fig:scaling            [already in the tree]
+%  This file defines only sec:retraction, eq:retracted, eq:exclusion, eq:mu2.
+%  Sec. 3's own label is sec:leakage -- agreed across sec_4.tex, sec_6.tex and sec_7.tex.
+%  The obsolete alternative "sec:budgets" is used NOWHERE; do not reintroduce it.
+%  NO \cite key exists for this preprint itself; arXiv:2608.16436 is given in prose.
+%
+%  %TODO(Sec. 3): three hypotheses of Theorem B are NOT stated in this file because they belong to
+%  the theorem's own statement, which Sec. 3 owns.  They are load-bearing and a referee finds them by
+%  reading step (1) of the proof.  They must appear in the statement, not in a reply:
+%    (a) the published relative L1 is normalized by the in-window integral of |A_exact|, not by
+%        ||phi||^2 (inflation ~1.027 at L=8);
+%    (b) the "exact" reference of the resource scan is recomputed at the SAME n_l as the subspaces,
+%        so the published relative L1 is ||A_K^full - A_K^S||, not ||A - A_K^S||;
+%    (c) the theorem assumes A and A_P share E_0.  In the flagship point an origin error of
+%        3.5e-4 t alone reproduces the whole certified error, and in a real shot-based pipeline E_0 is
+%        itself estimated on a sampled subspace.  It has never been tested that way.
+% =====================================================================================
+
+\subsection{Retraction of Theorem~1(iii): the captured weight is not the controlling magnitude}
+\label{sec:retraction}
+
+Versions~1 and~2 of this preprint (arXiv:2608.16436) carried, as Theorem~1(iii), an error bound indexed
+on the captured weight alone,
+\begin{equation}
+\lVert A-A_S\rVert_{1}\;\le\;2\lVert\phi\rVert^{2}(1-w_S)\;+\;C\,\rho^{-K_S},
+\label{eq:retracted}
+\end{equation}
+$w_S=\lVert P_S\phi\rVert^{2}/\lVert\phi\rVert^{2}$, $K_S$ the largest Krylov order contained in
+$\operatorname{span}(S)$ (we set $K_S=-1$ when $\phi\notin\operatorname{span}(S)$). The main text invoked
+it as the certificate controlling the reconstruction once $w_S\to1$, the discussion as the claim that
+the error ``is bounded by the captured spectral weight''. Equation~\eqref{eq:retracted} is false, and we
+retract it together with both invocations; Theorem~\ref{thm:leakage} replaces it, keeping the one
+inequality of the published argument that was correct, with the direction it always had.
+
+\paragraph{A two-level counterexample forces the trivial constant.}
+Take $H=\big(\begin{smallmatrix}0&g\\ g&0\end{smallmatrix}\big)$, $\phi=e_0$, $S=\{0\}$, $E_0=0$. Then
+$P_S\phi=\phi$, so $w_S=1$ exactly and the weight term vanishes identically; and
+$\mathcal K_0=\operatorname{span}\{\phi\}\subseteq\operatorname{span}(S)$ while
+$\mathcal K_1\not\subseteq\operatorname{span}(S)$, so $K_S=0$ exactly and the second term is the bare
+constant $C$. The exact $A$ is a pair of Lorentzians of weight $\tfrac12$ at $\pm g$; the
+reconstruction, built on $H_S=P_SHP_S=0$, is one Lorentzian of weight $1$ at the origin, so
+$\lVert A-A_S\rVert_{1}\to2\lVert\phi\rVert^{2}$ as $g/\eta\to\infty$. Since $g$ is free,
+\eqref{eq:retracted} requires $C\ge2\lVert\phi\rVert^{2}$: false if $C$ is a constant, vacuous if it may
+depend on the instance. With $w_S<1$ strictly the failure is unbounded: in a three-level family the
+violation diverges as $\delta^{-2}$ in the displacement $\delta$ of the discarded component, measured to
+$7.6\times10^{7}$ (App.~\ref{app:counterex}). By contrast
+$\lVert A-A_S\rVert_{1}\le\lVert\phi\rVert^{2}(1+w_S)$ holds for every $S$ under no hypothesis at all,
+$A$ and $A_S$ being nonnegative with known integrals: that trivial bound is the only surviving member of
+the family \eqref{eq:retracted}, and Theorem~\ref{thm:leakage} keeps it explicitly, as the first branch
+of its minimum.
+
+\paragraph{The violation is systematic, and worst where this work operated.}
+The pooled sweep behind Fig.~\ref{fig:thm1iii-violation} contributes $621$ subspaces from four
+Hamiltonian families and eight construction rules, written by two independent implementations; $15$
+reproduce their target to double-precision round-off and define no ratio. On the $606$ that remain the
+retracted bound fails on $468$, and restricted to the regime the paper invoked, $w_S\ge0.99$, it fails
+on $363$ of $363$, the mildest by a factor $2.10$ (App.~\ref{app:counterex}). The compliant cases are
+subspaces so poor that the relative error is already of order unity, where the bound asserts nothing.
+In the configuration of Fig.~\ref{fig:akwsampled} itself --- $L=8$, $\eta=0.18t$, the $3920$-dimensional
+$(N{+}1)$ sector, momentum seeds $\hat c^{\dagger}_{k\uparrow}\ket{\Psi_0}$, both branches, eight
+momenta, subspaces grown in order of accumulated Born weight --- the median violation factor at sector
+fractions $0.50$, $0.70$, $0.85$, $0.95$ is $18.5$, $23.6$, $26.5$, $29.9$, the $64$ rows spanning
+$15.1$ to $57.3$ overall and $15.1$ to $33.7$ at the published fraction $0.85$. Those medians
+\emph{rise} monotonically, by a factor $1.6$, while the measured error over the same range falls by
+three orders of magnitude, from the $10^{-1}$ level at the lowest fraction to $1.0\times10^{-4}$ at
+$0.95$: the retracted bound fails worst exactly where the reconstruction is best, which is the opposite
+of what an error bound is for. That is a defect of the functional form and not a pathology at an edge of
+parameter space, and it is therefore measurable: Fig.~\ref{fig:thm1iii-violation} plots it against
+sector fraction and against $\eta$, beside the replacement bound on the same subspaces.
+
+Three properties of that sweep are declared with it, because each of them limits how it may be read.
+Its ranking uses $K=16$ slices, one protocol step short of the $K=18$ of the resource scan of
+Sec.~\ref{sec:prices}. Its three largest fractions lie above the support floor $\tfrac12+\tfrac1L$
+derived below, so the ranking there is selecting among determinants of \emph{zero} seed amplitude,
+where the order is arbitrary: ten different tie-breakings of one such subspace move the measured error
+by ${\pm}20\%$, which is why the violation factors are quoted to three figures at most and why the rise
+across fractions is read as a direction and not as a rate. (That $\pm20\%$ is the spread of the
+\emph{measured error} over tie-breakings of a zero-amplitude cut. It is a different quantity from the
+$6.6\times10^{-4}$ by which ties move the \emph{bound} in the sweep of Sec.~\ref{sec:frontier}, where
+the cut falls below the support floor and only two determinants are tied.) And the error at fraction $0.85$ has two independent determinations that differ by a
+factor $2.3$, so only its order of magnitude is quoted. None of this touches the retraction: the
+two-level counterexample is analytic, and the counting argument of the next paragraph but one uses no
+ranking, no protocol and no numerics at all. The sweep is corroboration of a conclusion that does not
+depend on it.
+
+\paragraph{Why it fails: the retained mass is displaced, not discarded.}
+The reconstruction is Rayleigh--Ritz on $H_S=P_SHP_S$ (Sec.~\ref{sec:method}), not the restriction of
+$A$ to a subset of its own eigenpairs: the Ritz energies $\tilde E_m$ are not eigenvalues of $H$, so
+weight the subspace \emph{keeps} is nonetheless moved in $\omega$. The published sketch elided exactly
+this. Having correctly noted $\int A=\lVert\phi\rVert^{2}$ and $\int A_S=\lVert P_S\phi\rVert^{2}$, it
+bounded the $L_1$ discrepancy by twice the missing weight --- a step legitimate when $[P_S,H]=0$, where
+$A_S$ is $A$ with the outside contributions deleted and
+$\lVert A-A_S\rVert_1=\lVert\phi\rVert^{2}(1-w_S)$ identically, and controlling nothing otherwise. The
+two-level example is the extreme: nothing is discarded there, and every unit of retained weight is
+displaced by $g$. What the integrals do give, with no commutator hypothesis, is
+$\lvert\int A-\int A_S\rvert\le\lVert A-A_S\rVert_{1}$, that is
+$\lVert\phi\rVert^{2}(1-w_S)\le\lVert A-A_S\rVert_{1}$ --- a \emph{lower} bound, with $0$ violations
+across the same $239$ subspaces on which the upper form fails. It survives the retraction as the
+left-hand half of Theorem~\ref{thm:leakage}: the captured weight does say how wrong the reconstruction
+must be, it never said how wrong it can be.
+
+\paragraph{The two terms are mutually exclusive, and one is off at every operating point here.}
+$S$ is a set of determinants, so $P_S$ is diagonal in the working basis and
+$P_S\phi=\phi\iff\operatorname{supp}(\phi)\subseteq S\iff w_S=1$, while $K_S\ge0$ means precisely
+$\phi=H^{0}\phi\in\operatorname{span}(S)$. Hence the exclusion lemma
+\begin{equation}
+K_S\ \ge\ 0\qquad\Longleftrightarrow\qquad w_S\ =\ 1 ,
+\label{eq:exclusion}
+\end{equation}
+verified with $0$ discrepancies across $239$ subspaces, of which $195$ have $K_S=-1$. The two terms of
+\eqref{eq:retracted} are therefore never both informative: either $w_S=1$ and the whole bound is the
+second term --- the two-level counterexample --- or $K_S=-1$ and $C\rho^{-K_S}=C\rho$, an undefined
+constant with no decay in it. Counting settles which branch applies here. The seed is
+$\phi=\hat c^{\dagger}_{0\uparrow}\ket{\Psi_0}$ at half filling, so $\operatorname{supp}(\phi)$ is the
+set of $(N{+}1)$ determinants with orbital $0\!\uparrow$ occupied and
+$\lvert\operatorname{supp}(\phi)\rvert/D=n_\uparrow/L=\tfrac12+\tfrac1L$ exactly; by
+\eqref{eq:exclusion}, $K_S\ge0$ demands $|S|/D\ge\tfrac12+\tfrac1L$, a floor of $0.625$, $0.600$,
+$0.583$, $0.571$ at $L=8,10,12,14$ against the sector fractions $0.5561$, $0.3625$, $0.1700$, $0.0800$
+that v1--v2 used there (Fig.~\ref{fig:scaling}; the coarser replication grid of
+Table~\ref{tab:fracgrid} reads $0.180$ at $L=12$ for the same operating point). From $L=8$ on, every
+operating point v1--v2 published lies below its own floor, so $K_S=-1$ by counting alone, with no
+numerics, no ranking and no protocol, and any point below the same line inherits the verdict
+(App.~\ref{app:counterex}). Neither $w_S$ nor $K_S$, we note, is computed in any
+file of the reproduction repository: the retracted bound was quoted, never applied, which is how a
+statement false by counting reached a published version. Theorem~\ref{thm:leakage} carries no such
+bookkeeping and is held to the opposite standard. Its two terms are defined and simultaneously active
+for every $S$; the weight term is the half this work cannot compute without $\Psi_0$ ---
+$\lVert\phi_Q\rVert=\lVert\phi\rVert\sqrt{1-w_S}$, and estimating $w_S$ against an already-truncated
+$\Psi_0$ is biased optimistically --- while $\Lambda_S(\eta)$ is an \emph{a posteriori} quantity
+assembled from the Ritz vectors the reconstruction already forms plus one matrix--vector product, and is
+evaluated, subspace by subspace, in Sec.~\ref{sec:frontier}.
+
+\paragraph{The magnitude, not the constant.}
+Two measurements at the same, exactly unit, captured weight show that \eqref{eq:retracted} was indexed
+not on a bad constant but on the wrong quantity. First, let $S^\star=\operatorname{supp}(\phi)$, the
+smallest determinant subspace of unit captured weight --- fixed by the seed, with no ranking, no
+tie-breaking and no zero-amplitude padding --- of size exactly $(\tfrac12+\tfrac1L)D$. Its weight term
+is identically zero, and its relative $L_1$ error is $0.43$ at $L=6$ and $0.33$ at $L=8$ on the periodic
+rings at $\eta=0.18t$, rising to $1.15$ and $0.90$ at $\eta=0.05t$, against a hard ceiling of $1+w_S=2$.
+(Relative here and throughout this subsection means divided by $\lVert\phi\rVert^{2}$, the normalization
+of Theorem~\ref{thm:leakage}; dividing instead by the in-window integral of the exact $A$, as the
+repository's own relative $L_1$ does, moves them by about $1\%$ at $\eta=0.05\,t$ and by $2.6$ to
+$3.3\%$ at $\eta=0.18\,t$, measured in App.~\ref{app:hyp}, and the two conventions are not interchanged
+anywhere in this paper without saying so.)
+Second, $S^\star$ is the $K=0$ rung of the Krylov ladder
+$S_K=\bigcup_{a\le K}\operatorname{supp}(H^{a}\phi)$, every rung of which contains $\phi$ and so carries
+$w_S=1$ identically, while its moment reach grows: $S_K$ reproduces the exact spectral moments through
+order $2K{+}1$ --- to the $10^{-15}$ level, failing as it must at $2K{+}2$ --- whereas coordinate
+subspaces of the same size drawn at random miss already $\mu_0$, in all of $300$ draws
+(Sec.~\ref{sec:moments}). Along a family of constant, exactly unit captured weight the error therefore
+runs from order unity to moment-exact through order $2K{+}1$. The captured weight, identical on every
+rung, does not order them.
+
+What does is elementary. Writing $\mu_j,\mu^{S}_j$ for the moments of the unbroadened measures of
+Sec.~\ref{sec:moments}, every determinant subspace with $w_S=1$ reproduces $\mu_0$ and $\mu_1$ exactly,
+and the first moment that can fail is $\mu_2$, with deficit
+\begin{equation}
+\mu_2-\mu^{S}_2\;=\;\lVert Q_S H P_S\phi\rVert^{2},\qquad Q_S=I-P_S ,
+\label{eq:mu2}
+\end{equation}
+the squared coupling of the Hamiltonian across the boundary of $S$ ($E_0$ drops out because
+$Q_S\phi=0$), zero exactly when $S$ also holds $\operatorname{supp}(H\phi)$ --- the $K_S\ge1$ condition.
+That boundary coupling is the magnitude the replacement is indexed on: it controls the leakage term
+through $\Lambda_S(\eta)\le\lVert P_SHQ_S\rVert\,\lVert\phi_S\rVert$, and Theorem~\ref{thm:leakage}
+averages it over the resolution window rather than over the spectrum. The captured weight says what the
+subspace \emph{contains}; the error is set by what the Hamiltonian does to the seed at the subspace's
+\emph{edge}. Both halves of this paper follow from that displacement: Sec.~\ref{sec:frontier} measures
+where the boundary term is small enough for the certificate to say something, and Sec.~\ref{sec:nogo}
+shows why no orbital-rotation invariant can predict it in advance.
+
+% =====================================================================================
+%  DROP-IN REPLACEMENTS FOR THE TWO SURVIVING INVOCATIONS (not part of Sec. 3.1;
+%  move into the target files -- do not compile from here).
+%
+%  (1) method.tex, replacing the sentence at lines 82-88 ("These zeroth-moment checks are not
+%      themselves an error bound; the genuine certificate is ... (Sec.~\ref{sec:honest})."):
+%
+% These zeroth-moment checks are not themselves an error bound. The certificate is the two-sided
+% bound of Theorem~\ref{thm:leakage}, which splits the $L_1$ error into the Born weight the subspace
+% failed to capture and the Hamiltonian coupling leaking across its boundary at resolution $\eta$;
+% only the first of the two is bought by drawing more bitstrings. A weight-only bound appeared in
+% versions~1 and~2 of this preprint and is retracted in Sec.~\ref{sec:retraction}. Where the
+% certificate is non-vacuous is measured, not asserted, in Sec.~\ref{sec:frontier} --- an essential
+% property given that the classical hardness of a specific instance is empirical rather than a
+% theorem (Sec.~\ref{sec:honest}).
+%
+%  (2) discussion.tex, replacing lines 32-36 ("On the positive side, Theorem~\ref{thm:b2}
+%      (App.~\ref{app:b2}) guarantees ... bounded by the captured spectral weight."):
+%
+% On the positive side, moment exactness (Sec.~\ref{sec:moments}) guarantees that a subspace
+% containing the order-$K$ Krylov space reproduces the exact spectral moments through order $2K{+}1$
+% and is captured with a polynomial shot budget, and Theorem~\ref{thm:leakage} certifies the
+% reconstruction two-sidedly: from below by the captured weight, from above by that weight together
+% with the boundary leakage. The error is \emph{not} bounded by the captured spectral weight alone ---
+% a subspace holding the entire Born support of the seed, of unit weight by construction, still
+% carries a relative $L_1$ error of $0.28$ to $0.43$ at $\eta=0.18t$, the lower end on the open chain
+% of the method validation and the upper on the periodic ring (Sec.~\ref{sec:retraction}).
+%
+%  INTEGRATION NOTE: after these two replacements are made, \ref{thm:b2} must appear NOWHERE in the
+%  live tree.  Its parts (i) and (ii) become Theorem~\ref{thm:moments} and Prop.~\ref{prop:shots}
+%  (Sec. 4), its part (iii) is retracted here, and its corollary becomes Conjecture~\ref{conj:geom}.
+%  The only occurrence of the string thm:b2 in this file is inside the quotation above, which is the
+%  OLD sentence being replaced.
+% =====================================================================================

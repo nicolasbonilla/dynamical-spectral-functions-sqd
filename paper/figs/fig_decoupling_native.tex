@@ -1,34 +1,79 @@
-% self-contained native pgfplots fragment (fig:decoupling)
-\definecolor{dcH1}{HTML}{D1495B}\definecolor{dcH2}{HTML}{009E73}\definecolor{dcH3}{HTML}{E0A21E}
-\definecolor{dcFree}{HTML}{3B7A57}\definecolor{dcCov}{HTML}{E8543A}\definecolor{dcMrf}{HTML}{10A87B}
-\definecolor{dcIon}{HTML}{2E6FE0}\definecolor{dcTrend}{HTML}{9A9A9A}
+% ===== fig:decoupling (REBUILT 2026-09-18) -- native pgfplots, no external .dat, no hand-typed numbers.
+% Emitted by p2_figs/make_figs.py from data/cost_vs_ent.json, data/n19_suite.json,
+% data/resource_master.json and p2_calc/stats_resource.json; all statistics re-verified at emit time.
+\definecolor{dcCov}{HTML}{E8543A}\definecolor{dcMrf}{HTML}{10A87B}\definecolor{dcIon}{HTML}{2E6FE0}
+\definecolor{dcTrend}{HTML}{9A9A9A}\definecolor{dcPool}{HTML}{6E6E6E}\definecolor{inkPrim}{HTML}{1B1B1B}
+\definecolor{scAh}{HTML}{D55E00}\definecolor{scAd}{HTML}{F0A868}\definecolor{scBh}{HTML}{00755E}\definecolor{scBd}{HTML}{5FC2A5}\definecolor{scCh}{HTML}{1B4F9C}\definecolor{scCd}{HTML}{79AEE8}
 \begin{tikzpicture}
-\begin{groupplot}[group style={group size=3 by 1, horizontal sep=0.9cm},
-  width=6.0cm, height=5.4cm, paperaxis,
-  title style={at={(0.5,1.0)},anchor=south,font=\bfseries,yshift=2pt},
-  label style={font=\normalsize}, tick label style={font=\normalsize},]
-% ---- (a) molecules (coloured by bonding regime) ----
-\nextgroupplot[xlabel={$\mathcal{F}_1=4\,\mathrm{tr}[\gamma(1{-}\gamma)]$},ylabel={$\log_2|\mathcal{S}|$},
-  title={(a)~molecules},xmin=-0.6,ymin=-0.4,enlarge x limits=0.05]
-\addplot[dcTrend,line width=1pt,dashed,domain=0.000:11.377,forget plot] {0.4736*x+0.8502};
-\addplot[only marks,mark=*,mark size=2pt,draw=white,line width=0.4pt,fill=dcCov] coordinates {(0.038,0.000) (2.511,1.000) (0.001,0.000) (3.460,2.000) (0.068,0.000) (3.985,1.000) (0.688,3.000) (8.192,5.524) (0.847,2.807) (11.377,6.322) (0.039,0.000) (3.754,2.585) (0.007,0.000) (6.936,3.700) (0.080,0.000) (10.289,6.087) (0.252,1.000) (5.113,3.459) (0.521,3.170) (7.735,6.508)};
-\addplot[only marks,mark=*,mark size=2pt,draw=white,line width=0.4pt,fill=dcMrf] coordinates {(4.743,3.700) (8.001,2.585) (0.013,0.000) (3.703,2.322) (1.673,3.459) (6.000,2.000) (1.307,4.755) (5.938,3.170) (0.790,2.322) (7.449,4.644)};
-\addplot[only marks,mark=*,mark size=2pt,draw=white,line width=0.4pt,fill=dcIon] coordinates {(0.002,0.000) (0.075,1.000) (0.000,0.000) (0.001,0.000) (0.518,2.322) (0.573,1.585) (0.035,0.000) (0.386,1.000)};
-\node[anchor=south east] at (rel axis cs:0.98,0.02) {$r=0.80$};
-% ---- (b) Hubbard chains ----
-\nextgroupplot[xlabel={$\mathcal{F}_1$\; ($U\!\uparrow$)},ylabel={$\log_2|\mathcal{S}|$},
-  title={(b)~Hubbard chains},legend style={at={(0.97,0.97)},anchor=north east,draw=black!20},
+\begin{groupplot}[group style={group size=2 by 2, horizontal sep=1.8cm, vertical sep=2.05cm},
+  width=7.45cm, height=5.6cm, paperaxis,
+  title style={at={(0,1)},anchor=south west,font=\small\bfseries,yshift=2pt},
+  label style={font=\normalsize}, tick label style={font=\footnotesize},
+  ymajorgrids, grid style={draw=black!8}]
+% ---- (a) molecules: F1 and |S| rise together (the regime where F1 looks predictive) ----
+\nextgroupplot[title={(a)~molecules: they rise together},
+  xlabel={$\mathcal F_1=4\,\mathrm{tr}[\gamma(1{-}\gamma)]$}, ylabel={determinant support $|\mathcal S|$},
+  ymode=log, xmin=-0.9, xmax=12.29, ymin=0.62, ymax=460, enlarge x limits=false]
+\addplot[dcTrend,line width=1pt,dashed,domain=0.000:11.377,samples=60,forget plot] {2^(0.4736*x+0.8502)};
+\addplot[only marks,mark=*,mark size=1.9pt,draw=white,line width=0.4pt,fill=dcCov] coordinates {(0.0380,1) (2.5114,2) (0.0008,1) (3.4603,4) (0.0676,1) (3.9849,2) (0.6882,8) (8.1924,46) (0.8474,7) (11.3765,80) (0.0392,1) (3.7542,6) (0.0068,1) (6.9358,13) (0.0803,1) (10.2890,68) (0.2515,2) (5.1131,11) (0.5214,9) (7.7351,91)};
+\addplot[only marks,mark=*,mark size=1.9pt,draw=white,line width=0.4pt,fill=dcMrf] coordinates {(4.7428,13) (8.0009,6) (0.0127,1) (3.7026,5) (1.6728,11) (6.0001,4) (1.3066,27) (5.9378,9) (0.7900,5) (7.4487,25)};
+\addplot[only marks,mark=*,mark size=1.9pt,draw=white,line width=0.4pt,fill=dcIon] coordinates {(0.0021,1) (0.0750,2) (0.0000,1) (0.0007,1) (0.5181,5) (0.5731,3) (0.0353,1) (0.3864,2)};
+\node[inkPrim,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.02,0.97) {Pearson $r=0.80$ on $\log_2|\mathcal S|$\\Spearman $\rho=0.862$ ($n=38$)};
+% ---- (b) the six (L,N) strata against F1 ----
+\nextgroupplot[title={(b)~Hubbard: $\mathcal F_1$ runs backwards},
+  xlabel={one-body magic $\mathcal F_1$}, ylabel={determinant support $|\mathcal S|$},
+  ymode=log, xmin=-0.9, xmax=20.2, ymin=40, ymax=900000, enlarge x limits=false]
+\addplot[scAh,mark=*,mark size=2.1pt,line width=1.0pt,mark options={fill=scAh,draw=scAh}] coordinates {(0.6258,330) (2.2316,312) (5.9132,260) (9.6047,147) (11.2997,68)};
+\addplot[scAd,mark=o,mark size=2.1pt,line width=1.0pt,mark options={fill=scAd,draw=scAd}] coordinates {(0.3396,200) (1.1047,196) (2.8100,188) (4.9945,168) (6.5809,143)};
+\addplot[scBh,mark=square*,mark size=2.0pt,line width=1.0pt,mark options={fill=scBh,draw=scBh}] coordinates {(0.8020,3395) (2.9184,3120) (7.8807,2176) (12.8163,880) (15.0697,327)};
+\addplot[scBd,mark=square,mark size=2.0pt,line width=1.0pt,mark options={fill=scBd,draw=scBd}] coordinates {(0.4855,2342) (1.6348,2272) (4.3683,2041) (7.9600,1600) (10.4394,1091)};
+\addplot[scCh,mark=triangle*,mark size=2.6pt,line width=1.0pt,mark options={fill=scCh,draw=scCh}] coordinates {(0.9724,35678) (3.6002,30975) (9.8568,17732) (16.0306,5084) (18.8404,1476)};
+\addplot[scCd,mark=triangle,mark size=2.6pt,line width=1.0pt,mark options={fill=scCd,draw=scCd}] coordinates {(0.6329,26503) (2.1803,25235) (5.9969,21203) (11.0065,13832) (14.3023,7527)};
+\node[inkPrim,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.02,0.97) {$U=1\to16$ along each curve\\within each sweep: $\rho=-1.000$\\pooled ($n=30$): $\rho=-0.109$ (withdrawn)};
+% ---- (c) the same six strata against chi ----
+\nextgroupplot[title={(c)~Hubbard: $\chi$ runs forwards},
+  xlabel={minimal bond dimension $\chi$},
+  ylabel={determinant support $|\mathcal S|$},
+  ymode=log, xmin=2.6, xmax=18.4, ymin=40, ymax=900000, enlarge x limits=false,
+  legend style={at={(1.16,-0.46)},anchor=north,legend columns=6,draw=black!25,font=\footnotesize},
   legend cell align=left]
-\addplot[dcH1,mark=*,mark size=2pt,line width=1.1pt] coordinates {(0.626,8.366) (2.232,8.285) (5.913,8.022) (9.605,7.200) (11.300,6.087)}; \addlegendentry{$(6,6)$}
-\addplot[dcH2,mark=square*,mark size=2pt,line width=1.1pt] coordinates {(0.802,11.729) (2.918,11.607) (7.881,11.087) (12.816,9.781) (15.070,8.353)}; \addlegendentry{$(8,8)$}
-\addplot[dcH3,mark=triangle*,mark size=2.4pt,line width=1.1pt] coordinates {(0.486,11.194) (1.635,11.150) (4.368,10.995) (7.960,10.644) (10.439,10.091)}; \addlegendentry{$(8,6)$}
-% ---- (c) free fermions (y-label dropped; shares the |S| meaning, own scale) ----
-\nextgroupplot[xlabel={chain length $L$},ylabel={},
-  title={(c)~free fermions},xtick={4,6,8,10},enlarge x limits=0.16,ymin=4,ymax=17.5]
-\addplot[dcFree,mark=square*,mark size=2.4pt,line width=1.2pt] coordinates {(4,5.129) (6,8.392) (8,11.771) (10,15.189)};
-\node[anchor=south east,inner sep=1.5pt] at (axis cs:4,5.13){$35$};
-\node[anchor=south east,inner sep=1.5pt] at (axis cs:6,8.39){$336$};
-\node[anchor=south east,inner sep=1.5pt] at (axis cs:8,11.77){$3496$};
-\node[anchor=north east,inner sep=1.5pt] at (axis cs:10,15.19){$37361$};
+\addplot[scAh,mark=*,mark size=2.1pt,line width=1.0pt,mark options={fill=scAh,draw=scAh}] coordinates {(12,330) (10,312) (6,260) (5,147) (4,68)};
+\addlegendentry{$(6{,}6)$}
+\addplot[scAd,mark=o,mark size=2.1pt,line width=1.0pt,mark options={fill=scAd,draw=scAd}] coordinates {(11,200) (10,196) (9,188) (9,168) (9,143)};
+\addlegendentry{$(6{,}4)$}
+\addplot[scBh,mark=square*,mark size=2.0pt,line width=1.0pt,mark options={fill=scBh,draw=scBh}] coordinates {(11,3395) (11,3120) (8,2176) (8,880) (7,327)};
+\addlegendentry{$(8{,}8)$}
+\addplot[scBd,mark=square,mark size=2.0pt,line width=1.0pt,mark options={fill=scBd,draw=scBd}] coordinates {(16,2342) (16,2272) (15,2041) (14,1600) (13,1091)};
+\addlegendentry{$(8{,}6)$}
+\addplot[scCh,mark=triangle*,mark size=2.6pt,line width=1.0pt,mark options={fill=scCh,draw=scCh}] coordinates {(17,35678) (14,30975) (10,17732) (6,5084) (6,1476)};
+\addlegendentry{$(10{,}10)$}
+\addplot[scCd,mark=triangle,mark size=2.6pt,line width=1.0pt,mark options={fill=scCd,draw=scCd}] coordinates {(13,26503) (13,25235) (13,21203) (11,13832) (9,7527)};
+\addlegendentry{$(10{,}8)$}
+\node[inkPrim,font=\scriptsize,anchor=north west,align=left] at (rel axis cs:0.02,0.97) {$\chi$ falls as $U$ rises\\within each sweep: $\rho=0.894$ to $1.000$\\pooled ($n=30$): $\rho=+0.569$ (withdrawn)};
+% ---- (d) Simpson panel ----
+\nextgroupplot[title={(d)~stratified vs pooled},
+  xlabel={stratum $(L,N)$}, ylabel={Spearman $\rho$ vs $|\mathcal S|$},
+  xmin=0.45, xmax=6.55, ymin=-1.42, ymax=1.95, ytick={-1,-0.5,0,0.5,1},
+  xtick={1,2,3,4,5,6}, xticklabels={$(6{,}6)$,$(6{,}4)$,$(8{,}8)$,$(8{,}6)$,$(10{,}10)$,$(10{,}8)$},
+  x tick label style={font=\scriptsize,rotate=30,anchor=east}, ymajorgrids=false]
+\addplot[dcPool,densely dashed,line width=0.9pt,forget plot] coordinates {(0.45,0.5692) (6.55,0.5692)};
+\addplot[dcPool,densely dashed,line width=0.9pt,forget plot] coordinates {(0.45,-0.1088) (6.55,-0.1088)};
+\addplot[only marks,mark=*,mark size=2.4pt,scAh,mark options={fill=scAh,draw=white,line width=0.4pt},forget plot] coordinates {(1,1.0000)};
+\addplot[only marks,mark=square*,mark size=2.3pt,scAh,mark options={fill=scAh,draw=white,line width=0.4pt},forget plot] coordinates {(1,-1.0000)};
+\addplot[only marks,mark=*,mark size=2.4pt,scAd,mark options={fill=scAd,draw=white,line width=0.4pt},forget plot] coordinates {(2,0.8944)};
+\addplot[only marks,mark=square*,mark size=2.3pt,scAd,mark options={fill=scAd,draw=white,line width=0.4pt},forget plot] coordinates {(2,-1.0000)};
+\addplot[only marks,mark=*,mark size=2.4pt,scBh,mark options={fill=scBh,draw=white,line width=0.4pt},forget plot] coordinates {(3,0.9487)};
+\addplot[only marks,mark=square*,mark size=2.3pt,scBh,mark options={fill=scBh,draw=white,line width=0.4pt},forget plot] coordinates {(3,-1.0000)};
+\addplot[only marks,mark=*,mark size=2.4pt,scBd,mark options={fill=scBd,draw=white,line width=0.4pt},forget plot] coordinates {(4,0.9747)};
+\addplot[only marks,mark=square*,mark size=2.3pt,scBd,mark options={fill=scBd,draw=white,line width=0.4pt},forget plot] coordinates {(4,-1.0000)};
+\addplot[only marks,mark=*,mark size=2.4pt,scCh,mark options={fill=scCh,draw=white,line width=0.4pt},forget plot] coordinates {(5,0.9747)};
+\addplot[only marks,mark=square*,mark size=2.3pt,scCh,mark options={fill=scCh,draw=white,line width=0.4pt},forget plot] coordinates {(5,-1.0000)};
+\addplot[only marks,mark=*,mark size=2.4pt,scCd,mark options={fill=scCd,draw=white,line width=0.4pt},forget plot] coordinates {(6,0.8944)};
+\addplot[only marks,mark=square*,mark size=2.3pt,scCd,mark options={fill=scCd,draw=white,line width=0.4pt},forget plot] coordinates {(6,-1.0000)};
+\node[inkPrim,font=\scriptsize,anchor=north west] at (rel axis cs:0.02,0.995) {$\bullet$\; $\rho(\chi,|\mathcal S|)$ per stratum};
+% D12: this key used to sit at the bottom-left, corner-to-corner with the (6,6) datum.
+\node[inkPrim,font=\scriptsize,anchor=north west] at (rel axis cs:0.02,0.90) {$\blacksquare$\; $\rho(\mathcal F_1,|\mathcal S|)$ per stratum};
+\node[dcPool,font=\scriptsize,anchor=north west] at (rel axis cs:0.035,0.578) {pooled ($n=30$): $\rho=+0.569$ (withdrawn)};
+\node[dcPool,font=\scriptsize,anchor=north west] at (rel axis cs:0.035,0.377) {pooled ($n=30$): $\rho=-0.109$ (withdrawn)};
 \end{groupplot}
 \end{tikzpicture}

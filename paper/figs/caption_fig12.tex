@@ -1,0 +1,39 @@
+\caption{\textbf{Three faces of the cost, measured with shots.}
+One-dimensional Hubbard ring, $U/t=8$, half filling, periodic boundary conditions; the subspace is
+built in the $(N{+}1,S_z{+}1)$ sector seeded by $c^{\dagger}_{0\uparrow}\lvert\Psi_0\rangle$ from the
+$K{+}1=19$ time snapshots of the declared protocol ($K=18$, $\delta t=0.5$), and a subspace is
+accepted when its Haydock reconstruction reaches relative-$L_1<0.05$ against the exact spectrum at
+broadening $\eta=0.15\,t$. All fractions below are at that single $\eta$.
+\textbf{(a)} One-body fermionic magic of the ground state, $6.6074$ at $L=4$ to $22.5050$ at $L=14$
+(periodic ring; the open-chain families elsewhere in this paper carry different values
+and must not be substituted here).
+\textbf{(b)} The required fraction of the sector, twice. Open squares, dashed: the infinite-shot
+limit of the same protocol --- the subspace obtained by ranking the exact Born weights of the
+snapshots --- $0.9167$, $0.8200$, $0.5561$, $0.3625$, $0.1700$, $0.0800$ for $L=4$--$14$, the
+sequence previously reported. Filled circles, solid: the same acceptance criterion reached by
+actually drawing shots, $0.9167\pm0.0000$, $0.8527\pm0.0096$, $0.6246\pm0.0033$, $0.4141\pm0.0012$,
+$0.2104\pm0.0004$ (mean $\pm$ s.d. over 4 independent shot seeds; 6 seeds at $L=10$); the error bars
+are drawn and are smaller than the markers. Finite sampling needs $+4.0\%$, $+12.3\%$, $+14.2\%$ and
+$+23.7\%$ more of the sector than the infinite-shot limit at $L=6,8,10,12$: the penalty does not
+cancel, it grows with size, and the shaded strip is that difference. An independent 8-seed run of a
+separately written sampler reproduces $0.8571\pm0.0135$ ($L=6$) and $0.6275\pm0.0031$ ($L=8$),
+agreeing with the curve to within one standard deviation. No finite-shot point is shown at $L=14$:
+its Born weights were not computed, and they are not extrapolated.
+\textbf{(c)} The absolute counts that panel~(b) normalises away, plus the third one. Sector dimension
+$\dim$ (grey) and the support $\lvert\mathcal{S}\rvert$ of the reported subspace (blue) both grow
+exponentially; the measured number of shots $T$ that reaches the finite-shot operating point of
+panel~(b) (green) is $2.4\times10^{4}$, $2.6\times10^{5}$, $3.1\times10^{6}$, $1.9\times10^{7}$ at
+$L=6,8,10,12$ (s.d. over seeds $2.3\times10^{3}$, $8.1\times10^{3}$, $3.8\times10^{4}$,
+$1.2\times10^{5}$). $L=4$ carries no shot count: its 24-state sector is degenerate for this purpose
+and its budget is censored by the $10^{8}$-per-snapshot cap. Log-linear fits over the six sizes drawn in (c) (four for $T$, which has no $L=4$ and no $L=14$ point)
+give $\dim\sim e^{1.30L}$ ($R^2=0.9999$), $\lvert\mathcal{S}\rvert\sim e^{1.05L}$ ($R^2=0.998$) and
+$T\sim e^{1.12L}$ ($R^2=0.996$, four sizes). Those exponents are fits to the points this panel plots, not to the five-size fits stored in \texttt{honest\_sampling.json} ($1.108$ and $1.082$). The exponent of $T$ exceeds that of
+$\lvert\mathcal{S}\rvert$ by $0.054$ per site, with a 95\% interval $[-0.065,\,0.172]$: these data do
+\emph{not} establish that the shot budget grows with a larger exponent than the support, only that it
+is larger in absolute terms at every size measured (Table~\ref{tab:shots}).
+\textbf{Resolution dependence.} Over $\eta/t\in[0.05,0.50]$ the exponent of
+$\lvert\mathcal{S}\rvert$ moves from $1.165$ to $1.017$ and that of the fraction in panel~(b) by a
+factor $2.2$, from $-0.1266$ to $-0.2743$ (Table~\ref{tab:fracgrid}, $L=4$--$12$). In absolute value
+both move by the same $0.148$: they are one exponent, and neither is stable.}
+%% D17: the label of the figure this fragment replaces, so every \ref resolves.
+\label{fig:scaling}

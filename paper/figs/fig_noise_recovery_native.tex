@@ -6,13 +6,13 @@
 \definecolor{nrC2}{HTML}{2E6F95}
 \definecolor{nrOK}{HTML}{0E7C7B}\definecolor{nrBad}{HTML}{5E4B8B}\definecolor{nrNv}{HTML}{D1495B}\definecolor{nrChem}{HTML}{2E7D32}
 \begin{tikzpicture}
-\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.7cm}, height=9.5cm, paperaxis,
+\begin{groupplot}[group style={group size=2 by 1, group name=nrg, horizontal sep=1.45cm}, height=9.5cm, paperaxis,
   title style={at={(0,1)},anchor=south west,font=\bfseries,yshift=1pt}]
-\nextgroupplot[width=0.54\linewidth, ymode=log, xmin=-1, xmax=31, ymin=3e-3, ymax=80,
+\nextgroupplot[width=0.505\linewidth, ymode=log, xmin=-1, xmax=31, ymin=3e-3, ymax=80,
   xlabel={per-qubit bit-flip rate $\varepsilon$ (\%)}, ylabel={energy error vs FCI (mHa)}, title={(a)},
-  legend style={at={(0.03,0.97)},anchor=north west,font=\normalsize,draw=black!20},legend columns=2,legend cell align=left]
+  legend style={at={(0.5,0.03)},anchor=south,font=\normalsize,draw=black!20},legend columns=3,legend cell align=left]
 \draw[nrChem,dashed,line width=0.6pt] (axis cs:-1,1.6) -- (axis cs:31,1.6);
-\node[black,font=\normalsize,anchor=north east,fill=white,fill opacity=0.7,text opacity=1,inner sep=1pt] at (axis cs:30.6,1.52) {chemical accuracy};
+% chemical-accuracy label: emitted after the groupplot, see below.
 \addplot[name path=H6lo,draw=none,forget plot] coordinates {(0,3.2914) (2,3.0066) (5,3.6550) (10,3.7659) (15,5.3712) (20,8.9720) (30,15.6267)};
 \addplot[name path=H6hi,draw=none,forget plot] coordinates {(0,4.5041) (2,4.1385) (5,4.4412) (10,6.5199) (15,9.5780) (20,16.7961) (30,29.8587)};
 \addplot[nrH6,opacity=0.15,forget plot] fill between[of=H6lo and H6hi];
@@ -38,7 +38,7 @@
 \addplot[nrCO,line width=0.9pt,densely dashed,forget plot] coordinates {(0,1.7332) (2,1.9851) (5,1.9371) (10,1.4901) (15,1.8518) (20,2.5550) (30,2.8339)};
 \addplot[nrC2,line width=1.4pt,mark=*,mark size=1.3pt,mark options={fill=nrC2,draw=white,line width=0.4pt}] coordinates {(0,0.1835) (2,0.1579) (5,0.1034) (10,0.0747) (15,0.0604) (20,0.0506) (30,0.0261)}; \addlegendentry{C$_2$}
 \addplot[nrC2,line width=0.9pt,densely dashed,forget plot] coordinates {(0,0.1835) (2,0.1635) (5,0.1143) (10,0.0811) (15,0.0746) (20,0.0647) (30,0.0657)};
-\nextgroupplot[width=0.46\linewidth, xmode=log, xmin=2.2e-3, xmax=14, enlarge y limits=0.03,
+\nextgroupplot[width=0.425\linewidth, xmode=log, xmin=2.2e-3, xmax=14, enlarge y limits=0.03,
   ytick={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18}, yticklabels={BeH$_2$,H$_2$,LiH,HF,F$_2$,H$_2$O,H$_4$,OH,LiF,BH,N$_2$,BeH,C$_2$,NO,O$_2$,CN,CO,NH$_3$,H$_6$}, y tick label style={font=\normalsize},
   xtick={0.01,0.1,1,10}, xticklabels={$0.01$,$0.1$,$1$,$10$}, xminorticks=false,
   xlabel={energy error at $\varepsilon=2\%$ (mHa)}, title={(b)},
@@ -51,4 +51,6 @@
 \addplot[only marks,mark=*,mark size=2.1pt,nrOK] coordinates {(0.0022,0) (0.0022,1) (0.0022,2) (0.0022,3) (0.0022,4) (0.0022,5) (0.0022,6) (0.0194,7) (0.0254,8) (0.0605,9) (0.0636,10) (0.1367,11) (0.1615,12) (0.1942,13) (0.3363,14) (0.7261,15) (1.2450,16) (1.5063,17) (3.5606,18)}; \addlegendentry{S-CoRe}
 \node[black,font=\normalsize,anchor=north east] at (axis cs:1.4720000000000002,18.3) {$1.6$ mHa};
 \end{groupplot}
+\node[nrChem,font=\footnotesize,anchor=south east,inner sep=1pt]
+      at (nrg c1r1.north east) {chemical accuracy ($1.6$\,mHa)};
 \end{tikzpicture}

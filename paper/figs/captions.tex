@@ -1,0 +1,81 @@
+% ============================================================================
+% Captions for the two rebuilt resource figures.  Every number below is taken
+% from p2_figs/figure_numbers.json, which make_figs.py writes only after all
+% 36 self-verification checks pass.  Nothing here is typed by hand.
+% ============================================================================
+
+% ---------------------------------------------------------------- FIGURE 1
+\begin{figure*}[tp]\centering
+\input{figs/fig_decoupling_native.tex}
+\caption{\label{fig:decoupling}\textbf{Inside every stratum one-body magic $\mathcal F_1$ orders the
+static determinant support $|\mathcal S|$ perfectly and with the sign inverted; what fails is the
+\emph{pooled} coefficient, not $\mathcal F_1$.}
+\textbf{(a)}~Nineteen molecular active spaces at equilibrium and at dissociation ($38$ points):
+in the static-correlation regime $\mathcal F_1$ and $|\mathcal S|$ rise together
+(Pearson $r=0.80$ on $\log_2|\mathcal S|$; Spearman $\rho=0.862$). The grey dashed line is the least-squares fit $\log_2|\mathcal S|=0.474\,\mathcal F_1+0.850$ over those same points, a guide to that correlation and not a model of the cost.
+\textbf{(b)}~The Hubbard interaction sweep is not one cloud of $30$ points but six strata
+$(L,N)$ of five on-site repulsions $U=1,2,4,8,16$; one curve per stratum. Inside every one of
+the six, raising $U$ raises $\mathcal F_1$ and lowers $|\mathcal S|$, and does so with a perfect
+rank reversal: $\rho(\mathcal F_1,|\mathcal S|)=-1.000$ in all six. Pooling across strata
+collapses the coefficient to $\rho=-0.109$; that collapse is a Simpson reversal, not an absence
+of signal.
+\textbf{(c)}~The same six strata against the minimal bond dimension: $\rho(\chi,|\mathcal S|)$
+runs from $+0.894$ to $+1.000$ within strata, with a mean of $0.948$, and does not change sign between
+them. Its pooled coefficient is withdrawn together with $\mathcal F_1$'s: pooling six deterministic
+five-point sweeps destroys within-stratum structure whichever way the result falls, and it fell in our
+favour on one of the two.
+\textbf{(d)}~The six within-stratum coefficients against the two pooled ones. Stratified, the
+$\mathcal F_1$ evidence is one-sided and exact: Kendall $\tau=-1.000$ with $0$ concordant of
+$60$ within-stratum pairs and no ties, one-sided exact permutation $p=3.3\times10^{-13}$ over
+the $(5!)^6=2.99\times10^{12}$ within-stratum relabellings. The reading
+``$\rho=-0.11$ ($n=30$, $p\approx0.56$, not significant)'' is the pooled number and should be
+replaced by the stratified test.
+Two limits of this evidence, which the stratified test does not remove. First, the five points
+of a stratum are a deterministic monotone sweep in $U$, so the effective number of independent
+observations is $6$, not $30$; the exact $p$ counts relabellings, not independent samples.
+Second, this is a statement about rank direction only: inside a fixed sweep $\mathcal F_1$
+orders the five costs \emph{perfectly}, so the claim is not that $\mathcal F_1$ is uninformative
+about $|\mathcal S|$ but that its sign is not stable---inverted here, positive over the
+molecular set of panel~(a)---which is exactly what an orbital invariant compared against a
+basis-dependent cost must do.}
+\end{figure*}
+
+% ---------------------------------------------------------------- FIGURE 2
+\begin{figure*}[tp]\centering
+\input{figs/fig_resource_master_native.tex}
+\caption{\label{fig:master}\textbf{The resource thesis over the $74$ deposited rows
+($71$ distinct exact ground states).} Nineteen molecules at equilibrium and dissociation, a
+$30$-point Hubbard interaction sweep, and a matched chain/two-leg-ladder pair; all by exact
+diagonalization.
+\textbf{(a)}~The determinant support tracks the minimal bond dimension in every family (pooled
+Spearman $\rho=+0.722$), with the geminal witness $\chi{=}2$, $|\mathcal S|{=}2^{K}$ the
+deliberately loose lower bound. Open circles are the $11$ of $38$ molecular points pinned at the
+floor $|\mathcal S|=1$---$29\%$ of the molecular set---where the support cannot resolve anything
+and from which both molecular coefficients draw much of their leverage.
+\textbf{(b)}~One-body magic does not ($\rho=+0.599$ over the same rows): the Hubbard branch runs
+the wrong way ($U\!\uparrow$ raises $\mathcal F_1$ and lowers $|\mathcal S|$) and the
+chain/ladder pair sits at $\mathcal F_1$ values agreeing to within $0.9\%$ while $|\mathcal S|$
+differs by $1.52$, $1.68$ and $2.24\times$.
+\textbf{(c)}~The two coefficients with the intervals the deposited data actually support. Bars
+are $95\%$ cluster bootstrap intervals over the $19$ molecules ($B=20\,000$, cluster $=$
+molecule): $\chi$ gives $0.901$ $[0.805,0.959]$, $\mathcal F_1$ gives $0.862$ $[0.709,0.929]$.
+\emph{The molecular comparison does not resolve the two resources}: $\Delta\rho=0.039$,
+Williams $t=0.94$ on $35$ df, $p=0.35$ (Steiger $z=0.94$), bootstrap $95\%$ CI of the difference
+$[-0.070,+0.189]$; neither does the pooled comparison ($\Delta\rho=0.123$, $t=1.50$, $p=0.14$).
+The $n=74$ entries are point estimates---only the difference was resampled. The dashed line is
+the ceiling $|\rho|\le0.986$ imposed by the ties in $|\mathcal S|$, against which $\chi$ reaches
+$91\%$ and $\mathcal F_1$ $87\%$ of what is attainable. What discriminates between the two
+candidate resources is therefore not this figure but the stratified Hubbard sweep of
+Fig.~\ref{fig:decoupling}(b,d).
+\textbf{(d)}~The same $38$ molecular points in the rank space in which a Spearman coefficient is
+actually computed, against the identity line. The $11$ floor points share midrank $6.0$---the
+vertical block at the left---which is the origin of the ceiling quoted in~(c).
+\emph{Provenance and caveats.} The three ``chain'' rows are the same states as the $U=8$
+half-filled entries of the Hubbard sweep (identical $|\mathcal S|$ and $\chi$, identical
+$\mathcal F_1$ to the precision at which they are stored), re-plotted as the ladder's matched
+partner; the $74$ rows are therefore $71$ distinct states and three of them enter the pooled
+coefficients twice. Recomputed over the $71$ distinct states the pooled coefficients are
+$\rho(\chi,|\mathcal S|)=+0.746$ and $\rho(\mathcal F_1,|\mathcal S|)=+0.592$. The $38$
+molecular points are $19$ molecules $\times$ $2$ geometries, i.e.\ dependent pairs (effective
+$n\approx31.3$), which is why every molecular interval here is clustered by molecule.}
+\end{figure*}

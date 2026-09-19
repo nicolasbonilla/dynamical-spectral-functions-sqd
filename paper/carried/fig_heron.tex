@@ -1,0 +1,22 @@
+% carried verbatim from the v2 tree (hardware.tex); NOT part of this session's deliverable.
+\begin{figure*}[tp]\centering\input{figs/fig_hardware_hero_frag.tex}
+\caption{\textbf{The complete quantum-hardware record of this work: two runs on IBM~Heron processors.}
+\textbf{(a)}~Single-particle spectral function $A(\omega)$ of the $L=6$ Hubbard model at $U/t=4$,
+$\eta=0.15\,t$ ($12$ qubits; the classical validation of Fig.~\ref{fig:method} is a different instance,
+$U/t=8$), reconstructed from $50{,}000$ computational-basis bitstrings sampled on \texttt{ibm\_fez} (TREX
+readout twirling, Pauli twirling, and dynamical decoupling). The device histogram
+covered the complete $(N{+}1)$ sector ($|\mathcal S|\!=\!300/300$), so the reconstruction is exact by
+coverage---a proof of principle, and neither a fidelity measurement nor a claim of advantage.
+\textbf{(b)}~Ground-state energy error of stretched $\mathrm{N_2}$ ($R=2.0$~\AA, CAS(10e,12o)/cc-pVDZ,
+$24$ qubits) versus self-consistent configuration-recovery step, on \texttt{ibm\_marrakesh} ($10{,}000$ shots,
+double-factorized Trotter circuit). The noisy device (solid) reaches
+$0.59\pm0.14$~mHa of the exact FCI value---well below chemical accuracy---whereas the noiseless statevector
+simulation of the \emph{same} shallow circuit (dashed) is stranded at $29.5$~mHa. Versions~1--2 read that contrast as device noise \emph{helping}; that
+reading is withdrawn in Sec.~\ref{sec:scope:hw}: the mechanism named for it is decided by the two
+recovered subspace sizes, and the record stores neither. The
+solid curve is the mean over $8$ recovery seeds on the cached device counts; the shaded envelope and the
+capped whiskers at every step both show the $\pm1$~s.d.\ spread across those $8$ seeds (widest at
+step~$0$, $31.1\pm4.0$~mHa, where it starts together with the noiseless curve, and tapering as recovery
+converges to $0.59\pm0.14$~mHa; best seed $0.40$~mHa). The
+systematic version across nineteen molecules under a controlled noise model is Fig.~\ref{fig:noiserec}. These two runs are the entirety of the quantum
+hardware used here; every other result in this work is an exact classical simulation.}\label{fig:heron}\end{figure*}

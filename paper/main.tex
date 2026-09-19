@@ -1,125 +1,265 @@
-% ===== Paper 2 (rebuilt) — arXiv preprint, article 11pt, Paper-1 style =====
-\documentclass[11pt]{article}
+% =====================================================================================
+%  main.tex  --  Physical Review A submission, REVTeX 4.2, two columns.
+%
+%  Generated from revtex/src/ by revtex/convert.py; this preamble is the only
+%  hand-written file in ms/.  Everything else in ms/ is script output, so the
+%  conversion can be re-run from the one-column sources at any time.
+%
+%  MEASURED GEOMETRY (probed with \the\textwidth, not assumed):
+%      one-column source   \textwidth = 472.32 pt, body 10.95 pt
+%      revtex4-2 aps pra   \textwidth = 510.00 pt, \columnwidth = 246.00 pt, body 10 pt
+%  So a float promoted to figure*/table* is 8.0 % WIDER than it was, not 52 % narrower.
+%  That is why 35 of the 19+16 floats are starred: it is the assignment that leaves the
+%  validated figures at (or above) the size they were validated at.
+% =====================================================================================
+
+\documentclass[
+  aps,              % APS journal styles
+  pra,              % Physical Review A
+  10pt,             % PRA's own size; stated explicitly so the class stops warning
+                    % "No type size specified, using default 10"
+  twocolumn,        % required by PRA
+  amsmath,amssymb,  % REVTeX loads them itself, in the order it wants
+  groupedaddress,   % NOT superscriptaddress.  With one author and one affiliation the
+                    % superscript form prints "Nicolas Bonilla Vargas^{1,*}" over
+                    % "^1 Daita AI"; grouped prints the affiliation plainly under the
+                    % name, which is APS house style for a single-affiliation paper.
+                    % Rendered both and compared (work/vis/g1crop.png).
+  nofootinbib,      % keep \footnote out of the reference list (3 footnotes in the text)
+  longbibliography, % INERT here: it only affects BibTeX output through apsrev4-2.bst,
+                    % and this manuscript ships a hand-written thebibliography.  Kept
+                    % so that a later switch to BibTeX needs no option change; delete
+                    % it if you prefer the option list to carry nothing inert.
+  floatfix          % REVTeX's own fix for deferred double-column floats (31 of them)
+]{revtex4-2}
+
+% ---- fonts ---------------------------------------------------------------------
+% lmodern is kept: the native pgfplots figures inherit the body font, so dropping it
+% would change every label in every figure.  Its metrics are Computer Modern's, so the
+% APS page geometry is untouched.
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage[a4paper,margin=2.2cm]{geometry}
-\usepackage{amsmath,amssymb,amsthm,bm}
+
+% ---- maths ---------------------------------------------------------------------
+\usepackage{amsthm}
+\usepackage{bm}
+
+% ---- graphics and the native figures --------------------------------------------
 \usepackage{graphicx}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usepgfplotslibrary{groupplots,fillbetween}
 \usetikzlibrary{backgrounds,fadings,arrows.meta,decorations.pathreplacing}
 \pgfplotsset{table/search path={figs}}
-% shared paper-native plot style (matches lmodern text, thin axes, subtle grid)
 \pgfplotsset{
-  % native figure style: ALL text inherits the document body font (11pt) so figures match the text exactly
   paperaxis/.style={
     tick align=outside, tick pos=left, line width=0.5pt,
     grid style={line width=0.3pt, draw=black!12},
     legend style={draw=black!25, fill=white, fill opacity=0.9, text opacity=1, rounded corners=1pt},
   }
 }
-% --- float placement: pack text with figures, avoid isolated figure-only pages ---
-\renewcommand{\topfraction}{0.92}
-\renewcommand{\bottomfraction}{0.85}
-\renewcommand{\textfraction}{0.06}
-\renewcommand{\floatpagefraction}{0.88}
-\setcounter{topnumber}{2}
-\setcounter{bottomnumber}{2}
-\setcounter{totalnumber}{4}
-\usepackage{placeins}   % \FloatBarrier available; NO automatic per-section barrier (lets floats flow to pack pages)
+\graphicspath{{figs/}}
+
+% The native figures were drawn and validated against the *article 11pt* size ladder.
+% revtex4-2 aps is a 10pt class, so \scriptsize would fall 8->7pt and \footnotesize
+% 9->8pt inside every figure, shrinking labels that no one has inspected at 7pt.  The
+% ladder is restored to the validated values, and only inside floats.  (Body text is
+% untouched: this is \AtBeginEnvironment-scoped, not global.)
+\makeatletter
+\newcommand{\figladder}{%
+  \renewcommand{\tiny}{\@setfontsize\tiny{6}{7}}%
+  \renewcommand{\scriptsize}{\@setfontsize\scriptsize{8}{9.5}}%
+  \renewcommand{\footnotesize}{\@setfontsize\footnotesize{9}{11}}%
+  \renewcommand{\small}{\@setfontsize\small{10}{12}}%
+  \renewcommand{\normalsize}{\@setfontsize\normalsize{10.95}{13.6}}%
+  \renewcommand{\large}{\@setfontsize\large{12}{14}}%
+}
+\makeatother
+\usepackage{etoolbox}
+% \figladder redefines the size COMMANDS; it does not change the size in force.
+% Measured with \f@size: the ambient inside a float is 10.95pt under article 11pt
+% and 9pt under revtex4-2, so every label that carries no explicit size command
+% silently lost 17.8 %.  \normalsize -- which \figladder has just redefined to
+% 10.95/13.6 -- puts it back.  tikzpicture-scoped: REVTeX's own 9pt caption, which
+% is APS house style, is deliberately NOT touched.
+\AtBeginEnvironment{tikzpicture}{\figladder\normalsize}
+
+% ---- sectioning ----------------------------------------------------------------
+% revtex4-2 ships secnumdepth=4.  The 39 \paragraph heads of this manuscript are
+% run-in labels, not numbered units, and the class was lettering them a., b., c.
+% (restarting each section) -- labels that appear in no source file.  3 keeps
+% section/subsection/subsubsection numbered and stops there, as the article did.
+\setcounter{secnumdepth}{3}
+
+% ---- tables --------------------------------------------------------------------
+% array.sty is deliberately NOT loaded: revtex4-2 4.2f (2022) + array.sty 2.6n
+% (2025-09-25) is broken here -- any p/m/b column raises "Extra \or", because REVTeX's
+% \@mkpream@relax predates array's \@startpbox@action / \insert@pcolumn protection.
+% Exactly one table used an array-only feature and convert.py rewrote it.
 \usepackage{booktabs}
-\usepackage{array}
+
+% ---- typography ----------------------------------------------------------------
 \usepackage{microtype}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{cite}
-\usepackage[colorlinks=true,allcolors=blue,breaklinks=true]{hyperref}
-\hypersetup{
-  pdftitle={Dynamical spectral functions from bitstring-sampled quantum subspaces: entanglement, not one-body magic, tracks the sampling cost},
-  pdfauthor={Nicolas Bonilla Vargas},
-  pdfkeywords={sample-based quantum diagonalization, QSCI, spectral functions, fermionic magic, entanglement, Hubbard model, quantum simulation}
-}
-\usepackage{caption}
-\captionsetup{font=small,labelfont=bf,labelsep=period}
-\usepackage{titlesec}
-\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.6em}{}
-\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
-\setlength{\parskip}{0.35em}
-\setlength{\parindent}{0pt}
 \frenchspacing
-\sloppy
-\graphicspath{{figs/}}
+\sloppy                         % 246pt columns: without it the overfull count explodes
+
+% ---- float placement in two columns ---------------------------------------------
+% 31 of the 35 floats are double-column, and a figure* can only reach the top of a
+% later page.  These are the standard loosened fractions plus their double-column
+% twins, which do not exist in a one-column document.
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{1}
+\setcounter{totalnumber}{3}
+\setcounter{dbltopnumber}{2}
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.60}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.80}
+\renewcommand{\dbltopfraction}{0.92}
+\renewcommand{\dblfloatpagefraction}{0.70}
+
+% ---- theorem environments -------------------------------------------------------
+% \newcommand, not \providecommand: if a future REVTeX release defines any of these,
+% the run must FAIL LOUDLY rather than silently keep a different definition.  Checked
+% on revtex4-2 4.2f: \ket, \braket, theorem, proposition and conjecture are all unused
+% by the class.
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
-\providecommand{\braket}[1]{\langle #1 \rangle}
-\providecommand{\ket}[1]{\lvert #1 \rangle}
+\newcommand{\braket}[1]{\langle #1 \rangle}
+\newcommand{\ket}[1]{\lvert #1 \rangle}
 
-\title{\vspace{-1.2cm}\bfseries Dynamical spectral functions from bitstring-sampled quantum subspaces:
-entanglement, not one-body magic, tracks the sampling cost}
-\author{Nicol\'as Bonilla Vargas\thanks{M.Sc.\ Physics, Universidad Nacional de Colombia;
-M.Sc.\ Applied Data Science \& AI, SRH University Heidelberg / Munich; Daita AI.
-\texttt{ngbonillav@unal.edu.co}}}
-\date{\today}
+% ---- hyperref -------------------------------------------------------------------
+% Loaded last, and after REVTeX, which is hyperref-aware.  caption.sty and titlesec
+% are NOT loaded: both patch machinery revtex4-2 owns, and APS wants REVTeX's own
+% caption and section styling anyway.
+\usepackage[colorlinks=true,allcolors=blue,breaklinks=true]{hyperref}
+\hypersetup{
+  pdftitle={Captured weight and boundary leakage bound the error of sample-based spectral functions},
+  pdfauthor={Nicolas Bonilla Vargas},
+  pdfkeywords={sample-based quantum diagonalization, QSCI, spectral functions, a posteriori error bound, Hubbard model, quantum simulation}
+}
 
 \begin{document}
-\maketitle
 
-\begin{abstract}\noindent
-Sample-based quantum diagonalization (SQD) and quantum-selected configuration interaction (QSCI) are
-the electronic-structure methods with the most quantum-hardware traction, yet their canonical
-target---the ground-state \emph{energy}---is precisely where classical methods have caught up:
-matchgate simulators, autoregressive neural samplers, and heat-bath configuration interaction now
-match or beat the quantum-sampled subspace. We move the target to \emph{dynamics} and to the
-underlying \emph{resource} question. From one bitstring-sampling primitive---computational-basis
-measurements of a shallow real-time circuit, with no Hadamard or controlled-unitary tests---we
-reconstruct, from sampled subspaces, the single-particle spectral function $A(\omega)$ and its
-momentum-resolved form $A(k,\omega)$; the same primitive targets the neutral-sector dynamical structure
-factors $S(q,\omega)$ and $S^{zz}(q,\omega)$, each channel assembled classically in the Lehmann
-representation from its own sector-specific subspace. The sampled reconstruction matches exact
-diagonalization on Hubbard chains and, for the orbital-projected
-$A(\omega)$, across a nineteen-molecule suite (energies FCI-verified to $<10^{-5}$~Ha), and runs on the
-IBM~Heron processor.
+% No \\ here: REVTeX puts the title into the PDF bookmark string, where \\ is not a
+% legal token (that was the last of the eleven "Token not allowed in a PDF string"
+% warnings).  REVTeX breaks the title on its own.
+\title{Captured weight and boundary leakage bound the error of
+sample-based spectral functions}
 
-Second, we ask which resource controls the cost---the determinant support $|\mathcal S|$ the sampler
-must populate---and correct a natural expectation. On the number-conserving states of chemistry the
-fermionic AntiFlatness (fermionic magic) collapses to a single one-particle-reduced-density-matrix
-invariant, $\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$ (equal to $2N_{\mathrm u}$ for
-spin-restricted natural orbitals), the effectively-unpaired-electron index and one-body-entanglement
-linear entropy. Being an orbital-rotation (Gaussian) invariant while $|\mathcal S|$ is basis dependent,
-$\mathcal F_1$ is provably \emph{decoupled} from the cost, two-sidedly and without a stable sign. The
-cost is instead \emph{lower-bounded and empirically tracked} by the basis-dependent entanglement---the
-minimal bond dimension $\chi$. On the molecular suite the two candidate resources are not distinguishable
-(Spearman $\rho=0.90$ for $\chi$ versus $0.86$ for $\mathcal F_1$, $n=38$, where both merely track static
-correlation); what separates them is the Hubbard interaction sweep, where $\chi$ holds at $\rho=0.57$
-while $\mathcal F_1$ falls to $\rho=-0.11$ ($n=30$, not significant). One-body fermionic magic is thus a
-faithful multireference diagnostic but an unreliable predictor of the sampling cost; any genuine
-advantage lives one stratum above, in the high-rank non-Gaussianity of the connected higher-body
-cumulants in the operative sampling frame. We prove moment exactness and a sampling-capture bound
-polynomial in $|\mathcal S|$ and independent of the Hilbert-space dimension. On the
-artificial-intelligence side of the hybrid loop, self-consistent configuration recovery improves the
-sampled subspace under realistic device noise, while in the dequantization test the large effect is
-classical and free: on an under-sampled device head an Epstein--Nesbet perturbative tail, drawing no
-additional shots, cuts the
-energy error by $31\%$ ($39.24\pm3.95\to26.98\pm0.66$~mHa over five seeds, $3.1$~s.d.\ of the
-pre-correction spread), whereas a \emph{learned} generative model adds a further $4.0$~mHa at only
-$1.2$~s.d.\ of its own spread and does not beat that baseline---delimiting the quantum--AI frontier.
+% --------------------------------------------------------------------------------
+%  AUTHOR BLOCK.  The one-column version carried
+%    \author{Nicol\'as Bonilla Vargas\thanks{M.Sc. Physics, Universidad Nacional de
+%    Colombia; M.Sc. Applied Data Science & AI, SRH University Heidelberg / Munich;
+%    Daita AI.  ngbonillav@unal.edu.co}}
+%  REVTeX redefines \thanks (it is \@AF@join, the affiliation-joining macro), so that
+%  form is not merely unidiomatic here, it is wrong.  The e-mail becomes \email and
+%  the employer becomes \affiliation.  The two degrees are NOT affiliations and REVTeX
+%  has no field for them; they are dropped.  \affiliation also wants a postal address.
+%  *** BOTH POINTS NEED NICOLAS'S DECISION BEFORE SUBMISSION. ***
+% --------------------------------------------------------------------------------
+\author{Nicol\'as Bonilla Vargas}
+\email{ngbonillav@unal.edu.co}
+\affiliation{Daita AI}
+
+\date{\today}
+
+\begin{abstract}
+Sample-based quantum diagonalization is moving from energies to dynamics. Given the subspace the shots
+populated, how wrong is the spectral function built on it? We prove a two-sided bound on the relative
+$L_1$ error of Rayleigh--Ritz reconstruction: with $w$ the captured Born weight of the probe, the error
+is at least $1-w$ and at most
+$(1+\sqrt{w})\bigl(\sqrt{1-w}+\widehat\Lambda(\eta)/\eta\bigr)$, $\widehat\Lambda$ the normalized
+coupling of $H$ across the subspace boundary at resolution $\eta$, from the Ritz vectors in hand. Shots
+buy the first term down, not the second. On the subspace that \emph{is} the probe's Born support, where
+that term vanishes identically, the relative error is still $0.33$--$0.43$ at $\eta=0.18\,t$ and
+$0.90$--$1.15$ at $0.05\,t$, against a ceiling of $2$.
+
+We retract the weight-only bound of versions~1--2 of this preprint: an analytic counterexample forces
+its constant to the trivial value; none of $606$ subspaces violates the replacement. On Hubbard sectors
+up to dimension $731\,808$ it is worse than the trivial bound at every published fraction, at all four
+sizes, by $2.8$--$4.9$, converged in depth at $L=12$, so those reconstructions are uncertified, though
+independent code recovers those fractions to $7\%$. The obstruction is structural: at $L=8$ the probe's
+Krylov space touches every determinant of the sector. What survives is a calibration: over sixteen
+$(L,\eta)$ cells whose true errors span five decades, the bound crosses the trivial one at a true
+relative error of $1.2$--$7.3\times10^{-3}$, median $2.8\times10^{-3}$, computed without the answer.
+
+No orbital-rotation invariant substitutes for it: one-body fermionic magic collapses to
+$4\,\mathrm{tr}[\gamma(1-\gamma)]$, constant along an orbit on which the determinant support runs from
+$O(K)$ to $2^{K}$ at bond dimension $2$, and on fibers on which our bound separates. Within each of six
+$(L,N)$ strata its rank correlation with that support is exactly $-1$, exact $p=3.3\times10^{-13}$;
+both pooled coefficients are withdrawn. We claim no quantum advantage.
 \end{abstract}
 
-\input{introduction.tex}
-\input{method.tex}
-\input{resource.tex}
-\input{results.tex}
-\input{table_molecules.tex}
-\input{hardware.tex}
-\input{discussion.tex}
-\input{conclusion.tex}
+\maketitle
 
+\input{sec_1.tex}
+
+\input{sec_2.tex}
+\input{carried/fig_method.tex}
+\input{figs/float_f5.tex}
+\input{carried/fig_lattice.tex}
+
+\input{sec_3_body.tex}
+
+\input{sec_4_body.tex}
+
+\input{sec_5_body.tex}
+
+\input{sec_6_body.tex}
+\input{figs/captions.tex}
+\input{carried/fig_ladder.tex}
+
+\input{sec_7.tex}
+\input{figs/float_f12.tex}
+
+\input{sec_8.tex}
+\input{figs/float_n2.tex}
+\input{carried/fig_sqw.tex}
+\input{carried/fig_spin.tex}
+
+\input{sec_9.tex}
+\input{table_molecules_v3.tex}
+\input{carried/fig_hero.tex}
+\input{carried/fig_heron.tex}
+\input{carried/fig_noise.tex}
+\input{carried/fig_noiserec.tex}
+% ---------------------------------------------------------------------------------
+%  fig:amort and fig:gflow are NOT typeset.  This is not a layout decision.
+%  Sec. 9.4 of this manuscript reads, in the body: "Both figures of this test are
+%  therefore withdrawn and the surviving statement is made in prose."  The same
+%  paragraph withdraws the two ratios "3.1 s.d." and "1.2 s.d." because they are
+%  a difference divided by one arm's standard deviation and so are not test
+%  statistics at all -- and those two numbers are exactly what the caption of
+%  fig:gflow asserts.  The header of sec_9.tex says the same thing to the builder:
+%  "\ref{fig:gflow} and \ref{fig:amort} are DELIBERATELY ABSENT: both figures are
+%  cut here".  Typesetting them anyway printed, three pages after the retraction,
+%  the statistics the retraction withdraws; and neither float was referenced by any
+%  sentence -- they were the only two orphan floats of the thirty-five.  The two
+%  \input lines were carried over from the one-column driver by accident.
+% \input{carried/fig_amort.tex}
+% \input{carried/fig_gflow.tex}
+
+\input{sec_10.tex}
+
+% The one-column driver carried \FloatBarrier here (main_test.tex:176).  placeins
+% is not loaded -- it documents that it does not handle double-column floats -- so
+% the barrier is \clearpage, which does flush them.  Without it six body floats of
+% Sec. IX were composed inside Appendix A.
+\clearpage
 \appendix
-% appendix sections are explicitly labelled "Appendix A/B/C"
-\titleformat{\section}{\normalfont\large\bfseries}{Appendix~\thesection.}{0.6em}{}
-\input{theorem_b2.tex}
+\input{sec_3_app.tex}
+\input{figs/float_n3.tex}
+\input{sec_4_app.tex}
+\input{sec_5_app.tex}
+\input{sec_6_app.tex}
+\input{app_carried_theorem.tex}
+\input{app_stats.tex}
+\input{app_carried_repro.tex}
 
-\FloatBarrier  % flush all appendix floats (incl. Table~\ref{tab:repro}) BEFORE the bibliography
+% \FloatBarrier of main_test.tex:189, same substitution.
+\clearpage
 \input{bibliography.tex}
 
 \end{document}

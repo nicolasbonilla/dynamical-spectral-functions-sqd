@@ -1,0 +1,16 @@
+% carried verbatim from the v2 tree (hardware.tex); NOT part of this session's deliverable.
+\begin{figure*}[tp]\centering\input{figs/fig_noise_recovery_native.tex}
+\caption{\textbf{SQD ground-state energy under a controlled bit-flip model across the molecular suite.}
+\textbf{(a)}~Energy error vs the per-qubit bit-flip rate $\varepsilon$ for five representative molecules
+($\mathrm{H_6}$, $\mathrm{NH_3}$, $\mathrm{N_2}$, CO, $\mathrm{C_2}$; seed-averaged over $8$ seeds at $4{,}000$ shots each, bands $=\pm1$ s.d.\ across seeds; log scale). Solid $=$ S-CoRe recovery, dashed $=$ naive
+post-selection. The advantage of recovery over naive post-selection, both arms consuming the same corrupted
+bitstrings at the same rate with the same seeds, grows with noise. For $\mathrm{CO}$ and
+$\mathrm{C_2}$ the error at finite $\varepsilon$ also falls below its own $\varepsilon=0$ value;
+that second comparison is withdrawn in Sec.~\ref{sec:scope:hw}, because it is decided by the size of
+the recovered subspace, which this sweep does not record. \textbf{(b)}~The full nineteen-molecule suite at a realistic
+$\varepsilon=2\%$ (log scale, sorted): for each molecule the naive post-selection error (open circle) is
+linked to the S-CoRe value (filled), so the leftward pull is the recovery gain; the shaded band is
+chemical accuracy ($<1.6$~mHa). Eighteen of nineteen land inside it; $\mathrm{H_6}$, the most
+multireference case, is the residual challenge. Panels (a) and (b) are independent seed ensembles
+(panel (a): $8$ seeds; panel (b): $5$ seeds, $4000$ shots), so a given molecule's $\varepsilon=2\%$ value
+can differ by up to a factor of a few between them (for $\mathrm{N_2}$, $0.34$ vs $0.06$~mHa; both far below chemical accuracy).}\label{fig:noiserec}\end{figure*}

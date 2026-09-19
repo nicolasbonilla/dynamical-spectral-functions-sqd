@@ -46,3 +46,6 @@ build/
 # NOTE (2026-09-18): .github/workflows/ci.yml used to be listed here, which meant
 # the CI badge advertised a workflow that was never in the repository at all --
 # not broken, ABSENT.  The exclusion is removed; the workflow is now tracked.
+
+# TeXstudio/TeXmaker scratch bibliography -- an editor artefact, never a source
+paper/mainNotes.bib

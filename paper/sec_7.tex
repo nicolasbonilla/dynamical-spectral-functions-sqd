@@ -1,0 +1,295 @@
+% =====================================================================
+%  Sec. 7 -- Three prices: support, resolution, and shots
+%  Replaces the subsection "Scaling of the sampling cost with system size"
+%  of the former paper/results.tex (lines 251-299 of the v2 tree).
+%
+%  NEW \label's introduced here (none exist in the v2 tree):
+%      sec:prices, eq:supportexp, tab:fracgrid, tab:shots, tab:finiteshot
+%  \cite keys: none new are needed in this section.
+%  External labels used: sec:leakage, sec:moments, conj:geom, app:moments:conj,
+%      sec:frontier, sec:method, fig:scaling.
+%      *** \ref{thm:b2} has been REMOVED from this file: Sec. 4 withdraws the
+%      corollary that sentence invoked, and theorem_b2.tex is superseded. ***
+%  FLOAT rebuilt in parallel, NOT written here:
+%      \ref{fig:scaling} -- the unlabelled shaded band and its inked label at
+%      fig_scaling2_native.tex:21,30 removed; finite-shot band with +-sigma
+%      added; secondary shot axis; |S| = 19183 / 824503.
+%
+%  PROVENANCE OF THE FINITE-SHOT NUMBERS (Sec. 7.3 and 7.4).  TWO runs, and they
+%  are named as two throughout:
+%    run A  release/data/sampled_honest.json  (sampled_honest.py, 2026-09-18T11:57Z,
+%           8 seeds 20260918..20260925, L = 4, 6, 8 only, K=18, dt=0.5, eta=0.15t,
+%           n_l=260, 600-point grid).
+%    run B  release/data/honest_sampling.json (honest_sampling_scaling.py,
+%           2026-09-18T19:07Z, seeds 7001.., L = 4..12, 4 seeds per size and 6 at
+%           L=10, same protocol, nl_exact=260 / nl_sub=150).
+%  BOTH ARE NOW DEPOSITED, with their generating scripts in release/src/; the
+%  %TODO(deposit) that stood here is discharged.  The earlier version of this
+%  section said that nothing was measured above L=8.  That was wrong: run B
+%  measures L=10 and L=12, and its L=6 and L=8 budgets agree with run A's to
+%  0.2% and 3.2%.  Table tab:shots now carries five measured rows.
+% =====================================================================
+
+\section{Three prices: support, resolution, and shots}\label{sec:prices}
+
+A sample-based reconstruction is paid for on three axes, not one: the determinant support
+the sampler must populate, the resolution $\eta$ at which the response is asked for, and
+the shot budget $T$ that populates the support. The previous version of this work priced the first
+two, and quoted the second as though it were a property of the model. It is not. This section reports
+what each axis costs, states which of the three exponents belongs to the Hubbard chain and which
+belongs to the question we put to it, and adds the axis that was missing.
+
+\paragraph{One symbol, three counts.} Because the same letter carries three different objects in this
+paper, we fix the notation before using it. $|\mathcal S|_\eta$, the subject of this section, is
+\emph{dynamical}: the number of determinants needed for the reconstruction of $A(\omega)$ to reach
+relative $L_1<\mathrm{thr}$ at resolution $\eta$ and recursion depth $n_\ell$, so it depends on all
+three of $\mathrm{thr}$, $\eta$ and $n_\ell$ (\texttt{scaling\_lanczos\_mf.py}, \texttt{stage\_frac}:
+$\mathrm{thr}=0.05$, $\eta=0.15\,t$, $n_\ell=150$). $|\mathcal S|_{\varepsilon_w}$, the subject of
+Sec.~\ref{sec:nogo}, is \emph{static}: the number of determinants carrying a fixed fraction
+$1-\varepsilon_w$ of the weight of the \emph{ground state}, with no dynamics, no resolution and no
+threshold on a spectral error. And $S$, the subject of Theorem~\ref{thm:leakage}, is neither: it is
+whatever set of bitstrings the sampler actually returned. The three coincide only by accident. Where
+this section writes $|\mathcal S|_\eta$ it means the first, and no statement here transfers to the
+other two without saying so.
+
+\subsection{The support exponent, and what does and does not survive a change of resolution}
+
+Across $L=4$--$14$ ($8$ to $28$ qubits, half-filled \emph{periodic} rings at $U/t=8$; the three largest
+sizes reached by matrix-free Lanczos/Haydock and validated against dense diagonalization at $L\le8$),
+the determinant support needed to reconstruct $A(\omega)$ to relative $L_1<0.05$ at $\eta=0.15\,t$ and
+$n_\ell=150$ grows exponentially,
+\begin{widetext}
+\begin{equation}
+|\mathcal S|_{\eta=0.15} \;=\; 22,\;246,\;2180,\;19183,\;124407,\;824503
+\;\;\Longrightarrow\;\; |\mathcal S|_\eta\sim e^{1.05\,L}\quad(L=4\text{--}14,\ R^{2}=0.998),
+\label{eq:supportexp}
+\end{equation}
+\end{widetext}
+more slowly than the $(N{+}1)$ sector itself,
+$\dim = 24,\,300,\,3920,\,52920,\,731808,\,10306296\sim e^{1.30\,L}$. Restricting the same fit to
+$L=4$--$12$, the five sizes Table~\ref{tab:fracgrid} covers, gives $1.082$ at $R^{2}=0.998$; we quote
+the fit range with the exponent throughout, because it matters at the second decimal. The same caution
+applies to the object fitted: $1.082$ is the fit to the published points, while the $1.090$ in the
+bottom block of Table~\ref{tab:fracgrid} is the fit to that table's own coarser replication grid at the
+same resolution. They are two fits to two datasets and the difference is theirs, not a rounding.
+
+\paragraph{The two exponents are one exponent.} It would be convenient to report that the support
+exponent, unlike the fraction exponent, is resolution-independent. It is not, and the arithmetic is
+immediate: the fraction \emph{is} the support divided by the sector dimension --- exactly, to the last
+digit, at all six sizes --- and the sector dimension does not depend on $\eta$. The two exponents
+therefore differ by a constant,
+$b_{|\mathcal S|}(\eta)-b_{\rm frac}(\eta)=b_{\dim}=1.291$ on $L=4$--$12$, and they move together:
+across the decade $\eta=0.05\to0.50\,t$ both shift by $0.148$ in absolute value
+(Table~\ref{tab:fracgrid}). There is one resolution-dependent exponent in this analysis, and the
+previous version reported it twice.
+
+What differs is the base it is measured against, and that is not cosmetic. On the fraction exponent
+$0.148$ is three quarters of the quantity itself: $e^{-0.13\,L}$ becomes $e^{-0.27\,L}$, and the
+headline changes qualitatively with a choice the model does not make. On the support exponent the same
+$0.148$ carries it from $1.165$ to $1.017$---a seventh of its own value, $13\%$ measured against the
+larger end and $15\%$ against the smaller---and ``exponential in $L$ with an exponent near one''
+survives at every resolution in the decade. We therefore report the support, and we report it for two reasons, neither of which is
+stability: it is the absolute resource a device has to populate, and it is not divided by a sector
+dimension that grows for a reason---the combinatorics of the Hilbert space---that has nothing to do
+with the method. The fraction is reported as the derived, resolution-dependent quantity that it is,
+with its full grid attached.
+
+\subsection{The sector fraction is a property of the question, not of the model}
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{Sector fraction required for relative $L_1<0.05$, versus system size and resolution.}
+Same ground state, same time-evolution ranking (protocol $K=18$, $dt=0.5$, $16$ substeps, $19$
+snapshots; \texttt{scaling\_lanczos\_mf.py}), same threshold, same depth $n_\ell=150$; only $\eta$
+changes. The scan over subspace size in this replication is coarser than the bisection that produced
+the published points, and returns the smallest scanned fraction meeting the threshold, so the
+$\eta=0.15\,t$ column is an upper bound on them: against the published $0.9167$, $0.8200$, $0.5561$,
+$0.3625$, $0.1700$ it reads $0.917$, $0.820$, $0.560$, $0.380$, $0.180$, agreeing at the two smallest
+sizes and standing $0.7\%$, $4.8\%$ and $5.9\%$ high at the three largest. The same granularity is why
+the fraction exponent of this column, $-0.2012$, is not identical to the $-0.2093$ obtained by fitting
+the published points themselves over $L=4$--$12$. Bottom block: least-squares exponents. \emph{Both}
+fit windows are given for the support, because the choice moves the third digit and this work
+criticizes exactly that elsewhere in this section. The fraction exponent moves by a factor $2.2$ over
+the decade, from $-0.1266$ to $-0.2743$, while the support exponent moves from $1.165$ to $1.017$; in
+absolute value both move by $0.148$, which is the whole content of the
+comparison.}\label{tab:fracgrid}
+\begin{tabular}{lcccccccc}
+\toprule
+ & \multicolumn{8}{c}{$\eta/t$}\\
+\cmidrule(lr){2-9}
+$L$ & $0.05$ & $0.075$ & $0.10$ & $0.15$ & $0.18$ & $0.25$ & $0.35$ & $0.50$\\
+\midrule
+$4$  & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.875$\\
+$6$  & $0.900$ & $0.890$ & $0.870$ & $0.820$ & $0.800$ & $0.730$ & $0.680$ & $0.630$\\
+$8$  & $0.740$ & $0.680$ & $0.640$ & $0.560$ & $0.540$ & $0.480$ & $0.420$ & $0.380$\\
+$10$ & $0.520$ & $0.480$ & $0.440$ & $0.380$ & $0.340$ & $0.260$ & $0.220$ & $0.200$\\
+$12$ & $0.340$ & $0.280$ & $0.240$ & $0.180$ & $0.160$ & $0.140$ & $0.120$ & $0.100$\\
+\midrule
+fraction exponent, $L{=}4$--$12$ & $-0.1266$ & --- & $-0.1681$ & $-0.2012$ & --- & $-0.2395$ & --- & $-0.2743$\\
+$R^{2}$                          & $0.904$   & --- & $0.918$   & $0.929$   & --- & $0.970$   & --- & $0.982$\\
+support exponent, $L{=}4$--$12$  & $1.165$   & --- & $1.123$   & $1.090$   & --- & $1.052$   & --- & $1.017$\\
+$R^{2}$                          & $0.999$   & --- & $0.999$   & $0.998$   & --- & $0.999$   & --- & $0.999$\\
+support exponent, $L{=}6$--$12$  & $1.136$   & --- & $1.088$   & $1.053$   & --- & $1.022$   & --- & $0.992$\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+The headline of the previous version---that the fraction needed for a fixed spectral accuracy falls
+from $0.92$ at $L=4$ to $0.08$ at $L=14$, as $e^{-0.25\,L}$---is tunable, and we withdraw it. Over the
+decade of $\eta$ the fraction exponent moves by a factor $2.2$, from $-0.1266$ at $\eta=0.05\,t$
+to $-0.2743$ at $\eta=0.50\,t$. At $\eta=0.50\,t$ the fraction at $L=12$ is already $0.10$, below the
+value the previous version quoted for $L=14$: any headline of this form is reachable by choosing the
+broadening.
+
+Nor is the fraction exponential even at fixed $\eta$. The local logarithmic slopes between consecutive
+published points are $-0.056$, $-0.194$, $-0.214$, $-0.379$, $-0.377$---a factor $6.8$ across five
+intervals, steepening monotonically over the first four. The quoted $R^{2}=0.94$ is a straight line
+drawn through a curve of increasing slope, and the fitted exponent depends on where the fit stops:
+$L=4$--$10$ gives $-0.159$, $L=4$--$12$ gives $-0.209$, and the published $-0.2477$ requires reaching
+$L=14$.
+
+The mechanism that makes the fraction move with $\eta$ was already stated, without derivation, in
+v1--v2, and Sec.~\ref{sec:moments} restates it as Conjecture~\ref{conj:geom} rather than as a theorem:
+the polynomial-approximation route to a geometric rate in the Krylov order places the kernel poles at
+$\omega\pm i\eta$, so any such rate approaches $1$ as $\eta\to0^{+}$ and any prefactor diverges
+(App.~\ref{app:moments:conj}). At finer resolution more Krylov order---hence more of the sector---is
+needed for the same $L_1$ error. We use that as a mechanism and not as a bound: no $C(\eta)$ or
+$\rho(\eta)$ is exhibited anywhere in this work, and none is needed to read Table~\ref{tab:fracgrid},
+which is a measurement.
+
+One further constraint has to be declared rather than inherited. The reference against which the
+threshold is applied is itself a finite-depth Lanczos computation, recomputed at the same depth as the
+subspaces so that the comparison is internally consistent ($n_\ell=150$;
+\texttt{scaling\_lanczos\_mf.py}). Two consequences follow, and both belong in the open. First, the
+published relative $L_1$ is a distance between two depth-$150$ objects, not between the reconstruction
+and the exact $A$. Second, that reference drifts with depth, and the drift is resolution-dependent:
+between $n_\ell=100$ and $n_\ell=200$ at $L=12$ the relative $L_1$ change of the reference
+\emph{alone} is $11.1\%$ at $\eta=0.05\,t$, $3.0\%$ at $\eta=0.10\,t$, $0.93\%$ at $\eta=0.15\,t$ and
+$0.05\%$ at $\eta=0.25\,t$. At the depth used here the protocol is self-consistent only for
+$\eta\gtrsim0.15\,t$---which is exactly where the published column sits, at the margin, and it is
+\emph{below} that margin, at $\eta=0.10\,t$, that Fig.~\ref{fig:spin} is drawn.
+
+The replacement is therefore stated as a declared window rather than as a number. The fraction is
+reported only for $\eta\ge0.15\,t$ at $n_\ell=150$; the full $\mathrm{frac}(L,\eta)$ grid of
+Table~\ref{tab:fracgrid} is published with it, so that the resolution dependence is visible rather
+than absorbed into a single exponent; and the quantitative scaling claim of this work is carried by
+the support, Eq.~\eqref{eq:supportexp}, whose exponent is quoted with its fit window attached.
+
+\subsection{The third price: shots}
+
+The two axes the previous version priced are the fraction and the absolute support, and the caption of
+Fig.~\ref{fig:scaling} called that pair the honest two-sided picture. There is a third, it is the one
+that binds, and---unlike the other two---it had no number at all.
+
+Populating a subspace by measurement is a coupon-collector problem on the Born distribution of the
+time-evolved seed, so the budget exceeds the support it buys. Table~\ref{tab:shots} reports that budget
+\emph{measured}, by multinomial sampling of the declared protocol, at the five sizes where the
+measurement is affordable; only $L=14$ carries no measurement. Two independent runs contribute, and we
+name them as two rather than merging them: run~A draws eight seeds at $L=4$, $6$ and $8$, run~B draws
+four seeds at $L=4$, $6$, $8$ and $12$ and six at $L=10$, with different seeds and a different budget
+grid. Where they overlap they agree---$2.43$ against $2.44\times10^{4}$ at $L=6$ and $2.70$ against
+$2.61\times10^{5}$ at $L=8$, that is to $0.2\%$ and $3.2\%$---which is why the two larger rows are
+reported as measurements and not as extrapolations of the smaller ones. Every budget is for \emph{one}
+orbital seed and \emph{one} branch; the momentum-resolved observable consumes the full set of orbital
+seeds in both $(N{\pm}1)$ sectors, sixteen channels at $L=8$.
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{The third price, measured at every size but the largest.} $T$ is the total shot budget,
+split evenly over the $19$ snapshots of the protocol, for a single orbital seed and a single branch; it
+is the budget at which the finite-shot reconstruction itself first reaches relative $L_1<0.05$, and
+$\pm$ is the sample standard deviation across seeds, not the standard error of the mean. Run~A is
+\texttt{sampled\_honest.json} ($8$ seeds, $L\le8$); run~B is \texttt{honest\_sampling.json} ($4$ seeds,
+$6$ at $L=10$), and the two are separate runs with different seeds and different budget grids, listed
+separately at $L=6$ and $L=8$ so that their agreement can be read rather than asserted. At $L=4$ run~B
+is censored by its own cap of $10^{8}$ shots per snapshot, the $24$-state sector being degenerate for
+this purpose, and run~A is quoted there. The last column divides $T$ by the \emph{published} support;
+dividing instead by the support each run actually populated gives $95$, $107$, $141$ and $124$ at
+$L=6$--$12$. Only $L=14$ is a floor: the overhead held at its $L=12$ value, which is a lower bound and
+not an estimate.}\label{tab:shots}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lccccl}
+\toprule
+$L$ & $\dim(N{+}1)$ & $|\mathcal S|_\eta$ & $T$ & $T/|\mathcal S|_\eta$ & status\\
+\midrule
+$4$  & $24$           & $22$       & $(7.8\pm2.0)\times10^{2}$   & $35$  & measured, run~A, $8$ seeds\\
+$6$  & $300$          & $246$      & $(2.43\pm0.34)\times10^{4}$ & $99$  & measured, run~A, $8$ seeds\\
+$6$  & $300$          & $246$      & $(2.44\pm0.23)\times10^{4}$ & $99$  & measured, run~B, $4$ seeds\\
+$8$  & $3\,920$       & $2\,180$   & $(2.70\pm0.13)\times10^{5}$ & $124$ & measured, run~A, $8$ seeds\\
+$8$  & $3\,920$       & $2\,180$   & $(2.61\pm0.08)\times10^{5}$ & $120$ & measured, run~B, $4$ seeds\\
+$10$ & $52\,920$      & $19\,183$  & $(3.09\pm0.04)\times10^{6}$ & $161$ & measured, run~B, $6$ seeds\\
+$12$ & $731\,808$     & $124\,407$ & $(1.91\pm0.01)\times10^{7}$ & $154$ & measured, run~B, $4$ seeds\\
+$14$ & $10\,306\,296$ & $824\,503$ & $\gtrsim1.3\times10^{8}$    & $154$ & floor, not measured\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+Four statements are supported by the measured rows, and a fifth is not. Supported: the budget is two
+orders of magnitude larger than the support it buys, already at $L=6$; the budget itself grows
+exponentially, $7.8\times10^{2}$ to $1.9\times10^{7}$ over $L=4$--$12$, a log-linear fit over the four
+sizes at which it is measured giving $T\sim e^{1.12\,L}$ at $R^{2}=0.996$; at $L=8$ the full
+momentum-resolved observable costs $16\times2.7\times10^{5}\approx4\times10^{6}$ shots, which is a device
+experiment, while the $L=14$ floor of ${\sim}10^{8}$ for a \emph{single} seed and branch is neither a
+laptop experiment nor, at present readout rates, a device one; and the overhead per determinant is a
+level and not a growth law---$35$, $99$, $124$, $161$, $154$ against the published support across
+$L=4$--$12$, rising by a factor $4.4$ over the first three sizes and flat within the seed spread over
+the last two. Not supported, and not written: an exponent for that overhead. Fitted on the four sizes
+where $T$ is measured it is $0.054$ per site with a $95\%$ interval $[-0.065,0.172]$ that contains
+zero, so \emph{these data do not establish that the shot budget grows with a larger exponent than the
+support}, only that it is larger in absolute terms at every size measured. That distinction is the
+same one this section enforces two subsections above, applied to our own new axis.
+
+\subsection{What the published curve is, and what a declared budget costs}
+
+Precision about the label matters more here than the retraction. The ranking that produced the
+published fractions is \texttt{argsort} applied to the Born distribution of the time-evolved state
+accumulated over the $19$ snapshots of the protocol (\texttt{scaling\_lanczos\_mf.py},
+\texttt{stage\_rank})---that is, to the distribution the device would itself measure, in the limit of
+infinitely many shots. It is \emph{not} a clairvoyant ordering by exact eigenvector amplitudes; the
+repository contains such an oracle elsewhere (\texttt{amortized\_recovery.py}) and labels it as one.
+But it is also not a finite-shot reconstruction, and describing it as \emph{sampled} without a shot
+count was wrong. The published curve is the $T\to\infty$ limit of the declared protocol, and it is
+labelled that way from here on.
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{Finite shots, with the budget attached.} Multinomial sampling of the declared
+protocol, eight independent seeds, $\eta=0.15\,t$; $\pm$ is the sample standard deviation across
+seeds, not the standard error of the mean. Top block: the sector fraction the finite-shot
+reconstruction needs to reach relative $L_1<0.05$, and the budget at which it reaches it. Bottom
+block: at \emph{matched} subspace size, the error of the infinite-shot ordering against the error of
+finite shots at the stated budget, and the ratio between them.}\label{tab:finiteshot}
+\begin{tabular}{lccc}
+\toprule
+ & $L=4$ & $L=6$ & $L=8$\\
+\midrule
+fraction, $T\to\infty$ (published)     & $0.9167$ & $0.8200$ & $0.5561$\\
+fraction, finite shots                 & $0.9167\pm0.0000$ & $0.8571\pm0.0135$ & $0.6275\pm0.0031$\\
+budget $T$ at which it is reached      & $(7.8\pm2.0)\times10^{2}$ & $(2.43\pm0.34)\times10^{4}$ & $(2.70\pm0.13)\times10^{5}$\\
+\midrule
+matched $|\mathcal S|$ (size the sampler returned) & $22$ & $247$ & $2331$\\
+budget $T$ at that size                & $7.8\times10^{2}$ & $1.74\times10^{4}$ & $2.04\times10^{5}$\\
+relative $L_1$, $T\to\infty$ ordering  & $1.4\times10^{-14}$ & $0.0469$ & $0.0362$\\
+relative $L_1$, finite shots           & $1.4\times10^{-14}$ & $0.0702\pm0.0115$ & $0.0709\pm0.0042$\\
+ratio                                  & $1.00$ & $1.50\pm0.25$ & $1.96\pm0.12$\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+The published curve is therefore a strict lower bound on the finite-shot cost. At $L=4$ the two agree
+because the sampler exhausts the sector; at $L=6$ and $L=8$ the finite-shot fraction exceeds the
+published one by $0.037$ and $0.071$. That is a direction across three sizes, one of which is
+degenerate, and we state it as a direction and do not fit an exponent to it---which is the same
+objection this section raises against the fraction headline, applied to our own replacement. At the
+published subspace itself, $L=8$ and $|\mathcal S|_\eta=2180$, the infinite-shot ordering gives
+relative $L_1=0.0490$, just inside the threshold, against $0.1006\pm0.0036$ for finite shots at
+$T=1.47\times10^{5}$: a factor $2.05\pm0.07$, and the reason the finite-shot fraction has to rise to
+$0.63$.
+
+The finding that runs the other way is the more useful one, and it is what this subsection closes on:
+the penalty is budgetary, not structural, and it extinguishes with a budget that is affordable at this
+size. On the same pair as the last row of Table~\ref{tab:finiteshot}---$L=8$,
+$|\mathcal S|_\eta=2331$---raising the budget from $T=2.04\times10^{5}$ to $T=2.60\times10^{6}$, a
+factor $12.7$, takes the ratio of the finite-shot error to the infinite-shot-ordering error from
+$1.96\pm0.12$ to $1.06\pm0.01$, through $1.51$, $1.18$ and $1.09$ at the intermediate budgets. No
+sampling penalty in this family can be quoted without its budget, because the penalty is a statement
+about $T$ and not about the method. We therefore report finite-shot fractions only with $T$ and the
+seed count attached, and we report the infinite-shot ordering for what it is---the floor that any
+budget approaches from above, at the price Table~\ref{tab:shots} now states.

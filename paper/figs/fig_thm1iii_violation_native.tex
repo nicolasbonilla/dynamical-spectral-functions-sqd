@@ -1,0 +1,135 @@
+% ---------------------------------------------------------------------------------------------
+% LAYOUT 2026-09-18: panel width 0.455->0.447\linewidth and horizontal sep 1.35->1.15cm.
+% Reason: measured with \sbox inside the manuscript geometry the fragment was 480.24pt wide
+% fragment to 480.24pt against a 472.32pt text block.  Now 445pt.  Data unchanged.
+% Native pgfplots fragment (fig:thm1iii-violation) -- APPENDIX.
+% Theorem 1(iii) as published, ||A-A_S||_1 <= 2||phi||^2 (1-w_S) + C rho^{-K_S}, tested against
+% the measured L1 error, and compared with the replacement bound (Theorem B).
+%
+% EVERY coordinate comes from a JSON written by an auto-verifying run; none is typed by hand.
+% Builder: build_n3.py -> n3_*.dat ; the counts quoted in the legend are re-checked by that
+% script against the .dat files it writes (see n3_summary.json).
+%   thm3_results.json  239 rows  original sweep: 3 Hubbard L=6 Hamiltonians x 8 subspace families
+%   thm3_L8b.json        4 rows  a SITE-seeded L=8 run.  NOT the paper's Fig. 5 configuration:
+%                                 its own docstring says "Site seed instead of momentum seed",
+%                                 while release/src/sampled_akw.py seeds with c^dag_{k,up}|GS>.
+%                                 Kept in the cloud, never highlighted.
+%   cert_stress.json   162 rows  \
+%   cert_akw.json      112 rows   > independent re-implementation (certificate.py, 2026-09-18).
+%                                 Its 64 L=8 rows ARE the paper's Fig. 5 setting (momentum seeds,
+%                                 eta=0.18t, FR=0.50/0.70/0.85/0.95) and reproduce the deposited
+%                                 sampled_akw_L8.json to 2.1e-8 absolute; they are the highlighted series.
+%   cert_teqsci.json   104 rows  /
+% 621 pooled; 15 are exact to machine noise (relative L1 <= 1e-10) and carry no defined ratio.
+% The plotted published bound is the weight term 2||phi||^2(1-w_S). On 195 of the 239 rows of the
+% original sweep the Krylov order is K_S = -1, so the second term C rho^{-K_S} = C rho supplies no
+% decay at all and no finite constant C turns the statement into a bound (2x2 counterexample).
+% Theorem B is plotted AS STATED: the minimum of the trivial cap ||phi||^2(1+w_S) and the leakage
+% branch (||phi||+||phi_S||)(||phi_Q|| + Lambda_S(eta)/eta). The leakage branch is the smaller of
+% the two in only 61 of the 606 live rows -- this figure does NOT show the leakage branch is tight.
+% ---------------------------------------------------------------------------------------------
+\definecolor{vlHi}{HTML}{D55E00}      % published bound, captured weight w_S >= 0.99
+\definecolor{vlLo}{HTML}{E9A178}      % published bound, w_S < 0.99
+\definecolor{vlNew}{HTML}{0072B2}     % Theorem B (replacement)
+\definecolor{vlInk}{HTML}{1B1B1B}
+\definecolor{vlRule}{HTML}{7A7A7A}
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=2 by 1, horizontal sep=1.35cm},
+  width=0.455\linewidth, height=7.4cm, paperaxis,
+  ymode=log, ymin=1e-6, ymax=5e7,
+  ytick={1e-4,1e-2,1e0,1e2,1e4,1e6},
+  extra y ticks={1.6e7}, extra y tick labels={$\infty$},
+  extra y tick style={grid=none, tick label style={font=\footnotesize}},
+  ymajorgrids, grid style={draw=black!10},
+  title style={at={(0,1)},anchor=south west,font=\small\bfseries,yshift=1.5pt},
+  label style={font=\small}, tick label style={font=\footnotesize},
+]
+% =========================== (a) versus subspace fraction ===========================
+\nextgroupplot[
+  title={(a)~versus subspace fraction},
+  xlabel={subspace fraction $|\mathcal{S}|/\dim$},
+  ylabel={measured $\|A-A_{\mathcal{S}}\|_1$ / bound},
+  xmin=0, xmax=1.03, xtick={0,0.25,0.5,0.75,1},
+  legend to name=n3legend, legend columns=3, legend cell align=left,
+  legend style={draw=none, fill=none, font=\scriptsize, column sep=7pt, row sep=1.5pt},
+]
+\fill[vlHi,fill opacity=0.055] (axis cs:0,1) rectangle (axis cs:1.03,8e6);
+% --- data (all "forget plot"; legend marks are drawn separately so they stay legible) ---
+\addplot[forget plot,only marks,mark=o,mark size=1.15pt,draw=vlLo,line width=0.35pt,draw opacity=0.85]
+  table {n3_pub_frac_lo.dat};
+\addplot[forget plot,only marks,mark=*,mark size=1.15pt,mark options={draw=none,fill=vlHi,fill opacity=0.62}]
+  table {n3_pub_frac_hi.dat};
+\addplot[forget plot,only marks,mark=*,mark size=1.0pt,mark options={draw=none,fill=vlNew,fill opacity=0.55}]
+  table {n3_thmB_frac.dat};
+\addplot[forget plot,only marks,mark=triangle*,mark size=1.9pt,
+         mark options={draw=none,fill=vlHi,fill opacity=0.9}]
+  table[x=x,y expr=1.6e7] {n3_inf_frac.dat};
+% --- paper's Fig.5 configuration (64 rows): drawn as min / median / max at each
+% abscissa.  The 64 individual rows are NOT removed from the figure -- they are part of
+% the orange w_S>=0.99 series.  As 64 separate diamonds they fused into solid blobs that
+% resolved no marker and hid the orange points underneath (reviewer defect D3).
+% Caps are drawn at +-3% of the abscissa; that is layout, the y values are the data.
+\draw[vlInk,line width=0.5pt] (axis cs:0.5,16.1609) -- (axis cs:0.5,21.0661);
+\draw[vlInk,line width=0.5pt] (axis cs:0.485,16.1609) -- (axis cs:0.515,16.1609);
+\draw[vlInk,line width=0.5pt] (axis cs:0.485,21.0661) -- (axis cs:0.515,21.0661);
+\draw[vlInk,line width=0.5pt] (axis cs:0.7,17.8042) -- (axis cs:0.7,29.9511);
+\draw[vlInk,line width=0.5pt] (axis cs:0.679,17.8042) -- (axis cs:0.721,17.8042);
+\draw[vlInk,line width=0.5pt] (axis cs:0.679,29.9511) -- (axis cs:0.721,29.9511);
+\draw[vlInk,line width=0.5pt] (axis cs:0.85,15.0552) -- (axis cs:0.85,33.7282);
+\draw[vlInk,line width=0.5pt] (axis cs:0.8245,15.0552) -- (axis cs:0.8755,15.0552);
+\draw[vlInk,line width=0.5pt] (axis cs:0.8245,33.7282) -- (axis cs:0.8755,33.7282);
+\draw[vlInk,line width=0.5pt] (axis cs:0.95,22.3768) -- (axis cs:0.95,57.2787);
+\draw[vlInk,line width=0.5pt] (axis cs:0.9215,22.3768) -- (axis cs:0.9785,22.3768);
+\draw[vlInk,line width=0.5pt] (axis cs:0.9215,57.2787) -- (axis cs:0.9785,57.2787);
+\addplot[forget plot,only marks,mark=diamond,mark size=3.0pt,draw=vlInk,line width=0.6pt,mark options={fill=white,fill opacity=1}] coordinates {(0.5,18.5343) (0.7,23.621) (0.85,26.4518) (0.95,29.8719)};
+\addplot[forget plot,vlInk,line width=0.9pt,densely dashed,domain=0:1.03,samples=2] {1};
+\addplot[forget plot,vlRule,line width=0.4pt,dotted,domain=0:1.03,samples=2] {8e6};
+% --- legend proxies ---
+\addlegendimage{only marks,mark=o,mark size=2.4pt,draw=vlLo,line width=0.7pt}
+\addlegendentry{Thm.~1(iii), $w_{\mathcal S}<0.99$ (243)}
+\addlegendimage{only marks,mark=*,mark size=2.4pt,mark options={draw=none,fill=vlHi}}
+\addlegendentry{Thm.~1(iii), $w_{\mathcal S}\ge 0.99$ (313)}
+\addlegendimage{only marks,mark=*,mark size=2.4pt,mark options={draw=none,fill=vlNew}}
+\addlegendentry{Theorem~B, same $\mathcal S$ (606)}
+\addlegendimage{only marks,mark=triangle*,mark size=2.6pt,mark options={draw=none,fill=vlHi}}
+\addlegendentry{bound $\equiv 0$: ratio $=\infty$ (50)}
+\addlegendimage{only marks,mark=diamond,mark size=3.0pt,draw=vlInk,line width=0.7pt}
+\addlegendentry{Fig.~\ref{fig:akwsampled} setting (64): range}
+\addlegendimage{vlInk,line width=0.9pt,densely dashed}
+\addlegendentry{exact equality: ratio $=1$}
+% --- in-panel labels, placed in verified-empty corners (never over a marker) ---
+\node[vlHi,font=\scriptsize\bfseries,anchor=north west] at (axis cs:0.025,3.2e6) {bound violated};
+\node[vlNew,font=\scriptsize\bfseries,anchor=south west] at (axis cs:0.025,1.1e-5) {bound holds};
+% =========================== (b) versus broadening eta ===========================
+\nextgroupplot[
+  title={(b)~versus broadening},
+  xlabel={broadening $\eta/t$},
+  xmode=log, xmin=0.021, xmax=1.35,
+  xtick={0.03,0.05,0.1,0.2,0.5,0.9}, xminorticks=false,
+  log ticks with fixed point, yticklabels={,,}, extra y tick labels={},
+]
+\fill[vlHi,fill opacity=0.055] (axis cs:0.021,1) rectangle (axis cs:1.35,8e6);
+\addplot[only marks,mark=o,mark size=1.15pt,draw=vlLo,line width=0.35pt,draw opacity=0.85]
+  table {n3_pub_eta_lo.dat};
+\addplot[only marks,mark=*,mark size=1.15pt,mark options={draw=none,fill=vlHi,fill opacity=0.62}]
+  table {n3_pub_eta_hi.dat};
+\addplot[only marks,mark=*,mark size=1.0pt,mark options={draw=none,fill=vlNew,fill opacity=0.55}]
+  table {n3_thmB_eta.dat};
+\addplot[only marks,mark=triangle*,mark size=1.9pt,
+         mark options={draw=none,fill=vlHi,fill opacity=0.9}]
+  table[x=x,y expr=1.6e7] {n3_inf_eta.dat};
+% --- paper's Fig.5 configuration (64 rows): drawn as min / median / max at each
+% abscissa.  The 64 individual rows are NOT removed from the figure -- they are part of
+% the orange w_S>=0.99 series.  As 64 separate diamonds they fused into solid blobs that
+% resolved no marker and hid the orange points underneath (reviewer defect D3).
+% Caps are drawn at +-6% of the abscissa; that is layout, the y values are the data.
+\draw[vlInk,line width=0.5pt] (axis cs:0.18,15.0552) -- (axis cs:0.18,57.2787);
+\draw[vlInk,line width=0.5pt] (axis cs:0.1692,15.0552) -- (axis cs:0.1908,15.0552);
+\draw[vlInk,line width=0.5pt] (axis cs:0.1692,57.2787) -- (axis cs:0.1908,57.2787);
+\addplot[forget plot,only marks,mark=diamond,mark size=3.0pt,draw=vlInk,line width=0.6pt,mark options={fill=white,fill opacity=1}] coordinates {(0.18,22.9909)};
+\addplot[vlInk,line width=0.9pt,densely dashed,domain=0.021:1.35,samples=2] {1};
+\addplot[vlRule,line width=0.4pt,dotted,domain=0.021:1.35,samples=2] {8e6};
+\end{groupplot}
+\node[anchor=north,yshift=-0.92cm] at (group c1r1.south east) {\pgfplotslegendfromname{n3legend}};
+\end{tikzpicture}

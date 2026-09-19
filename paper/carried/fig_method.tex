@@ -1,0 +1,18 @@
+% carried verbatim from the v2 tree (results.tex); NOT part of this session's deliverable.
+\begin{figure*}[tp]\centering\input{figs/fig_method_native_frag.tex}
+\caption{\textbf{The method validated at $L=6$, and its error against Krylov order.} \textbf{(a)}~The
+bitstring-sampled single-particle spectral function reproduces the exact $A(\omega)$ (Hubbard $L=6$,
+$U/t=8$; broadening $\eta=0.15\,t$) to relative-$L_1$ $0.017$---the exact (filled) and reconstructed
+(dashed) curves are indistinguishable. The analytic addition-branch sum rule $\int A^{+}\,d\omega=1-\langle n_p\rangle=0.5$ is an identity of
+the ground state and not a check on the reconstruction; integrated over the plotted window the exact
+and reconstructed curves give $0.486588$ and $0.486471$, agreeing with each other to
+$2.4\times10^{-4}$ relative and both falling $2.7\%$ short of $0.5$ because Lorentzian tails leave the
+window (Sec.~\ref{sec:physics}). \textbf{(b)}~Convergence of the relative-$L_1$ error with
+the Krylov order $K$ (number of time-evolution steps sampled), seed-averaged over eight independent
+runs (band $=$ standard deviation), $\eta=0.15\,t$, so the budget is $T=4000(K{+}1)$ and reaches
+$5.2\times10^{4}$ at $K=12$. The error falls by a factor $32$ across the thirteen points, from $0.59$
+at $K=0$ to $0.0185$ at $K=12$, with one non-monotone step at $K=3$ inside the discovery phase, while
+the mean subspace returned grows from $75$ to $242$ determinants of the $300$-dimensional sector. A
+geometric rate fitted to the window $4\le K\le9$ is withdrawn in Sec.~\ref{sec:moments:notbuy}: it is
+not implied by moment exactness, and inside that window the decay in $K$ is confounded with the growth
+of $|\mathcal S|$.}\label{fig:method}\end{figure*}

@@ -1,0 +1,51 @@
+
+%  APPENDIX MATERIAL BELONGING TO SEC. 6.  Everything below this line is NOT
+%  part of the body section: move it verbatim into the appendix file, where it
+%  must carry \label{app:witness} (that label already exists in theorem_b2.tex
+%  and is reused here for the same content).  Sec. 6 references it twice.
+% =============================================================================
+\section{The geminal witness: proof and angle sweep}
+\label{app:witness}
+
+\begin{proof}[Proof of Theorem~\ref{thm:witness}]
+Each geminal occupies its own four spin-orbitals, so \eqref{eq:apsg} is a product across the $K$ blocks
+and $\gamma$ is block diagonal with spatial natural occupations
+$(n_{b_i},n_{a_i})=(2\cos^2\theta,2\sin^2\theta)$; hence $N_{\mathrm u}=8K\cos^2\theta\sin^2\theta=2K$ at
+$\theta=\pi/4$, and $\mathcal F_1=4K$ by Eq.~\eqref{eq:collapse}. The Majorana covariance is likewise
+block diagonal, and at $\theta=\pi/4$ a single maximally-paired geminal is the two-determinant cat, whose
+covariance vanishes identically ($\Gamma=0$): every order saturates its maximum,
+$\mathcal F_k=2n_{\rm o}=4$ per geminal for all $k$, giving $\mathcal F_2=4K$. This equality of orders is
+a knife-edge of maximal pairing; away from it the orders separate ($\theta=\pi/6$ gives
+$\mathcal F_1=3$, $\mathcal F_2=3.75$ per pair, both still large on the same family). In the pairing basis
+each geminal is a two-configuration superposition, so the product carries $2^{K}$ determinants. Finally,
+as a product of two-orbital factors the state is a matrix-product state whose every bond crosses at most
+one geminal, so $\chi=2$ in that ordering, and contraction and Born sampling then cost $O(K)$. All four
+values are reproduced by exact diagonalization for $K=1,\dots,4$.
+\end{proof}
+
+Table~\ref{tab:fibersweep} continues the fiber exhibit of Table~\ref{tab:fiber} into a continuous sweep of
+the rotation angle at $K=3$. It stops at $s=0.654$: at the maximal-pairing angle $s=\pi/4$ the Born
+distribution of $\phi$ is exactly flat over $2^{K}$ determinants, so the top-$|\mathcal S|$ rule does not
+select a subspace and no contrast measured there is well defined. Across every row the captured weight is
+identical at the two endpoints to $2.2\times10^{-16}$, so the entire difference sits in the leakage term,
+and the certificate at the rotated endpoint is the trivial bound $1+w_S$ in every row.
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{Angle sweep of the fiber exhibit}, $K=3$, $\delta=0.01$, $\eta=0.10$,
+$|\mathcal S|=4$. Columns as in Table~\ref{tab:fiber}.}
+\label{tab:fibersweep}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+$s$ & $w_S$ (both endpoints)
+ & $\widehat\Lambda/\eta$ al. & $\widehat\Lambda/\eta$ rot.
+ & cert.\ al. & cert.\ rot. \\
+\midrule
+$0.131$ & $0.982963$ & $0.328$ & $1.610$ & $\mathbf{0.913}$ & $1.983$ (trivial) \\
+$0.262$ & $0.933013$ & $0.317$ & $3.010$ & $\mathbf{1.131}$ & $1.933$ (trivial) \\
+$0.393$ & $0.853553$ & $0.299$ & $4.124$ & $\mathbf{1.312}$ & $1.854$ (trivial) \\
+$0.524$ & $0.750000$ & $0.277$ & $4.849$ & $\mathbf{1.450}$ & $1.750$ (trivial) \\
+$0.654$ & $0.629410$ & $0.252$ & $5.139$ & $\mathbf{1.543}$ & $1.629$ (trivial) \\
+\bottomrule
+\end{tabular}
+\end{table*}

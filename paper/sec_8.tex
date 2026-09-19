@@ -1,0 +1,336 @@
+% =====================================================================
+%  Sec. 8 -- Physical validation: the two gaps scale in opposite directions
+%  Replaces the "Validation" subsection of the former paper/results.tex
+%  (lines 1-46 plus the four spectral-figure captions' physics claims).
+%
+%  NEW \label's introduced here (none exist in the v2 tree):
+%      sec:physics, tab:gaps, tab:poles
+%
+%  RESOLVED 2026-09-18: all five entries below now exist in the bibliography, with
+%      titles pulled from Crossref rather than guessed.  Two corrections came out of
+%      that check and are applied in the prose of this section:
+%        benthien2007 is the EXTENDED Hubbard model, computes THREE channels
+%          (S(q,w), N(q,w), A(q,w)), and runs at L = 30 to 120, not "L=90-120";
+%        senechal2000 states NO sixteen-site ceiling -- it works at 12 sites and argues
+%          that cluster perturbation theory removes the need for a large cluster.  It is
+%          cited in Sec. 8.6 for spin-charge separation, which it does establish, and the
+%          size convention now rests on xu2024 alone.
+%        \cite{xu2024}       Xu, Lu, Tohyama, Shao, arXiv:2407.13136 (2024)
+%        \cite{senechal2000} Senechal, Perez, Pioro-Ladriere, PRL 84, 522 (2000)
+%        \cite{benthien2007} Benthien & Jeckelmann, PRB 75, 205128 (2007),
+%                            DOI 10.1103/PhysRevB.75.205128
+%        \cite{essler2005}   Essler, Frahm, Gohmann, Klumper, Korepin, CUP 2005,
+%                            DOI 10.1017/CBO9780511534843
+%        \cite{kim1996}      C. Kim et al., PRL 77, 4054 (1996)
+%      Existing keys used: liebwu1968, jeckelmann2002, nocera2016,
+%      descloizeaux1962, mueller1981, haydock1972, golub2010, damascelli2003.
+%
+%  PROVENANCE.  Charge block of Table~\ref{tab:gaps}: release/data/charge_gap.json
+%  (checks_status ALL PASS).  Spin and Heisenberg blocks, and every fit quoted in
+%  Sec. 8.1: p2_calc/gap_scaling.json (generated 2026-09-18T11:45:32Z, full
+%  reorthogonalization, self-checks pass).  Pole census: p2_calc/pole_structure.json
+%  (generated 2026-09-18T15:05:07Z, n_l=120, dense anchors at L=6 and L=8).
+%  DEPOSIT, checked 2026-09-18: DISCHARGED.  release/data/gap_scaling.json,
+%  release/data/pole_structure.json and release/data/charge_gap.json are present, with
+%  gap_scaling.py, pole_structure.py and charge_gap_ed.py in release/src/.  I re-read
+%  pole_structure.json while editing this section and it reproduces Table~\ref{tab:poles}
+%  entry for entry: 7 momenta 3-7 for A(k,omega), 6 momenta 6-9 for charge, 6 momenta 1-3
+%  for spin.
+%
+%  FLOATS rebuilt in parallel, NOT written here: \ref{fig:lattice},
+%      \ref{fig:sqw}, \ref{fig:spin} (its present bold title must go; see 8.2),
+%      \ref{fig:method} (panel (a) caption replacement follows Sec. 8.4 below,
+%      commented out at the end of this file), \ref{fig:akwsampled}.
+%      *** If the figure agent renders the gap scaling as a panel, it must be
+%      drawn as POLE MARKERS, not as a broadened spectrum.  Sec. 8.1 survives
+%      Jeckelmann's rule only because it reads pole positions off the
+%      tridiagonal recursion, which are independent of eta; a broadened-lineshape
+%      panel would forfeit that defence entirely. ***
+%
+%  GREP NOTE for the mechanical audit: the three withdrawn terms are named
+%  exactly ONCE each in this file, inside quotation marks, in the retraction
+%  sentence of Sec. 8.2. A retraction cannot be written without naming what it
+%  retracts. Nowhere else in this file is any of them used assertively.
+% =====================================================================
+
+\section{Physical validation: the two gaps scale in opposite directions}\label{sec:physics}
+
+The two collective channels of the half-filled Hubbard chain are the strongest physical check
+available to this method, because their answer is known exactly and independently of it. This section
+reports that check as a scaling statement across $L=6,8,10,12$ rather than as a picture at a single
+size---which is what it was---withdraws three words that a single size could not support, and
+separates what is a validation of the method from what is a result.
+
+\subsection{Charge converges to a finite value, spin closes as \texorpdfstring{$1/L$}{1/L}}\label{sec:gaps}
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{The two collective scales, across four system sizes.} Charge: the Mott gap
+$\Delta=\mu^{+}-\mu^{-}$ from exact $(N{\pm}1)$ ground-state energies (half-filled Hubbard ring,
+$U/t=8$; particle--hole symmetry $\mu^{+}+\mu^{-}=U$ verified to $10^{-8}$ at every size, ARPACK
+checked against dense \texttt{eigh} on every sector of dimension $\le5000$). $\Delta_\infty=4.67952\,t$
+is the Lieb--Wu thermodynamic value~\cite{liebwu1968}, evaluated here from its exact integral
+representation to an absolute quadrature error of $2\times10^{-9}$ and cross-checked against a second
+exact representation, the two agreeing to $10^{-13}$. Spin: the lowest pole of
+$S^{zz}(q=\pi,\omega)$, a pole position of the tridiagonal recursion and therefore independent of the
+broadening used to display it. Right-hand block: the same quantity in the pure Heisenberg ring at the
+effective exchange $J=4t^{2}/U=0.5\,t$, a model with no charge degree of freedom at all. The residual
+column is quoted to four decimals so that it is the difference of the two columns to its left; at five
+it would not be.}\label{tab:gaps}
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{2}{c}{charge} & \multicolumn{2}{c}{spin (Hubbard)} & \multicolumn{2}{c}{spin (Heisenberg, $J=0.5\,t$)}\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+$L$ & $\Delta/t$ & $(\Delta-\Delta_\infty)/t$ & $\Delta_{s}/t$ & $L\,\Delta_{s}/t$ & $\Delta_{\rm ST}/t$ & $L\,\Delta_{\rm ST}/t$\\
+\midrule
+$6$  & $5.35813$ & $0.6786$ & $0.34857$ & $2.091$ & $0.34237$ & $2.054$\\
+$8$  & $5.18584$ & $0.5063$ & $0.23958$ & $1.917$ & $0.26134$ & $2.091$\\
+$10$ & $5.02224$ & $0.3427$ & $0.19956$ & $1.996$ & $0.21162$ & $2.116$\\
+$12$ & $4.96876$ & $0.2892$ & $0.16635$ & $1.996$ & $0.17792$ & $2.135$\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\paragraph{Charge.} $\Delta(L)$ decreases monotonically and stays above the Lieb--Wu thermodynamic
+value $4.67952\,t$ at every size, the residual falling from $0.679\,t$ at $L=6$ to $0.289\,t$ at
+$L=12$---that is, to $6.2\%$ of the thermodynamic value (Table~\ref{tab:gaps}).
+$\Delta(L=12)=4.96876\,t$ reproduces the $4.97\,t$ this work has quoted throughout, and is the same
+number that appears as the Hubbard-band separation of Fig.~\ref{fig:lattice} and as the low-frequency
+scale of Fig.~\ref{fig:sqw}. We fit no extrapolation exponent: a straight line in $1/L$ through the
+four points extrapolates to $4.561\pm0.044\,t$, which undershoots Lieb--Wu by $0.12\,t$ and is
+therefore evidence that the functional form is not $1/L$, not evidence about the limit. The statement
+supported is that the charge scale converges to a finite thermodynamic value and is already within
+$6.2\%$ of it at the largest size reached here.
+
+\paragraph{Spin.} The lowest pole of $S^{zz}(q=\pi,\omega)$ gives $L\,\Delta_{s}=2.091$, $1.917$,
+$1.996$, $1.996$: a $1/L$ closing with a coefficient of about $2.1$. Two fits make that precise and
+bound it honestly. Fitting $\Delta_{s}=c_0+c_1/L$ over these four sizes gives an intercept
+$c_0=-0.020\pm0.020$---consistent with zero at one standard error---against
+$c_0=4.561\pm0.044$ for the charge gap: one intercept is consistent with zero and the other is not,
+and that separation, not either intercept on its own, is the result. It has to be read with the control
+that limits it, which we state here rather than leave to the figure: the pure Heisenberg ring, whose
+spin gap is known to vanish in the thermodynamic limit, gives a linear-in-$1/L$ intercept of
+$0.0142\pm0.0014\,t$---above zero, not consistent with it---so at these sizes a vanishing intercept is
+not by itself evidence that a gap closes. The statement that survives without a fitted model is the
+flatness of $L\,\Delta_s$ below. Fitting instead $L\,\Delta_{s}=d_0+d_1L$
+gives $d_0=2.09\pm0.17$ with $d_1=-0.010\pm0.018$, a slope consistent with zero: over $L=6$--$12$ the
+product $L\,\Delta_s$ is flat to the resolution of four points. What is \emph{not} supported is a
+third significant figure on the coefficient. The four values span $8\%$ and are not monotone, and we
+quote $L\,\Delta_{s}\approx2.1$ with the spread attached rather than $2.00$.
+
+The independent control is the effective spin model. The pure Heisenberg ring at $J=4t^{2}/U=0.5\,t$
+---no charge degree of freedom, no double occupancy, a different Hamiltonian on a different Hilbert
+space, solved by dense diagonalization on a different code path---gives
+$\Delta_{\rm ST}(N=12)=0.35585\,J=0.17792\,t$ and reproduces the same $1/L$ law across the same four
+sizes, with $L\,\Delta_{\rm ST}=2.054$, $2.091$, $2.116$, $2.135$. Two things have to be said about
+that agreement rather than left for a referee. First, the two numbers at $L=12$ differ by $6.5\%$ of
+the Heisenberg value, equivalently $7.0\%$ of the Hubbard one; we name the denominator because the
+two differ in the third figure. Second, the residual is not monotone and changes sign---the Hubbard
+gap is $1.8\%$ \emph{above} the Heisenberg one at $L=6$ and $8.3\%$, $5.7\%$ and $6.5\%$
+\emph{below} it at $L=8,10,12$---so it cannot be attributed to a smooth $O(t^{4}/U^{3})$ correction
+to the effective exchange, which would not change sign. A correction of that order is the expected
+\emph{scale} of the difference at $U/t=8$, and it is the right scale; its size dependence is not
+resolved here and we claim nothing about it. The control confirms the $1/L$ scaling and the magnitude
+of the coefficient to within $10\%$; it does not pin the coefficient, and its own $L\,\Delta_{\rm ST}$
+drifts upward by $0.0134\pm0.0014$ per site over the same range.
+
+The two channels therefore behave \emph{qualitatively oppositely} under a change of system size---one
+converging to a finite thermodynamic value, the other extrapolating to zero as $1/L$---with a factor
+$29.9$ between them at $L=12$, and with $1/L$ intercepts that separate. That
+opposition, measured at four sizes with an independent control on the smaller scale, is the physical
+statement this work makes. It is a statement about pole positions, not about lineshapes, so it does
+not depend on the broadening at which either response is plotted.
+
+\subsection{What a single size at \texorpdfstring{$\eta=0.10\,t$}{eta = 0.10 t} could not support}
+
+The previous version made the spin--charge statement at one size and read it off a lineshape. Two
+things were wrong with that, and we retract both.
+
+First, resolution. At $L=12$ the spin scale is $0.16635\,t$ against the $\eta=0.10\,t$ used for
+Fig.~\ref{fig:spin}: the gap is $1.66\,\eta$, i.e.\ $0.83$ of the Lorentzian full width at half
+maximum. At that resolution a spin response with a $0.17\,t$ gap and one with none are not
+distinguishable by eye in a single-size plot. The figure could \emph{illustrate} the physics; it could
+not establish it. Three terms applied across the $L=12$ channels of the previous
+version---``continuum'', ``gapless'', and ``edge of the continuum''---were therefore not licensed by
+it, and they are withdrawn here, once, for every channel of this work at this size.
+
+Second, provenance. The numerical value that stood behind the sentence asserting that the two-spinon
+band touches $\omega=0$ was $-0.100$, and it is not a measurement: it is the first entry of the
+frequency window \texttt{np.linspace(-0.1, 3.5, nw)} declared in \texttt{spin\_lanczos.py}, propagated
+into the edge table by a minimum over the computed signal. It is the lower end of the computation
+window, censored at that end, and it never reaches the plotted axis.
+
+What replaces both is measurement rather than illustration: the four-size scaling of
+Table~\ref{tab:gaps}, in which the spin scale is a converged pole position at every size and closes as
+$\approx2.1/L$ with an independent effective-Heisenberg control, and the pole census of
+Table~\ref{tab:poles}, which states what is actually inside the window at each size instead of naming
+it.
+
+\subsection{A pole census replaces the word}
+
+At $L=12$ and the broadenings used here, none of the three momentum-resolved channels is a dense
+spectrum inside the plotted window; each momentum carries a small number of discrete poles that the
+broadening merges into a band. Counting poles that carry more than $1\%$ of the channel
+maximum---Lanczos with full reorthogonalization at $n_\ell=120$, checked for depth stability at
+$n_\ell=60$, $120$ and $240$ at $q=\pi$ in every channel, and validated pole by pole against dense
+diagonalization at $L=6$ and $L=8$~\cite{haydock1972,golub2010}---gives Table~\ref{tab:poles}. The
+census is the deposited \texttt{pole\_structure.json} and is taken on the momentum grid the figures of
+this section plot, seven values of $k$ and six of $q$; a count over a coarser grid is a count of
+different momenta and is not comparable entry by entry. The
+census covers the three channels the figures of this section plot; the $k$-integrated $A(\omega)$,
+which is a sum over the same branch, and the removal branch are not counted, and no statement is made
+about them here.
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{Pole census, across three sizes.} Poles carrying more than $1\%$ of the channel
+maximum, counted per momentum; each entry is the range over the momenta plotted ($7$ values of $k$ for
+$A(k,\omega)$, $6$ values of $q$ for the collective channels). The $L=6$ and $L=8$ columns are dense
+diagonalizations, where the count needs no recursion, on the subset of momenta available at those
+sizes; the $L=12$ column is the reorthogonalized recursion at $n_\ell=120$, which reproduces the dense
+counts pole by pole at the two smaller sizes. ``Leading weight'' is the fraction carried by the single
+largest pole at $L=12$. The addition branch of $A(k,\omega)$ and the charge channel are at
+$\eta=0.18\,t$, the spin channel at $\eta=0.10\,t$. The last column is the smallest separation between
+retained poles in units of the full width at half maximum, which is why the figures show bands: at the
+tightest momenta the lines are genuinely merged, and the census says how many of them there
+are.}\label{tab:poles}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{3}{c}{poles above $1\%$} & & leading & $\delta\omega_{\min}/$\\
+\cmidrule(lr){2-4}
+channel & $L{=}6$ & $L{=}8$ & $L{=}12$ & $\dim$ ratio & weight & FWHM\\
+\midrule
+$A(k,\omega)$, addition  & $2$--$3$ & $2$--$4$ & $3$--$7$ & $2440$ & $0.32$--$0.69$ & $0.12$--$2.04$\\
+$S(q,\omega)$, charge    & $3$--$4$ & $3$--$6$ & $6$--$9$ & $2440$ & $0.38$--$0.68$ & $0.24$--$2.20$\\
+$S^{zz}(q,\omega)$, spin & $1$--$2$ & $1$--$3$ & $1$--$3$ & $2134$ & $0.80$--$0.99$ & $1.08$--$2.37$\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+The count does grow with size, and the size of the growth is the point. Between $L=6$ and $L=12$ the
+$(N{+}1)$ sector grows by a factor $2440$, while the largest per-momentum pole count grows from $3$ to
+$7$ in the addition branch, from $4$ to $9$ in the charge channel and from $2$ to $3$ in the spin
+channel. A line count that roughly doubles while the Hilbert space grows by three
+orders of magnitude is a discrete spectrum whose resolvable lines are being broadened together, not a
+dense one forming. The spin channel is the extreme case: at every momentum a single pole carries
+between $80\%$ and $99\%$ of the weight, at separations of at least $1.08$ full widths, and at $q=\pi$
+that single pole \emph{is} the $0.16635\,t$ scale of Table~\ref{tab:gaps}. What Fig.~\ref{fig:spin}
+shows at $L=12$ is one dominant antiferromagnetic mode plus at most two satellites.
+
+This has a consequence for how the reference itself must be described, and we state it rather than
+leave it for a referee. The previous version describes $A(k,\omega)$ as computed exactly, equivalent to
+the Lehmann sum. With $n_\ell=150$ and no reorthogonalization in a sector of dimension $731\,808$, what
+is computed is a $150$-node Gauss quadrature of the spectral measure~\cite{haydock1972,golub2010}. It
+is accurate enough here---and it is accurate \emph{precisely because} the measure it integrates is a
+handful of poles; a dense spectrum at this dimension would not be reproduced by $150$ nodes. It is not,
+however, converged: the same depth moves the reference by $0.93\%$ at $\eta=0.15\,t$ and by $3.0\%$ at
+the $\eta=0.10\,t$ of Fig.~\ref{fig:spin} when it is taken from $n_\ell=100$ to $n_\ell=200$
+(Sec.~\ref{sec:prices}). The reference is therefore labelled for what it is: a finite-depth continued
+fraction, checked against dense diagonalization at $L\le8$ and quoted with its depth. The pole
+positions of Table~\ref{tab:gaps} are a separate and stronger object---they are computed at full
+reorthogonalization and are stable across $n_\ell=60$, $120$, $240$---which is why the physical claim
+of Sec.~\ref{sec:gaps} rests on them and not on a lineshape.
+
+\subsection{The sum rule, as measured}
+
+The analytic identity $\int A^{+}\,d\omega = 1-\langle\hat n_p\rangle = 0.5$ is exact and
+grid-independent, but it is an identity of the \emph{ground state}: evaluating it costs one
+ground-state expectation value, $\langle\Psi_0|\hat c_p\hat c^{\dagger}_p|\Psi_0\rangle$, and never
+touches the reconstruction. It is therefore not an a posteriori check of $A_{\mathcal S}$, and the
+previous caption of Fig.~\ref{fig:method} was wrong to present it as one.
+
+Integrating the plotted curves instead, over the $600$-point window at $\eta=0.15\,t$:
+\begin{widetext}
+\begin{equation}
+\int_{\rm window} A_{\rm exact}\,d\omega = 0.486588,
+\qquad
+\int_{\rm window} A_{\mathcal S}\,d\omega = 0.486471 .
+\end{equation}
+\end{widetext}
+Both fall $2.7\%$ below the analytic $0.5$ because Lorentzians of width $\eta$ leak outside any finite
+window: the analytic in-window mass is $0.486589$, the tail outside it is $0.013411$, and the residue
+of the trapezoidal quadrature itself is $3\times10^{-6}$ relative---so the deficit is entirely the
+window and not the reconstruction. The a posteriori statement the reconstruction does support is the
+comparison of the two integrated curves, which differ by $1.16\times10^{-4}$ absolute, that is
+$2.4\times10^{-4}$ relative. That is the number we report, and it brings this caption into line with
+the ${\sim}2\%$ window effect that Fig.~\ref{fig:lattice} already conceded.
+
+\subsection{Size: the convention, and what it does and does not license}
+
+The system size is not hidden and is not the weak point. The exact-diagonalization convention for this
+observable is $L=12$--$16$ at $\eta\approx0.1$--$0.2\,t$: Xu, Lu, Tohyama and Shao~\cite{xu2024}
+compute this spectral function by Lanczos at $L=12$ and $\eta=0.2\,t$ at half filling, and at
+$L=16$ at quarter filling. Their model is the extended Peierls--Hubbard chain, and their $L=16$ run is
+a dimerized lattice away from half filling; it is their half-filled $L=12$, and the plain-Hubbard
+$L=12,8,6$ of their Appendix~A, that sit alongside ours. Our $L=12$ at $\eta=0.10$--$0.18\,t$ is that convention, not an outlier
+within it.
+
+What the convention does not license is the vocabulary of the thermodynamic limit, and the criterion
+that says so is in the dynamical-DMRG literature this paper already cites. Jeckelmann's rule is
+explicit~\cite{jeckelmann2002}: \emph{``$\eta_0(N)$ must be larger than the distance $\delta\omega$
+between two consecutive excited states.''} At $L=12$ the largest spacing between consecutive
+excited-state energies in the window is ${\approx}0.48\,t$, a factor $2.7$ \emph{above} the
+$\eta=0.18\,t$ used for $A(k,\omega)$ and $4.8$ above the $\eta=0.10\,t$ used for the spin channel.
+The rule is not satisfied here. Satisfying it would demand $\eta>0.48\,t$. That is only a tenth of
+the Mott scale, so the Hubbard bands would survive; but it is $0.96\,J$ and $2.9$ times the $L=12$
+spin gap itself, so the entire low-frequency structure of Fig.~\ref{fig:spin} would merge into one
+feature. The number the rule
+demands is set by the spacing, $0.48\,t$; we take it from the spacing and not from a rounded-up
+interval. The correct response is not a larger $\eta$: it is to stop using words that require
+the rule to hold. The dynamical-DMRG standard fixes the product $\eta L$ and lets $\eta$ fall with
+the size: Benthien and Jeckelmann use $\eta=5t/L$ in one place, the $L=100$ spin calculation, and
+declare $\eta L=12\,t$ for the finite-size scaling that carries the charge channel to
+$L=120$~\cite{benthien2007}; Jeckelmann's own prescription is $\eta(N)=c/N$ with $c=6.4$ and
+$12.8\,t$, on chains of up to $N=256$~\cite{jeckelmann2002}. This work is at $L=12$ with
+$\eta L=1.2$--$2.2\,t$, a factor of two to ten below every constant in that range,
+and it is the words, not the size, that we withdraw. Section~\ref{sec:scope:declared} states the same
+concession in the list of what this work does not claim, so that it is not read only here.
+
+What the convention does license is exactly the claim of Sec.~\ref{sec:gaps}: pole positions at four
+sizes, each stable in recursion depth, whose ratios and $1/L$ law are properties of the spectrum and
+not of the broadening used to display them. Table~\ref{tab:poles} is of the same kind: it counts
+poles, and the counting does not depend on $\eta$ either---only the picture does. That is the form in
+which the physics is stated from here on.
+
+\subsection{Spin--charge separation is a check of the method, not a result}
+
+That the spin and charge responses of the one-dimensional Hubbard model live on separate energy scales
+has been known exactly since Lieb and Wu~\cite{liebwu1968}, is textbook~\cite{essler2005}, was seen in
+angle-resolved photoemission thirty years ago~\cite{kim1996,damascelli2003}, is already legible in the
+spectral weight of twelve-site clusters embedded by cluster perturbation theory~\cite{senechal2000},
+and has been computed by dynamical DMRG since 2007~\cite{benthien2007} in all three of the
+momentum-resolved channels reported here---in that reference's notation the charge factor
+$N(q,\omega)$ at $L=120$, the spin factor $S(q,\omega)$ at $L=100$ and the one-particle function
+$A(q,\omega)$ at $L=90$, which are respectively our $S(q,\omega)$, our $S^{zz}(q,\omega)$ and our
+$A(k,\omega)$, for the extended Hubbard model of which ours is the $V=0$ line; the same literature treats the Hubbard chain at $L=48$ with $\eta=0.1\,t$ by
+correction-vector DMRG, and reaches $L=64$ in the Heisenberg chain~\cite{nocera2016}. We present it here as what it is: a validation of one sampling primitive
+against a known answer, in four channels, with the des Cloizeaux--Pearson lower
+boundary~\cite{descloizeaux1962} and the M\"uller upper bound~\cite{mueller1981} recovered as
+thermodynamic-limit references rather than as findings. No part of it is offered as new physics.
+
+What is offered as a result is the size dependence. On the same lattice, in the same calculation, from
+the same primitive, the charge scale converges to a finite thermodynamic value while the spin scale
+closes as $\approx2.1/L$, with an independent effective-Heisenberg control reproducing the latter to
+within $10\%$ and a factor $29.9$ separating the two at $L=12$. Opposite finite-size behaviour in two
+channels of one Hamiltonian is a statement that no single-size picture can make, and it is the
+statement the four diagonalizations of Table~\ref{tab:gaps} support.
+
+% =====================================================================
+%  DROP-IN CAPTION REPLACEMENT for panel (a) of \ref{fig:method}
+%  (results.tex lines 44 and 51).  Not part of Sec. 8; move into the figure file.
+%  It removes BOTH prohibited phrases that survive in that caption today:
+%  "to machine precision" (line 44) and "complete-subspace" (line 51).
+%
+% \textbf{(a)} Sum rule. The analytic value $\int A^{+}d\omega=1-\langle\hat n_p\rangle=0.5$ is an
+% identity of the ground state and is not a check of the reconstruction. What is plotted is the
+% integral of the two curves over the $600$-point window at $\eta=0.15\,t$: $0.486588$ for the exact
+% reference and $0.486471$ for the reconstruction, a relative difference of $2.4\times10^{-4}$. Both
+% lie $2.7\%$ below $0.5$ because the Lorentzian tails leave the window; the trapezoidal residue is
+% $3\times10^{-6}$ relative (Sec.~\ref{sec:physics}). The reconstruction shown uses $245$ of the $300$
+% determinants of the sector, $82\%$, and reaches relative $L_1=0.017$.
+%
+%  NOTE ON THE TWO SUBSPACE SIZES IN THAT CAPTION: 245 and 242.5 are DIFFERENT objects and both are
+%  correct.  245 (81.7%) is reconstructed_subspace_size in data/method_max.json, the panel-(a)
+%  subspace, rel-L1 = 0.01727 -> the caption's 0.017.  242.5 is the 8-seed mean sampled |S| at K=12
+%  in the same file, rel-L1 = 0.018550 -> the caption's 0.019.  An earlier internal audit treated
+%  242.5 as the panel-(a) size; it is not.  Neither is "complete": the sector has 300 determinants.
+% =====================================================================

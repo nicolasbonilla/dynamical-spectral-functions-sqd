@@ -10,8 +10,8 @@
 \definecolor{cS}{HTML}{0072B2}        % determinant support |S| (blue, matches scaling's |S|/fraction)
 \definecolor{cX}{RGB}{38,120,74}      % bond dimension (cost)
 \begin{groupplot}[
-  group style={group size=2 by 1, horizontal sep=1.7cm},
-  width=0.52\linewidth, height=6.1cm, paperaxis,
+  group style={group size=2 by 1, horizontal sep=1.45cm},
+  width=0.485\linewidth, height=6.1cm, paperaxis,
   title style={at={(0,1)},anchor=south west,font=\bfseries\small,yshift=1pt},
 ]
 % ---------- (a) scaling with K ----------
@@ -32,7 +32,7 @@
 \addlegendentry{$\mathcal{F}_1=2N_{\mathrm u}=4K$}
 \addplot[cF2,mark=triangle*,mark size=2.3pt,line width=1pt,dashed] coordinates {(1,4)(2,8)(3,12)(4,16)};
 \addlegendentry{$\mathcal{F}_2=4K$}
-\node[font=\scriptsize,black,anchor=west] at (axis cs:0.72,6.7) {$\mathcal{F}_1\!=\!\mathcal{F}_2$ (here $\theta{=}\tfrac{\pi}{4}$)};
+\node[font=\scriptsize,black,anchor=west] at (axis cs:2.45,3.05) {$\mathcal{F}_1\!=\!\mathcal{F}_2$ (here $\theta{=}\tfrac{\pi}{4}$)};
 \addplot[cX,mark=diamond*,mark size=2.2pt,line width=1pt] coordinates {(1,2)(2,2)(3,2)(4,2)};
 \addlegendentry{bond dim.\ $\chi=2$}
 % ---------- (b) theta sweep at K=3 ----------
@@ -53,6 +53,6 @@
 \addplot[cF2,mark=triangle*,mark size=2.3pt,line width=1pt,dashed]
   coordinates {(0.02,0.3740)(0.10,6.8594)(0.25,12)(0.40,6.8594)(0.50,0)};
 \addlegendentry{$\mathcal{F}_2$}
-\node[font=\scriptsize,anchor=north] at (axis cs:0.25,13.9) {maximal pairing};
+\node[font=\scriptsize,anchor=north west] at (axis cs:0.012,14.2) {maximal pairing};
 \end{groupplot}
 \end{tikzpicture}
