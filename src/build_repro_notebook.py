@@ -222,6 +222,9 @@ nb = {"cells": cells,
       "metadata": {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
                    "language_info": {"name": "python", "version": "3.11"}},
       "nbformat": 4, "nbformat_minor": 5}
-os.makedirs('notebooks', exist_ok=True)
-json.dump(nb, open('notebooks/00_Reproduce_Everything.ipynb', 'w'), indent=1)
-print('wrote notebooks/00_Reproduce_Everything.ipynb  (%d cells)' % len(cells))
+# Resolved from this file's own location, not from the caller's cwd.
+_OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                    'notebooks', '00_Reproduce_Everything.ipynb')
+os.makedirs(os.path.dirname(_OUT), exist_ok=True)
+json.dump(nb, open(_OUT, 'w'), indent=1)
+print('wrote %s  (%d cells)' % (_OUT, len(cells)))

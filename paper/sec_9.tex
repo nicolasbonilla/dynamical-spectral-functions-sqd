@@ -2,7 +2,9 @@
 %  Sec. 9 -- Hardware, scope, and the region where the method has no advantage
 %
 %  Replaces: paper/hardware.tex (its two device paragraphs and the
-%  data-availability paragraph; the circuit figure and the two noise figures
+%  data-availability paragraph -- WRITTEN 2026-09-19 as Sec. 9.6 at the end of
+%  this file, sec:scope:data; until that date this header promised a paragraph
+%  that no section of v3 contained, and PRA requires one; the circuit figure and the two noise figures
 %  keep their captions and move as the plan directs), and the first two
 %  subsections of paper/discussion.tex ("An honest account of the classical
 %  hardness" and "Machine learning that preserves ... the quantum sampling role").
@@ -213,6 +215,17 @@ genuine truncation               & $7$ & $20$--$300$ & $5$--$149$ & $2.2\times10
 \end{tabular}
 \end{table*}
 
+% --- float declarations moved here from main.tex (placement only):
+%     declared at the head of the section that discusses them instead of at
+%     its end, so the double-column queue drains across the section instead
+%     of into a run of float-only pages.  Declaration ORDER is unchanged, so
+%     no figure and no table is renumbered.
+\input{table_molecules_v3.tex}
+\input{carried/fig_hero.tex}
+\input{carried/fig_heron.tex}
+\input{carried/fig_noise.tex}
+\input{carried/fig_noiserec.tex}
+
 Twelve of the nineteen reconstructions are exact by construction rather than by approximation, and the
 dimensions say why: seven sectors have dimension six or less, and five more are exhausted by six to
 twelve determinants. The sentence of v1--v2 concluding from this suite that the reconstruction is
@@ -382,3 +395,126 @@ relative error of ${\approx}3\times10^{-3}$ within a factor of three (Sec.~\ref{
 obstruction theorem showing that no orbital-rotation invariant supplies a cheaper a priori predictor of
 that bound (Sec.~\ref{sec:nogo}); and three measured prices---support, resolution and shots---of which
 the third had no number at all before this version (Sec.~\ref{sec:prices}).
+
+% ---------------------------------------------------------------------------------
+%  DATA AVAILABILITY -- written 2026-09-19.  This is the paragraph the header of this
+%  file promised when it took over hardware.tex ("its two device paragraphs and the
+%  data-availability paragraph") and which v3 never wrote.  PRA requires it: "All
+%  published articles must include a Data Availability Statement (DAS) that explains
+%  whether and how authors are sharing their data" (journals.aps.org/pra/authors and
+%  journals.aps.org/authors/data-availability-statements, read 2026-09-19).
+%
+%  It is NOT the v2 paragraph of _superseded/v2_paper/hardware.tex:145.  That one
+%  offered "the raw measurement counts, the transpiled circuits (OpenQASM), the
+%  backend, calibration date, physical-qubit layout and coupling map ... and the full
+%  mitigation settings" as ancillary files.  None of that is in this deposit; the two
+%  hardware JSONs hold post-processed arrays and the counts come back over the network
+%  from job.result().  See docs/DATA_AVAILABILITY.md Part 3, items 1 and 2.
+%
+%  Every sentence was re-checked against the deposit of 2026-09-19:
+%    807 / 7454 / 4   -- python src/verify.py on this tree, re-measured at freeze time by
+%                        a script that PARSES the guardian's
+%                        own SUMMARY line and counts the defects it prints BY NAME, and
+%                        refuses to write if the two disagree or if the guardian is non-zero.
+%                        The check count moved 806 -> 807 when KNOWN_OPEN['tab_repro.H2O.R_eq']
+%                        was deleted (that defect was repaired elsewhere; the guardian was
+%                        reporting XPASS and asking for the entry to go). Deleting it also
+%                        removed the fifth name the guardian used to print, which is what
+%                        makes the word 'four' above exact rather than nearly right.
+%                        RE-MEASURE ON THE FROZEN TREE.  Two of these three moved while
+%                        this section was being written, because other agents were editing
+%                        the repository at the same time:
+%                          12:26  pass 806  FAIL 0  xfail 5  xpass 0  7452 assertions  exit 0
+%                          12:35  pass 805  FAIL 1  xfail 5  xpass 0  7454 assertions  exit 1
+%                                 (+2 assertions: src/check_provenance.py and
+%                                  src/build_arxiv_bundle.py were added to src/; the FAIL is
+%                                  README.md's hand-maintained script count, 55 vs 57)
+%                          12:40  pass 805  FAIL 1  xfail 4  xpass 1  7454 assertions  exit 1
+%                                 (one open defect closed elsewhere: tab_repro H2O R_eq is
+%                                  now 0.958 and reports XPASS)
+%                        The CHECK count 806 held throughout (805 pass + 1 FAIL).  The
+%                        assertion count grows by two per .py file added to src/, and the
+%                        defect count falls as defects are closed, so BOTH are live
+%                        measurements.  If they have moved at freeze time, change $7\,454$
+%                        and "four" above, and Part 1 of docs/DATA_AVAILABILITY.md with them.
+%    one exception    -- the free-fermion-support exception of the v2 draft is GONE:
+%                        panel (c) of fig:decoupling no longer carries 35/336/3496/37361
+%                        (it is now "Hubbard: chi runs forwards"), so fig:circ is the
+%                        only figure in this version that plots no deposited data.
+%    six of seventeen -- figs/*.pdf used by the current build: fig_akw_native,
+%                        fig_circuit, fig_hero, fig_noise_score, fig_spinqw, fig_sqw.
+%    Sec. 9.4 not "Fig. 18" -- fig:gflow and fig:amort are withdrawn in this version.
+%  No figure number is hard-coded here: both figures are reached through \ref.
+%
+%  MEASURED 12:50, AGAINST docs/FIGURE_PROVENANCE.md AS REBUILT AT 12:43.  That file's
+%  exceptions table lists THREE exceptions to "every plotted value is deposited"; this
+%  statement says ONE, and the difference is deliberate, not an oversight:
+%    * Fig. 1, the schematic -- both agree.
+%    * "Fig. 6, panel (c): the four free-fermion support sizes 35, 336, 3496, 37361 are
+%      constants typed into src/make_decoupling_native.py and written from there into the
+%      fragment" -- NOT TRUE OF v3.  That row was carried over from the v2 table and
+%      renumbered from Fig. 1 to Fig. 6 without being re-measured.  grep over every .tex
+%      and .dat under paper/ finds the four numbers as a set in exactly ONE place, the
+%      PROSE of paper/sec_6_body.tex:329; panel (c) of fig_decoupling_native.tex now plots
+%      (chi, |S|) for six Hubbard strata, and make_decoupling_native.py no longer contains
+%      them either.  A figure that does not plot them cannot be an exception for them.
+%    * "Fig. 17: two of the four JSONs behind the plotted ratios are not deposited" -- true,
+%      and it is in this statement, in the known-gaps sentence, where it belongs: the ratios
+%      Fig. 17 PLOTS are the deposited n3_*.dat tables.  What is missing is what BUILT them.
+%      That is a regenerability gap, not a deposit gap, and the guardian registers it.
+%
+%  MEASURED 12:50, AGAINST docs/FIGURE_PROVENANCE.md AS REBUILT AT 12:43.  That file's
+%  exceptions table lists THREE exceptions to "every plotted value is deposited"; this
+%  statement says ONE, and the difference is deliberate, not an oversight:
+%    * Fig. 1, the schematic -- both agree.
+%    * "Fig. 6, panel (c): the four free-fermion support sizes 35, 336, 3496, 37361 are
+%      constants typed into src/make_decoupling_native.py and written from there into the
+%      fragment" -- NOT TRUE OF v3.  That row was carried over from the v2 table and
+%      renumbered from Fig. 1 to Fig. 6 without being re-measured.  grep over every .tex
+%      and .dat under paper/ finds the four numbers as a set in exactly ONE place, the
+%      PROSE of paper/sec_6_body.tex:329; panel (c) of fig_decoupling_native.tex now plots
+%      (chi, |S|) for six Hubbard strata, and make_decoupling_native.py no longer contains
+%      them either.  A figure that does not plot them cannot be an exception for them.
+%    * "Fig. 17: two of the four JSONs behind the plotted ratios are not deposited" -- true,
+%      and it is in this statement, in the known-gaps sentence, where it belongs: the ratios
+%      Fig. 17 PLOTS are the deposited n3_*.dat tables.  What is missing is what BUILT them.
+%      That is a regenerability gap, not a deposit gap, and the guardian registers it.
+% ---------------------------------------------------------------------------------
+\subsection{Data availability statement}
+\label{sec:scope:data}
+
+The data that underlie the figures and the quoted numbers of this work are openly available in the
+reproduction repository~\cite{p2repo} at
+\url{https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd},
+the code under the MIT licence and the manuscript, the deposited datasets and the reproduction
+documentation under CC~BY~4.0. Every figure's plotted values are deposited---as a JSON table in
+\texttt{data/} or as a plain-text table in \texttt{paper/figs/}---and
+\texttt{docs/FIGURE\_PROVENANCE.md} names the file that is authoritative for each; the one exception
+is Fig.~\ref{fig:circ}, a circuit schematic that plots no data. The classical data---the
+exact-diagonalization spectral functions of the one-dimensional Hubbard model, the molecular suite and
+the resource statistics---are additionally \emph{regenerable}: the computation scripts that produced
+them are deposited in \texttt{src/}, and \texttt{docs/REPRODUCE.md} gives the reproduction commands
+together with a measured table of what a clean clone does and does not reach. An automated guardian
+(\texttt{python src/verify.py}) recomputes the underlying physics by exact diagonalization and checks
+the deposited artefacts against it---$807$ checks over $7\,454$ numeric assertions, exiting non-zero on
+any discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in
+the tables and in the abstract; it is not a proof that every sentence of this manuscript is verified,
+and four known open defects are printed by name on every run.
+
+The quantum-hardware results are deposited as the arrays that enter the figures, together with the
+backend name, the shot count and the IBM~Quantum job identifier for each of the two runs
+(\texttt{data/heron\_spectral.json}, \texttt{data/hw\_lucj\_n2\_result.json}). \emph{The raw measured
+bitstrings are not part of the deposit}: the notebooks in \texttt{notebooks/} retrieve the counts from
+the IBM~Quantum service by job identifier, which requires an account and a job that is still
+retrievable, so the classical post-processing of the raw counts cannot be re-run from the deposited
+files alone. The hardware runs themselves cannot be regenerated in any case---the jobs are closed, and
+a device executed today has a different calibration, so new counts would be new data rather than a
+reproduction. For the generative-model control of Sec.~\ref{sec:scope:dequant} only the five summary
+rows are deposited, in \texttt{data/gflow.json}; no script in the repository regenerates them, which is
+the reason given there for withdrawing the two figures that were built on them, and the per-seed values
+are available from the author on reasonable request. Known gaps between the deposited code and the
+deposited artefacts---six of the seventeen figures enter as PDF with no standalone \LaTeX{} source in
+the deposit, the tables plotted in Fig.~\ref{fig:thm1iii-violation} are deposited but the script that
+builds them is not, three deposited computation scripts have no deposited output, and parts of the
+pipeline require \texttt{pyscf} or an IBM~Quantum account---are enumerated in
+\texttt{docs/KNOWN\_DISCREPANCIES.md} rather than left for the reader to discover.

@@ -117,7 +117,11 @@ def compute(L,U=8.0,eta=0.15,K=18,dt=0.5,thr=0.05,nl=260,ngrid=600):
 
 if __name__=='__main__':
     Ls=[int(x) for x in sys.argv[1:]] or [4,6,8]
-    fn='scaling_data.json'
+    # Resolved from this file's own location, not from the caller's cwd: running it
+    # from anywhere else used to start a FRESH scaling_data.json there (line below
+    # falls back to an empty dict) and leave data/scaling_data.json untouched.
+    fn=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                    'data','scaling_data.json')
     ref={4:(6.607,0.9167),6:(9.385,0.83),8:(12.814,0.5625)}   # dense-ED reference for validation
     data=json.load(open(fn)) if os.path.exists(fn) else {'U':8.0,'points':[]}
     data.setdefault('points',[])

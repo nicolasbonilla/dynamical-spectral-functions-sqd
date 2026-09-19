@@ -105,11 +105,11 @@ KNOWN_OPEN = {
         why="the stored pooled Spearman F1-|S| is not reproducible from the 74 deposited "
             "points with either set of F1 values; recomputation gives 0.5992028038362396. "
             "Both round to the 0.60 printed in resource.tex, so no printed number moves."),
-    "tab_repro.H2O.R_eq": dict(
-        wrong=0.957, right=0.958, tol=1e-9,
-        why="the H2O equilibrium geometry in src/n19_suite.py is "
-            "'O 0 0 0; H 0 0.757 0.587; ...', i.e. R = sqrt(0.757^2+0.587^2) = 0.95792 A. "
-            "The only mis-stated geometry among the 38."),
+    # "tab_repro.H2O.R_eq" was here until 2026-09-19.  paper/app_carried_repro.tex
+    # printed R_eq(H2O) = 0.957 A while the geometry in src/n19_suite.py gives
+    # sqrt(0.757^2 + 0.587^2) = 0.95792 -> 0.958.  The manuscript was corrected, this
+    # guardian reported XPASS and asked for the entry to go, and it is gone: the slot
+    # is now a HARD check that fails if the printed value drifts again.
     "method_max.sumrule": dict(
         wrong=0.5000000000000002, right=0.48658771750884894, tol=1e-9,
         why="data/method_max.json stores <Psi0|c c^dag|Psi0> = 1-<n_p>, an analytic "
@@ -803,7 +803,7 @@ COVERED_FRAGMENTS = {
 # ---------------------------------------------------------------------------
 COVERAGE_GAP_V3 = {
     "fig_thm1iii_violation_native.tex": (
-        "the fragment plots ten n3_*.dat tables (2432 rows) built by build_n3.py from "
+        "the fragment plots eight n3_*.dat tables (2432 rows) built by build_n3.py from "
         "data/cert_stress.json, data/cert_akw.json and two JSONs that are NOT in data/. "
         "build_n3.py itself is not deposited, so this guardian cannot regenerate the "
         "tables and will not pretend to check them by re-reading what the figure prints. "

@@ -95,6 +95,104 @@ $S^{zz}(q,\omega)$. The processor measures \emph{only} bitstrings. Figure~\ref{f
 primitive --- what one circuit and one readout can address; Table~\ref{tab:provenance} states separately
 what was actually run for each channel here.
 
+% --- float declaration moved here (placement only): it now follows the
+%     sentence that first cites it instead of trailing the section.
+%     Declaration ORDER is unchanged, so nothing is renumbered.
+% -------------------------------------------------------------------------------------
+%  THE PROVENANCE TABLE
+% -------------------------------------------------------------------------------------
+\begin{table*}[tp]\centering\small
+\caption{\textbf{Provenance of every dynamical object in this paper: the subspace it was built on, and
+the measurements that built it.} ``Full sector'' means no subspace selection of any kind --- the
+continued fraction runs on the whole sector at the stated recursion depth $n_\ell$, so the row is a
+reference against which reconstructions are scored, not a reconstruction. ``Observed bitstrings'' means
+the subspace is the union of the distinct bitstrings actually returned by $T$ draws split evenly over
+the $K{+}1$ snapshots, which is the protocol of Sec.~\ref{sec:method}; one \emph{stream} is one
+independent pseudorandom realization of that draw. ``Born ranking'' means the subspace is the top
+fraction of the sector under the accumulated Born weight of the evolved state, which is the
+$T\to\infty$ limit of the same protocol and carries no shot budget. Sector dimensions are exact; budgets
+are per channel and per stream.}
+\label{tab:provenance}
+\setlength{\tabcolsep}{4pt}
+\setlength{\parskip}{0pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}p{0.225\linewidth}p{0.115\linewidth}p{0.315\linewidth}p{0.225\linewidth}@{}}
+\toprule
+\raggedright \textbf{Channel and system} & \raggedright \textbf{Shown in} & \raggedright \textbf{Determinant subspace} & \raggedright \textbf{Shots $T$}\tabularnewline
+\midrule
+\raggedright $A(\omega)$; Hubbard $L{=}6$, $U/t{=}8$, $\eta{=}0.15\,t$; $\dim=300$
+ & \raggedright Fig.~\ref{fig:method}
+ & \raggedright observed bitstrings; $|\mathcal S|=245$ of $300$ in panel~(a), $242.5$ on average in panel~(b)
+ & \raggedright $5.2\times10^{4}$ per stream ($4\times10^{3}$ at each of $13$ snapshots, $K{=}12$), $8$ streams\tabularnewline
+\raggedright $A(\omega)$, orbital projected; $19$ molecules at dissociation; $\dim=2$--$300$
+ & \raggedright Table~\ref{tab:molecules}
+ & \raggedright observed bitstrings; the fraction $|\mathcal S|/D$ is the last column of that table
+ & \raggedright $2.16\times10^{5}$ per molecule ($8\times10^{3}$ at each of $27$ snapshots, $K{=}26$), one stream\tabularnewline
+\raggedright $A(\omega)$; $\mathrm{N_2}$ along dissociation, CAS$(6,6)$
+ & \raggedright Fig.~\ref{fig:hero}(a)
+ & \raggedright full CAS sector
+ & \raggedright none\tabularnewline
+\raggedright $A(\omega)$; hardware, \texttt{ibm\_fez}, $L{=}6$, $U/t{=}4$, $\eta{=}0.15\,t$; $\dim=300$
+ & \raggedright Fig.~\ref{fig:heron}(a)
+ & \raggedright recovered from device bitstrings; $|\mathcal S|=300$ of $300$, the entire sector, so the agreement
+   with the exact curve is exact by coverage and is not a fidelity measurement
+ & \raggedright $5\times10^{4}$, pooled over the $t{=}0$ reference and $K{=}7$ evolution circuits\tabularnewline
+\midrule
+\raggedright $A(k,\omega)$; $L{=}12$, $\eta{=}0.18\,t$; $\dim=731\,808$
+ & \raggedright Fig.~\ref{fig:lattice}
+ & \raggedright full sector, $n_\ell=150$ per momentum
+ & \raggedright none\tabularnewline
+\raggedright $A(k,\omega)$; $L{=}8$, $\eta{=}0.18\,t$; $\dim=3920$
+ & \raggedright Fig.~\ref{fig:akwsampled}(a,b)
+ & \raggedright Born ranking, $3332$ of $3920$ per channel, over $K{=}16$ snapshots
+ & \raggedright none attached; the $T\to\infty$ limit. Declared gap, see text\tabularnewline
+\raggedright $A(\omega)$; $L{=}8$, $\eta{=}0.15\,t$; $\dim=3920$
+ & \raggedright Fig.~\ref{fig:akwsampled}(c)
+ & \raggedright observed bitstrings; sector fraction $0.835\pm0.0025$ at the largest budget
+ & \raggedright up to $2.60\times10^{6}$ over $19$ snapshots ($K{=}18$), $8$ streams\tabularnewline
+\midrule
+\raggedright $S(q,\omega)$; $L{=}12$, $\eta{=}0.18\,t$; $\dim=853\,776$
+ & \raggedright Fig.~\ref{fig:sqw}
+ & \raggedright full $N$-particle sector, $n_\ell=200$
+ & \raggedright none\tabularnewline
+\raggedright $S^{zz}(q,\omega)$; $L{=}12$, $\eta{=}0.10\,t$; $\dim=853\,776$
+ & \raggedright Fig.~\ref{fig:spin}
+ & \raggedright full $N$-particle sector, $n_\ell=200$
+ & \raggedright none\tabularnewline
+\midrule
+\raggedright Required sector fraction versus $L$; $L{=}4$--$14$, $\eta{=}0.15\,t$
+ & \raggedright Fig.~\ref{fig:scaling}(b,c)
+ & \raggedright both selections, plotted together: Born ranking (open squares) and observed bitstrings (filled
+   circles)
+ & \raggedright measured: $2.4\times10^{4}$, $2.6\times10^{5}$, $3.1\times10^{6}$, $1.9\times10^{7}$ at
+   $L=6,8,10,12$ (Table~\ref{tab:shots}, $4$--$6$ seeds per size)\tabularnewline
+\bottomrule
+\end{tabular}
+\end{table*}
+
+% -------------------------------------------------------------------------------------
+%  FLOAT MOVED HERE FROM hardware.tex:19-28, CAPTION UNCHANGED.
+%  *** DELETE IT FROM hardware.tex WHEN THIS FILE IS INSTALLED. ***
+% -------------------------------------------------------------------------------------
+\begin{figure*}[tp]\centering\includegraphics[width=\linewidth]{figs/fig_circuit.pdf}
+\caption{\textbf{One sampling primitive, four dynamical responses.} A shallow, ancilla-free
+circuit---state preparation and a Trotter layer repeated $K$ times (Givens rotations for the hopping
+$t$, native $R_{zz}$ for the on-site $U\hat n_\uparrow\hat n_\downarrow$)---is measured in the
+computational basis; no Hadamard test or controlled unitary is run on the device. The sampled
+bitstrings define a sector-specific subspace $\mathcal S$ and feed a single classical engine---a Haydock
+continued-fraction resolvent~\cite{haydock1972} $G_\phi(z)=\langle\phi|(z-\hat H_{\mathcal S})^{-1}|\phi\rangle$, whose
+single-particle case ($\phi=\hat c^\dagger_p|0\rangle$) is the Green's function of
+Eq.~\eqref{eq:green}. The seed $\phi$ then selects the channel: particle addition/removal seeds
+$\hat c^{\dagger}_p|0\rangle,\hat c_p|0\rangle$ in the $(N{\pm}1)$ sectors give the single-particle
+spectral functions $A(\omega)$ and $A(k,\omega)$ (photoemission/ARPES), while number-conserving density
+and spin seeds $\hat n_q|0\rangle,\hat S^z_q|0\rangle$ in the $N$ sector give the dynamical structure
+factors $S(q,\omega)$ and $S^{zz}(q,\omega)$ (neutron~\cite{squires2012} and resonant inelastic
+X-ray~\cite{ament2011} scattering)---all from \emph{one} sampling
+primitive, the seed selecting the sector and hence the subspace. The four channels are realized in Figs.~\ref{fig:method} ($A(\omega)$),
+\ref{fig:lattice} ($A(k,\omega)$), \ref{fig:sqw} ($S(q,\omega)$), and \ref{fig:spin}
+($S^{zz}(q,\omega)$).}\label{fig:circ}\end{figure*}
+
+
 \subsection{Relation to quantum subspace and Krylov methods}\label{sec:method:krylov}
 In exact arithmetic the span of the time-evolved seeds is the order-$K$ polynomial Krylov
 space~\cite{shen2023,kirby2023}, and diagonalizing $\hat H$ inside a subspace containing it is the route
@@ -231,97 +329,3 @@ Sec.~\ref{sec:leakage}. Conversely, Sec.~\ref{sec:leakage} leaves open precisely
 Sec.~\ref{sec:nogo} answers --- whether the a posteriori certificate can be replaced by an a priori
 predictor computed from the state. Neither half can be removed without leaving the other incomplete in
 a way we can name.
-
-% -------------------------------------------------------------------------------------
-%  THE PROVENANCE TABLE
-% -------------------------------------------------------------------------------------
-\begin{table*}[tp]\centering\small
-\caption{\textbf{Provenance of every dynamical object in this paper: the subspace it was built on, and
-the measurements that built it.} ``Full sector'' means no subspace selection of any kind --- the
-continued fraction runs on the whole sector at the stated recursion depth $n_\ell$, so the row is a
-reference against which reconstructions are scored, not a reconstruction. ``Observed bitstrings'' means
-the subspace is the union of the distinct bitstrings actually returned by $T$ draws split evenly over
-the $K{+}1$ snapshots, which is the protocol of Sec.~\ref{sec:method}; one \emph{stream} is one
-independent pseudorandom realization of that draw. ``Born ranking'' means the subspace is the top
-fraction of the sector under the accumulated Born weight of the evolved state, which is the
-$T\to\infty$ limit of the same protocol and carries no shot budget. Sector dimensions are exact; budgets
-are per channel and per stream.}
-\label{tab:provenance}
-\setlength{\tabcolsep}{4pt}
-\setlength{\parskip}{0pt}
-\renewcommand{\arraystretch}{1.15}
-\begin{tabular}{@{}p{0.225\linewidth}p{0.115\linewidth}p{0.315\linewidth}p{0.225\linewidth}@{}}
-\toprule
-\raggedright \textbf{Channel and system} & \raggedright \textbf{Shown in} & \raggedright \textbf{Determinant subspace} & \raggedright \textbf{Shots $T$}\tabularnewline
-\midrule
-\raggedright $A(\omega)$; Hubbard $L{=}6$, $U/t{=}8$, $\eta{=}0.15\,t$; $\dim=300$
- & \raggedright Fig.~\ref{fig:method}
- & \raggedright observed bitstrings; $|\mathcal S|=245$ of $300$ in panel~(a), $242.5$ on average in panel~(b)
- & \raggedright $5.2\times10^{4}$ per stream ($4\times10^{3}$ at each of $13$ snapshots, $K{=}12$), $8$ streams\tabularnewline
-\raggedright $A(\omega)$, orbital projected; $19$ molecules at dissociation; $\dim=2$--$300$
- & \raggedright Table~\ref{tab:molecules}
- & \raggedright observed bitstrings; the fraction $|\mathcal S|/D$ is the last column of that table
- & \raggedright $2.16\times10^{5}$ per molecule ($8\times10^{3}$ at each of $27$ snapshots, $K{=}26$), one stream\tabularnewline
-\raggedright $A(\omega)$; $\mathrm{N_2}$ along dissociation, CAS$(6,6)$
- & \raggedright Fig.~\ref{fig:hero}(a)
- & \raggedright full CAS sector
- & \raggedright none\tabularnewline
-\raggedright $A(\omega)$; hardware, \texttt{ibm\_fez}, $L{=}6$, $U/t{=}4$, $\eta{=}0.15\,t$; $\dim=300$
- & \raggedright Fig.~\ref{fig:heron}(a)
- & \raggedright recovered from device bitstrings; $|\mathcal S|=300$ of $300$, the entire sector, so the agreement
-   with the exact curve is exact by coverage and is not a fidelity measurement
- & \raggedright $5\times10^{4}$, pooled over the $t{=}0$ reference and $K{=}7$ evolution circuits\tabularnewline
-\midrule
-\raggedright $A(k,\omega)$; $L{=}12$, $\eta{=}0.18\,t$; $\dim=731\,808$
- & \raggedright Fig.~\ref{fig:lattice}
- & \raggedright full sector, $n_\ell=150$ per momentum
- & \raggedright none\tabularnewline
-\raggedright $A(k,\omega)$; $L{=}8$, $\eta{=}0.18\,t$; $\dim=3920$
- & \raggedright Fig.~\ref{fig:akwsampled}(a,b)
- & \raggedright Born ranking, $3332$ of $3920$ per channel, over $K{=}16$ snapshots
- & \raggedright none attached; the $T\to\infty$ limit. Declared gap, see text\tabularnewline
-\raggedright $A(\omega)$; $L{=}8$, $\eta{=}0.15\,t$; $\dim=3920$
- & \raggedright Fig.~\ref{fig:akwsampled}(c)
- & \raggedright observed bitstrings; sector fraction $0.835\pm0.0025$ at the largest budget
- & \raggedright up to $2.60\times10^{6}$ over $19$ snapshots ($K{=}18$), $8$ streams\tabularnewline
-\midrule
-\raggedright $S(q,\omega)$; $L{=}12$, $\eta{=}0.18\,t$; $\dim=853\,776$
- & \raggedright Fig.~\ref{fig:sqw}
- & \raggedright full $N$-particle sector, $n_\ell=200$
- & \raggedright none\tabularnewline
-\raggedright $S^{zz}(q,\omega)$; $L{=}12$, $\eta{=}0.10\,t$; $\dim=853\,776$
- & \raggedright Fig.~\ref{fig:spin}
- & \raggedright full $N$-particle sector, $n_\ell=200$
- & \raggedright none\tabularnewline
-\midrule
-\raggedright Required sector fraction versus $L$; $L{=}4$--$14$, $\eta{=}0.15\,t$
- & \raggedright Fig.~\ref{fig:scaling}(b,c)
- & \raggedright both selections, plotted together: Born ranking (open squares) and observed bitstrings (filled
-   circles)
- & \raggedright measured: $2.4\times10^{4}$, $2.6\times10^{5}$, $3.1\times10^{6}$, $1.9\times10^{7}$ at
-   $L=6,8,10,12$ (Table~\ref{tab:shots}, $4$--$6$ seeds per size)\tabularnewline
-\bottomrule
-\end{tabular}
-\end{table*}
-
-% -------------------------------------------------------------------------------------
-%  FLOAT MOVED HERE FROM hardware.tex:19-28, CAPTION UNCHANGED.
-%  *** DELETE IT FROM hardware.tex WHEN THIS FILE IS INSTALLED. ***
-% -------------------------------------------------------------------------------------
-\begin{figure*}[tp]\centering\includegraphics[width=\linewidth]{figs/fig_circuit.pdf}
-\caption{\textbf{One sampling primitive, four dynamical responses.} A shallow, ancilla-free
-circuit---state preparation and a Trotter layer repeated $K$ times (Givens rotations for the hopping
-$t$, native $R_{zz}$ for the on-site $U\hat n_\uparrow\hat n_\downarrow$)---is measured in the
-computational basis; no Hadamard test or controlled unitary is run on the device. The sampled
-bitstrings define a sector-specific subspace $\mathcal S$ and feed a single classical engine---a Haydock
-continued-fraction resolvent~\cite{haydock1972} $G_\phi(z)=\langle\phi|(z-\hat H_{\mathcal S})^{-1}|\phi\rangle$, whose
-single-particle case ($\phi=\hat c^\dagger_p|0\rangle$) is the Green's function of
-Eq.~\eqref{eq:green}. The seed $\phi$ then selects the channel: particle addition/removal seeds
-$\hat c^{\dagger}_p|0\rangle,\hat c_p|0\rangle$ in the $(N{\pm}1)$ sectors give the single-particle
-spectral functions $A(\omega)$ and $A(k,\omega)$ (photoemission/ARPES), while number-conserving density
-and spin seeds $\hat n_q|0\rangle,\hat S^z_q|0\rangle$ in the $N$ sector give the dynamical structure
-factors $S(q,\omega)$ and $S^{zz}(q,\omega)$ (neutron~\cite{squires2012} and resonant inelastic
-X-ray~\cite{ament2011} scattering)---all from \emph{one} sampling
-primitive, the seed selecting the sector and hence the subspace. The four channels are realized in Figs.~\ref{fig:method} ($A(\omega)$),
-\ref{fig:lattice} ($A(k,\omega)$), \ref{fig:sqw} ($S(q,\omega)$), and \ref{fig:spin}
-($S^{zz}(q,\omega)$).}\label{fig:circ}\end{figure*}

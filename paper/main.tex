@@ -9,8 +9,10 @@
 %      one-column source   \textwidth = 472.32 pt, body 10.95 pt
 %      revtex4-2 aps pra   \textwidth = 510.00 pt, \columnwidth = 246.00 pt, body 10 pt
 %  So a float promoted to figure*/table* is 8.0 % WIDER than it was, not 52 % narrower.
-%  That is why 35 of the 19+16 floats are starred: it is the assignment that leaves the
-%  validated figures at (or above) the size they were validated at.
+%  That is why 33 of the 17+16 floats are starred -- all of them: it is the assignment
+%  that leaves the validated figures at (or above) the size they were validated at.
+%  (Counted by src/check_provenance.py, which expands \input from this file; the
+%  comment said '35 of the 19+16' until 2026-09-19, two figures after the fact.)
 % =====================================================================================
 
 \documentclass[
@@ -24,13 +26,13 @@
                     % superscript form prints "Nicolas Bonilla Vargas^{1,*}" over
                     % "^1 Daita AI"; grouped prints the affiliation plainly under the
                     % name, which is APS house style for a single-affiliation paper.
-                    % Rendered both and compared (work/vis/g1crop.png).
+                    % Both forms were rendered and compared before choosing.
   nofootinbib,      % keep \footnote out of the reference list (3 footnotes in the text)
   longbibliography, % INERT here: it only affects BibTeX output through apsrev4-2.bst,
                     % and this manuscript ships a hand-written thebibliography.  Kept
                     % so that a later switch to BibTeX needs no option change; delete
                     % it if you prefer the option list to carry nothing inert.
-  floatfix          % REVTeX's own fix for deferred double-column floats (31 of them)
+  floatfix          % REVTeX's own fix for deferred double-column floats (all 33)
 ]{revtex4-2}
 
 % ---- fonts ---------------------------------------------------------------------
@@ -105,7 +107,7 @@
 \sloppy                         % 246pt columns: without it the overfull count explodes
 
 % ---- float placement in two columns ---------------------------------------------
-% 31 of the 35 floats are double-column, and a figure* can only reach the top of a
+% All 33 floats are double-column, and a figure* can only reach the top of a
 % later page.  These are the standard loosened fractions plus their double-column
 % twins, which do not exist in a one-column document.
 \setcounter{topnumber}{2}
@@ -117,7 +119,16 @@
 \renewcommand{\textfraction}{0.06}
 \renewcommand{\floatpagefraction}{0.80}
 \renewcommand{\dbltopfraction}{0.92}
-\renewcommand{\dblfloatpagefraction}{0.70}
+% MEASURED 2026-09-19.  \@fpmin for double-column floats is
+% \dblfloatpagefraction x \textheight; at 0.70 that is 470.4 pt, and SEVEN of the
+% 33 floats are taller than that on their own, so each of them qualified to fill a
+% float-only page by itself.  That, and not a missing 'p', is what emptied fifteen
+% pages of every line of text.  At 0.99 (665.3 pt) a float page has to be all but
+% full before LaTeX will build one, so the queue drains onto the tops of text pages
+% instead.  Nothing else was loosened: \dbltopfraction stays at 0.92, so every page
+% that carries a top float still keeps at least 53.8 pt -- about five lines -- of
+% text, exactly as before.  Measured on this tree: 13 text-free pages -> 2, 59 -> 57.
+\renewcommand{\dblfloatpagefraction}{0.99}
 
 % ---- theorem environments -------------------------------------------------------
 % \newcommand, not \providecommand: if a future REVTeX release defines any of these,
@@ -163,7 +174,11 @@ sample-based spectral functions}
 \email{ngbonillav@unal.edu.co}
 \affiliation{Daita AI}
 
-\date{\today}
+% \date{\today} was here until 2026-09-19.  Two reasons, both measured:
+% arXiv's submission help still lists \today among the things not to use, and a
+% dated PDF is not byte-reproducible from one day to the next.  revtex4-2.cls
+% line 2521 is \def\@date{}, so with no \date the title block prints no date
+% at all -- verified against the class, not assumed.
 
 \begin{abstract}
 Sample-based quantum diagonalization is moving from energies to dynamics. Given the subspace the shots
@@ -208,8 +223,6 @@ both pooled coefficients are withdrawn. We claim no quantum advantage.
 \input{sec_5_body.tex}
 
 \input{sec_6_body.tex}
-\input{figs/captions.tex}
-\input{carried/fig_ladder.tex}
 
 \input{sec_7.tex}
 \input{figs/float_f12.tex}
@@ -220,11 +233,6 @@ both pooled coefficients are withdrawn. We claim no quantum advantage.
 \input{carried/fig_spin.tex}
 
 \input{sec_9.tex}
-\input{table_molecules_v3.tex}
-\input{carried/fig_hero.tex}
-\input{carried/fig_heron.tex}
-\input{carried/fig_noise.tex}
-\input{carried/fig_noiserec.tex}
 % ---------------------------------------------------------------------------------
 %  fig:amort and fig:gflow are NOT typeset.  This is not a layout decision.
 %  Sec. 9.4 of this manuscript reads, in the body: "Both figures of this test are

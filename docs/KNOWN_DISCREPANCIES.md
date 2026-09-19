@@ -1,6 +1,27 @@
 # KNOWN DISCREPANCIES — where running a script does *not* reproduce the deposit
 
-*Last audited: 2026-09-18.*
+*Last audited: **2026-09-19**, against the v3 REVTeX manuscript (17 figures, 16 tables, 59 pp).*
+
+> ### Figure numbers in this file
+>
+> Everything written before 2026-09-19 numbers the figures as **arXiv v2** did. v3 withdrew
+> five figures and added two, so every number below 20 moved. Where a v2 number survives in an
+> entry it is followed by the stable `\label`, which is what to search for:
+>
+> | v2 | v3 | label | | v2 | v3 | label |
+> |---|---|---|---|---|---|---|
+> | 3 | **2** | `fig:method` | | 12 | **9** | `fig:scaling` |
+> | 4 | **4** | `fig:lattice` | | 13 | **8** | `fig:ladder` |
+> | 5 | **3** | `fig:akwsampled` | | 14 | **1** | `fig:circ` |
+> | 6 | **11** | `fig:sqw` | | 15 | **14** | `fig:heron` |
+> | 7 | **12** | `fig:spin` | | 16 | **15** | `fig:noise` |
+> | 10 | **13** | `fig:hero` | | 17 | **16** | `fig:noiserec` |
+> | 1 | **6** | `fig:decoupling` | | 20 | **5** | `fig:witness` |
+> | 2 | **7** | `fig:master` | | — | **10** | `fig:gapscaling` (new in v3) |
+> | 8, 9, 11, 18, 19 | — | withdrawn | | — | **17** | `fig:thm1iii-violation` (new in v3) |
+>
+> The mapping is derived, not typed: `python src/check_provenance.py --markdown` prints the
+> v3 column from `paper/main.tex` itself.
 
 > ## ⛔ READ THIS BEFORE UPLOADING ANYTHING TO arXiv
 >
@@ -140,7 +161,7 @@ the current directory. **Nothing but paths was touched: no physics, no computati
 (`gate1_ladder.json`, `rigor_floor.json`, and both inputs of `recolor_akw_v2.py`). Fixing where a script
 writes does not conjure the artefact it should have written. Those are §13.
 
-## 3. `make_scaling_fig.py` does **not** produce the committed Fig. 12 — **OPEN, and a live hazard**
+## 3. `make_scaling_fig.py` does **not** produce the committed scaling figure (`fig:scaling`, Fig. 9 of v3) — **OPEN, and a live hazard**
 
 `paper/figs/fig_scaling2_native.tex` is a **three**-panel figure ((a) magic, (b) fraction, (c) absolute
 size). `src/make_scaling_fig.py` emits a **two**-panel figure, with different fonts, different axis
@@ -155,7 +176,7 @@ The two files agree on every number they share. Panel (c)'s own numbers are now 
 `.tex` header: `|S| = round(frac · Np1_sector)` with `frac` from `data/scaling_data.json`, giving
 22, 246, 2180, 19183, 124407, 824503.
 
-## 4. H3 — do **not** "correct" the 9.3851 of Fig. 12
+## 4. H3 — do **not** "correct" the 9.3851 of `fig:scaling` (Fig. 9 of v3)
 
 `fig_scaling2_native.tex` plots `F₁(L=6) = 9.3851`. That is the **periodic ring** (PBC) value, because
 its data source `data/scaling_data.json` is produced with `akw_lanczos.hop`, `j = (i+1) % L`.
@@ -168,29 +189,42 @@ A repair pass in August mistakenly propagated the ring value into the open-chain
 reverted on 2026-09-05. **Changing 9.3851 to 9.6047 in `fig_scaling2_native.tex` would reintroduce the
 same error in the opposite direction.** A warning comment now sits in the figure file itself.
 
-## 5. Ten of the twenty figures enter the manuscript as PDF with no `.tex` source in the deposit — **OPEN**
+## 5. Six of the seventeen figures enter the manuscript as PDF with no `.tex` source in the deposit — **OPEN**
 
-Inventory in [`FILE_INDEX.md`](FILE_INDEX.md). Eight of the ten have their standalone `.tex` source
-outside this deposit, in the author's `work/notes/` tree. The remaining two — `fig_hero.pdf` (Fig. 10)
-and `fig_noise_score.pdf` (Fig. 16) — have no `.tex` anywhere, but their generators `make_hero_fig.py`
-and `make_noise_fig.py` **are** deposited and rewrite that `.tex` (into the current working directory,
-not into `paper/figs/`), so they are regenerable in two steps. One further dependency is not deposited:
-`fig_molecular_gallery.pdf` needs the 19 trimmed PyMOL orbital PNGs (`gtrim/*.png`).
+*Re-counted 2026-09-19 by `src/check_provenance.py`; the v2 count of "ten of the twenty" is
+superseded, five of those ten having been withdrawn with their figures.*
 
-A referee therefore cannot recompile those ten figures from this repository alone. They can verify
+Inventory in [`FILE_INDEX.md`](FILE_INDEX.md). The six are `fig_circuit.pdf` (`fig:circ`),
+`fig_akw_native.pdf` (`fig:lattice`), `fig_sqw.pdf` (`fig:sqw`), `fig_spinqw.pdf` (`fig:spin`),
+`fig_hero.pdf` (`fig:hero`) and `fig_noise_score.pdf` (`fig:noise`).
+
+Four of the six have their standalone `.tex` source outside this deposit, in the author's
+`work/notes/` tree. The other two — `fig_hero.pdf` and `fig_noise_score.pdf` — have no `.tex`
+anywhere, but their generators `make_hero_fig.py` and `make_noise_fig.py` **are** deposited and
+rewrite that `.tex` (into the current working directory, not into `paper/figs/`), so they are
+regenerable in two steps.
+
+A referee therefore cannot recompile those six figures from this repository alone. They can verify
 every plotted number in them against the committed `.json`, which is the claim `FIGURE_PROVENANCE.md`
-actually makes.
+actually makes. (The PyMOL-orbital dependency recorded here in v2 belonged to
+`fig_molecular_gallery.pdf`, a figure v3 withdrew; its body is in `_superseded/v3_retired/figs/`.)
 
 ## 6. Most `.dat` files are not read by anything inside the deposit — **OPEN (documented)**
 
-Before this pass `paper/figs/` held fourteen `.dat` files and **twelve of them were read by no
-fragment in the deposit**. Two of those twelve were read by nothing *anywhere* and have been deleted
-(item 8), leaving twelve files of which **two** — `aw_method.dat` and `heron_hot.dat` — are consumed by
-a committed fragment and **ten** are consumed only by the standalone `.tex` sources of item 5, which
-are not deposited. Every one of the ten is still the authoritative record of what a figure plots, and
-**all ten are rewritten by a deposited script** (`make_bench_fig.py`, `make_hero_fig.py`,
-`make_heron_fig.py`, `make_noise_fig.py`, `spin_lanczos.py`, `make_sqw_edges.py`). The gap is the
-consumer, not the producer. Full table in [`FILE_INDEX.md`](FILE_INDEX.md).
+*Re-counted 2026-09-19. `paper/figs/` now holds **19** `.dat` files, the ten `n3_*.dat` tables of
+`fig:thm1iii-violation` having arrived with v3 and the three `bench_U*.dat` having left with
+`fig:bench`.*
+
+| | count | files |
+|---|---|---|
+| read by a fragment **in this deposit** | **10** | `aw_method.dat`, `heron_hot.dat`, and the eight `n3_*.dat` the Fig.-17 fragment plots |
+| read by nothing in this deposit | **9** | `hero_aw.dat`, `hero_res.dat`, `heron.dat`, `heron_hw.dat`, `noise.dat`, `spinqw_edges.dat`, `sqw_edges.dat` (consumed only by the standalone sources of §5), plus `n3_fig5_eta.dat` and `n3_fig5_frac.dat`, which are consumed by nothing anywhere |
+
+**The producer side is now the worse half.** Seven of the nine unread tables *are* rewritten by a
+deposited script (`make_hero_fig.py`, `make_heron_fig.py`, `make_noise_fig.py`, `spin_lanczos.py`,
+`make_sqw_edges.py`) — for those the gap is the consumer. But **all ten `n3_*.dat` have no deposited
+producer at all**: their builder `build_n3.py` is not in the tree (§27). Eight of them are plotted by
+the manuscript and regenerable by nothing. Full table in [`FILE_INDEX.md`](FILE_INDEX.md).
 
 ## 7. `paper/arxiv-submission.tar.gz` is the frozen v2 bundle and is **behind** the working tree
 
@@ -222,10 +256,12 @@ This paragraph was itself stale for the second time within twenty-four hours —
 "36 / 9 / 2" until the retirement above changed it to "35 / 9 / 3" — which is the argument for the
 guardian check rather than for the note. The check caught it; a reader would not have.
 
-In every one of the nine the working tree is ahead. The bundle is a snapshot of what was posted as
-arXiv v2, not of the current source. **It still contains the two fabricated rows of
-`figs/sqw_edges.dat`** and the superseded `19184` / `824504`: uploading it as-is would re-post both.
-It must be rebuilt before any v3 submission.
+The bundle is a snapshot of what was posted as arXiv v2, not of the current source. **It still
+contains the two fabricated rows of `figs/sqw_edges.dat`** and the superseded `19184` / `824504`:
+uploading it as-is would re-post both. It must be rebuilt before any v3 submission.
+
+**Re-measure, do not copy.** The three counts above are asserted by `src/verify.py` on every run,
+so rebuilding the bundle without updating this paragraph fails the guardian — which is the point.
 
 ## 8. Files deleted in this pass
 
@@ -245,7 +281,8 @@ It must be rebuilt before any v3 submission.
 | Four dangling file references in `docs/REPRODUCE.md` (`fig_akw_v2_L12.tex`, `paper/figs/fig_sqw.tex`, `paper/figs/fig_spinqw.tex`, `paper/figs/fig_circuit_native.tex`) and two in `docs/FIGURE_PROVENANCE.md`. | each now labelled "standalone; not in this deposit", with the real location where one is known | automated existence check over every path named in `README.md`, `Makefile` and the `docs/*.md` |
 
 `README.md:87` and `README.md:121` point at `paper/arxiv-submission.tar.gz`. That file has been
-restored, so both references are valid (verified: readable gzip, 49 entries, contains `main.tex`) and
+restored, so both references are valid (verified: readable gzip, 49 entries — 47 files and two
+directory records — containing `main.tex`) and
 were left untouched — but see item 7 for what the bundle actually contains.
 
 ## 11. The integrity pass of 2026-09-18, and what survived it
@@ -287,13 +324,14 @@ response, then — more importantly — what could **not** be repaired and is st
 These are not oversights. Each is a real limit, written down so that it is not rediscovered as a
 surprise by a referee.
 
-1. **The fabrication survives outside `release/`, in the file that actually draws Fig. 6.** The only
-   source of Fig. 6 is `work/notes/fig_sqw.tex`, which is **not in this deposit**, and it reads
+1. **The fabrication survives outside `release/`, in the file that actually draws `fig:sqw`
+   (Fig. 6 of v2, Fig. 11 of v3).** The only source of it is `work/notes/fig_sqw.tex`, which is
+   **not in this deposit**, and it reads
    `rebuild/figs/sqw_edges.dat` — a copy that still contains the two fabricated rows. Worse, the Δ
    marker is drawn **by hand in TikZ** in that file, twice (an `extra y ticks={4.969,8.78}` entry and a
-   `\node ... at (axis cs:0.03,4.969)` with the annotation "charge gap Δ = μ⁺−μ⁻"). Recompiling Fig. 6
-   from its real source therefore *reproduces* the fabricated point. Removing the rows from the
-   deposited `.dat` was necessary and is not sufficient: **Fig. 6 must be redrawn for v3**, and the
+   `\node ... at (axis cs:0.03,4.969)` with the annotation "charge gap Δ = μ⁺−μ⁻"). Recompiling that
+   figure from its real source therefore *reproduces* the fabricated point. Removing the rows from the
+   deposited `.dat` was necessary and is not sufficient: **`fig:sqw` must be redrawn for v3**, and the
    circular sentence of `results.tex:99-100` retracted with it (registered as
    `CLAIMS_OPEN['results.qto0_charge_gap']`).
 2. **`paper/arxiv-submission.tar.gz` still contains the two fabricated rows** and the superseded
@@ -313,18 +351,22 @@ surprise by a referee.
    5.358127 to 5.436611. Only the regression against the published Δ catches it, and a regression
    against the number one is trying to verify is weak. Independent verification exists up to L=10
    (two engines, nine digits); at L=12 nothing in the deposit confirms Δ independently.
-6. **No CI has ever run.** `.gitignore` ends with `.github/workflows/ci.yml` — the workflow is not
-   tracked, because the token used lacked the `workflow` scope. The file is now correct, but until it
-   is committed (`gh auth refresh -s workflow`, then remove that `.gitignore` line) `README.md` and
-   `FILE_INDEX.md` must not call the guardian "what CI runs". Both have been reworded.
+6. **No CI has ever run.** *(Half-closed since this was written: the `.gitignore` exclusion is gone
+   and `.github/workflows/ci.yml` is a tracked file — §15.)* What remains open is unchanged: the
+   workflow has still never executed, because it cannot run until the commit carrying it is
+   **pushed**, and it has not been (§24). `README.md` and `FILE_INDEX.md` must not call the
+   guardian "what CI runs" until it has.
 7. **`data/gflow.json` has no generator** anywhere in `src/`, contradicting the "complete reproduction
    repository" of `hardware.tex:154-155`. The guardian deliberately does **not** check its internal
    consistency: a passing check on a file with no provenance would manufacture false confidence. The
    defect is the missing generator.
-8. **`paper/main.pdf` carries a `\today` of 5 September 2026** although it is the current 40-page
-   build. `paper/main.bbl` is an empty local build artefact (the bibliography is `\input`-ed from
-   `bibliography.tex`); it is untracked and `.gitignore`d, so it is not in the deposit — an earlier
-   report that it was "committed at 0 bytes" was wrong.
+8. **`paper/main.pdf` is a dated build and must be rebuilt at the end of every editing pass.**
+   *(The v2 wording said "a `\today` of 5 September 2026 ... the current 40-page build"; the
+   manuscript is now the 59-page REVTeX v3, so both numbers are superseded.)* `paper/main.bbl` is
+   an empty local build artefact (the bibliography is `\input`-ed from `bibliography.tex`); it is
+   untracked and `.gitignore`d, so it is not in the deposit. The same `.gitignore` rule excludes
+   `_superseded/v2_paper/main.bbl`, which is therefore on disk but not in version control —
+   harmless, since the v2 bibliography was hand-written too.
 9. **Seven generators write their standalone `.tex` into the current directory** rather than
    `paper/figs/`, which is how those sources came to live in `work/notes/`. Unchanged; see §5.
 
@@ -337,8 +379,8 @@ at the first non-zero exit -- which is what `make` does. Measured 2026-09-18:
 | target | result |
 |---|---|
 | `make figures` | **6/6 commands, exit 0**, and every regenerated fragment byte-identical to the committed one |
-| `make check-figures` | **PASS** -- 7 regenerated artefacts byte-identical |
-| `make verify` | **PASS** -- 801 checks, 0 failures, 11 registered xfail, 2 skips, 5 014 numeric assertions, 12.3 s (re-measured after section 9.14 was added; the earlier 748 / 4 951 is superseded) |
+| `make check-figures` | **PASS** -- 8 regenerated artefacts byte-identical (re-measured 2026-09-19). **Read it as 7**: one of the eight is compared against a copy of itself, §25 |
+| `make verify` | **PASS** -- 807 checks, 0 failures, **4 registered xfail, 0 xpass**, 2 skips, 7 454 numeric assertions (re-measured 2026-09-19 after `KNOWN_OPEN['tab_repro.H2O.R_eq']` was deleted, which is what turned the xpass into a pass and moved the check count 806 -> 807; the earlier 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
 | `make data` | **exit 0** -- `paper/figs/sqw_edges.dat` and `data/charge_gap.json` regenerated (~256 s, L=4...12 ED) |
 | `make paper` | two `pdflatex` passes; not re-run in this pass |
 | `make reproduce` | **NOT verified** -- it executes `notebooks/00_Reproduce_Everything.ipynb`, which needs `pyscf`; see §13 |
@@ -354,8 +396,8 @@ should do.
 | `python src/akw_lanczos.py 6 --out <outside the repo>` (same) | exit 0, file written where asked |
 | `python src/sqw_lanczos.py 12` (default eta) | the eta guard of §1 fires before any computation -- and since the second pass of 2026-09-18 it **exits 2** instead of merely printing a warning (§16) |
 | `python src/verify.py` | PASS, 5 014 numeric assertions |
-| `python src/check_figures.py` | PASS, 7 artefacts byte-identical |
-| `python src/sqw_lanczos.py 12 --eta 0.18 --out <outside the repo>` | **`data/sqw_L12.json` reproduced BIT-IDENTICALLY.** 726 s. `E0` agreed to all 16 printed digits (`-3.962563033142947`, difference exactly 0); all 11 momentum channels agreed elementwise with `max|dS| = 0` and `rel-L1 = 0`; the two files have the same SHA-256. This is the single strongest reproducibility result in the deposit, and it was impossible before the `/w/` repair: the command did not exist. |
+| `python src/check_figures.py` | PASS, 7 artefacts byte-identical *(the eighth was vacuous then; since the §25 repair of 2026-09-19 all 8 are guarded)* |
+| `python src/sqw_lanczos.py 12 --eta 0.18 --out <outside the repo>` | **reproduces the physics of `data/sqw_L12.json` to `max|dS| = 8.2e-05`, NOT bit-identically.** Re-measured 2026-09-19, 425 s: the two files have **different** SHA-256; `E0` agrees to `|dE0| = 3.1e-15` (`-3.962563033142947` against `-3.96256303314295`); over all twelve stored arrays `max|dS| = 8.18876e-05` and `rel-L1 = 3.03e-06`. The comparator was checked with a positive control (one nudged value) that fires. **The earlier entry in this table claimed `max|dS| = 0`, `rel-L1 = 0` and the same SHA-256, and called it "the single strongest reproducibility result in the deposit". That was false and is withdrawn.** The cause is structural, not a bug: `data/sqw_L12.json` is dated 17 Aug 2026, *before* commit `ef7ae15` gave `eigsh` a seeded start vector (S19), so the file was computed from an unseeded ARPACK draw and the committed script cannot reproduce it bitwise by construction. Two runs of the committed script are bit-identical **to each other** -- it is deterministic; they are simply not identical to a file that predates the seed. |
 
 ## 13. Generator outputs that are **not** in the deposit -- **OPEN**
 
@@ -366,7 +408,7 @@ write to a sensible place, and that place is empty:
 |---|---|---|
 | `src/gate1_ladder.py` | `data/gate1_ladder.json` | Gate-1 ladder study; no figure in the paper consumes it. The script is deposited as the record of the method, its result is not. It re-runs in minutes (`Lr = 3, 4, 5` exact diagonalisation). |
 | `src/rigor_floor.py` | `data/rigor_floor.json` | same situation. `src/cost_vs_entanglement.py` *imports* `rigor_floor` for its Schmidt-spectrum helpers, so the module is load-bearing even though its JSON is not deposited. |
-| `src/recolor_akw_v2.py` | `build/akw_field_v2.png`, `build/fig_akw_v2_L12.tex` | **neither of its two inputs is in the deposit.** It is a one-shot post-processing utility that recolours an already-rendered raster (viridis to hot) and rewrites a colour map inside a `.tex` fragment. Fig. 4 ships as `paper/figs/fig_akw_native.pdf`; the intermediate raster and fragment it was made from were never committed. Running this script on a clean clone fails at the first `imread`, and that is the honest outcome -- there is nothing for it to read. |
+| `src/recolor_akw_v2.py` | `build/akw_field_v2.png`, `build/fig_akw_v2_L12.tex` | **neither of its two inputs is in the deposit.** It is a one-shot post-processing utility that recolours an already-rendered raster (viridis to hot) and rewrites a colour map inside a `.tex` fragment. `fig:lattice` (Fig. 4 in both v2 and v3) ships as `paper/figs/fig_akw_native.pdf`; the intermediate raster and fragment it was made from were never committed. Running this script on a clean clone fails at the first `imread`, and that is the honest outcome -- there is nothing for it to read. |
 
 No attempt was made to hide this by deleting the scripts. A deposited script whose output is missing is
 a documented gap; a deleted script is a gap nobody can see.
@@ -439,7 +481,7 @@ Measured: the bare command exits 2 and `data/sqw_L12.json` keeps its original ti
 **The default of `run()` is still eta = 0.20 and was deliberately not changed** -- changing it would
 silently alter what the deposited script means (SS1).
 
-## 17. Four computation scripts were never anchored -- **REPAIRED (second pass)**
+## 17. Seven computation scripts were never anchored -- **REPAIRED (four in the second pass, three more on 2026-09-19)**
 
 The morning's repair fixed the eighteen scripts that wrote to `/w/`. The clean-clone audit found four more
 that were broken in a quieter way -- they wrote to the **relative** path `data/...`:
@@ -449,18 +491,33 @@ that were broken in a quieter way -- they wrote to the **relative** path `data/.
 
 Relative paths land in whatever directory the reader is standing in; from anywhere but the repository root
 these four raised `FileNotFoundError`. Two of them -- `sampled_akw.py` and `spin_lanczos.py` -- generate
-figure data (Figs. 5 and 7). All four now carry the same `DEPOSIT PATHS` block as the other eighteen:
+figure data (`fig:akwsampled` and `fig:spin`, Figs. 5 and 7 of v2; 3 and 12 of v3). All four now
+carry the same `DEPOSIT PATHS` block as the other eighteen:
 defaults computed from the script's own location, `--out` to override.
 
 The **fifteen figure generators** (`src/make_*.py`) had the same defect. They are anchored too, by pinning
 the process's working directory to the repository the file lives in -- deliberately not by rewriting every
 path literal, because a rewritten literal can change an output byte and these files write committed
-fragments. Verified: `src/check_figures.py` still regenerates all 7 artefacts byte-identically, and it
+fragments. Verified: `src/check_figures.py` still regenerates all 7 artefacts byte-identically (8 since §25), and it
 still works when it copies the tree to a scratch directory, because the anchor follows the copy.
 
 Evidence, all from a directory outside the repository: each repaired path block executed in isolation and
 its destination printed (**5/5 absolute and inside the repository**); `python src/ladder_vs_chain.py --out
 <scratch>` run to completion, exit 0, writing only where `--out` asked.
+
+**Three more, found 2026-09-19 and repaired the same day.** The evidence above tested the scripts it
+had already repaired; it did not re-scan the rest of `src/`, and three writes survived:
+
+| script | what it did | why it was quiet |
+|---|---|---|
+| `src/scaling_lanczos.py:120` | `fn='scaling_data.json'` | **the worst of the three**: the next line is `json.load(open(fn)) if os.path.exists(fn) else {'U':8.0,'points':[]}`, so from any directory but the repository root it silently began a *brand-new* file there and never touched `data/scaling_data.json`. No exception, no message. |
+| `src/scaling_lanczos_mf.py:157` | same literal | `json.load` raises, so this one at least failed loudly. |
+| `src/build_repro_notebook.py:226` | `notebooks/00_Reproduce_Everything.ipynb` | wrote the master reproduction notebook into the caller's directory. |
+
+All three now resolve from `os.path.dirname(os.path.dirname(os.path.abspath(__file__)))`, which is
+what the Makefile's help text already promised for every compute script. After the change all three
+compile and a scan for bare relative `open('*.json')` / `open('*.ipynb')` writes in them returns
+nothing. `python src/verify.py` is unchanged at 807 / 7 454 / 4.
 
 ## 18. `data/charge_gap.json` had no coverage in the guardian -- **REPAIRED (second pass)**
 
@@ -539,7 +596,9 @@ restrictive.
 
 ## 23. The repository had no address -- **REPAIRED (second pass)**
 
-`paper/hardware.tex` prints `https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd`, but the
+`paper/hardware.tex` (now `_superseded/v2_paper/hardware.tex` — the v3 sections replaced it, which is
+how the repository URL came to be missing from the manuscript again) prints
+`https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd`, but the
 URL appeared **nowhere else in the deposit**: not in `README.md`, and `CITATION.cff` had no
 `repository-code` or `url` field. A Data Availability Statement whose first clause is "openly available
 at ..." cannot be signed against a repository with no address. The URL is now in `README.md` (badge and
@@ -549,7 +608,15 @@ plain text) and in `CITATION.cff` (`repository-code` and `url`).
 exists and is public. `docs/DATA_AVAILABILITY.md` Part 4 makes opening it in a signed-out browser step 2
 of the submission checklist.
 
-## 24. The one defect this pass could not close: **the repairs are not committed**
+## 24. The one defect no pass has closed: **the repairs are committed but not pushed**
+
+*Updated 2026-09-19. When this entry was written the repairs were uncommitted; they are now four
+commits on local `main` (`ef7ae15`, `606f969`, `28c12ea` and the honesty pass before them), and
+`git status` is clean. **None of them has been pushed.** The `origin/main` ref in this clone records
+`6608a75`; it has never been fetched, so the remote may have moved to the `78d8131` the clean-clone
+audit below actually downloaded. Either way the public tree predates every repair, and the
+conclusion of this entry is unchanged: `git push` is the step that makes the Data Availability
+Statement true.*
 
 The clean-clone audit put it exactly right, and it survives every other repair in this document:
 
@@ -563,7 +630,152 @@ So the binary answer depends on which tree you mean:
 | tree | does a referee reach the paper's numbers? |
 |---|---|
 | the public repository as it stands (`78d8131`) | **No.** It breaks at the third generator of `make figures`, and the statement would point at documents that are not there. |
-| the working tree of 2026-09-18 | **Yes**, within the limits tabulated in `REPRODUCE.md`: the guardian passes with 801 checks, the six figure commands run, `sqw_L12.json` reproduces bit for bit, and the gaps are declared. |
+| the working tree of 2026-09-19 | **Yes**, within the limits tabulated in `REPRODUCE.md`: the guardian passes with 807 checks and 7 454 numeric assertions, the six figure commands run, and the gaps are declared. (`sqw_L12.json` reproduces to `max|dS| = 8.2e-05`, **not** bit for bit — the bit-identity claim that stood here was measured again on 2026-09-19 and withdrawn; see §12.) |
 
-**The distance between those two rows is one commit.** Until it is made, the Data Availability Statement
-must not be signed: signing it publishes a statement that is false of what the reader can download.
+**The distance between those two rows is one `git push`.** Until it is made, the Data Availability
+Statement must not be signed: signing it publishes a statement that is false of what the reader can
+download.
+
+---
+
+# The v3 pass of 2026-09-19
+
+The manuscript became the 59-page REVTeX v3 and the deposit's documentation did not follow it. The
+four entries below were all found by measurement, and three of them are open.
+
+## 25. `src/check_figures.py` wrote into the repository, and one of its eight checks could not fail -- **REPAIRED 2026-09-19**
+
+`src/make_akw_sampled_honest_fig.py` lines 17-18 hard-code two absolute paths:
+
+```
+REPO = r"C:\Users\Nicolas\Downloads\Proyecto_SQD_ML\P2_dynamical_spectral_functions\release"
+CALC = r"C:\Users\Nicolas\AppData\Local\Temp\claude\...\scratchpad\p2_calc"
+```
+
+It is the only script in `src/` that does (measured: one grep for `C:\Users` over all 56). Two
+consequences, both measured rather than reasoned about:
+
+**(a) `make check-figures` modifies the working tree.** The checker copies `src/` and `data/` into a
+temporary directory and runs the six generators there, and its docstring says "It never writes into
+the repository." This one ignores the temporary directory and writes through `REPO`. Snapshotting
+sha256 and `st_mtime_ns` before and after a run:
+
+| file | bytes | mtime |
+|---|---|---|
+| `paper/figs/fig_akw_sampled_honest.tex` | same | **REWRITTEN** |
+| `paper/figs/fig_akw_sampled_honest_caption.tex` | same | **REWRITTEN** |
+| `paper/figs/fig_akw_sampled_honest_caption_macro.tex` | same | **REWRITTEN** |
+| `data/sampled_akw_figure_numbers.json` | same | **REWRITTEN** |
+| `paper/figs/fig_decoupling_native.tex` (control, cwd-relative generator) | same | untouched |
+| `paper/figs/fig_method_native_frag.tex` (control) | same | untouched |
+
+No damage -- the generator is deterministic and the bytes are identical -- but the claim is false.
+
+**(b) The check for that fragment compares a file with a copy of itself.** Negative control, run on a
+*copy* of the tree so the real deposit was never corrupted: change one plotted literal in the
+committed fragment, then run that copy's `check_figures.py`.
+
+| corrupted fragment | generator resolves paths from | result |
+|---|---|---|
+| `fig_decoupling_native.tex` | the cwd | **exit 1, `[DIFFER]`** -- the control fires |
+| `fig_akw_sampled_honest.tex` | the absolute `REPO` | **exit 0, "all 8 regenerated artefacts are byte-identical"** |
+
+The generator wrote into the real tree, so the scratch copy the checker diffs against was the
+unmodified committed file it copied in a moment earlier.
+
+**Repair, 2026-09-19.** `REPO` is now `os.path.dirname(HERE)` and the two inputs are read from
+`data/sampled_honest.json` and `data/honest_sampling.json`, which were already deposited. Before
+changing a line, both deposited files were compared field by field against the scratchpad copies
+the script used to read: **zero numeric differences**, the only diffs being provenance stamps and
+wall-clock timings; the comparator's positive control fired. The three provenance strings that
+still named the scratchpad were corrected too, so the manifest names the file the script opens.
+Regenerating changed exactly one byte-region of the fragment, a `%` comment line, and nothing in
+the composed figure. Three measurements, each with a control:
+
+| what was measured | before | after |
+|---|---|---|
+| artefacts genuinely regenerated (each seeded with a sentinel line, positive control asserting the sentinel was in all 8 first) | 7 of 8 | **8 of 8** |
+| files in `release/` whose sha256 **or** `st_mtime_ns` changes when `check_figures.py` runs (231 files snapshotted) | 4 rewritten | **0** |
+| `C:\Users` / scratchpad literals in `src/*.py` | 2 | **0** |
+
+`check_figures.py`'s docstring -- "It never writes into the repository" -- and the Makefile's
+"(writes nothing)" are true again.
+
+**(c) The same two constants make Fig. 3 unreproducible on a clean clone.** Panel (c) is read from
+`CALC`, a session scratch directory that is not part of this deposit -- even though
+`data/sampled_honest.json` and `data/honest_sampling.json` are deposited, the script does not read
+those copies. On any other machine it dies at the first `open`.
+
+## 26. The Fig.-3 caption in the paper is not the caption its generator emits -- **OPEN (the paper is right)**
+
+`src/make_akw_sampled_honest_fig.py` writes three files. The manuscript `\input`s
+`paper/figs/fig5_caption.tex`; the generator writes `paper/figs/fig_akw_sampled_honest_caption.tex`
+and `..._caption_macro.tex`, and **nothing reads either of them**. They are not copies: the last
+sentence differs, and so do its numbers.
+
+| | shipped (`fig5_caption.tex`) | emitted by the generator |
+|---|---|---|
+| L=6 finite-shot penalty | `1.50 +- 0.25` at \|S\| = 247 | `1.46x` at fraction 0.82 |
+| L=8 finite-shot penalty | `1.96 +- 0.12` at \|S\| = 2331 | `2.05x` at fraction 0.56 |
+| published subspace | `2.05 +- 0.07` at \|S\| = 2180, with `Table~\ref{tab:finiteshot}` | not mentioned |
+
+**The shipped caption is the correct one**: its three numbers are exactly the `ratio` row of
+Table IX (`tab:finiteshot`), which the generator's caption predates. So the hazard runs the other
+way from the usual one -- the dead files carry *superseded* numbers, and anyone who "restores" the
+generator's caption because it is machine-written would reinstate them. `check_figures.py` does not
+compare captions, and neither does `check_provenance.py`.
+
+Until the generator is brought back into line, treat `fig_akw_sampled_honest_caption.tex` and
+`..._caption_macro.tex` as **superseded**, listed as such in `FIGURE_PROVENANCE.md`.
+
+## 27. Two figures name a generator that is not in the deposit -- **OPEN**
+
+| figure | what its own header says | what is in `src/` |
+|---|---|---|
+| `fig:gapscaling` (Fig. 10) | `fig_gapscaling_native.tex` and `fig_gapscaling_caption.tex` both open with `AUTO-GENERATED by make_fig_gapscaling.py` | **nothing.** `make_fig_gapscaling.py` is nowhere in the project tree -- searched by name across `Proyecto_SQD_ML/`. Its data, `data/gap_scaling.json`, *is* deposited and *is* computed by `src/gap_scaling.py`; what is missing is the step that turns the JSON into the figure |
+| `fig:thm1iii-violation` (Fig. 17) | `caption_thm1iii_violation.tex` credits `build_n3.py` for the counts and ratios, `fix_n3_caption.py` for two of them, and `fix_n3_fig5_series.py` for the whisker summary | **none of the three.** Nor are two of their inputs, `thm3_results.json` and `n3_fig5_summary.json`. `src/verify.py` registers this as its one declared coverage gap and prints it as `[XFAIL]` on every run |
+
+Both figures are therefore *plotted from committed tables* whose builder is absent: the numbers can
+be read, and cannot be recomputed. This is the honest status of two of the seventeen figures, and it
+is the reason `check_figures.py` covers six of them rather than all.
+
+## 28. The deposit's own documentation described a manuscript that no longer existed -- **REPAIRED 2026-09-19, and now guarded**
+
+Measured on the tree of 2026-09-19, before the repair:
+
+- `docs/FIGURE_PROVENANCE.md` had twenty rows: it documented **five figures the manuscript had
+  stopped typesetting** (`fig:amort`, `fig:bench`, `fig:gallery`, `fig:gflow`, `fig:molsuite`) and
+  **omitted the two it had started** (`fig:gapscaling`, `fig:thm1iii-violation`) -- the second of
+  which is precisely the one the guardian declares it cannot anchor.
+- `docs/FILE_INDEX.md` described the **v2** file set in its entirety: `introduction.tex`,
+  `method.tex`, `results.tex`, `discussion.tex`, `conclusion.tex`, `hardware.tex`, `theorem_b2.tex`,
+  twenty figures, a 40-page PDF. None of those files has been in `paper/` since `606f969`.
+- `paper/main.tex:12` stated "35 of the 19+16 floats are starred". The manuscript has **33** floats
+  (17 figures + 16 tables) and **all 33** are starred.
+
+None of these was wrong when written. All three went stale in silence, because nothing derived them
+from the manuscript. The repair is therefore not a rewrite but a **deriver**:
+
+```
+python src/check_provenance.py            # exit 0 iff the documentation still fits the manuscript
+python src/check_provenance.py --markdown # the figure table, derived from paper/main.tex
+python src/check_provenance.py -v         # the orphan inventory, in three tiers
+```
+
+It expands `\input` from `paper/main.tex` inline, censuses the floats, and fails if the figure set
+documented in `FIGURE_PROVENANCE.md` is not exactly the figure set the manuscript typesets, if a
+documented file is absent without the cell saying so, if the float census in the `main.tex` preamble
+is wrong, or if `check_figures.py` guards a fragment the paper no longer `\input`s.
+
+**Nine self-tests run before it reports anything, and it exits 2 if one of them does not fire.**
+They were checked by breaking the parser on purpose: disabling comment-stripping fires 2 of the
+nine, and replacing the inline expander with a line-level one fires 7 of the nine.
+Two are the mistakes made while writing it, both of which occur in this manuscript: a
+`\begin{figure}` inside a `%` comment (`fig_gapscaling_caption.tex` has one, and counting it gives
+18 figures instead of 17), and an `\input` sharing a line with `\begin{figure*}` (every file in
+`paper/carried/` is written that way, and a line-level expander finds **2** floats instead of 33).
+
+*What this repair does not do:* it checks structure, not numbers. `src/verify.py` checks numbers,
+`src/check_figures.py` checks that the generators still produce the committed fragments -- with the
+blind spot of §25 -- and no tool in the deposit compares a figure's **caption** against its
+generator's, which is how §26 survived.

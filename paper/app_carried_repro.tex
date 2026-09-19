@@ -1,19 +1,15 @@
 \section{Reproducibility data for the molecular suite}
 \label{app:repro}
-Table~\ref{tab:repro} lists, for every molecule of Table~\ref{tab:molecules}, the equilibrium and
-dissociation bond lengths, the active space, the $N$-electron (neutral, ground-state) sector dimension $D$, the ground-state
-determinant support $|\mathcal S|$ (the number of determinants carrying $\ge99\%$ of the FCI weight), and
-the minimal matrix-product-state bond dimension $\chi$ at both geometries. These are the quantities that
-enter the $\mathcal F_1$--$|\mathcal S|$ and $\chi$--$|\mathcal S|$ correlations of
-Sec.~\ref{sec:nogo}, pooled over the $n=38$ equilibrium-and-dissociation points (Spearman
-$\chi$--$|\mathcal S|$ $\rho=0.90$, $\mathcal F_1$--$|\mathcal S|$ $\rho=0.86$; Pearson
-$\mathcal F_1$--$\log_2|\mathcal S|$ $r=0.80$). The $|\mathcal S|/D$ reported in
-Table~\ref{tab:molecules} is a \emph{distinct} quantity---the fraction of the $(N{+}1)$ sector used in
-the spectral \emph{reconstruction}, not the ground-state support tabulated here. Every active-space FCI
-energy is converged to better than $10^{-12}$~Ha (the largest residual across all $38$ points is
-$1.1\times10^{-13}$~Ha), comfortably below the $10^{-5}$~Ha quoted in the main text; the ground-state
-energies, full Cartesian geometries, and orbital active-space indices are provided as ancillary files.
 
+% --- float declaration moved here (placement only): this table is the LAST
+%     float of the manuscript and it used to be declared after the one
+%     paragraph of this appendix, with no text left behind it.  The
+%     \clearpage that main.tex puts before the bibliography therefore flushed
+%     it onto a page of its own carrying not one line of text.  Declared
+%     ahead of the paragraph it can top the page the appendix starts on, and
+%     that page keeps the paragraph.  Not a character of the table or of the
+%     paragraph changed, and declaration ORDER is unchanged, so Table XVI is
+%     still Table XVI.
 \begin{table*}[tp]\centering\small
 \caption{\textbf{Reproducibility data for the nineteen-molecule suite} (cc-pVDZ, valence bond-breaking
 active spaces). $R_{\rm eq},R_{\rm diss}$ in \AA{}; for the polyatomics ($\mathrm{BeH_2},\mathrm{H_2O},
@@ -27,7 +23,7 @@ of Table~\ref{tab:molecules} is a distinct ratio, taken in the $(N{\pm}1)$ spect
 Molecule & CAS$(n_e,n_{\rm o})$ & $R_{\rm eq}$ & $R_{\rm diss}$ & $D$ & $|\mathcal S|^{\rm eq}$ & $|\mathcal S|^{\rm diss}$ & $\chi^{\rm eq}$ & $\chi^{\rm diss}$ \\ \hline
 F$_2$ & (1+1,2) & 1.412 & 3.00 & 4 & 1 & 2 & 2 & 2 \\
 N$_2$ & (3+3,6) & 1.098 & 2.40 & 400 & 7 & 80 & 7 & 32 \\
-H$_2$O & (2+2,4) & 0.957 & 2.30 & 36 & 1 & 13 & 1 & 13 \\
+H$_2$O & (2+2,4) & 0.958 & 2.30 & 36 & 1 & 13 & 1 & 13 \\
 HF & (1+1,2) & 0.917 & 2.30 & 4 & 1 & 4 & 1 & 4 \\
 NH$_3$ & (3+3,6) & 1.012 & 2.33 & 400 & 1 & 68 & 4 & 42 \\
 CO & (3+3,6) & 1.128 & 2.40 & 400 & 8 & 46 & 14 & 30 \\
@@ -46,3 +42,17 @@ LiH & (1+1,2) & 1.596 & 3.20 & 4 & 1 & 2 & 1 & 4 \\
 LiF & (1+1,2) & 1.564 & 3.20 & 4 & 1 & 1 & 1 & 1 \\
 \hline\hline\end{tabular}
 \end{table*}
+
+Table~\ref{tab:repro} lists, for every molecule of Table~\ref{tab:molecules}, the equilibrium and
+dissociation bond lengths, the active space, the $N$-electron (neutral, ground-state) sector dimension $D$, the ground-state
+determinant support $|\mathcal S|$ (the number of determinants carrying $\ge99\%$ of the FCI weight), and
+the minimal matrix-product-state bond dimension $\chi$ at both geometries. These are the quantities that
+enter the $\mathcal F_1$--$|\mathcal S|$ and $\chi$--$|\mathcal S|$ correlations of
+Sec.~\ref{sec:nogo}, pooled over the $n=38$ equilibrium-and-dissociation points (Spearman
+$\chi$--$|\mathcal S|$ $\rho=0.90$, $\mathcal F_1$--$|\mathcal S|$ $\rho=0.86$; Pearson
+$\mathcal F_1$--$\log_2|\mathcal S|$ $r=0.80$). The $|\mathcal S|/D$ reported in
+Table~\ref{tab:molecules} is a \emph{distinct} quantity---the fraction of the $(N{+}1)$ sector used in
+the spectral \emph{reconstruction}, not the ground-state support tabulated here. Every active-space FCI
+energy is converged to better than $10^{-12}$~Ha (the largest residual across all $38$ points is
+$1.1\times10^{-13}$~Ha), comfortably below the $10^{-5}$~Ha quoted in the main text; the ground-state
+energies, full Cartesian geometries, and orbital active-space indices are provided as ancillary files.

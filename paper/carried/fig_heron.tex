@@ -1,5 +1,19 @@
 % carried verbatim from the v2 tree (hardware.tex); NOT part of this session's deliverable.
-\begin{figure*}[tp]\centering\input{figs/fig_hardware_hero_frag.tex}
+% CENTRING, measured 2026-09-19 on the composed page at 600 dpi.  The tikz bounding
+% box of this two-panel fragment is not symmetric about its ink: the ink is 421.6 pt
+% wide but the box TeX centres is 404.2 pt, because panel (b)'s title overhangs the
+% box on the right while panel (a)'s reserved label space on the left is not filled.
+% \centering therefore put the graphic 17.3 pt right of the text-block centre, while
+% the other sixteen figures sit between -2.9 and +1.3 pt.  \leftskip = -2d plus 1fil
+% biases a centred line by exactly -d (here d = 17.3 pt) and changes nothing else;
+% measured again after the fix: +0.01 pt.  A \hspace* pair does NOT work here: it
+% starts the paragraph before the fragment is read, which turns the end-of-line
+% spaces of the fragment's three \definecolor lines into real interword glue and
+% delivers only 12.7 pt of the 17.3 pt asked for.  The fragment itself is untouched
+% (it is one of the eight byte-identical artefacts check_figures.py regenerates).
+\begin{figure*}[tp]\centering
+\leftskip=-34.6pt plus 1fil\relax
+\input{figs/fig_hardware_hero_frag.tex}
 \caption{\textbf{The complete quantum-hardware record of this work: two runs on IBM~Heron processors.}
 \textbf{(a)}~Single-particle spectral function $A(\omega)$ of the $L=6$ Hubbard model at $U/t=4$,
 $\eta=0.15\,t$ ($12$ qubits; the classical validation of Fig.~\ref{fig:method} is a different instance,

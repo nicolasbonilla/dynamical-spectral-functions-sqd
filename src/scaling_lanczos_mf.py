@@ -154,7 +154,10 @@ def stage_frac(L,U=8.0,thr=0.05,nl_sub=150):
     dg=np.load(f'{CK}/L{L}_gs.npz'); FAF=float(dg['FAF'])
     p={'L':L,'qubits':2*L,'FAF':FAF,'FAF_per_site':FAF/L,'Np1_sector':nS,'frac':float(frac),
        'E0':E0,'method':'lanczos-haydock-matrixfree'}
-    fn='scaling_data.json'; data=json.load(open(fn)); data['points']=[q for q in data['points'] if q['L']!=L]+[p]
+    # Resolved from this file's own location, not from the caller's cwd.
+    fn=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                    'data','scaling_data.json')
+    data=json.load(open(fn)); data['points']=[q for q in data['points'] if q['L']!=L]+[p]
     data['points'].sort(key=lambda q:q['L']); json.dump(data,open(fn,'w'),indent=1)
     log(f"L={L} FRAC DONE: FAF={FAF:.4f} frac={frac:.4f} -> appended to {fn}")
 

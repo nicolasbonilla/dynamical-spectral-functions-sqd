@@ -9,7 +9,9 @@ pyscf>=2.3
 matplotlib>=3.7
 pillow>=9.5
 
-# Amortized configuration recovery (leave-one-out model, Fig. 19)
+# Amortized configuration recovery (leave-one-out model).  The figure this served,
+# Fig. 19 of v2, was WITHDRAWN in v3; the dependency is kept because src/ still ships
+# the script.  Not needed to build the manuscript or to run either guardian.
 scikit-learn>=1.3
 
 # ---------------------------------------------------------------------------

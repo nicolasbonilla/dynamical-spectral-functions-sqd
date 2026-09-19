@@ -5,53 +5,104 @@ No hand-typed values may drift from these files. Hardware figures carry the exac
 Before editing any figure, check this table. Before trusting any `.json`, check it is **not** in the
 "STALE / DO NOT USE" list at the bottom.
 
-Paths: figure sources live in `release/paper/figs/`; generating scripts and data live one level up in
-`release/`. **The Aug-17 `rebuild/` tree is a SUPERSEDED scratch copy carrying pre-2026-09-05
-values (it still plots the retracted `(9.385,147)` and records the reversed provenance note) --
-DO NOT USE IT.** (The `(9.385,147)` there is wrong *in the resource-master figure*, which is the
-OPEN chain and must read `(9.6047,147)`; the ring value 9.3851 is correct where it belongs, in
-`fig_scaling2_native.tex` — see H3 in `KNOWN_DISCREPANCIES.md`.)
+> **This table is DERIVED, and the derivation is checked.** The label column is not maintained by
+> hand: `python src/check_provenance.py` expands `\input` and `\includegraphics` from
+> `paper/main.tex` and fails if the set of figures documented here is not exactly the set the
+> manuscript typesets, or if a cell names a file that is not in the deposit and does not say so.
+>
+> **Why that check exists.** Until 2026-09-19 this file documented five figures the manuscript had
+> stopped typesetting (`fig:amort`, `fig:bench`, `fig:gallery`, `fig:gflow`, `fig:molsuite`) and
+> omitted two it had started (`fig:gapscaling`, `fig:thm1iii-violation`). Nothing noticed, because
+> nothing derived the table from the manuscript. Run the checker before believing this page.
+
+**Measured state of the manuscript (2026-09-19, by `src/check_provenance.py`):** 50 source files
+reached from `paper/main.tex`; **33 floats — 17 figures and 16 tables, all double-column.**
+
+Paths: figure sources live in `paper/figs/` and their float wrappers in `paper/figs/float_*.tex`,
+`paper/figs/captions.tex` and `paper/carried/`; generating scripts in `src/`, data in `data/`.
 
 **Known gaps between what a script does and what the deposit contains are listed in
 [`KNOWN_DISCREPANCIES.md`](KNOWN_DISCREPANCIES.md). Read it before re-running any compute script.**
 
-## The two exceptions to "every plotted value is deposited"
+---
 
-The Data Availability Statement ([`DATA_AVAILABILITY.md`](DATA_AVAILABILITY.md)) claims that each
-figure's plotted values are deposited as a JSON or plain-text table. That claim is true of eighteen of
-the twenty figures. It is **not** true of these two, which are therefore named in the statement itself
-rather than left inside a table row:
+## The figure table
 
-| figure | what is not in `data/` |
-|---|---|
-| **Fig. 1, panel (c)** | the four free-fermion support sizes `35, 336, 3496, 37361` are constants typed into `src/make_decoupling_native.py:34` and written from there into the fragment. **No file in `data/` holds them and no deposited script recomputes them.** The same four numbers are printed in `paper/resource.tex`. |
-| **Fig. 14** | a circuit schematic. It plots no data at all, so there is nothing to deposit. |
+`enters as` — **PDF** = `\includegraphics`, **frag** = a native pgfplots fragment compiled with the
+paper. `guarded` — regenerated and diffed byte-for-byte by `src/check_figures.py`.
+A cell that names a file which is not in this deposit says **NOT DEPOSITED** in that cell.
 
-Everything else in this table resolves to a file.
+| # | Body ref | Assembled in | Figure body | enters as | Generator | AUTHORITATIVE data | guarded |
+|---|----------|--------------|-------------|-----------|-----------|--------------------|---------|
+| 1 | fig:circ | `paper/sec_2.tex` | `fig_circuit.pdf` | PDF | hand-drawn quantikz; its standalone source is **NOT DEPOSITED** | — (schematic; plots no data) | no |
+| 2 | fig:method | `paper/carried/fig_method.tex` | `fig_method_native_frag.tex` + `aw_method.dat` | frag | `make_method_fig_max.py` | **`method_max.json`** | **yes** |
+| 3 | fig:akwsampled | `paper/figs/float_f5.tex` | `fig_akw_sampled_honest.tex` + `fig5_caption.tex` | frag | `make_akw_sampled_honest_fig.py` — ⚠ **hard-coded absolute paths, see §A below** | **`sampled_akw_L8.json`** (panels a,b); panel (c) from `sampled_honest.json` + `honest_sampling.json`, which the generator reads from a scratch directory **NOT DEPOSITED**, not from `data/` | **nominally — the guard does not fire, §A** |
+| 4 | fig:lattice | `paper/carried/fig_lattice.tex` | `fig_akw_native.pdf` | PDF | `recolor_akw_v2.py`; both of its inputs (`akw_field_v2.png`, `fig_akw_v2_L12.tex`) are **NOT DEPOSITED**, so it cannot run on a clean clone | **`akw_lanczos_L12.json`** | no |
+| 5 | fig:witness | `paper/sec_6_body.tex` | `fig_witness_native.tex` | frag | none — hand-maintained against the JSON | **`apsg_witness.json`** | no |
+| 6 | fig:decoupling | `paper/figs/captions.tex` | `fig_decoupling_native.tex` | frag | `make_decoupling_native.py` | **`cost_vs_ent.json`** + `n19_suite.json` + `resource_master.json` + `stats_resource.json` | **yes** |
+| 7 | fig:master | `paper/figs/captions.tex` | `fig_resource_master_native.tex` | frag | `make_decoupling_native.py` (emits both resource fragments). `make_resource_master_fig.py` writes the same file — **two writers, one artefact**; the guarded one is the first | **`resource_master.json`** + `stats_resource.json` | **yes** |
+| 8 | fig:ladder | `paper/carried/fig_ladder.tex` | `fig_ladder_native.tex` | frag | none — hand-maintained against the JSON | **`ladder_vs_chain.json`** | no |
+| 9 | fig:scaling | `paper/figs/float_f12.tex` | `fig_scaling2_native.tex` + `caption_fig12.tex` | frag | ⚠ **none usable** — `make_scaling_fig.py` emits a DIFFERENT two-panel figure and would destroy panel (c); §3 of `KNOWN_DISCREPANCIES.md` | **`scaling_data.json`** | no |
+| 10 | fig:gapscaling | `paper/figs/float_n2.tex` | `fig_gapscaling_native.tex` + `fig_gapscaling_caption.tex` | frag | both files say `AUTO-GENERATED by make_fig_gapscaling.py`, and that script is **NOT DEPOSITED** — it is nowhere in the project tree | **`gap_scaling.json`** (computed by `gap_scaling.py`) | no |
+| 11 | fig:sqw | `paper/carried/fig_sqw.tex` | `fig_sqw.pdf` | PDF | standalone `fig_sqw.tex` **NOT DEPOSITED**; its raster is drawn by `sqw_field.py` | **`sqw_L12.json`** + `sqw_edges.dat` (by `make_sqw_edges.py`) | no |
+| 12 | fig:spin | `paper/carried/fig_spin.tex` | `fig_spinqw.pdf` | PDF | standalone `fig_spinqw.tex` **NOT DEPOSITED** | **`spinqw_L12.json`** + `spinqw_edges.dat` (by `spin_lanczos.py`) | no |
+| 13 | fig:hero | `paper/carried/fig_hero.tex` | `fig_hero.pdf` | PDF | `make_hero_fig.py` — writes `fig_hero.tex` into the **cwd**; that file is **NOT DEPOSITED**, but unlike rows 4, 11 and 12 the generator recreates it | **`n2_hero.json`** + `hero_aw.dat` + `hero_res.dat` | no |
+| 14 | fig:heron | `paper/carried/fig_heron.tex` | `fig_hardware_hero_frag.tex` + `heron_hot.dat` | frag | `make_hardware_hero.py` | ⭐ **`hw_lucj_n2_result.json` — job `da125f2ein7c73bcsqs0`** (panel b) + **`heron_spectral.json`** (panel a) | **yes** |
+| 15 | fig:noise | `paper/carried/fig_noise.tex` | `fig_noise_score.pdf` | PDF | `make_noise_fig.py` — writes `fig_noise_native.tex` into the **cwd**; that file is **NOT DEPOSITED**, but unlike rows 4, 11 and 12 the generator recreates it | **`noise_spectral.json`** + `noise.dat` | no |
+| 16 | fig:noiserec | `paper/carried/fig_noiserec.tex` | `fig_noise_recovery_native.tex` | frag | `make_noise_recovery_native.py` | **`molecular_noise.json`** + `molecular_noise_sweep.json` | **yes** |
+| 17 | fig:thm1iii-violation | `paper/figs/float_n3.tex` | `fig_thm1iii_violation_native.tex` + `caption_thm1iii_violation.tex` + eight `n3_*.dat` | frag | `build_n3.py` — **NOT DEPOSITED**, and neither are the `fix_n3_caption.py` / `fix_n3_fig5_series.py` it names | **`cert_stress.json`** + **`cert_akw.json`**, plus two JSONs (`thm3_results.json`, `n3_fig5_summary.json`) that are **NOT DEPOSITED** | no — this is the guardian's one declared coverage gap, §B |
 
-| # | Body ref | Figure source (`rebuild/figs/`) | Generator | AUTHORITATIVE data | Notes |
-|---|----------|--------------------------------|-----------|--------------------|-------|
-| 1 | fig:decoupling | fig_decoupling_native.tex | make_decoupling_native.py | n19_suite.json + cost_vs_ent.json | panel (b) shows 3 of 6 Hubbard sweeps (representative); panel (c) free-fermion \|S\| hard-typed [35,336,3496,37361] |
-| 2 | fig:master | fig_resource_master_native.tex | make_resource_master_fig.py | **resource_master.json** | chain L=6 F1 = **9.6047** (OPEN chain, ED). 2026-08-17 had overwritten it with the PERIODIC-ring 9.3851 from scaling_data.json — a different system; reverted 2026-09-05, rank-preserving so ρ(χ,\|S\|)=0.72 pooled and ρ(F1,\|S\|)=0.60 are unchanged |
-| 3 | fig:method | fig_method_native_frag.tex | make_method_fig_max.py | figs/aw_method.dat + **method_max.json** | panel (b) sampled floor = **~0.019** (method_max.json K=12=0.0185), NOT 0.025. `figs/conv_method.dat` **DELETED 2026-09-18**: stale single-seed orphan (its K=12 row read 0.024984 against the correct 0.018550 of method_max.json); it had no writer and no reader anywhere in the deposit |
-| 4 | fig:lattice | fig_akw_native.pdf | akw_field*/recolor_akw_v2.py (path repaired 2026-09-18; **its two inputs, `akw_field_v2.png` and `fig_akw_v2_L12.tex`, are NOT in the deposit** — see KNOWN_DISCREPANCIES §5) | **akw_lanczos_L12.json** | exact A(k,ω), L=12, U/t=8, η=0.18t; peak split 4.99t vs exact gap 4.97t (η broadening) |
-| 5 | fig:akwsampled | fig_akw_sampled_native.tex | make_akw_sampled_fig.py | **sampled_akw_L8.json** | L=8, 85% of the sector, mean rel-L1 0.0022. **CORRECTED 2026-09-18 — this row said "REAL sampled" and that was wrong.** `sampled_akw.py:54-57` accumulates the *exact* Born weights `wc` of the time-evolved seed over `K+1` steps and takes `np.argsort(wc)[::-1][:round(FR*nS)]`. There is no random number generator, no shot count and no seed anywhere in the file: this is the **infinite-shot limit of the declared protocol**, i.e. the subspace the device would select given unlimited measurements — not an oracle, but not a finite-shot run either. **No shot budget is quoted because none was ever drawn.** At matched subspace size the finite-shot number is worse (measured: 1.45x at L=6, 1.83x at L=8). Six other scripts in this deposit *do* sample with an RNG, seeds and +/-sigma bands (`spectral_validation_max.py`, `headtohead_ms.py`, `noise_spectral.py`, `molecular_noise_energy.py`, `molecular_noise_sweep.py`); this one does not. |
-| 6 | fig:sqw | fig_sqw.pdf | sqw_lanczos.py / sqw_field.py; edges by **make_sqw_edges.py** | **sqw_L12.json** + figs/sqw_edges.dat | S(q,ω); reflection residual ~1e-4 (NOT machine precision). Until 2026-09-18 `figs/sqw_edges.dat` had **no generator anywhere in the repository**; `make_sqw_edges.py` now rebuilds it from `data/sqw_L12.json` |
-| 6b | fig:spin | fig_spinqw.pdf | `fig_spinqw.tex` (hand standalone) + spinqw_field.png | **spinqw_L12.json** + figs/spinqw_edges.dat | 2026-08-17: added cyan "extracted peak" overlay from the `peak` column of spinqw_edges.dat |
-| 7 | fig:spin | fig_spinqw.pdf | spin_lanczos.py | **spinqw_L12.json** + figs/spinqw_edges.dat | S^zz(q,ω); reflection residual 7e-13 (machine precision, genuine) |
-| 8 | fig:gallery | fig_molecular_gallery.pdf | make_gallery_native.py | **n19_suite.json** (PyMOL orbitals) | 19 molecules; names in dark ink, magic bar carries regime colour |
-| 9 | fig:molsuite | fig_molecular_suite.pdf | make_magic_suite_fig.py | **n19_suite.json** | F1/F1max eq vs diss, 19 molecules |
-| 10 | fig:hero | fig_hero.pdf | make_hero_fig.py | **n2_hero.json** + figs/hero_aw.dat + figs/hero_res.dat | N2 dissociation; uses italic N_u (body uses roman N_u) |
-| 11 | fig:bench | fig_benchmark.pdf | make_bench_fig.py | **headtohead_ms.json** + figs/bench_U*.dat | U/t=4,8,12; 0.042/0.729/0.431 at U/t=12,\|S\|=200 |
-| 12 | fig:scaling | fig_scaling2_native.tex | ⚠ **hand-maintained** — `make_scaling_fig.py` emits a DIFFERENT two-panel figure and would DESTROY panel (c) if run; see [KNOWN_DISCREPANCIES.md](KNOWN_DISCREPANCIES.md) | **scaling_data.json** | F1 6.6→22.5, frac 0.92→0.08; 2026-08-17 added panel (c) |S|=frac·Np1_sector & D=Np1_sector, both exponential. |S| = round(frac·Np1_sector) = 22, 246, 2180, **19183**, 124407, **824503** (the last two were printed as 19184 / 824504 until 2026-09-18). `figs/scaling.dat` DELETED (orphan). **Same caveat as row 5:** the fractions come from `scaling_lanczos.py:66` / `scaling_lanczos_mf.py:101` / `scaling_data.py:56`, which rank determinants by the **exact** time-averaged Born weight and cut at a threshold — the infinite-shot limit, not a shot-limited run. |
-| 13 | fig:ladder | fig_ladder_native.tex | ladder_vs_chain.py | **ladder_vs_chain.json** | chain rows are OBC; 2026-08-17 overwrote their F1 with the PERIODIC-ring values from scaling_data.json (L6 9.3851, L8 12.8138, L10 16.0183). Reverted 2026-09-05 to the OBC values 9.6047 / 12.8163 / 16.0306; caption now reads 9.60/9.69. The figure plots only χ and fractions, which were never affected |
-| 14 | fig:circ | fig_circuit.pdf | fig_circuit_native.tex (quantikz) | — (schematic, no data) | interaction column drawn as ctrl dots, labelled R_zz |
-| 15 | fig:heron | fig_hardware_hero_frag.tex | make_hardware_hero.py | **hw_lucj_n2_result.json — job `da125f2ein7c73bcsqs0`** | ⭐ AUTHORITATIVE HW RUN. Panel (b) = **8-seed recovery MEAN per step + shaded ±std envelope** (`dE_hist_mean`/`dE_hist_std` = [31.1±4.0, 6.1±0.8, 2.1±0.3, 1.0±0.2, **0.59±0.14**]); capped whisker at converged pt; noiseless 29.5 |
-| 16 | fig:noise | fig_noise_score.pdf | make_noise_fig.py | **noise_spectral.json** + figs/noise.dat | naive vs S-CoRe; "naive" curve colour clashes with orange=learned elsewhere |
-| 17 | fig:noiserec | fig_noise_recovery_native.tex | make_noise_recovery_native.py | **molecular_noise.json** + molecular_noise_sweep.json | panel (a) 5 mols (8 seeds), panel (b) 19 mols at ε=2% (5 seeds) — different ensembles |
-| 18 | fig:gflow | fig_gflownet.pdf | make_gflow_fig.py | **gflow.json** | bars 43.2/39.2/27.0/26.0/22.9 |
-| 19 | fig:amort | fig_amort_native.tex | amortized_recovery.py | **amortized_recovery.json** | classical vs amortized LOO |
-| 20 | fig:witness | fig_witness_native.tex | (native) | **apsg_witness.json** | F1=F2=4K, \|S\|=2^K, χ=2; uses roman N_u (correct) |
+### Column "guarded", counted
+
+`src/check_figures.py` regenerates **8 artefacts** covering **6 of the 17 figures**
+(2, 3, 6, 7, 14, 16). The other eleven have no byte-for-byte guard: four have no deposited
+generator at all (1, 5, 8, 9), four ship as a PDF whose standalone source is not deposited
+(4, 11, 12, plus 13 and 15 which have a generator but no deposited `.tex`), and two name a
+generator that is not in the deposit (10, 17).
+
+---
+
+## §A — the one guard that did not fire, measured — **REPAIRED 2026-09-19**
+
+> **Closed.** Both literals below are gone: `REPO` is now `os.path.dirname(HERE)` and the two
+> JSONs are read from the deposited `data/`. `check_figures.py` guards 8 of 8 artefacts
+> (sentinel test, positive control) and writes nothing into the repository (sha256 + mtime
+> snapshot of 231 files, before and after). What follows is the record of the defect.
+
+`src/make_akw_sampled_honest_fig.py` lines 17–18 set
+
+    REPO = r"C:\Users\Nicolas\Downloads\Proyecto_SQD_ML\P2_dynamical_spectral_functions\release"
+    CALC = r"C:\Users\...\scratchpad\p2_calc"
+
+Both are absolute. Two consequences, both measured on 2026-09-19 rather than reasoned about:
+
+1. **It cannot run on a clean clone.** `CALC` is a session scratch directory that is not part of
+   this deposit, and panel (c) is read from it — although `data/sampled_honest.json` and
+   `data/honest_sampling.json` are deposited, the script does not read those copies.
+2. **`src/check_figures.py` cannot see a corrupted Fig. 3.** The checker copies `src/` and `data/`
+   into a scratch tree and runs the generators there; this one ignores the scratch tree and writes
+   through `REPO` into the real `paper/figs/`. Negative control: corrupting one plotted literal in
+   the committed `fig_akw_sampled_honest.tex` and re-running the checker on that tree gives
+   **exit 0, "all 8 regenerated artefacts are byte-identical"**. The same corruption applied to
+   `fig_decoupling_native.tex`, whose generator resolves paths from the cwd, gives **exit 1 and
+   `[DIFFER]`**. So the positive control fires and this one does not.
+   A side effect of the same bug: running `make check-figures` **rewrites four files in the working
+   tree** (`fig_akw_sampled_honest.tex`, its two caption files and
+   `data/sampled_akw_figure_numbers.json`) with identical bytes, which contradicts the checker's
+   own docstring ("It never writes into the repository").
+
+Until those two constants are resolved from `__file__` and `data/`, read the checker's result as
+**8 of 8 guarded since the §25 repair of 2026-09-19** — before it, 7 of 8. Measured by seeding each artefact with a sentinel line and checking it is gone after the run, with a positive control asserting the sentinel was in all eight first.
+
+## §B — the figure the guardian declares it cannot anchor
+
+`src/verify.py` registers `fig_thm1iii_violation_native.tex` in `COVERAGE_GAP_V3` and prints it as
+`[XFAIL]` on every run: the fragment plots eight `n3_*.dat` tables (2432 lines) whose builder
+`build_n3.py` is not deposited, so no check anchors those ratios to the certificate rows. This is
+printed, not hidden, and it is the honest status of Fig. 17. Closing it means depositing `build_n3.py`
+and its two missing inputs, adding the fragment to `src/check_figures.py`, and anchoring the ratios.
+
+---
 
 ## ⭐ HARDWARE — the single authoritative run (do not confuse)
 
@@ -62,18 +113,85 @@ per-step 8-seed statistics — reconstructed from the run log so the per-point e
 again. Converged dE = **0.59 ± 0.14 mHa** (best seed 0.40); noiseless sim 29.5 mHa.
 Confirmed authoritative by Nicolás (2026-08-17); per-seed trajectories restored 2026-08-17.
 
-**A(ω) / ibm_fez** = the `ibm_fez` L=6 Hubbard run (|S|=300/300, exact by coverage). File: `heron_spectral.json` / figs/heron*.dat.
+**A(ω) / ibm_fez** = the `ibm_fez` L=6 Hubbard run (|S|=300/300, exact by coverage). File:
+`heron_spectral.json` → `figs/heron_hot.dat`.
+
+---
+
+## The exceptions to "every plotted value is deposited"
+
+The Data Availability Statement ([`DATA_AVAILABILITY.md`](DATA_AVAILABILITY.md)) points at this file
+as the figure → file map. That map resolves for sixteen of the seventeen figures. It does **not**
+resolve for these, which are therefore named here rather than left implicit:
+
+| figure | what is not in `data/` |
+|---|---|
+| **Fig. 1** (fig:circ) | a circuit schematic. It plots no data at all, so there is nothing to deposit. |
+| **Fig. 17** (fig:thm1iii-violation) | two of the four JSONs behind the plotted ratios (`thm3_results.json`, `n3_fig5_summary.json`) are not deposited, and neither is the script that turned them into the `n3_*.dat` tables. See §B. |
+
+*Withdrawn from this table 2026-09-19: a row reading "Fig. 6, panel (c): the four free-fermion
+support sizes 35, 336, 3496, 37361 are constants typed into `src/make_decoupling_native.py` and
+written from there into the fragment." **That was a v2 row renumbered from Fig. 1 to Fig. 6
+without being re-measured, and it had stopped being true.** Panel (c) of `fig_decoupling_native.tex`
+was rebuilt for v3 as "(c) Hubbard: χ runs forwards"; a byte-level grep over every `.tex`, `.dat`
+and `.py` under `paper/` and `src/` finds `37361` in exactly one place, the **prose** of
+`paper/sec_6_body.tex:337`, and `make_decoupling_native.py` no longer contains it. Those four
+numbers are still hand-typed constants with no deposited producer — that limit is real and is
+recorded in `KNOWN_DISCREPANCIES.md` — but it is a sentence in Sec. VI, not a figure exception,
+and printing it here would advertise an exception for a panel that no longer exists.
+`src/check_provenance.py` did not catch this because it validates the label SET against
+`main.tex`, not the CONTENTS of a cell.*
+
+---
+
+## Orphans in `paper/figs/` — files with no producer and no consumer
+
+Derived by `python src/check_provenance.py -v`, 2026-09-19. The tiers are defined by two facts that
+need no guessing: does any deposited file *name* the artefact, and does the *manuscript reach it*.
+
+**Tier 1 — no deposited *code* names it and the manuscript does not use it (14).** Being written
+down here does not give a file a producer, so documenting an orphan does not remove it from this
+list:
+
+- `paper/figs/n3_fig5_eta.dat`, `paper/figs/n3_fig5_frac.dat` — the 64 Fig.-3 rows that
+  `caption_thm1iii_violation.tex` says were summarised into the whiskers of Fig. 17 by
+  `fix_n3_fig5_series.py`, which is not deposited. The whisker values are literals in the fragment.
+- `data/cert_frontier_6-8.json`, `data/cert_frontier_10.json` — written by
+  `leakage_certificate_suite.py` under a *computed* filename
+  (`"cert_frontier_%s.json" % "-".join(...)`), so the literal names appear in no script. Only a
+  comment in `paper/sec_5_body.tex` mentions them, and nothing reads them back.
+- the ten `docs/img/*.png` thumbnails — hand-exported crops for the README gallery. No script
+  produces them. Two are thumbnails of **figures the manuscript withdrew**: `bench.png`
+  (`fig:bench`) and `gallery.png` (`fig:gallery`, the nineteen-molecule orbital gallery, which the
+  README embedded until 2026-09-19 and which has been replaced there by `witness.png` — a figure
+  that is still in the paper, as Fig. 5). Both are kept only as the record of the v2 front page and
+  should go if the gallery is ever rebuilt.
+
+**Tier 3 — the manuscript typesets it and no deposited code names it (13):** the six PDFs
+(`fig_akw_native.pdf`, `fig_circuit.pdf`, `fig_hero.pdf`, `fig_noise_score.pdf`, `fig_spinqw.pdf`,
+`fig_sqw.pdf`) and the seven `n3_*.dat` tables the Fig.-17 fragment plots. Nothing in this deposit
+regenerates any of them; their *numbers* are in committed JSONs, their *renderings* are not
+reproducible here.
+
+Tier 2 (produced by code, unused by the paper — 43 files, mostly datasets whose only remaining
+reader is `src/verify.py`) is printed by the checker and itemised in
+[`FILE_INDEX.md`](FILE_INDEX.md).
+
+---
 
 ## ⛔ STALE / DO NOT USE (archive or ignore)
 
 - **`notebooks/HW_LUCJ_N2_Heron_READY.ipynb` SAVED CELL OUTPUTS** = an OLDER run, job `d9qe731dsedc73af67d0` (single seed, final 1.2 mHa, noiseless 28.5). These are NOT the paper's numbers. The authoritative run is `da125…` in `hw_lucj_n2_result.json`. Re-run "Run all" and re-save the notebook to sync, or ignore the saved outputs.
-- `_archive/figuras/hw_lucj_n2_result.json` — old (Aug 6), superseded.
-- `scaling_data_dense_backup.json`, `sqw_L12_eta020_backup.json` — backups, not the plotted data.
-- `figs/scaling.dat` — DELETED (was an orphan stale copy of scaling_data.json).
-- `figs/conv_method.dat` — **DELETED 2026-09-18.** Stale single-seed convergence table (13 rows) whose
-  K=12 entry read `240  0.024984` while the authoritative `data/method_max.json` (8 seeds) gives
-  `|S|=242.5  rel-L1=0.018550`. No script in the deposit wrote it and no fragment read it; the paper
-  prints the correct value. Superseded generator of the same family: `_superseded/_archive/`.
-- `figs/resource_axis.dat` — **DELETED 2026-09-18.** Orphan of a figure that never entered the paper
-  (header `t Fn Sn nn F S n`, 16 rows). No writer, no reader, and no committed `.json` carries that
-  column set; the only surviving generator is `_superseded/_archive/resource_axis_v2.py`.
+- **The `rebuild/` tree** is a scratch build directory (git-ignored) holding `make_table.py`'s output. The **shipped** table is `paper/table_molecules_v3.tex`.
+- `scaling_data_dense_backup.json`, `sqw_L12_eta020_backup.json` — backups, not the plotted data (git-ignored by `*_backup.json`).
+- **`paper/figs/fig_akw_sampled_honest_caption.tex` and `..._caption_macro.tex` — SUPERSEDED.**
+  They are written by `make_akw_sampled_honest_fig.py`, nothing reads them, and their finite-shot
+  penalties (`1.46×` at L=6, `2.05×` at L=8) predate the ones the paper prints. The caption the
+  manuscript typesets is `figs/fig5_caption.tex` (`1.50±0.25`, `1.96±0.12`, `2.05±0.07`), and those
+  three numbers are exactly the `ratio` row of Table IX. **Substituting the generator's caption
+  because it is machine-written would reinstate withdrawn numbers.** `KNOWN_DISCREPANCIES.md` §26.
+- **`paper/figs/fig_amort_native.tex` — RETIRED.** The body of `fig:amort`, which Sec. 9.4 withdraws.
+  It stays in `paper/figs/` only because `src/verify.py` names it; nothing typesets it.
+- `figs/scaling.dat`, `figs/conv_method.dat`, `figs/resource_axis.dat` — all three **DELETED 2026-09-18** as stale orphans; rationale in `KNOWN_DISCREPANCIES.md` §8. Do not restore them from `_superseded/` or from the arXiv v2 bundle, which still contains two of them.
+- **`_superseded/`** holds the v2 manuscript (`v2_paper/`), the retired v2 figure sources (`v2_figs/`) and the bodies of the five figures withdrawn in v3 (`v3_retired/figs/`: `fig_benchmark.pdf`, `fig_gflownet.pdf`, `fig_molecular_gallery.pdf`, `fig_molecular_suite.pdf`, `fig_hardware_hero.pdf`, `heron_spectral.pdf`, `_method_standalone.*`, `bench_U*.dat`). **RETIRED — nothing in `paper/` reads them.** Their generators (`make_bench_fig.py`, `make_gflow_fig.py`, `make_gallery_native.py`, `make_magic_suite_fig.py`) are still in `src/` and would recreate `paper/figs/bench_U*.dat` if run; that is the only reason to open that directory.
+- **`paper/arxiv-submission.tar.gz`** is the frozen **arXiv v2** bundle and must never be re-uploaded as v3: it carries the seven v2 section files, the five retired figures and the two fabricated rows of `figs/sqw_edges.dat`. Run `python src/check_tarball.py` for the live comparison.
