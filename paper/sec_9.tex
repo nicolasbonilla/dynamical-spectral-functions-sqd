@@ -431,7 +431,17 @@ the third had no number at all before this version (Sec.~\ref{sec:prices}).
 %  from job.result().  See docs/DATA_AVAILABILITY.md Part 3, items 1 and 2.
 %
 %  Every sentence was re-checked against the deposit of 2026-09-19:
-%    807 / 7454 / 4   -- python src/verify.py on this tree, re-measured at freeze time by
+%    831 / 9844 / 5   -- CURRENT reading, python src/verify.py on this tree, 2026-09-19 late:
+%                        pass 831, FAIL 0, xfail 5, xpass 0, skip 2, 9844 numeric assertions.
+%                        The body (sec:scope:data) prints 831 and 9,844 and says five open
+%                        defects; all three agree with this line and were re-measured, not
+%                        copied.  The count moved 9843 -> 9844 when src/check_trim.py was
+%                        added and the README script-count check went 58 -> 59: an assertion
+%                        count is DERIVED FROM THE TREE and goes stale the moment a file is
+%                        added, which is exactly how it went stale below.
+%    807 / 7454 / 4   -- SUPERSEDED, earlier the same day, kept because the reasoning under
+%                        it is still the right reasoning and only its numbers moved.
+%                        python src/verify.py on this tree, re-measured at freeze time by
 %                        a script that PARSES the guardian's
 %                        own SUMMARY line and counts the defects it prints BY NAME, and
 %                        refuses to write if the two disagree or if the guardian is non-zero.
@@ -499,7 +509,7 @@ the resource statistics---are additionally \emph{regenerable}: the computation s
 them are deposited in \texttt{src/}, and \texttt{docs/REPRODUCE.md} gives the reproduction commands
 together with a measured table of what a clean clone does and does not reach. An automated guardian
 (\texttt{python src/verify.py}) recomputes the underlying physics by exact diagonalization and checks
-the deposited artefacts against it---$831$ checks over $9\,843$ numeric assertions, exiting non-zero on
+the deposited artefacts against it---$831$ checks over $9\,844$ numeric assertions, exiting non-zero on
 any discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in
 the tables and in the abstract; it is not a proof that every sentence of this manuscript is verified,
 and five known open defects are printed by name on every run.

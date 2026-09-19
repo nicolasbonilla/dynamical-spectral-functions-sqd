@@ -100,7 +100,7 @@ simulation).
 
 ```
 .
-├── src/                       # 58 computation & figure scripts (run from repo root as `python src/X.py`)
+├── src/                       # 59 computation & figure scripts (run from repo root as `python src/X.py`)
 │   ├── verify.py              #   the adversarial guardian: recomputes the physics, then checks the deposit
 │   ├── check_figures.py       #   do the committed generators still produce the committed fragments?
 │   ├── check_provenance.py    #   does the documentation still describe the manuscript? (derives it from main.tex)
@@ -180,7 +180,7 @@ the v3 sections replace. Run `python src/check_tarball.py` for the live comparis
 
 | Layer | Reproducible here? | How |
 |---|---|---|
-| **The guardian** | ✅ **PASS** — 831 checks, 0 failures, 9 843 numeric assertions, 5 xfail, 0 xpass, 2 skips, ~9 s *(2026-09-19, after the C3 frontier deposit added section (10b))* | `python src/verify.py` (or `make verify`) |
+| **The guardian** | ✅ **PASS** — 831 checks, 0 failures, 9 844 numeric assertions, 5 xfail, 0 xpass, 2 skips, ~9 s *(2026-09-19, after the C3 frontier deposit added section (10b))* | `python src/verify.py` (or `make verify`) |
 | **The documentation** | ✅ **PASS** — derived from `paper/main.tex`: 34 floats, 17 figures, 17 tables | `python src/check_provenance.py` |
 | **Manuscript coherence** | ✅ **PASS** — 10 cross-section claims, 20 synthetic controls, all 20 fire *(2026-09-19)*. New that day, because the other three guardians were green while seven sections contradicted each other: they compare a printed number against a deposited file, not a claim against a claim | `python src/check_coherence.py` |
 | **The figure generators** | ✅ **PASS on 8 artefacts, all 8 genuinely guarded** *(2026-09-19)*. Until that day the eighth was compared with a copy of itself, because its generator hard-coded two absolute paths; both are gone and the repair is measured, with controls, in `KNOWN_DISCREPANCIES.md` §25 | `python src/check_figures.py` |

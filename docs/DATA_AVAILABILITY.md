@@ -38,7 +38,7 @@ published and this file is the one that is wrong.**
 > are deposited in `src/`, and `docs/REPRODUCE.md` gives the reproduction commands together with a
 > measured table of what a clean clone does and does not reach. An automated guardian
 > (`python src/verify.py`) recomputes the underlying physics by exact diagonalization and checks the
-> deposited artefacts against it — 831 checks over 9 843 numeric assertions, exiting non-zero on any
+> deposited artefacts against it — 831 checks over 9 844 numeric assertions, exiting non-zero on any
 > discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in the
 > tables and in the abstract; it is not a proof that every sentence of this manuscript is verified, and
 > five known open defects are printed by name on every run.

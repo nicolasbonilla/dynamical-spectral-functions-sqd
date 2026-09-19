@@ -223,7 +223,11 @@ def build_checks(txt):
          "still declare it missing."),
 
         ("the data-availability statement quotes the guardian it actually has",
-         (r"\$831\$ checks over \$9\\,843\$ numeric assertions", 1),
+         # 9843 -> 9844 on 2026-09-19: adding src/check_trim.py moved the README
+         # script-count check from 58 to 59 and the assertion total with it.  An
+         # assertion count is derived from the tree, so it goes stale whenever a
+         # file is added -- which is why this check pins it.  It fired correctly.
+         (r"\$831\$ checks over \$9\\,844\$ numeric assertions", 1),
          [r"\$807\$ checks", r"\$7\\,454\$ numeric assertions",
           r"four known open defects"],
          "$807$ checks over $7\\,454$ numeric assertions",

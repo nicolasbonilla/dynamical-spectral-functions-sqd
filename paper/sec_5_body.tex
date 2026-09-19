@@ -68,10 +68,18 @@
 %  deposited (src/leakage_certificate.py, src/leakage_certificate_suite.py) and so are the
 %  606-subspace scans (data/cert_akw.json, cert_stress.json, cert_teqsci.json,
 %  cert_frontier_6-8.json, cert_frontier_10.json, leakage_certificate_selftest.json).
-%  WHAT IS STILL MISSING is the 204-row frontier sweep itself -- C3_grid.json, the 54
-%  pt_*.json point files, ties.json, validation.json, verdict_frontier.json and the four
-%  adversarial re-runs -- i.e. the source of every number in Sections 5.2 to 5.5.  This
-%  section is still the one part of the paper a reader cannot regenerate. ***
+%  RESOLVED 2026-09-19, and the resolution is recorded rather than the note deleted,
+%  because what it used to say is the opposite of the truth and someone reading the old
+%  wording could weaken the (correct) Data Availability Statement to match it.
+%  The note read: "WHAT IS STILL MISSING is the 204-row frontier sweep itself --
+%  C3_grid.json, the 54 pt_*.json point files, ties.json, validation.json,
+%  verdict_frontier.json and the four adversarial re-runs -- i.e. the source of every
+%  number in Sections 5.2 to 5.5.  This section is still the one part of the paper a
+%  reader cannot regenerate."  Every item on that list is now deposited AND versioned:
+%  data/c3_frontier/ holds C3_grid.json, ties.json, validation.json,
+%  verdict_frontier.json, all 54 pt_*.json and adversarial/ (5 files), for 82 files
+%  under git.  Sections 5.2 to 5.5 regenerate from the deposit.  Verified by listing
+%  the tree and by `git ls-files data/c3_frontier/`, not by reading this comment. ***
 %  *** %TODO(calc): there is NO finite-shot run at the literal configuration of this section.
 %  Every subspace here is the T -> infinity limit of the declared protocol; that is stated in
 %  Sec. 5.1 and must not be dropped anywhere these tables are quoted. ***

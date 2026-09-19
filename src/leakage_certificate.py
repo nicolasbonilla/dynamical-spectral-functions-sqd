@@ -29,9 +29,27 @@ computable WITHOUT the answer: it needs only H, S and the Ritz pairs the existin
 
 WHICH PAPER CLAIM THIS SUPPORTS
 -------------------------------
-It REPLACES Theorem 1(iii) (paper/theorem_b2.tex, invoked in paper/method.tex), whose published
-statement  ||A-A_S||_1 <= 2||phi||^2 (1-w_S) + C rho^{-K_S}  is false (analytic 2x2 counterexample;
-186/292 numerical violations; 126/126 in the w_S>=0.99 regime the paper invokes).  The lower bound
+It REPLACES Theorem 1(iii), whose published statement
+    ||A-A_S||_1 <= 2||phi||^2 (1-w_S) + C rho^{-K_S}
+is false (analytic 2x2 counterexample; 468/606 numerical violations; 363/363 in the w_S>=0.99
+regime the paper invokes).
+
+    TWO CORRECTIONS TO THIS PARAGRAPH, 2026-09-19, both found by reading the deposit against
+    the manuscript rather than by trusting either on its own:
+
+    (1) The counts read 186/292 and 126/126 here until today, from the sweep as it stood when
+        this file was written.  The pooled sweep now contributes 621 subspaces from four
+        independent generators, 606 of them live (15 reproduce their target to double-precision
+        round-off and define no ratio).  The enlargement did not soften the verdict, it
+        hardened it: ALL 363 of the high-weight cases violate the published bound, where before
+        it was 126 of a smaller pool.  Mildest violation factor 2.10.  Source of record:
+        paper/sec_3_app.tex, which is App. B.
+    (2) The file paths named here, paper/theorem_b2.tex and paper/method.tex, are v2 filenames
+        and neither file exists in v3.  The statement and its refutation now live in
+        paper/sec_3_body.tex (Theorem B), paper/sec_3_1.tex (why the captured weight is not the
+        controlling magnitude) and paper/sec_3_app.tex (the sweep).
+
+The lower bound
 also corrects the proof sketch, which quotes ||phi||^2(1-w_S) <= ||A-A_S||_1 with the inequality
 reversed.  The quantities w_S and K_S are computed here for the first time in this repository.
 
