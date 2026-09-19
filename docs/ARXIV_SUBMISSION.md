@@ -113,7 +113,7 @@ Snapshot of the 12:46 run of 2026-09-19 (the hashes move with every source edit 
 | package, clean room, 3 passes | 59 | 274 969 | `80715e7724440fcc` |
 | full `paper/` tree, same 3 passes, same binary | 59 | 274 969 | `80715e7724440fcc` |
 
-**Identical text flow on every one of the 59 pages.** The mirror recompilation is the comparison that
+**Identical text flow on every one of the 62 pages.** The mirror recompilation is the comparison that
 matters: same compiler, same pass count, same minute — so any difference would be the *package's*
 fault and nothing else's.
 
@@ -220,10 +220,10 @@ This is a **replacement (v3)** of an existing entry, not a new submission.
 | **Authors** | Nicolás Bonilla Vargas |
 | **Abstract** | copy the `abstract` environment from `paper/main.tex` (**it changed in v3**). **Type the ten Greek letters as Unicode characters (η, ρ, γ, Λ) and keep the exponents and subscripts (`10^-3`, `L_1`): so typed it is 1910 characters against arXiv's limit of 1920. Spelled out as `eta`, `rho`, ... it is 1940 and arXiv rejects it.** The margin depends on the convention, so decide the exact string before opening the form; `scratchpad/cierre/abs_paste.py` prints it and counts it both ways. Note that `mide_resumen.py` deletes `^` and `_` and therefore reads 8 characters short. |
 | **License** | CC BY 4.0 |
-| **Comments** | paste the block below verbatim (measured 2026-09-19: 59 pages, 17 figures, 17 tables). arXiv asks that a replacement merge the old comments with the new ones, and that the reason for the replacement appear in this field. |
+| **Comments** | paste the block below verbatim (measured 2026-09-19: 62 pages, 17 figures, 17 tables). arXiv asks that a replacement merge the old comments with the new ones, and that the reason for the replacement appear in this field. |
 
 ```
-59 pages, 17 figures, 17 tables. Code, data and full reproduction repository:
+62 pages, 17 figures, 17 tables. Code, data and full reproduction repository:
 https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd
 v3: major revision, retitled. Theorem 1(iii) of v1-v2, an error bound indexed on the
 captured Born weight alone, does not hold - a two-level counterexample forces its
@@ -243,7 +243,7 @@ item, in docs/KNOWN_DISCREPANCIES.md of the repository above.
 2. Sign in at <https://arxiv.org>, open `arXiv:2608.16436`, choose **Replace**.
 3. Upload **`build/arxiv-v3.tar.gz`** — *not* `paper/arxiv-submission.tar.gz`.
 4. When asked for the processor, choose **LaTeX with PDFLaTeX**.
-5. Review arXiv's generated PDF: **59 pages**, and the last body page must read `X. CONCLUSION`
+5. Review arXiv's generated PDF: **62 pages**, and the last body page must read `X. CONCLUSION`
    with no stray build note above it.
 6. Update the abstract and the Comments field; keep CC BY 4.0.
 7. After announcement, update the badge and `CITATION.cff` with the v3 date.
