@@ -106,12 +106,22 @@ Three passes, extraction into a fresh temporary directory that contains nothing 
 
 ### 3.2 The PDF is equivalent to the repository's
 
-Snapshot of the 12:46 run of 2026-09-19 (the hashes move with every source edit — re-run, do not quote):
+**The character count and the SHA-1 are deliberately not written down here any more.** They move with
+every source edit, and this table proved it the hard way: it was corrected to `285 711` /
+`3418e634262e5ac9` on 2026-09-21 and was stale again forty minutes later, because the same pass that
+corrected it also edited `sec_4_body.tex` and `sec_9.tex`. A number that goes stale faster than it can
+be written is not a record, it is a trap — and this repository has spent three days killing exactly
+that class of number. **Run `python src/build_arxiv_bundle.py` and read what it prints.**
 
 | compared | pages | chars of extracted text | text SHA-1 |
 |---|---|---|---|
-| package, clean room, 3 passes | 62 | 285 711 | `3418e634262e5ac9` |
-| full `paper/` tree, same 3 passes, same binary | 62 | 285 711 | `3418e634262e5ac9` |
+| package, clean room, 3 passes | 62 | *(printed by the script)* | *(printed by the script)* |
+| full `paper/` tree, same 3 passes, same binary | 62 | *(must equal the row above)* | *(must equal the row above)* |
+
+What has to be **true** is not a particular hash but the *agreement*: the script requires the clean-room
+build, the full-tree build and the committed `paper/main.pdf` to give the same page count, the same
+character count and the same text SHA-1, and it fails if any pair disagrees. The page count is written
+down because it is stable and is what you check against arXiv's own generated PDF.
 
 **Identical text flow on every one of the 62 pages.** The mirror recompilation is the comparison that
 matters: same compiler, same pass count, same minute — so any difference would be the *package's*
