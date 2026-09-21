@@ -93,7 +93,7 @@ Everything below is one run of `python src/build_arxiv_bundle.py --passes 3`.
 ### 3.1 Compiles from a clean extraction, outside the repository
 
 ```
-pdflatex exit 0 | pages 59 | errors 0 | undefined refs 0 | undefined citations 0 | missing files 0
+pdflatex exit 0 | pages 62 | errors 0 | undefined refs 0 | undefined citations 0 | missing files 0
 ```
 
 Three passes, extraction into a fresh temporary directory that contains nothing but the package.
@@ -110,8 +110,8 @@ Snapshot of the 12:46 run of 2026-09-19 (the hashes move with every source edit 
 
 | compared | pages | chars of extracted text | text SHA-1 |
 |---|---|---|---|
-| package, clean room, 3 passes | 59 | 274 969 | `80715e7724440fcc` |
-| full `paper/` tree, same 3 passes, same binary | 59 | 274 969 | `80715e7724440fcc` |
+| package, clean room, 3 passes | 62 | 285 711 | `3418e634262e5ac9` |
+| full `paper/` tree, same 3 passes, same binary | 62 | 285 711 | `3418e634262e5ac9` |
 
 **Identical text flow on every one of the 62 pages.** The mirror recompilation is the comparison that
 matters: same compiler, same pass count, same minute — so any difference would be the *package's*
