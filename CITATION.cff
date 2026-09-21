@@ -15,13 +15,14 @@ abstract: >-
   coupling of H across the subspace boundary at resolution eta, computable from the Ritz vectors in
   hand. Shots buy the first term down, not the second. We retract the weight-only bound of versions 1
   and 2 of this preprint: an analytic counterexample forces its constant to the trivial value. On
-  Hubbard sectors up to dimension 731808 the replacement is worse than the trivial bound at every
-  published fraction, by factors 2.8 to 4.9, so those reconstructions are uncertified; what survives is
+  Hubbard sectors up to dimension 10306296 the replacement is worse than the trivial bound at every
+  published fraction, at all five sizes, by factors 1.66 to 8.61, so those reconstructions are
+  uncertified; what survives is
   a calibration, the bound crossing the trivial one at a true relative error of 1.2 to 7.3e-3. No
   orbital-rotation invariant substitutes for it: one-body fermionic magic collapses to
   F1 = 4 tr[gamma(1-gamma)] = 2 Nu, constant along an orbit on which the determinant support runs from
   O(K) to 2^K at bond dimension 2. Validated against exact diagonalization across Hubbard chains and a
-  nineteen-molecule suite, and demonstrated on the IBM Heron processor. We claim no quantum advantage.
+  nineteen-molecule suite, and executed on the IBM Heron processor. We claim no quantum advantage.
 repository-code: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
 url: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
 version: "3.0.0"
