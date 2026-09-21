@@ -27,12 +27,23 @@
 %   seed 20260918.  Two-level toy series of app:moments:conj: p2_texto/toy_out.txt.  The rho ~ 1.7
 %   paragraph of sec:moments:notbuy: release/data/method_max.json (shots=4000, NSEEDS=8, dt=0.4)
 %   and release/src/spectral_validation_max.py:225.
-% *** %TODO(deposit), still live as of 2026-09-18: the four .txt artifacts above live in the
-%   the author's working tree, NOT in release/.  The scripts that produce them (verify_final.py, verify_bc2.py,
-%   verify_control.py, verify_toy.py) must be deposited in release/src/ with their outputs, or
-%   Table~\ref{tab:moments} and the negative control are as unreproducible from the deposit as
-%   the bound this section replaces.  release/data/method_max.json, which the rho ~ 1.7
-%   paragraph uses, IS deposited. ***
+% *** DEPOSIT GAP, corrected and escalated 2026-09-21.  This note used to read "the four .txt
+%   artifacts above live in the author's working tree, NOT in release/".  That was too kind and
+%   is now false: the four .txt files AND the four scripts that produced them (verify_final.py,
+%   verify_bc2.py, verify_control.py, verify_toy.py) exist NOWHERE -- searched across release/
+%   and the whole working tree on 2026-09-21.  Table~\ref{tab:moments} and the negative control
+%   are therefore not regenerable from the deposit.
+%
+%   That fact is no longer left to this comment, because arXiv publishes the LaTeX source and a
+%   limitation a reader can only find by downloading the .tex is a limitation that was hidden.
+%   It is now declared where this project declares gaps: COVERAGE_GAP_V3 in src/verify.py, which
+%   prints it by name on every run, and docs/DATA_AVAILABILITY.md.
+%
+%   It is also cheap to close, and closing it is the real fix: the table is L = 6, sector
+%   dimension 300, exact diagonalization of the (N+1, Sz=+1) sector (see sec_4_app.tex:53).
+%   Rewrite the four scripts against that construction, deposit them with their outputs, and
+%   assert the three rows in verify.py.  release/data/method_max.json, which the rho ~ 1.7
+%   paragraph uses, IS deposited and is unaffected. ***
 % =====================================================================================
 
 % `conjecture' environment, declared defensively so this file can be dropped in whether

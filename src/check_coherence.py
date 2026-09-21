@@ -223,13 +223,25 @@ def build_checks(txt):
          "still declare it missing."),
 
         ("the data-availability statement quotes the guardian it actually has",
-         # 9843 -> 9844 on 2026-09-19: adding src/check_trim.py moved the README
-         # script-count check from 58 to 59 and the assertion total with it.  An
-         # assertion count is derived from the tree, so it goes stale whenever a
-         # file is added -- which is why this check pins it.  It fired correctly.
-         (r"\$831\$ checks over \$9\\,844\$ numeric assertions", 1),
+         # This literal has moved THREE times in three days, always for the same benign
+         # reason -- adding a .py to src/ moves the README script-count check and the
+         # assertion total with it: 9843 -> 9844 (check_trim.py), 9844 -> 9845
+         # (abs_paste.py), 9845 -> 9846 (the tab:moments coverage gap).  The pin stays a
+         # literal on purpose: its job is to REFUSE a silent change, and it has done that
+         # every time.  When it fires, do not edit it by hand first -- run
+         # scratchpad/propaga_cuentas.py, which re-runs verify.py and rewrites the eight
+         # places that quote the total, and then bring this line to match.
+         (r"\$831\$ checks over \$9\\,846\$ numeric assertions", 1),
+         # The forbidden phrase used to be the bare "four known open defects", which was
+         # unambiguous while the live sentence read "five".  On 2026-09-21 the live
+         # sentence became "four known open defects, and two declared gaps in its own
+         # coverage" -- a DIFFERENT and TRUE statement that happens to contain the
+         # banned substring, so the check fired on correct text.  The ban is therefore
+         # narrowed to the superseded SENTENCE, not the phrase inside it.  Narrowing a
+         # ban is dangerous and is done here only because the wider form now has a
+         # legitimate match; the superseded claim is still caught in full.
          [r"\$807\$ checks", r"\$7\\,454\$ numeric assertions",
-          r"four known open defects"],
+          r"four known open defects are printed by name"],
          "$807$ checks over $7\\,454$ numeric assertions",
          "Sec. IX F tells the reader what `python src/verify.py` prints. Run it and "
          "compare. If verify.py's counts have moved, this check is the reminder that "

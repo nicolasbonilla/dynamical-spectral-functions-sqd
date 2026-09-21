@@ -431,8 +431,19 @@ the third had no number at all before this version (Sec.~\ref{sec:prices}).
 %  from job.result().  See docs/DATA_AVAILABILITY.md Part 3, items 1 and 2.
 %
 %  Every sentence was re-checked against the deposit of 2026-09-19:
-%    831 / 9844 / 5   -- CURRENT reading, python src/verify.py on this tree, 2026-09-19 late:
-%                        pass 831, FAIL 0, xfail 5, xpass 0, skip 2, 9844 numeric assertions.
+%    831 / 9846 / 6   -- CURRENT reading, python src/verify.py on this tree, 2026-09-21:
+%                        pass 831, FAIL 0, xfail 6, xpass 0, skip 2, 9846 numeric assertions.
+%                        The SIX are four known open defects plus two declared coverage gaps;
+%                        the body says exactly that, and names both gaps.  The second gap was
+%                        opened on 2026-09-21: the four artefacts behind tab:moments do not
+%                        exist anywhere, which until that day was admitted only in a LaTeX
+%                        comment -- and arXiv publishes the source, so that was a limitation
+%                        hidden in plain sight.  Now in COVERAGE_GAP_V3 and in the DAS.
+%                        Moved 9844 -> 9845 when src/abs_paste.py was added (59 -> 60
+%                        scripts).  That is TWICE in three days from the same cause, so
+%                        the propagation is now a script, not a hunt:
+%                        scratchpad propaga_cuentas.py re-runs verify.py and rewrites
+%                        all eight places that quote the total.
 %                        The body (sec:scope:data) prints 831 and 9,844 and says five open
 %                        defects; all three agree with this line and were re-measured, not
 %                        copied.  The count moved 9843 -> 9844 when src/check_trim.py was
@@ -509,10 +520,12 @@ the resource statistics---are additionally \emph{regenerable}: the computation s
 them are deposited in \texttt{src/}, and \texttt{docs/REPRODUCE.md} gives the reproduction commands
 together with a measured table of what a clean clone does and does not reach. An automated guardian
 (\texttt{python src/verify.py}) recomputes the underlying physics by exact diagonalization and checks
-the deposited artefacts against it---$831$ checks over $9\,844$ numeric assertions, exiting non-zero on
+the deposited artefacts against it---$831$ checks over $9\,846$ numeric assertions, exiting non-zero on
 any discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in
 the tables and in the abstract; it is not a proof that every sentence of this manuscript is verified,
-and five known open defects are printed by name on every run.
+and six items are printed by name on every run: four known open defects, and two declared gaps in
+its own coverage---the source of Fig.~\ref{fig:thm1iii-violation}, and the four artefacts behind
+Table~\ref{tab:moments}, none of which survives in the deposit.
 
 The quantum-hardware results are deposited as the arrays that enter the figures, together with the
 backend name, the shot count and the IBM~Quantum job identifier for each of the two runs

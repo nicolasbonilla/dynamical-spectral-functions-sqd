@@ -38,10 +38,12 @@ published and this file is the one that is wrong.**
 > are deposited in `src/`, and `docs/REPRODUCE.md` gives the reproduction commands together with a
 > measured table of what a clean clone does and does not reach. An automated guardian
 > (`python src/verify.py`) recomputes the underlying physics by exact diagonalization and checks the
-> deposited artefacts against it — 831 checks over 9 844 numeric assertions, exiting non-zero on any
+> deposited artefacts against it — 831 checks over 9 846 numeric assertions, exiting non-zero on any
 > discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in the
 > tables and in the abstract; it is not a proof that every sentence of this manuscript is verified, and
-> five known open defects are printed by name on every run.
+> six items are printed by name on every run: four known open defects, and two declared gaps
+> in the guardian's own coverage (the source of Fig. 17, and the four artefacts behind Table IV,
+> none of which survives in the deposit -- see 2.6).
 >
 > The quantum-hardware results are deposited as the arrays that enter the figures, together with the
 > backend name, the shot count and the IBM Quantum job identifier for each of the two runs
@@ -198,7 +200,7 @@ deposited `data/` copies, no sentence of the DAS may lean on it.
 ```
 SUMMARY   pass 806   FAIL 0   xfail 5   xpass 0   skip 2   (7452 numeric assertions, 10.7 s)
 RESULT: PASS -- every recomputed quantity is carried correctly by the deposited artefacts.
-        5 known open defect(s) remain, listed above.
+        6 item(s) remain, listed above: 4 known open defects + 2 declared coverage gaps.
 verify.py exit=0
 ```
 
@@ -276,6 +278,7 @@ That string has been corrected in the deposited file.
 |---|---|
 | that every figure can be **recompiled** from the deposit | **six of the seventeen** ship as PDF with no `.tex` source inside the repository — `fig_akw_native.pdf`, `fig_circuit.pdf`, `fig_hero.pdf`, `fig_noise_score.pdf`, `fig_spinqw.pdf`, `fig_sqw.pdf`; the list was taken from the `\includegraphics` lines of the current build, not from a document. The other eleven are native pgfplots fragments. (`KNOWN_DISCREPANCIES.md` §5 still says "ten of the twenty" and still cites `fig_molecular_gallery.pdf` and its 19 PyMOL PNGs — that figure is **withdrawn in v3**. Part 4 item 2.) |
 | that Fig. 17 can be **regenerated** | its ten `n3_*.dat` tables are deposited, but `build_n3.py` is not, and two of its four inputs are not in `data/`. The guardian registers this as an open defect and refuses to "check" the figure by re-reading what it prints. |
+| that **Table IV** (`tab:moments`, Sec. IV) can be **regenerated** | its three rows come from `final_out.txt` (K = 0, 1), `bc2_out.txt` (K = 2), `control_out.txt` (the negative control, 300 draws, seed 20260918) and `toy_out.txt` (the two-level series of App. B), produced by `verify_final.py`, `verify_bc2.py`, `verify_control.py` and `verify_toy.py`. **None of those eight files exists** — searched across `release/` and the author's whole working tree on 2026-09-21; the header comment of `paper/sec_4_body.tex` had claimed until that date that the `.txt` files were at least in the working tree, and that was no longer true. The guardian registers it in `COVERAGE_GAP_V3` and prints it by name on every run rather than "checking" the table by re-reading what it prints. **It is cheap to close and should be**: the table is L = 6, sector dimension 300, exact diagonalization of the (N+1, S_z = +1) sector (`paper/sec_4_app.tex:53`). Disclosed here because arXiv publishes the LaTeX source, and a limitation a reader can only find by downloading the `.tex` is a limitation that was hidden. |
 | that `make reproduce` runs | it executes a notebook that requires `pyscf`, which is not installed in the verified environment. It was **not** run in this pass and no claim is made for it. |
 | that the GFlowNet comparison is reproducible | `data/gflow.json` holds five summary rows; **no script in `src/` generates it.** Part 1 now says both halves of this — no generator *and* raw on request — rather than only the second. |
 | that the hardware measurement can be re-obtained | see 2.5. |

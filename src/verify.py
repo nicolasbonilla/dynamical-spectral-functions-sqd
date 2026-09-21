@@ -813,6 +813,21 @@ COVERED_FRAGMENTS = {
 # Close an entry by WRITING THE CHECK, not by deleting the entry.
 # ---------------------------------------------------------------------------
 COVERAGE_GAP_V3 = {
+    "tab:moments (Sec. IV)": (
+        "the three rows of Table tab:moments come from four .txt artefacts -- final_out.txt "
+        "(rows K=0,1), bc2_out.txt (row K=2), control_out.txt (the negative control, 300 "
+        "draws, seed 20260918) and toy_out.txt (the two-level series of app:moments:conj) -- "
+        "produced by verify_final.py, verify_bc2.py, verify_control.py and verify_toy.py. "
+        "NONE OF THE EIGHT FILES EXISTS ANY MORE: not in release/, and not in the author's "
+        "working tree either, which is what the header comment of paper/sec_4_body.tex still "
+        "claimed on 2026-09-21. So the table is not regenerable from the deposit and this "
+        "guardian will not pretend otherwise by re-reading what the table prints. "
+        "Declared here, and in docs/DATA_AVAILABILITY.md, rather than left to a LaTeX comment "
+        "that arXiv publishes with the source. "
+        "To close this: the table is CHEAP -- L=6, sector dimension 300, exact "
+        "diagonalization of the (N+1, Sz=+1) sector (paper/sec_4_app.tex:53) -- so rewrite "
+        "the four scripts against that construction, deposit them with their outputs, and "
+        "assert the three rows here. Write the check; do not delete this entry."),
     "fig_thm1iii_violation_native.tex": (
         "the fragment plots eight n3_*.dat tables (2432 rows) built by build_n3.py from "
         "data/cert_stress.json, data/cert_akw.json and two JSONs that are NOT in data/. "
@@ -1063,8 +1078,15 @@ def section9(rep, root, ctx):
             else:
                 inputs.add(name)
     for _gapkey in sorted(COVERAGE_GAP_V3):
-        rep.emit(XFAIL, "coverage gap: paper/figs/%s" % _gapkey,
-                 "the manuscript typesets this fragment and no check in this file anchors "
+        # The key used to be pasted behind a literal "paper/figs/", which was right while
+        # every gap was a figure fragment and became a FALSE PATH the moment one was not:
+        # the tab:moments entry printed "coverage gap: paper/figs/tab:moments (Sec. IV)",
+        # naming a file that does not exist.  A guardian that prints a path it has not
+        # checked is committing the defect it exists to catch.  Keys that name a real
+        # fragment keep their directory; keys that name something else print as they are.
+        _donde = ("paper/figs/%s" % _gapkey) if _gapkey.endswith(".tex") else _gapkey
+        rep.emit(XFAIL, "coverage gap: %s" % _donde,
+                 "the manuscript typesets this and no check in this file anchors "
                  "it to a dataset. %s" % COVERAGE_GAP_V3[_gapkey], 1)
     uncovered = sorted(inputs - COVERED_FRAGMENTS)
     rep.truth("every native figure source the paper \\input's is opened here",
