@@ -70,26 +70,46 @@ A sample-based quantum calculation returns a list of bitstrings. Diagonalizing t
 inside the span of the configurations they name yields an energy, and---as this work and, now,
 several others show---a frequency-resolved response as well. What it does not yield is any
 statement about how wrong that response is. This paper is built around the question a user is left
-with once the shots are spent: \emph{given the subspace those shots populated, how wrong is the
-spectral function built on it?}
+with once the shots are spent---\emph{given the subspace those shots populated, how wrong is the
+spectral function built on it?}---and its principal result is an obstruction to answering it at the
+fractions sampling reaches. A certificate of leakage type is non-vacuous only where the Hamiltonian
+coupling across the boundary of the subspace is small, so we measured that boundary. The coordinate
+support of the Krylov space $\mathcal K(H,\phi)$ is $296$ of $300$ determinants at $L=6$ and all
+$3920$ of $3920$ at $L=8$; it is measured at $L=8$, $10$, $12$ and $14$, and at each it is the
+whole sector at the declared threshold, by two estimators that agree
+wherever both ran. From $L=8$ on the leakage is therefore strictly positive for \emph{every} proper
+coordinate subspace, and no leakage-type certificate in that basis---ours or another's---can be
+non-vacuous there at low sector fraction (Sec.~\ref{sec:frontier:obstruction}). That is a property
+of the basis in which the device measures rather than of one inequality, and it is therefore
+indexed on that basis rather than absolute: the one route out has been measured and it is
+reported here rather than left for a referee to find. A momentum-resolved probe commutes with
+lattice translation, so its Krylov space lies inside a single momentum block, $\Lambda_{\mathcal S}$
+vanishes identically on that block and the certificate becomes non-vacuous at $48$--$54$ of
+$300$ determinants and at $490$ of $3920$. The same measurement closes it: the block is $1/L$
+of the sector against an exponential, reaching $0.89$ of the published fraction by $L=14$, and
+three things about it are unmeasured (Sec.~\ref{sec:frontier}).
+The obstruction stands where the device measures, and the repair that looked
+available to the proof is not one: measured rung by rung, the step that looked easiest to tighten
+carries a total margin of a factor $1.05$ typically and $3.29$ at the worst point measured, which
+moves the threshold by a fraction of one grid interval.
 
-The answer splits in two, and the split is a theorem rather than a metaphor. Let $\phi$ be the
-probe vector, $A(\omega)$ the spectral function broadened to resolution $\eta$, $\mathcal S$ a set
-of determinants and $A_{\mathcal S}$ the Rayleigh--Ritz reconstruction on its span. The $L_1$
-error is bounded below by the Born weight the subspace failed to capture, and above by that same
-weight together with the Hamiltonian coupling that leaks across the boundary of the subspace,
-averaged over the resolution window (Theorem~\ref{thm:leakage}, Sec.~\ref{sec:leakage}). The two
-terms of the upper bound are two budgets, and only the first is bought by drawing more bitstrings.
-That is measured rather than argued: on the subspace that \emph{is} the Born support of the probe,
-$\mathcal S^{\star}=\operatorname{supp}(\phi)$---of size exactly $(\tfrac12+\tfrac1L)$ of the
-sector, fixed by the probe and not by any ranking, so that the captured weight is unity by
-construction with no tie-breaking and no zero-amplitude padding---the first term vanishes
-identically while the relative $L_1$ error is still $0.43$ at $L=6$ and $0.33$ at $L=8$ at
-$\eta=0.18\,t$, rising to $1.15$ and $0.90$ at $\eta=0.05\,t$, against a hard ceiling of $2$. (These
-are the periodic rings; the open chain on which Sec.~\ref{sec:moments} measures the same witness gives
-$0.28$ at $L=6$, and the two lattices are never pooled into one range in this paper.) The second budget is a property of the
-boundary of the subspace in the basis in which the device measures, and the rest of this paper is
-an account of what can and cannot be said about it.
+The two-sided bound is the instrument that locates that boundary. Let $\phi$ be the probe vector,
+$A(\omega)$ the spectral function broadened to resolution $\eta$, $\mathcal S$ a set of determinants
+and $A_{\mathcal S}$ the Rayleigh--Ritz reconstruction on its span. The $L_1$ error is bounded below
+by the Born weight the subspace failed to capture, and above by that same weight together with the
+Hamiltonian coupling that leaks across the boundary of the subspace, averaged over the resolution
+window (Theorem~\ref{thm:leakage}, Sec.~\ref{sec:leakage}). The two terms of the upper bound are two
+budgets, and only the first is bought by drawing more bitstrings. That is measured rather than
+argued: on $\mathcal S^{\star}=\operatorname{supp}(\phi)$, the Born support of the probe
+itself---exactly $(\tfrac12+\tfrac1L)$ of the sector, fixed by the probe and not by any ranking, so
+that the captured weight is unity by construction with no tie-breaking and no zero-amplitude
+padding---the first term vanishes identically while the relative $L_1$ error is still $0.43$ at
+$L=6$ and $0.33$ at $L=8$ at $\eta=0.18\,t$, rising to $1.15$ and $0.90$ at $\eta=0.05\,t$, against a
+hard ceiling of $2$. (These are the periodic rings; the open chain on which Sec.~\ref{sec:moments}
+measures the same witness gives $0.28$ at $L=6$, and the two lattices are never pooled into one range
+in this paper.) The error is indexed on the boundary of the subspace, in the basis in which the
+device measures, and not on the weight the subspace captured; and that boundary, by the measurement
+above, is everything.
 
 Four bodies of work bound what is new here, and we state them before stating our own claims.
 \emph{(i)~Concurrent and independent.} Patel, Rangi and Tam~\cite{patel2026} construct Green's
@@ -147,32 +167,30 @@ $A_{\mathcal S}$ (Sec.~\ref{sec:retraction}).
 A certificate that is never evaluated is a claim and not a result, and the retracted one was never
 evaluated: neither of the two quantities it is written in is computed anywhere in the reproduction
 repository. We evaluate the replacement on the subspaces this work actually used, at
-$L=6,8,10,12,14$ (sector dimensions $300$ to $10\,306\,296$), and report the outcome negative end
-first.
+$L=6,8,10,12,14$ (sector dimensions $300$ to $10\,306\,296$), and the outcome is the obstruction seen
+from the operating point.
 \emph{At every published fraction, at each of the five sizes evaluated, the leakage branch of the
 bound is worse than the trivial bound $\lVert\phi\rVert^{2}(1+w_{\mathcal S})$}---vacuous by factors
-of $1.66$ to $8.61$---and at $L=12$ that verdict is converged in Krylov depth, so it cannot be moved by
-computing harder. The reconstructions reported in this paper are therefore, at present,
-uncertified. Two measurements replace that sentence rather than soften it. The obstruction is
-structural: the coordinate support of the Krylov space $\mathcal K(H,\phi)$ is $296$ of $300$
-determinants at $L=6$ and all $3920$ of $3920$ at $L=8$, so at $L=8$ the leakage is strictly positive
-for \emph{every} proper coordinate subspace and no leakage-type certificate in this basis can be
-non-vacuous there at low fraction. That support is now measured at $L=8$, $10$, $12$ and $14$---every
-size this work reports---and at each it is the whole sector at the declared threshold, by two
-estimators that agree wherever both ran. And the certificate is calibrated: across all sixteen
-$(L,\eta)$ cells of the sweep its crossing of the trivial bound occurs at a true relative $L_1$
-error between $1.2\times10^{-3}$ and $7.3\times10^{-3}$, median $2.8\times10^{-3}$, on a table
-whose true errors span five decades---computed from $H$, $\mathcal S$, $\phi$ and $\eta$ alone,
-without the answer (Sec.~\ref{sec:frontier}). The reconstruction itself is untouched: an
-independent implementation, with different code, normalization and reference, recovers the
-published acceptance fractions at the four sizes it covers, the largest discrepancy being $7\%$---at $L=12$,
-against the coarse replication-grid value $0.18$, and under $2\%$ against the $0.17$ the scan itself
-reports. What the measurement
-retires is the word \emph{certified} applied to those fractions, not the fractions themselves.
+of $1.66$ to $8.61$ over the twenty $(L,\eta)$ cells evaluated---and at $L=12$ that verdict is
+converged in Krylov depth, so it cannot be moved by computing harder. The reconstructions reported in
+this paper are therefore, at present, uncertified. Two things stand beside that sentence rather than
+soften it. The certificate is calibrated: across all sixteen $(L,\eta)$ cells of the sweep its
+crossing of the trivial bound occurs at a true relative $L_1$ error between $1.2\times10^{-3}$ and
+$7.3\times10^{-3}$, median $2.8\times10^{-3}$, on a table whose true errors span five
+decades---computed from $H$, $\mathcal S$, $\phi$ and $\eta$ alone, without the answer---with the
+limit Sec.~\ref{sec:frontier} states in full: out of sample a two-parameter rule fitted in
+$1-w_{\mathcal S}$ localizes the crossing about as tightly, and more tightly on ten of the fourteen
+splits (a count moving between six and twelve as the constants are fitted), so we claim no
+superiority for the certificate as a tracker of the error against the captured weight. And the
+reconstruction itself is untouched: an independent implementation, with different code,
+normalization and reference, recovers the published acceptance fractions at the four sizes it
+covers, the largest discrepancy being $7\%$---at $L=12$, against the coarse replication-grid value
+$0.18$, and under $2\%$ against the $0.17$ the scan itself reports. What the measurement retires is
+the word \emph{certified} applied to those fractions, not the fractions themselves.
 
-Section~\ref{sec:leakage} leaves one question open, and the second half of this paper answers it:
-can the a posteriori certificate be replaced by an a priori predictor, computed from the state
-before any circuit runs? The natural candidates are the efficiently measurable monotones of
+The obstruction has a second face, and the second half of this paper measures it: if the certificate
+cannot be made non-vacuous where sampling operates, can it at least be replaced by an a priori
+predictor, computed from the state before any circuit runs? The natural candidates are the efficiently measurable monotones of
 fermionic non-Gaussianity, and on number-conserving states the one-body member of that family
 collapses to a single one-particle-density-matrix invariant,
 $\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$ (Eq.~\eqref{eq:collapse}), equal to twice the
@@ -199,23 +217,23 @@ one quantitative statement this work makes about its own cost---that the basis-d
 dimension empirically tracks the determinant support---argues, wherever that bond dimension is
 small, for a tensor network rather than for a sampler.
 
-The paper is organized around that division. Section~\ref{sec:method} fixes the primitive and
-states, channel by channel, which reconstructions carry a declared shot budget and which are exact
-Haydock references. Section~\ref{sec:leakage} proves the bound and retracts its predecessor;
-Sec.~\ref{sec:moments} isolates what the subspace structure does certify---moment exactness
-through order $2K+1$ and no further, with the proof the code actually realizes
-(Theorem~\ref{thm:moments}) and a non-circular shot count replacing the published one
-(Proposition~\ref{prop:shots}). Section~\ref{sec:frontier} measures where the certificate is
-informative; Sec.~\ref{sec:nogo} closes the search for a cheaper a priori substitute;
-Sec.~\ref{sec:prices} prices support, resolution and shots; Sec.~\ref{sec:physics} validates the
-primitive against the opposite finite-size behaviour of the charge and spin scales of the Hubbard
-chain (Table~\ref{tab:gaps}, Fig.~\ref{fig:gapscaling}); and Sec.~\ref{sec:honest} reports the
-device runs, the scope of the molecular suite, and the region in which this work's own thesis
-argues against a quantum advantage. The systems throughout are the half-filled one-dimensional
-Hubbard model at $U/t=8$---rings and open chains at $L=4$ to $14$, by exact diagonalization and
-matrix-free Lanczos---and a suite of nineteen molecular active spaces. Three different counts
-share the symbol $\mathcal S$ in this literature and are kept apart here: the static ground-state
-support of Sec.~\ref{sec:nogo}, the dynamical support of Sec.~\ref{sec:prices}, and the set of
-configurations the sampler actually returned, which is the $\mathcal S$ of
+The paper is organized in that order. Section~\ref{sec:method} fixes the primitive and states,
+channel by channel, which reconstructions carry a declared shot budget and which are exact Haydock
+references. Section~\ref{sec:leakage} proves the bound and retracts its predecessor;
+Sec.~\ref{sec:moments} isolates what the subspace structure does certify---moment exactness through
+order $2K+1$ and no further, with the proof the code actually realizes (Theorem~\ref{thm:moments})
+and a non-circular shot count replacing the published one (Proposition~\ref{prop:shots}).
+Section~\ref{sec:frontier} evaluates the certificate, measures the obstruction that places its
+threshold and calibrates the crossing that survives it; Sec.~\ref{sec:nogo} closes the same door
+from the a priori side. Sections~\ref{sec:prices} and~\ref{sec:physics} price support, resolution
+and shots and validate the primitive against the opposite finite-size behaviour of the charge and
+spin scales of the Hubbard chain (Table~\ref{tab:gaps}, Fig.~\ref{fig:gapscaling});
+Sec.~\ref{sec:honest} reports the device runs, the scope of the molecular suite, and the region in
+which this work's own thesis argues against a quantum advantage. The systems throughout are the
+half-filled one-dimensional Hubbard model at $U/t=8$---rings and open chains at $L=4$ to $14$, by
+exact diagonalization and matrix-free Lanczos---and a suite of nineteen molecular active spaces.
+Three different counts share the symbol $\mathcal S$ in this literature and are kept apart here: the
+static ground-state support of Sec.~\ref{sec:nogo}, the dynamical support of Sec.~\ref{sec:prices},
+and the set of configurations the sampler actually returned, which is the $\mathcal S$ of
 Theorem~\ref{thm:leakage}.
 

@@ -207,7 +207,14 @@ def build_checks(txt):
          "the conclusion."),
 
         ("the sector fraction is named as Sec. VII's own rule requires",
-         (r"published fraction", 17),
+         # Floor 17 -> 18 on 2026-09-23. The reframing added one occurrence in
+         # sec_1.tex (the obstruction paragraph now names the fraction at which
+         # the certificate is evaluated), so the floor went stale in the safe
+         # direction and the SELF-TEST caught it: deleting one occurrence left
+         # 17, which still cleared a floor of 17, so the control could not fire
+         # and the file refused to certify anything. Raise the floor when the
+         # tree gains an occurrence; never lower it to make a run go green.
+         (r"published fraction", 18),
          [r"sampled fraction"],
          "at every sampled fraction",
          "Sec. VII states in the printed text that describing the T->infinity curve as "
