@@ -32,25 +32,19 @@
 
 \section{Three prices: support, resolution, and shots}\label{sec:prices}
 
-A sample-based reconstruction is paid for on three axes, not one: the determinant support
-the sampler must populate, the resolution $\eta$ at which the response is asked for, and
-the shot budget $T$ that populates the support. It is easy to price the first two and to quote the
-second as though it were a property of the model. It is not. This section reports
-what each axis costs, states which of the three exponents belongs to the Hubbard chain and which
-belongs to the question we put to it, and prices the third, which is usually left unpriced.
+Three axes are priced here: the determinant support the sampler must populate, the resolution
+$\eta$ at which the response is asked for, and the shot budget $T$ that populates it. It is easy to
+price the first two and to quote the second as though it were a property of the model. It is not.
+This section states which of the three exponents belongs to the Hubbard chain and which belongs to
+the question we put to it, and prices the third, which is usually left unpriced.
 
-\paragraph{One symbol, three counts.} Because the same letter carries three different objects in this
-paper, we fix the notation before using it. $|\mathcal S|_\eta$, the subject of this section, is
-\emph{dynamical}: the number of determinants needed for the reconstruction of $A(\omega)$ to reach
-relative $L_1<\mathrm{thr}$ at resolution $\eta$ and recursion depth $n_\ell$, so it depends on all
-three of $\mathrm{thr}$, $\eta$ and $n_\ell$ (\texttt{scaling\_lanczos\_mf.py}, \texttt{stage\_frac}:
-$\mathrm{thr}=0.05$, $\eta=0.15\,t$, $n_\ell=150$). $|\mathcal S|_{\varepsilon_w}$, the subject of
-Sec.~\ref{sec:nogo}, is \emph{static}: the number of determinants carrying a fixed fraction
-$1-\varepsilon_w$ of the weight of the \emph{ground state}, with no dynamics, no resolution and no
-threshold on a spectral error. And $S$, the subject of Theorem~\ref{thm:leakage}, is neither: it is
-whatever set of bitstrings the sampler actually returned. The three coincide only by accident. Where
-this section writes $|\mathcal S|_\eta$ it means the first, and no statement here transfers to the
-other two without saying so.
+\paragraph{One symbol, three counts.} $|\mathcal S|_\eta$ here is \emph{dynamical}: the number of
+determinants needed for the reconstruction of $A(\omega)$ to reach relative $L_1<\mathrm{thr}$ at
+resolution $\eta$ and recursion depth $n_\ell$, so it depends on all three
+(\texttt{scaling\_lanczos\_mf.py}, \texttt{stage\_frac}: $\mathrm{thr}=0.05$, $\eta=0.15\,t$,
+$n_\ell=150$). It is not the static ground-state support $|\mathcal S|_{\varepsilon_w}$ of
+Sec.~\ref{sec:nogo}, nor the returned set $S$ of Theorem~\ref{thm:leakage}; the three coincide only
+by accident, and no statement here transfers to the other two.
 
 \subsection{The support exponent, and what does and does not survive a change of resolution}
 
@@ -168,17 +162,11 @@ $0.05\%$ at $\eta=0.25\,t$. At the depth used here the protocol is self-consiste
 $\eta\gtrsim0.15\,t$---which is exactly where the published column sits, at the margin, and it is
 \emph{below} that margin, at $\eta=0.10\,t$, that Fig.~\ref{fig:spin} is drawn.
 
-The replacement is therefore stated as a declared window rather than as a number. The fraction is
-reported only for $\eta\ge0.15\,t$ at $n_\ell=150$; the full $\mathrm{frac}(L,\eta)$ grid of
-Table~\ref{tab:fracgrid} is published with it, so that the resolution dependence is visible rather
-than absorbed into a single exponent; and the quantitative scaling claim of this work is carried by
-the support, Eq.~\eqref{eq:supportexp}, whose exponent is quoted with its fit window attached.
+The fraction is therefore reported as a declared window rather than as a number: only for
+$\eta\ge0.15\,t$ at $n_\ell=150$, with the full $\mathrm{frac}(L,\eta)$ grid of
+Table~\ref{tab:fracgrid} published beside it.
 
 \subsection{The third price: shots}
-
-The two axes usually priced are the fraction and the absolute support, and that pair is easily called
-the honest two-sided picture. There is a third, it is the one that binds, and it is the one priced
-here.
 
 Populating a subspace by measurement is a coupon-collector problem on the Born distribution of the
 time-evolved seed, so the budget exceeds the support it buys. Table~\ref{tab:shots} reports that budget

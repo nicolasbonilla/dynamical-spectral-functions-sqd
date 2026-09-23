@@ -12,7 +12,10 @@
 %  NEW \label's introduced here (none exist in the v2 tree):
 %      sec:scope, sec:scope:hw, sec:scope:mol, sec:scope:boomerang,
 %      sec:scope:dequant, sec:scope:declared, tab:molscope
-%  External labels used (all seventeen, exactly): thm:leakage, sec:frontier,
+%  External labels used (eighteen: the seventeen below plus sec:intro, which the
+%      TRIM of 2026-09-23 introduced when it replaced the enumerated dynamical-DMRG
+%      sizes of 9.3 by the cross-reference to the priority paragraph that holds them):
+%      thm:leakage, sec:frontier,
 %      sec:nogo, sec:nogo:chi, sec:prices, sec:physics, sec:method, tab:shots,
 %      tab:finiteshot, tab:molecules, fig:circ, fig:heron, fig:noise,
 %      fig:noiserec, app:repro, plus the two internal ones. Of these, seven
@@ -101,8 +104,51 @@
 %       belongs to the priority discussion of Sec. 1.
 %   (c) No subsection of this file ends on a refutation; each closes on the
 %       measurement that replaces it.
-%   (d) "decoupling" occurs once, inside "dynamical decoupling", the name of the
-%       error-mitigation technique. It is not the retired F1 reading.
+%   (d) "decoupling" occurs once in the prose, inside "dynamical decoupling", the
+%       name of the error-mitigation technique. It is not the retired F1 reading.
+%
+%  TRIM 2026-09-23 (approved cut list, [sec_9]).  Four cuts were approved for this
+%  file.  TWO are applied and TWO are VOID, and the two are void for a measured
+%  reason, not a judgement call: each of them turns src/check_coherence.py from
+%  PASS to FAIL.  That guardian holds a floor on how many places state each
+%  cross-section number and names the sections that must state it, and Sec. IX is
+%  named in both of the checks concerned.  The guardian was run on this file before
+%  the trim (PASS, ten checks), after each cut separately, and after the reverts
+%  (PASS again), so the attribution below is measured.
+%    APPLIED 9.3 P3 -- the enumerated dynamical-DMRG sizes (L=120 charge, L=100 spin,
+%       L=90 single-particle; L=64 and N=256 on the correction-vector and optical
+%       branches) give way to cross-references to Sec. 1 and Sec. 8, which state them
+%       in full (sec_1.tex:121-128, sec_8.tex:283-306; again at sec_10.tex:108-110).
+%       The concession itself -- classical dynamical DMRG arrived first, nineteen
+%       years ago, in all three of the channels reported here -- is untouched, and so
+%       is the sentence that refuses to reframe around it.  -32 words.  No guardian
+%       check counts those site numbers; check_coherence stays PASS.
+%    APPLIED 9.1 footnote -- the re-derivation "The seven circuits are indexed
+%       k=0,...,6, and the k=0 circuit carries no evolution: it is the t=0 reference,
+%       so six of the seven are evolution circuits" goes, because the first paragraph
+%       of 9.1 states it (and the provenance table of sec_2.tex:135-140 states it a
+%       second time).  It goes ONLY because that paragraph survives: the cut was
+%       approved on the ground that the fact stands in the main text, and the void
+%       cut below is what would have removed it.  If 9.1's first paragraph is ever
+%       compressed, this footnote has to come back, or nothing in Sec. IX prevents
+%       the v2 error "7 evolution circuits plus a t=0 reference", which is eight.
+%       The footnote's second sentence -- Table IX is K=18 at U/t=8, a consistency
+%       statement and not an identity -- stays.  -27 words.
+%    VOID 9.1 P1 -- the approved compression replaced the run's parameter recitation
+%       by a pointer to the caption of fig:heron.  Applied, it drops the check
+%       "the hardware shot budget is one number in all four places" from 3 to 2:
+%       the guardian requires 3.5e5 in the provenance table, in Sec. IX A, in Sec.
+%       IX C and (as 350,000) in the Fig. 14 caption, and this cut removes Sec. IX A.
+%       Restored verbatim.
+%    VOID 9.5 P2 -- the approved cut deleted the four-item claim list.  Applied, it
+%       drops two checks at once: "the largest sector quoted is the largest sector
+%       evaluated" from 10 to 9 (10,306,296 is required in the abstract, Sec. I,
+%       Sec. IX and Sec. X, and after the cut Sec. IX does not state it anywhere),
+%       and "the number of published sizes agrees with the deposited grid" from 8 to
+%       7 (the deleted phrase is "five sizes up to a sector").  Restored verbatim.
+%       Lowering either floor would be a decision about what the manuscript is
+%       required to say in the section that declares its scope, and belongs to the
+%       author, not to a trim.
 % =====================================================================
 
 \section{Hardware, scope, and the region where the method has no advantage}
@@ -123,7 +169,8 @@ work. The first was executed on the IBM~Heron processor \texttt{ibm\_fez} (job
 $3.5\times10^{5}$ computational-basis shots---$5\times10^{4}$ on each of seven circuits
 $k=0,\dots,6$, of which $k=0$ is the $t=0$ reference---pooled into one subspace,
 under TREX readout twirling, Pauli twirling and dynamical decoupling and
-with no zero-noise extrapolation (Fig.~\ref{fig:circ} is the primitive, Fig.~\ref{fig:heron}(a) the
+with no zero-noise extrapolation
+(Fig.~\ref{fig:circ} is the primitive, Fig.~\ref{fig:heron}(a) the
 result). Self-consistent configuration recovery returned $|\mathcal S|=300$ determinants of an
 $(N{+}1)$ sector of dimension $300$; the recorded relative $L_1$ is $0.0$, and the deposited provenance
 string says why in its own words---the reconstructed $A_{\rm hw}$ equals the exact $A$ byte for byte
@@ -192,9 +239,7 @@ at a size where the coverage question is degenerate, and Sec.~\ref{sec:prices} s
 shots: the $3.5\times10^{5}$ spent---seven circuits at $5\times10^{4}$ shots each, pooled into one
 subspace---are $14.4$ times the $(2.43\pm0.34)\times10^{4}$ that Table~\ref{tab:shots} measures for one
 orbital seed and one branch at $L=6$, so complete coverage of a $300$-dimensional sector is what the
-budget predicts rather than a surprise.\footnote{The seven circuits are indexed $k=0,\dots,6$, and the
-$k=0$ circuit carries no evolution: it is the $t=0$ reference, so six of the seven are evolution
-circuits. Table~\ref{tab:shots} instead replicates the repository protocol, $K=18$ with $19$ snapshots,
+budget predicts rather than a surprise.\footnote{Table~\ref{tab:shots} replicates the repository protocol, $K=18$ with $19$ snapshots,
 at $U/t=8$ rather than the $U/t=4$ of the device run; this is a consistency statement between two
 budgets, not an identity.} The first size at which a device run would test the reconstruction rather
 than the pipeline is $L=8$: sector $3\,920$, at $(2.70\pm0.13)\times10^{5}$ shots per orbital seed and
@@ -304,10 +349,7 @@ without reservation and we concede it again.
 One framing does not survive, and it is ours. Versions~1--2 opened by arguing that the energy is where
 classical methods have caught up, and moved the target to dynamics; in one dimension that inverts,
 because dynamical DMRG computed all three of the momentum-resolved channels reported here nineteen
-years ago~\cite{benthien2007}---at $L=120$ in the charge channel, $L=100$ in the spin channel and
-$L=90$ in the single-particle channel---and the correction-vector and optical branches of the same
-literature reach $L=64$ and $N=256$~\cite{nocera2016,jeckelmann2002}, at the sizes
-Sec.~\ref{sec:physics} tabulates.
+years ago~\cite{benthien2007} (Sec.~\ref{sec:intro}, Sec.~\ref{sec:physics}).
 Dynamics in one dimension is where classical methods arrived first, and no framing of this work
 says otherwise. Within the region this work measures---one-dimensional Hubbard rings at $L\le14$, the
 nineteen active spaces, and a largest minimal bond dimension of $42$ over the $74$ deposited exact
@@ -414,6 +456,7 @@ relative error of ${\approx}3\times10^{-3}$ within a factor of three (Sec.~\ref{
 obstruction theorem showing that no orbital-rotation invariant supplies a cheaper a priori predictor of
 that bound (Sec.~\ref{sec:nogo}); and three measured prices---support, resolution and shots---of which
 the third had no number at all before this version (Sec.~\ref{sec:prices}).
+
 
 % ---------------------------------------------------------------------------------
 %  DATA AVAILABILITY -- written 2026-09-19.  This is the paragraph the header of this

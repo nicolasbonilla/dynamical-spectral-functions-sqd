@@ -102,7 +102,8 @@ used throughout this paper---is reached at $\mathrm{FR}\approx0.52$, while the c
 reach $0.05$ until $\mathrm{FR}\approx0.98$, and the intervening shift of $\approx0.45$ in fraction is
 the looseness of the proof. Second, the threshold cannot be lowered by choosing a better subspace: from
 $L=8$ on, the coordinate support of the Krylov space $\mathcal K(H,\phi)$ is the whole sector---measured
-at $L=8$, $10$, $12$ and $14$, which is every size this work reports---so
+at $L=8$, $10$, $12$ and $14$; at $L=6$ it is $296$ of $300$, the one size at which the
+answer depends on the threshold---so
 $\Lambda_S>0$ strictly for every proper coordinate subspace, and a Krylov-diagonal oracle ranking gives
 a \emph{worse} certificate than the Born ranking the device realizes.
 Section~\ref{sec:frontier:obstruction} measures both. What is a property of the method, and is new, is
@@ -151,27 +152,23 @@ halving its depth---by a factor $51$. They cost $129$\,s of core time up to $L=1
 wall time at $L=14$, and they add the size the sweep never reached.
 
 Three conventions are fixed before any number is read. Full reorthogonalization is used throughout,
-without which the projector is not a projector: the orthogonality defect is at most
-$4.7\times10^{-15}$, and $P_{\mathcal K}\phi=\phi_S$ to $1.1\times10^{-14}$. What is certified is the
-object the code forms---$\Lambda$ on $\mathcal K=\mathrm{Krylov}(H_S,\phi_S,n_\ell)$ bounds the error
+without which the projector is not a projector (App.~\ref{app:hyp} gives the measured defect). What
+is certified is the object the code forms---$\Lambda$ on
+$\mathcal K=\mathrm{Krylov}(H_S,\phi_S,n_\ell)$ bounds the error
 of $A_{\mathcal K}$ at that depth and of nothing else, the convenient inequality
 $\Lambda_{\mathcal K}\ge\Lambda_S$ that would extend it to the dense $A_S$ being false ($1169$ of
-$6000$ random triples violate it, minimum ratio $0.5258$); at $L=12$ the certificate is evaluated at
-$n_\ell=300$--$500$ on up to $658\,627$ determinants, and $A_S$ is never formed. And depth is certified
-per point by the internal indicator $\Lambda_{\rm in}/\Lambda_{\rm out}$ rather than
-assumed~\cite{haydock1972,epperly2022}: recomputing $\mathrm{FR}^{\ast}$ with $L=12$ capped at
-$n_\ell=300$ moves it by at most $0.0024$, an eighth of the narrowest grid interval.
+$6000$ random triples violate it, minimum ratio $0.5258$), and $A_S$ is never formed. And depth is
+certified per point by the internal indicator $\Lambda_{\rm in}/\Lambda_{\rm out}$ rather than
+assumed~\cite{haydock1972,epperly2022}; App.~\ref{app:hyp} bounds what the depth cap does to
+$\mathrm{FR}^{\ast}$.
 
-Three hypotheses carry the bound, each a statement about the pipeline rather than about the theorem,
-and all three are checked against this pipeline in App.~\ref{app:hyp} along with the ranking, tie and
-support declarations of the cut: (H1) $A$ and $A_P$ share $E_0$---satisfied here by construction, and
-worth $+0.20\%$ on the bound but a factor $16$ on the measured error when it is not; (H2) the $L_1$
-norm is taken on the whole line and normalized by $\lVert\phi\rVert^{2}$, differing from the
-repository's windowed convention by factors $1.010$--$1.037$; (H3) the reference is exact, which
-enforces the rule that no measured error is quoted within a factor $20$ of its own reference drift.
+Three hypotheses carry the bound, each a statement about the pipeline rather than about the theorem;
+they are stated in full with the theorem in Sec.~\ref{sec:leakage}, and all three are checked against
+this pipeline in App.~\ref{app:hyp}, along with the ranking, tie and support declarations of the cut.
+It is (H3), the exactness of the reference, that enforces the rule that no measured error is quoted
+within a factor $20$ of its own reference drift.
 One asymmetry runs through every table: of the two terms of Eq.~\eqref{eq:twobudget} only the leakage
-is a posteriori, assembled from the Ritz vectors the reconstruction already produces plus one
-matrix--vector product each, while the weight term needs $\Psi_0$, and estimating $w_S$ against an
+is a posteriori, while the weight term needs $\Psi_0$, and estimating $w_S$ against an
 already-truncated $\Psi_0$ is biased optimistically (Sec.~\ref{sec:leakage}). What the tables report is
 accordingly one object and not a family of them: a bound on
 $\lVert A-A_{\mathcal K}\rVert_1/\lVert\phi\rVert^{2}$ for the reorthogonalized Krylov reconstruction
@@ -464,8 +461,8 @@ quantity this section has already said a user does not have and, estimated again
 $\Psi_0$, has optimistically; strip its second parameter and an $\eta$-blind $1-w_S<c$ is the looser of
 the two on all fourteen splits. Theorem~\ref{thm:leakage}, for its part, is an inequality with a proof:
 it holds at a size no grid has seen, and its decision survives replacing $w_S$ by a floor. The fitted
-rule is a regularity with two constants and no guarantee outside the range it was fitted on, which is
-the only place either would be used.
+rule is a two-constant regularity with no guarantee outside its fitted range---the only place either
+would be used.
 
 Within those limits the procedure is operational and identical at every size we measured: assemble
 $\widehat\Lambda_S(\eta)/\eta$ from the Ritz vectors already in hand and compare it with $\tau(w_S)$.
@@ -526,16 +523,10 @@ at fraction $0.85$ and $5.82$ against $0.911$ at $0.95$. The ordering the device
 is the better of the two at every fraction we checked, which is the opposite of what an oracle
 comparison is usually for.
 
-Together the two measurements say what the threshold is made of, and neither component is a frontier of
-the method. At fixed size the displacement is the looseness of the proof, only a twentieth of it in the
-step that looked easiest to tighten; the position of the threshold near unity is geometry, the Krylov
-space of the probe filling the sector in the basis where a leakage certificate is by construction a
-statement about what a subspace fails to contain. The reconstructions themselves are untouched by
-either---the control column of Table~\ref{tab:thresholds} reproduces Fig.~\ref{fig:scaling} to $7\%$ at
-worst and to under $2\%$ against the scan's own fractions, with nothing shared---and what is new,
-bounded and measured is the crossing of Sec.~\ref{sec:frontier:calib}. Section~\ref{sec:nogo} closes the picture from the other side: nothing
-cheaper than that crossing---no invariant of the state, computable before the subspace exists---can be
-put in its place.
+Neither component is a frontier of the method: at fixed size the displacement is the looseness of the
+proof; the position of the threshold near unity is geometry. Section~\ref{sec:nogo} closes the picture
+from the other side: nothing cheaper than the crossing of Sec.~\ref{sec:frontier:calib}---no invariant
+of the state, computable before the subspace exists---can be put in its place.
 
 One route out of the determinant basis has been measured, and it closes this section as an outlook and
 not as a result, because the same measurement shows where it stops. The qualifier \emph{in the

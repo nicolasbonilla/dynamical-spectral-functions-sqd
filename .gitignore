@@ -49,3 +49,12 @@ build/
 
 # TeXstudio/TeXmaker scratch bibliography -- an editor artefact, never a source
 paper/mainNotes.bib
+
+# Edit backups -- NEVER publish these. Agents and scripts that rewrite a .tex
+# leave them behind, and one of them shipping inside an arXiv source package
+# would publish a superseded draft next to the corrected one.
+*.bak
+*.bak_*
+*.antes_*
+*.orig
+*~

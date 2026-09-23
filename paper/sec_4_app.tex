@@ -26,7 +26,8 @@ the broadened $A$, whose moments of order $\ge2$ diverge.
 Theorem~\ref{thm:moments} and its proof are stated in Sec.~\ref{sec:moments:exact}. The proof uses
 $P=P^{\dagger}=P^{2}$, $H=H^{\dagger}$ and $\mathcal K_K\subseteq\operatorname{span}(\mathcal S)$, and
 nothing else. In particular it does not use that $\mathcal S$ is a coordinate subspace, that it was
-obtained by drawing bitstrings, or that any Lanczos basis is well conditioned; it holds verbatim for
+obtained by drawing bitstrings, or that any Lanczos basis is well
+conditioned~\cite{epperly2022}; it holds verbatim for
 the orthogonal projector onto a Krylov space, which is the form evaluated in Sec.~\ref{sec:frontier}.
 The single asymmetry in Eq.~\eqref{eq:rrsplit}---$a$ runs to $K$ while $b$ runs to $K+1$---is what
 produces the odd reach $2K+1$ rather than $2K$. Two structural remarks follow at no cost.
@@ -35,9 +36,11 @@ produces the odd reach $2K+1$ rather than $2K$. Two structural remarks follow at
 Equation~\eqref{eq:momex} is therefore a weak quadrature statement for a rule of that size: a Gauss
 rule of $n$ nodes for $d\mu$ is exact through order $2n-1$~\cite{golub2010}, so the $K=1$ row of
 Table~\ref{tab:moments}, with $280$ nodes, would reach order $559$ if its nodes were the Gauss nodes of
-$d\mu$. They are not, and it reaches order $3$. This is the measurable content of the correction to the
-published proof: identifying $A_{\mathcal S}$ with an order-$(K{+}1)$ Gauss rule misdescribes both the
-object and its reach.
+$d\mu$. They are not, and it reaches order $3$; those $555$ orders measure the distance between the
+two objects. This is the measurable content of the correction to the
+published proof: identifying $A_{\mathcal S}$ with an order-$(K{+}1)$ Gauss rule misdescribes the
+object and the reach such an object would have; the reach $2K+1$ of
+Theorem~\ref{thm:moments} itself is unaffected.
 
 \emph{(b) Unit captured weight is implied, not assumed.} For a coordinate subspace $P$ is diagonal, so
 $P\phi=\phi\iff\operatorname{supp}(\phi)\subseteq\mathcal S\iff w_{\mathcal S}=1$. Since
@@ -80,7 +83,8 @@ $2K{+}2$, where the discrepancy is physical and route independent.
 
 \emph{Negative control.} Over $300$ uniformly drawn coordinate subspaces of the same size
 $|\mathcal S|=200$, the zeroth moment is wrong by between $1.86\times10^{-2}$ and $4.18\times10^{-1}$
-(median $1.67\times10^{-1}$), i.e.\ by $3.7\%$ to $84\%$ of $\lVert\phi\rVert^{2}$, with every one of
+(median $1.67\times10^{-1}$), i.e.\ by $3.7\%$ to $84\%$ of $\lVert\phi\rVert^{2}$ (median $33\%$),
+with every one of
 the $300$ draws failing; the Krylov-support subspace of identical size is exact to
 $4.4\times10^{-16}$. At $|\mathcal S|=280$ the random draws fail by $4.8\times10^{-5}$ to
 $2.6\times10^{-1}$ (median $1.12\times10^{-2}$), again without exception, against

@@ -67,6 +67,13 @@ to $w_S$, and they do change $H_S$. The depth uncertainty quoted in Sec.~\ref{se
 full recomputation of $\mathrm{FR}^{\ast}$ with $L=12$ capped at $n_\ell=300$: it moves by $0.0024$,
 $0.0021$, $0.0012$ and $0.0000$ at $\eta=0.10$, $0.15$, $0.18$ and $0.25\,t$.
 
+\paragraph{Reorthogonalization and the certified object.} Full reorthogonalization is used at every
+point of the sweep, without which the projector is not a projector: the orthogonality defect is at
+most $4.7\times10^{-15}$, and $P_{\mathcal K}\phi=\phi_S$ to $1.1\times10^{-14}$. At $L=12$ the
+certificate is evaluated at $n_\ell=300$--$500$ on up to $658\,627$ determinants, the dense $A_S$
+never being formed---which is why what the bound controls is $A_{\mathcal K}$ at the declared depth
+and not $A_S$ (Sec.~\ref{sec:frontier:hyp}).
+
 \paragraph{Anatomy of the displacement.} The percentages quoted in
 Sec.~\ref{sec:frontier:obstruction} are medians over $15$ of the $18$ $(\eta,\text{target})$ cells at
 $L=8$; three cells are censored from above, the certificate never reaching the target inside the grid,

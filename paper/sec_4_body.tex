@@ -107,13 +107,9 @@ the route is not. What does not hold here
 is the identification of $A_{\mathcal S}$ with a Gaussian-quadrature rule built by a nonorthogonal
 Lanczos/Krylov construction. No such object is built anywhere in this work: every reconstruction
 diagonalizes $P_{\mathcal S}HP_{\mathcal S}$ on a coordinate subspace, so $d\mu_{\mathcal S}$ carries
-$|\mathcal S|$ nodes, not $K+1$---in the $K=1$ row of Table~\ref{tab:moments}, $280$ of them, where a
-genuine $280$-node Gauss rule for $d\mu$ would be exact through order $559$~\cite{golub2010} while the
-reconstruction fails at order $4$. Those $555$ orders measure the distance between the two objects,
+$|\mathcal S|$ nodes, not $K+1$, and the orders that separate the two objects measure the distance between them,
 not an error in the published reach. The conclusion is right, the route is not, and the correct route
-is also the more general one: it uses only that $P$ is an orthogonal projector, so it covers the
-Krylov projector of Sec.~\ref{sec:frontier} as well, and it needs no Lanczos basis and hence no
-conditioning assumption on one~\cite{epperly2022} (App.~\ref{app:moments:exact}).
+is also the more general one (App.~\ref{app:moments:exact}).
 
 Table~\ref{tab:moments} measures Eq.~\eqref{eq:momex} on the construction this work uses---the union of
 the determinant supports of $\{\phi,H\phi,\dots,H^{K}\phi\}$---for the open Hubbard chain at $L=6$,
@@ -150,11 +146,9 @@ $7.5\times10^{-15}\ \longrightarrow\ $ no failure: $A_{\mathcal S}=A$ \\
 \end{table*}
 
 A negative control fixes what the table is about. Over $300$ coordinate subspaces of the \emph{same}
-size $|\mathcal S|=200$ drawn uniformly from the sector, the zeroth moment alone is already wrong by
-$3.7\%$ to $84\%$ of $\lVert\phi\rVert^{2}$ (median $33\%$), every single draw failing, against
-$4\times10^{-16}$ for the Krylov-support subspace of identical size. Two thirds of the sector buys
-nothing by itself; two thirds of the sector chosen as
-$\bigcup_{a\le K}\operatorname{supp}(H^{a}\phi)$ buys $2K+2$ moments exactly. What
+size $|\mathcal S|=200$---two thirds of the sector---drawn uniformly from it, every single draw fails
+already at the zeroth moment, against $4\times10^{-16}$ for the Krylov-support subspace of identical
+size (App.~\ref{app:moments:sharp}). What
 Theorem~\ref{thm:moments} certifies is \emph{which} determinants the subspace holds, not \emph{how
 many}---a structural property, decidable from the subspace alone, before any exact reference exists.
 
@@ -174,10 +168,8 @@ $\eta>0$, the smoothed reconstruction converges geometrically,
 $\lVert A-A_{\mathcal K_K}\rVert_{1}\le C(\eta)\,\rho(\eta)^{-K}$.'' It does not follow, and it is
 not a corollary here. Moment exactness is a list of $2K+2$ linear identities, and the $L_1$
 distance between two Lorentzian-broadened measures is not a finite linear functional of them;
-converting one into the other needs a polynomial approximation theorem for the kernel
-$x\mapsto\mathcal L_\eta(\omega-x)$ together with a tail estimate, and moment exactness supplies
-neither. The natural tool, a Bernstein-ellipse bound, is also where the resolution enters, through the
-poles of the kernel at $x=\omega\pm i\eta$ (App.~\ref{app:moments:conj}); and neither $C(\eta)$ nor
+moment exactness supplies neither of the two ingredients a conversion would need
+(App.~\ref{app:moments:conj}), and neither $C(\eta)$ nor
 $\rho(\eta)$ is derived or exhibited anywhere in this work or in the deposit. We therefore state the
 claim as what it is.
 
@@ -231,9 +223,9 @@ is $0.28$ on the open chain of Table~\ref{tab:moments} at $L=6$, and $0.43$ at $
 $L=8$ on the periodic rings on which Sec.~\ref{sec:leakage} reports it: a measured range of
 $0.28$--$0.43$ at unit captured weight, whose lower end is the very system on which the method
 validation of Sec.~\ref{sec:method} is performed. (All three are $\lVert A-A_{\mathcal S}\rVert_1$
-divided by $\lVert\phi\rVert^{2}$; dividing instead by the in-window integral of the exact $A$, the
-convention of the repository's own relative $L_1$, moves them by less than $1\%$ and changes none of
-them at the two figures quoted; the two conventions are never interchanged silently.) Exactness of $2K+2$ numbers is
+divided by $\lVert\phi\rVert^{2}$, the normalization of Theorem~\ref{thm:leakage}; the size of the
+conversion to the repository's own in-window relative $L_1$ is measured in
+Sec.~\ref{sec:retraction}, and the two conventions are never interchanged silently.) Exactness of $2K+2$ numbers is
 what the structure certifies; the curve is certified, at fixed $\eta$ and on the subspace in hand, by
 Theorem~\ref{thm:leakage}, whose own non-vacuity is measured rather than assumed
 (Sec.~\ref{sec:frontier}).
