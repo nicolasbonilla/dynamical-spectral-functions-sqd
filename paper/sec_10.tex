@@ -1,107 +1,137 @@
 % =====================================================================================
 %  Sec. 10 -- CONCLUSION.  Replaces paper/conclusion.tex in full.
 %
-%  STRUCTURE, fixed in advance and audited after writing:
-%    one thesis sentence  |  one paragraph of what was measured  |  THREE limits, named
-%    and numbered in prose  |  one sentence of future work  |  one closing sentence.
+%  STRUCTURE, reordered 2026-09-23 and audited after writing.  The content is the same
+%  as the previous version of this file; the ORDER is not.  Previously: bound first,
+%  vacuity last, so the section read "here is my certificate and it does not work".
+%  Now:
+%    the OBSTRUCTION as the result  |  the two-sided bound as the instrument that
+%    identifies the object obstructed  |  the sweep as the evidence, with the one
+%    positive property and its own defeater  |  THREE limits, named and numbered in
+%    prose  |  the open question  |  one closing sentence.
 %  No promise of advantage anywhere.  The closing sentence must not be turned into one.
 %
+%  WHAT THIS REORDER MAY NOT DO, and did not: add a claim the manuscript does not
+%  already make, turn a hedge into an assertion, or drop a number, a concession, a
+%  priority attribution or a retraction.  Two concessions were moved IN from Secs. 3.1
+%  and 5 rather than out: the explicit retraction of Theorem 1(iii) of versions 1-2,
+%  and the ten-of-fourteen out-of-sample result for the two-parameter rule fitted in
+%  1-w_S, with the count that moves between six and twelve.  Both make the section
+%  longer and are kept for that reason.
+%
 %  EXTERNAL LABELS USED (all owned by other sections):
-%    thm:leakage, sec:leakage  Sec. 3          [Sec. 3, not yet written]
+%    thm:leakage, sec:leakage  Sec. 3          [sec_3_body.tex]
 %    sec:retraction            Sec. 3.1        [sec_3_1.tex]
-%    thm:moments               Sec. 4          [sec_4.tex]
-%    sec:frontier              Sec. 5          [Sec. 5, not yet written]
-%    sec:nogo, thm:witness, prop:leakinv       [sec_6.tex]
+%    thm:moments               Sec. 4          [sec_4_body.tex]
+%    sec:frontier, sec:frontier:obstruction    [sec_5_body.tex]
+%    sec:nogo, thm:witness, prop:leakinv       [sec_6_body.tex]
 %    sec:prices                Sec. 7          [sec_7.tex]
 %    sec:physics, tab:gaps     Sec. 8          [sec_8.tex]
-%    sec:honest                Sec. 9          [exists, discussion.tex]
+%    sec:honest                Sec. 9          [sec_9.tex]
 %  This file defines only: sec:conclusion.
 %
-%  \cite keys used here, all VERIFIED PRESENT in paper/bibliography.tex:
-%    schollwock2011, nocera2016, tarabunga2026.
-%  One key used here does NOT exist yet and is the same one Sec. 1 and Sec. 8 request:
-%    \cite{benthien2007}  Benthien, Jeckelmann, PRB 75, 205128 (2007),
-%                         DOI 10.1103/PhysRevB.75.205128.
+%  \cite keys used here, all VERIFIED PRESENT in paper/bibliography.tex (2026-09-23):
+%    benthien2007, nocera2016, kuehner1999, whitefeiguin2004, holzner2011, kpm2006,
+%    paeckel2019, tdasci2024, whitedmrg1992, schollwock2011, tarabunga2026.
+%  The set is unchanged by the reorder: none added, none dropped.
 %
 %  GREP NOTES for the mechanical audit:
 %   (a) "decoupled"/"decoupling" appear nowhere in this file.
-%   (b) No sentence here ends the section on a refutation: the three limits are followed
-%       by the open question and by what the paper leaves behind.
+%   (b) The section opens on the obstruction and does not end on one: the three limits
+%       are followed by the open question and by what the paper leaves behind.
 %   (c) No number retired on 2026-09-18 appears here.  In particular this file does NOT
 %       say that the shot budget grows with a larger exponent than the support (Sec. 7
 %       measures the difference at 0.054 per site with a 95% interval containing zero),
 %       quotes no minimum slack for the bound, and quotes the spin-gap coefficient only
 %       as the approximate value of Sec. 8, never to three figures.
+%   (d) The headline impossibility carries its scope inside the same sentence ("at every
+%       size this work reports"), and the L=6 support count (296 of 300, which is the
+%       one size whose answer depends on the threshold) is printed next to it.  Neither
+%       may be dropped: without them the sentence claims a theorem the paper does not
+%       prove.
 % =====================================================================================
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-The error of a spectral function reconstructed on a subspace of sampled configurations splits, by
-Theorem~\ref{thm:leakage}, into the Born weight the shots failed to capture and the Hamiltonian
-coupling that leaks across the boundary of that subspace at the resolution asked for; only the
-first of the two is bought by drawing more bitstrings, and this paper measures---subspace by
-subspace, at five system sizes, in a sector of dimension up to $10\,306\,296$---where the resulting
-certificate says something and where it does not.
+The result of this paper is negative, and it is a statement about the problem rather than about our
+inequality: from $L=8$ on, in the determinant basis a device measures in, no leakage-type
+certificate---ours or another---can be non-vacuous at low fraction. The reason
+is geometric and it is measured. Zero leakage requires the subspace to contain the Krylov space
+$\mathcal K(H,\phi)$, and the coordinate support of that Krylov space is $296$ of $300$ determinants
+at $L=6$ and all $3920$ of $3920$ at $L=8$---so at $L=8$ the leakage is strictly positive for every
+proper coordinate subspace---and, at an amplitude threshold of $10^{-12}$, the whole sector at
+$L=8$, $10$, $12$ and $14$, the largest of dimension $10\,306\,296$, by two estimators that agree
+wherever both ran (Sec.~\ref{sec:frontier:obstruction}). The obstruction is structural rather than
+incidental, and a property of the basis the device measures in, not of the bound and not of the
+ranking.
 
-Four things were needed to make that statement, and all four are measurements rather than
-expectations. The bound itself stands where a weight-only bound cannot: no inequality indexed on the
-captured weight alone can hold, by an analytic counterexample and by counting
-(Sec.~\ref{sec:retraction}); what a Krylov-adequate subspace does guarantee is moment exactness
-through order $2K+1$, stated with the proof the code realizes (Theorem~\ref{thm:moments}). Evaluated,
-the new certificate is vacuous at every published fraction, at each of the five sizes evaluated, by
-factors of $1.66$ to $8.61$, converged in Krylov depth at $L=12$---and the same sweep yields the one
-positive property that survived four independent attacks: the crossing of the trivial bound occurs
-at a true relative $L_1$ error between $1.2\times10^{-3}$ and $7.3\times10^{-3}$, median
-$2.8\times10^{-3}$, over $L=6$--$12$ and $\eta=0.10$--$0.25\,t$---a drift, not scatter: ordered
-without exception in both arguments and conservative in $L$---and is computed without the answer
-(Sec.~\ref{sec:frontier}). No orbital-rotation invariant substitutes for it: one-body
+The two-sided bound is what identifies the object that obstruction is about. By
+Theorem~\ref{thm:leakage} the error of a spectral function reconstructed on a subspace of sampled
+configurations splits into the Born weight the shots failed to capture and the Hamiltonian coupling
+that leaks across the boundary of that subspace at the resolution asked for; only the first of the
+two is bought by drawing more bitstrings, so the error is indexed on the boundary and not on the
+weight. The weight alone cannot carry the statement: no inequality indexed on the captured weight can
+hold, by an analytic counterexample and by counting, and the weight-only Theorem~1(iii) of
+versions~1 and~2 of this preprint is retracted (Sec.~\ref{sec:retraction}). What a Krylov-adequate
+subspace does guarantee is moment exactness through order $2K+1$, with the proof the code realizes
+(Theorem~\ref{thm:moments}). And nothing cheaper bounds that boundary \emph{usefully} from outside: one-body
 fermionic magic is constant along an orbit on which the determinant support runs from $O(K)$ to
 $2^{K}$ at bond dimension $2$, and constant on fibers on which the subspace-aware certificate still
 separates (Theorem~\ref{thm:witness}, Proposition~\ref{prop:leakinv}), the general
-invariant/basis-dependent division being due to Tarabunga \emph{et al.}~\cite{tarabunga2026}. And
-the method is priced on three axes rather than one, the third---shots---measured here for the
-first time (Sec.~\ref{sec:prices}), while the primitive itself is validated against the one answer
-known exactly and independently of it: on the same lattice and from the same calculation, the
-charge scale converges to a finite thermodynamic value while the spin scale closes as
-$\approx2.1/L$, with an independent effective-Heisenberg control (Table~\ref{tab:gaps}).
+invariant/basis-dependent division being due to Tarabunga \emph{et al.}~\cite{tarabunga2026}.
+
+Measured subspace by subspace at five system sizes, that bound is vacuous at every published
+fraction, at each of the five sizes evaluated, by factors of $1.66$ to $8.61$, converged in Krylov
+depth at $L=12$---not an accident of the constants, but the obstruction in the numbers. The same
+sweep yields the one positive property that survived four independent attacks: the crossing of the
+trivial bound occurs at a true relative $L_1$ error between $1.2\times10^{-3}$ and
+$7.3\times10^{-3}$, median $2.8\times10^{-3}$, over sixteen $(L,\eta)$ cells at $L=6$--$12$ and
+$\eta=0.10$--$0.25\,t$---a drift, not scatter: ordered without exception in both arguments and
+conservative in $L$---and it is computed without the answer (Sec.~\ref{sec:frontier}). Its own limit
+is in the same table: a rule with two constants fitted in $1-w_S$ localizes that crossing about as
+tightly out of sample and more tightly on ten of the fourteen train/test splits, a count that moves
+between six and twelve as the constants are fitted, so we claim no superiority for the certificate as
+a tracker of the error against the captured weight---out of sample it has none. The method is priced
+on three axes rather than one, the third---shots---measured here for the first time
+(Sec.~\ref{sec:prices}), and the primitive is validated against the one answer known exactly and
+independently of it: from the same calculation on the same lattice, the charge scale converges to a
+finite thermodynamic value while the spin scale closes as $\approx2.1/L$, with an independent
+effective-Heisenberg control (Table~\ref{tab:gaps}).
 
 Three limits bound all of it, and we state them as flatly as the results. \emph{First, the
-certificate does not certify the reconstructions this paper reports.} It is vacuous at every
-published fraction, at each of the five sizes evaluated, and the obstruction is structural rather than
-incidental: the coordinate support of the Krylov space $\mathcal K(H,\phi)$ is $296$ of $300$
-determinants at $L=6$ and all $3920$ of $3920$ at $L=8$, so at $L=8$ the leakage is strictly positive
-for every proper coordinate subspace and no leakage-type certificate in the determinant
-basis---this one or another---can be non-vacuous there at low fraction. That support is the whole
-sector at $L=8$, $10$, $12$ and $14$---every size this work reports.
-\emph{Second, the largest momentum-resolved spectrum is $L=12$, by exact diagonalization.}
-The three momentum-resolved responses reported here have been computed classically by dynamical DMRG
-since 2007~\cite{benthien2007}---at $120$, $100$ and $90$ sites in the charge, spin and
-single-particle channels respectively---and at $L=48$ in the Hubbard chain, $L=64$ in the Heisenberg chain, with correction
-vectors~\cite{nocera2016}; the wider classical toolbox for one-dimensional spectra is broader
+certificate does not certify the reconstructions this paper reports.} They are, at present,
+uncertified---vacuous at every published fraction and at each of the five sizes evaluated,
+above---and neither a sharper proof nor a rearrangement of the subspace repairs that.
+\emph{Second, the largest momentum-resolved spectrum is $L=12$, by exact diagonalization.} The three
+momentum-resolved responses reported here were computed classically by dynamical DMRG in
+2007~\cite{benthien2007}---at $120$, $100$ and $90$ sites in the charge, spin and single-particle
+channels respectively---and at $L=48$ in the Hubbard chain, $L=64$ in the Heisenberg chain, with
+correction vectors~\cite{nocera2016}; the wider classical toolbox is broader
 still---correction-vector and time-dependent DMRG, Chebyshev matrix-product states and
 kernel-polynomial expansions~\cite{kuehner1999,whitefeiguin2004,holzner2011,kpm2006,paeckel2019}, and
 the real-time propagation of selected configuration-interaction wavefunctions~\cite{tdasci2024}; one
 dimension is where tensor networks, since White's formulation~\cite{whitedmrg1992}, are
 near-optimal~\cite{schollwock2011}, and nothing in this work competes with that standard; the
-vocabulary of the thermodynamic limit is accordingly absent from it
-(Sec.~\ref{sec:physics}). \emph{Third, the certified regime costs more shots than the method
-saves.} Moving from the published fraction to the non-vacuous band multiplies the shots per
-snapshot needed for the marginal configuration by $7.5$ to $10$ at $L=8$ and by $20$ to $35$ at
-$L=12$, where that configuration carries a Born probability of $1$ to $2\times10^{-9}$; a regime
-that a device can certify is, on these systems, a regime in which diagonalizing the whole sector
-is already the cheaper thing to do.
+vocabulary of the thermodynamic limit is accordingly absent from it (Sec.~\ref{sec:physics}).
+\emph{Third, the certified regime costs more shots than the method saves.} Moving from the published
+fraction to the non-vacuous band multiplies the shots per snapshot needed for the marginal
+configuration by $7.5$ to $10$ at $L=8$ and by $20$ to $35$ at $L=12$, where that configuration
+carries a Born probability of $1$ to $2\times10^{-9}$: a regime a device can certify is, on these
+systems, one in which diagonalizing the whole sector is already the cheaper thing to do.
 
-Two questions follow, and only one of them is a matter of more computing. Whether a certified
-regime exists at low sector fraction is now a well-posed measurement rather than an expectation,
-and the calibration above is the instrument for making it; whether it exists at all is decided by
-a prior question that this work can pose but not answer---whether there is any single-particle
-basis in which the coordinate support of $\mathcal K(H,\phi)$ is not the entire sector, since it
-is that support, and not the quality of the sampler, that pins the threshold measured here.
+Two questions follow, and only one of them is a matter of more computing. Whether a certified regime
+exists at low sector fraction is now a well-posed measurement rather than an expectation, and the
+calibration above is the instrument for making it; whether it exists at all turns on a prior question
+this work can pose but not answer---whether any single-particle basis leaves the coordinate support
+of $\mathcal K(H,\phi)$ short of the entire sector, since it is that support, and not the quality of
+the sampler, that pins the threshold measured here.
 
-What this paper leaves behind is therefore narrow and, we think, useful: a bound on the error of a
-sample-based spectral function that can be evaluated without the answer, a map of where it is
-informative, and the negative half of that map stated in the same voice as the positive one.
+What this paper leaves behind is therefore narrow and, we think, useful: an obstruction measured
+rather than conjectured, binding a class of certificates and not only ours; a two-sided bound that
+names the boundary as the object the error is indexed on and can be evaluated without the answer; and
+a map of where that bound is informative, its negative half stated in the same voice as its positive
+one.
 
 % ---------------------------------------------------------------------------------
 %  ACKNOWLEDGMENTS -- added 2026-09-19 at the end of the last body section, which is
