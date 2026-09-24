@@ -36,6 +36,10 @@ REPO = os.path.dirname(HERE)
 MAIN = os.path.join(REPO, "paper", "main.tex")
 LIMITE = 1920
 
+# Comandos LaTeX que a_texto() descarto en la ultima conversion. Se imprimen para
+# que nadie tenga que adivinar que se perdio por el camino.
+DESCARTADOS = []
+
 # --- griegas y simbolos, en Unicode: la forma que cabe
 GRIEGAS = [
     (r"\varepsilon", u"\u03b5"), (r"\epsilon", u"\u03b5"),
@@ -98,6 +102,33 @@ def a_texto(src, griegas_unicode=True):
     # fracciones simples
     t = re.sub(r"\\t?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}", r"\1/\2", t)
 
+    # --- OPERADORES QUE CAMBIAN EL SIGNIFICADO Y NO PUEDEN CAERSE.
+    #     El 2026-09-23, minutos antes de subir a arXiv, se descubrio que este
+    #     fichero convertia
+    #         (1+\sqrt{w})\bigl(\sqrt{1-w}+\widehat\Lambda(\eta)/\eta\bigr)
+    #     en
+    #         (1+ w) ( 1-w+ Lambda(eta)/eta )
+    #     es decir, SE COMIA LAS RAICES CUADRADAS: el barrido generico de
+    #     \[a-zA-Z]+ de mas abajo borraba \sqrt y dejaba su argumento suelto.
+    #     Eso no es un problema de codificacion, es el TEOREMA MAL ESCRITO en el
+    #     resumen del articulo.  Cualquier comando que transporte significado se
+    #     traduce aqui, ANTES de ese barrido, y lo que el barrido se lleve queda
+    #     declarado por nombre al final de esta funcion.
+    for _ in range(4):
+        t = re.sub(r"\\sqrt\s*\{([^{}]*)\}", r"sqrt(\1)", t)
+    t = re.sub(r"\\sqrt\s*([a-zA-Z0-9])", r"sqrt(\1)", t)
+    for c in ("widehat", "hat", "widetilde", "tilde", "bar", "vec", "dot"):
+        t = re.sub(r"\\" + c + r"\s*\{([^{}]*)\}", r"\1", t)
+        # \widehat\Lambda -- sin llaves y pegado a otro comando. Sin este caso el
+        # acento sobrevivia al barrido generico y se reportaba como descartado.
+        t = re.sub(r"\\" + c + r"(?=\\)", "", t)
+        t = re.sub(r"\\" + c + r"\s+", " ", t)
+    t = re.sub(r"\\[lr]Vert", "||", t)
+    t = re.sub(r"\\[lr]vert", "|", t)
+    t = re.sub(r"\\(?:bigl|bigr|Bigl|Bigr|big|Big|left|right)\b", "", t)
+    t = re.sub(r"\\(?:ln|log|exp|sin|cos|tan|min|max|det|dim|tr)\b",
+               lambda m: m.group(0)[1:], t)
+
     if griegas_unicode:
         for c, u in GRIEGAS:
             t = t.replace(c + " ", u).replace(c, u)
@@ -111,6 +142,10 @@ def a_texto(src, griegas_unicode=True):
 
     # lo que quede de matematicas y agrupacion
     t = t.replace("$", "")
+    # Lo que este barrido se lleve queda REGISTRADO. Un comando que desaparece sin
+    # que nadie lo nombre es como se perdieron las raices cuadradas.
+    global DESCARTADOS
+    DESCARTADOS = sorted(set(re.findall(r"\\([a-zA-Z]+)\*?", t)))
     t = re.sub(r"\\[a-zA-Z]+\*?", " ", t)
     t = t.replace("{", "").replace("}", "")
     t = t.replace("~", " ")
@@ -136,6 +171,12 @@ def main():
         print("  %-22s %5d caracteres   %s" % (nombre, n, veredicto))
     print()
     print("  palabras: %d   (APS pide menos de 500)" % len(uni.split()))
+    if DESCARTADOS:
+        print("  comandos LaTeX descartados: %s" % ", ".join(DESCARTADOS))
+        print("     (si alguno de estos cambia el SIGNIFICADO, traducelo en a_texto)")
+    else:
+        print("  ningun comando LaTeX descartado")
+
     print("  parrafos: %d   (APS pide UNO)" % len([p for p in uni.split("\n\n")
                                                    if p.strip()]))
     for mal, que in ((r"\begin{equation}", "ecuacion presentada"),

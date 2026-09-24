@@ -237,30 +237,27 @@ sample-based spectral functions}
 % at all -- verified against the class, not assumed.
 
 \begin{abstract}
-On these systems no leakage-type certificate in the determinant basis, ours or another, can be
-non-vacuous at low fraction: the probe's Krylov space has coordinate support on the whole sector at
-$L=8$, $10$, $12$, $14$ at amplitude $10^{-12}$, so leakage is strictly positive for every proper
-coordinate subspace. A two-sided bound locates it: with $w$ the captured Born weight, the relative
-$L_1$ error of Rayleigh--Ritz reconstruction lies between $1-w$ and
-$(1+\sqrt{w})\bigl(\sqrt{1-w}+\widehat\Lambda(\eta)/\eta\bigr)$, $\widehat\Lambda$ the normalized
-boundary coupling of $H$ at resolution $\eta$, from the Ritz pairs. Shots buy the first term down,
-not the second: on the probe's own Born support, where it vanishes, relative error is still
-$0.33$--$0.43$ at $\eta=0.18\,t$ and $0.90$--$1.15$ at $0.05\,t$, against a ceiling of $2$. No
-weight-only bound can do this: an analytic counterexample forces any such constant to the trivial
-value, and Theorem~1(iii) of versions~1--2 is retracted. None of $606$ subspaces violates ours, yet
-on Hubbard sectors to dimension $10\,306\,296$ it exceeds the trivial bound at every
-published fraction, at all five sizes, by $1.66$--$8.61$, converged in depth at $L=12$: the
-reconstructions are
-uncertified, though independent code recovers the fractions to $7\%$. What survives is a
-calibration: over sixteen $(L,\eta)$ cells spanning five decades of true error the crossing falls at
-$1.2$--$7.3\times10^{-3}$, median $2.8\times10^{-3}$, computed without the answer; a two-parameter
-rule fitted in $1-w$ beats it on ten of fourteen out-of-sample splits; we claim no superiority. No
-orbital invariant substitutes: one-body fermionic magic collapses to
-$4\,\mathrm{tr}[\gamma(1-\gamma)]$, constant along an orbit whose determinant support runs from
-$O(K)$ to $2^{K}$ at bond dimension $2$ and on fibers where our bound separates; its rank
-correlation with that support is exactly $-1$ in all six $(L,N)$ strata, exact
-$p=3.3\times10^{-13}$; pooled, the thirty points give $\rho=-0.11$, a Simpson reversal, not an
-absence of signal. We claim no quantum advantage.
+Sample-based quantum diagonalization builds a spectral function inside the determinant subspace
+a device's measured bitstrings populate. Its accuracy has been judged by the captured Born
+weight. That weight cannot carry the judgement, and no certificate of its kind can. The error is
+set by the subspace's boundary, not its contents: for Rayleigh--Ritz on any projector the
+relative $L_1$ error lies between $1-w$ and $(1+\sqrt{w})(\sqrt{1-w}+\Lambda(\eta)/\eta)$, with
+$w$ the captured weight and $\Lambda$ the boundary coupling of $H$ at $\eta$, from the Ritz
+pairs. Shots buy the first down, not the second: on the probe's Born support, where the first
+vanishes, the error is still $0.33$--$0.43$ at $\eta=0.18t$ against a ceiling of 2. An analytic
+counterexample forces any weight-only constant to it, and Theorem 1(iii) of versions~1--2 is
+retracted. Measured, it is vacuous: on Hubbard sectors to dimension $10\,306\,296$ it exceeds
+the trivial bound at every published fraction, at all five sizes, by $1.66$--$8.61$, so the
+reconstructions are uncertified. The reason is structural: the probe's Krylov space has
+coordinate support on the whole sector at $L=8,10,12,14$, amplitude $10^{-12}$, so leakage is
+strictly positive for every proper coordinate subspace, and no leakage-type certificate in that
+basis, ours or any, can be non-vacuous at low fraction. What survives: over sixteen $(L,\eta)$
+cells spanning five decades of error the crossing sits at $1.2$--$7.3\times10^{-3}$, computed
+without the answer; a two-parameter rule fitted in $1-w$ matches it on ten of fourteen
+out-of-sample splits; we claim no superiority. No orbital invariant substitutes: one-body magic
+collapses to $4\,\mathrm{tr}[\gamma(1-\gamma)]$, constant along an orbit whose support runs
+$O(K)$ to $2^{K}$; its rank correlation with that support is $-1$ in all six strata, exact
+$p=3.3\times10^{-13}$; pooled it reads null. We claim no quantum advantage.
 \end{abstract}
 
 \maketitle
