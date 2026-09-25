@@ -5,28 +5,31 @@ authors:
   - family-names: "Bonilla Vargas"
     given-names: "Nicolás"
     orcid: "https://orcid.org/0009-0006-6155-4391"
-    affiliation: "Daita AI"
+    affiliation: "Universidad Nacional de Colombia"
     email: "ngbonillav@unal.edu.co"
 abstract: >-
-  Sample-based quantum diagonalization is moving from energies to dynamics. Given the subspace the
-  shots populated, how wrong is the spectral function built on it? We prove a two-sided bound on the
-  relative L1 error of Rayleigh-Ritz reconstruction: with w the captured Born weight of the probe, the
-  error is at least 1-w and at most (1+sqrt(w))(sqrt(1-w) + Lambda(eta)/eta), Lambda the normalized
-  coupling of H across the subspace boundary at resolution eta, computable from the Ritz vectors in
-  hand. Shots buy the first term down, not the second. We retract the weight-only bound of versions 1
-  and 2 of this preprint: an analytic counterexample forces its constant to the trivial value. On
-  Hubbard sectors up to dimension 10306296 the replacement is worse than the trivial bound at every
-  published fraction, at all five sizes, by factors 1.66 to 8.61, so those reconstructions are
-  uncertified; what survives is
-  a calibration, the bound crossing the trivial one at a true relative error of 1.2 to 7.3e-3. No
-  orbital-rotation invariant substitutes for it: one-body fermionic magic collapses to
-  F1 = 4 tr[gamma(1-gamma)] = 2 Nu, constant along an orbit on which the determinant support runs from
-  O(K) to 2^K at bond dimension 2. Validated against exact diagonalization across Hubbard chains and a
-  nineteen-molecule suite, and executed on the IBM Heron processor. We claim no quantum advantage.
+  Sample-based quantum diagonalization builds a subspace from a device's measured bitstrings. From one
+  protocol (computational-basis samples of a real-time evolved probe, no Hadamard test) we reconstruct
+  the single-particle A(omega) and A(k,omega) of the 1D Hubbard model on that subspace. We prove that for
+  Rayleigh-Ritz on any orthogonal projector the relative L1 error lies between 1-w and
+  min{1+w, (1+sqrt(w))(sqrt(1-w)+Lambda(eta)/eta)}, with w the captured weight and Lambda the boundary
+  coupling at resolution eta, assembled from the Ritz pairs without the answer. Weight alone cannot
+  certify: an analytic counterexample forces any bound indexed on it to its trivial value, and on the
+  probe's support, where w=1 exactly, the error is still 0.35-0.43 at eta=0.18t against a ceiling of 2.
+  A subspace containing the order-K Krylov space reproduces the moments through order 2K+1, and no
+  further. Measured to dimension 10306296, the bound is vacuous at every operating fraction of the
+  resource scan, at all five sizes, by 1.66-8.61, and informative only well above them; it crosses the
+  trivial bound at a true error of 1.2-7.3e-3, though a two-constant rule in 1-w is tighter on 11 of 14
+  splits. In the determinant basis the probe's Krylov space has coordinate support on every
+  symmetry-allowed determinant, so at full weight only a subspace holding all of them has zero leakage;
+  for a momentum probe a momentum block, 1/L of the sector, does. At full weight a second-order
+  certificate follows; below it, where every operating fraction lies, one is open. One-body fermionic
+  magic does not predict the support in advance: its rank correlation with it is -1 in each of six
+  strata (exact p=3.3e-13 against independent orderings) but changes sign between families.
 repository-code: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
 url: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
 version: "3.0.0"
-date-released: "2026-09-19"
+date-released: "2026-09-25"
 license: "MIT AND CC-BY-4.0"
 keywords:
   - quantum computing
@@ -47,6 +50,7 @@ preferred-citation:
   journal: "arXiv preprint"
   notes: >-
     arXiv:2608.16436. Versions 1 and 2 were titled "Dynamical spectral functions from bitstring-sampled
-    quantum subspaces: entanglement, not one-body magic, tracks the sampling cost"; version 3 retracts
-    the weight-only bound of those versions and is retitled accordingly. The version and release date
+    quantum subspaces: entanglement, not one-body magic, tracks the sampling cost"; in version 3 the
+    weight-only bound of those versions (Theorem 1(iii)), which does not hold, is replaced by a proved
+    two-sided leakage bound, and the paper is retitled accordingly. The version and release date
     above describe THIS deposit, not the arXiv posting date.
