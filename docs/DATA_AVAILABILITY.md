@@ -21,8 +21,8 @@ that licenses each of its sentences, and the record of the sentences that were r
 
 ## Part 1 — the statement to paste into the manuscript
 
-**This is the text that is now in the manuscript**, at `paper/sec_9.tex`, Sec. IX F
-(`\label{sec:scope:data}`), rendered on p. 43 of the 59-page build. It is reproduced here so that the
+**This is the text that is now in the manuscript**, at `paper/sec_9.tex`, Sec. IX D
+(`\label{sec:scope:data}`), rendered on p. 24 of the 66-page build. It is reproduced here so that the
 audit below has something to audit; if the two ever disagree, **the manuscript is the one that is
 published and this file is the one that is wrong.**
 
@@ -41,9 +41,8 @@ published and this file is the one that is wrong.**
 > deposited artefacts against it — 868 checks over 9 884 numeric assertions, exiting non-zero on any
 > discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in the
 > tables and in the abstract; it is not a proof that every sentence of this manuscript is verified, and
-> six items are printed by name on every run: four known open defects, and two declared gaps
-> in the guardian's own coverage (the source of Fig. 17, and the four artefacts behind Table IV,
-> none of which survives in the deposit -- see 2.6).
+> five items are printed by name on every run: four known open defects, and one declared gap in its own
+> coverage, the source of Fig. S5.
 >
 > The quantum-hardware results are deposited as the arrays that enter the figures, together with the
 > backend name, the shot count and the IBM Quantum job identifier for each of the two runs
@@ -52,13 +51,17 @@ published and this file is the one that is wrong.**
 > identifier, which requires an account and a job that is still retrievable, so the classical
 > post-processing of the raw counts cannot be re-run from the deposited files alone. The hardware runs
 > themselves cannot be regenerated in any case — the jobs are closed, and a device executed today has a
-> different calibration, so new counts would be new data rather than a reproduction. The dequantization control of App. dequant is regenerated seed by seed by `src/gflow_dequant.py`, which needs `pyscf` and `torch` and writes `data/gflow.json`. Known gaps between the deposited code and the deposited artefacts — six of the seventeen
-> figures enter as PDF with no standalone LaTeX source in the deposit, the tables plotted in Fig. 17 are
-> deposited but the script that builds them is not, three deposited computation scripts have no
-> deposited output, and parts of the pipeline require `pyscf` or an IBM Quantum account — are enumerated
-> in `docs/KNOWN_DISCREPANCIES.md` rather than left for the reader to discover.
+> different calibration, so new counts would be new data rather than a reproduction. The dequantization
+> control of Sec. S16 is regenerated seed by seed by `src/gflow_dequant.py`, which needs `pyscf` and
+> `torch` and writes `data/gflow.json`. The L=14 ground-state checkpoint (94 MB), on which the largest
+> vacuity factor and the L=14 support count rest, is deposited in `ckpt/` with its SHA-256 checksums.
+> Known gaps between the deposited code and the deposited artefacts — six of the seventeen figures enter
+> as PDF with no standalone LaTeX source in the deposit, the tables plotted in Fig. S5 are deposited but
+> the script that builds them is not, three deposited computation scripts have no deposited output, and
+> parts of the pipeline require `pyscf` or an IBM Quantum account — are enumerated in
+> `docs/KNOWN_DISCREPANCIES.md`.
 
-**Acknowledgments**, added in the same pass at the end of `paper/sec_10.tex` (p. 45):
+**Acknowledgments**, added in the same pass at the end of `paper/sec_10.tex` (end of the main text):
 
 > **Acknowledgments.** We acknowledge the use of IBM Quantum services for this work; the two device runs
 > reported in Sec. IX A were executed on `ibm_fez` and `ibm_marrakesh`. The views expressed are those of

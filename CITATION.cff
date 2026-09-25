@@ -28,7 +28,7 @@ abstract: >-
   strata (exact p=3.3e-13 against independent orderings) but changes sign between families.
 repository-code: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
 url: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
-version: "3.0.0"
+version: "3.2.0"
 date-released: "2026-09-25"
 license:
   - "MIT"
