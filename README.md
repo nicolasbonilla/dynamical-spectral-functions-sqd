@@ -7,6 +7,7 @@
 **Nicolás Bonilla Vargas** &nbsp;[![ORCID](https://img.shields.io/badge/ORCID-0009--0006--6155--4391-A6CE39?logo=orcid&logoColor=white)](https://orcid.org/0009-0006-6155-4391)
 
 [![arXiv](https://img.shields.io/badge/arXiv-2608.16436-b31b1b.svg)](https://arxiv.org/abs/2608.16436)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22967220.svg)](https://doi.org/10.5281/zenodo.22967220)
 [![Paper](https://img.shields.io/badge/paper-PDF-blue.svg)](paper/main.pdf)
 [![License: MIT](https://img.shields.io/badge/code-MIT-green.svg)](LICENSE)
 [![License: CC BY 4.0](https://img.shields.io/badge/paper%20%26%20data-CC--BY--4.0-lightgrey.svg)](LICENSE)
@@ -231,6 +232,20 @@ If you use this work, please cite it (see [`CITATION.cff`](CITATION.cff)):
   author  = {Bonilla Vargas, Nicol\'as},
   journal = {arXiv preprint arXiv:2608.16436},
   year    = {2026}
+}
+```
+
+and, for the code and data, the archived deposit (this DOI always resolves to the latest version):
+
+```bibtex
+@software{BonillaVargas2026Repository,
+  title     = {Captured weight and boundary leakage bound the error of
+               sample-based spectral functions --- reproduction repository},
+  author    = {Bonilla Vargas, Nicol\'as},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.22967220},
+  url       = {https://doi.org/10.5281/zenodo.22967220},
+  year      = {2026}
 }
 ```
 

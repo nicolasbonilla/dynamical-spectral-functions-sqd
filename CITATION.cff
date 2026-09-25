@@ -29,6 +29,7 @@ abstract: >-
 repository-code: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
 url: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
 version: "3.2.0"
+doi: "10.5281/zenodo.22967220"
 date-released: "2026-09-25"
 license:
   - "MIT"

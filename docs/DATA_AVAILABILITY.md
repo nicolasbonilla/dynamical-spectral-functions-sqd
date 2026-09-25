@@ -28,7 +28,8 @@ published and this file is the one that is wrong.**
 
 > **Data availability statement.** The data that underlie the figures and the quoted numbers of this work
 > are openly available in the reproduction repository at
-> `https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd`, the code under the MIT licence
+> `https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd`, archived on Zenodo under
+> DOI 10.5281/zenodo.22967220, the code under the MIT licence
 > and the manuscript, the deposited datasets and the reproduction documentation under CC BY 4.0. Every
 > figure's plotted values are deposited — as a JSON table in `data/` or as a plain-text table in
 > `paper/figs/` — and `docs/FIGURE_PROVENANCE.md` names the file that is authoritative for each; the one
