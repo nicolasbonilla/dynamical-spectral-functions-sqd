@@ -349,10 +349,10 @@ the IBM~Quantum service by job identifier, which requires an account and a job t
 retrievable, so the classical post-processing of the raw counts cannot be re-run from the deposited
 files alone. The hardware runs themselves cannot be regenerated in any case---the jobs are closed, and
 a device executed today has a different calibration, so new counts would be new data rather than a
-reproduction. The dequantization control of Sec.~\ref{app:dequant} is regenerated seed by seed by \texttt{src/gflow\_dequant.py}, which needs \texttt{pyscf} and \texttt{torch} and writes \texttt{data/gflow.json}. Known gaps between the deposited code and the
+reproduction. The dequantization control of Sec.~\ref{app:dequant} is regenerated seed by seed by \texttt{src/gflow\_dequant.py}, which needs \texttt{pyscf} and \texttt{torch} and writes \texttt{data/gflow.json}. The $L=14$ ground-state checkpoint ($94$~MB), on which the largest vacuity factor and the $L=14$ support count rest, is deposited in \texttt{ckpt/} with its SHA-256 checksums. Known gaps between the deposited code and the
 deposited artefacts---six of the seventeen figures enter as PDF with no standalone \LaTeX{} source in
 the deposit, the tables plotted in Fig.~\ref{fig:thm1iii-violation} are deposited but the script that
-builds them is not, three deposited computation scripts have no deposited output, the $L=14$ ground-state checkpoint ($94$~MB), on which the largest vacuity factor and the $L=14$ support count rest, is not in the repository, and parts of the
+builds them is not, three deposited computation scripts have no deposited output, and parts of the
 pipeline require \texttt{pyscf} or an IBM~Quantum account---are enumerated in
 \texttt{docs/KNOWN\_DISCREPANCIES.md}.
 

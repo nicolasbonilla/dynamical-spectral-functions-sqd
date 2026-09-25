@@ -24,17 +24,17 @@ from fcore import log
 from frun import bare_ref
 from c0_big import sector_mv
 
-# DECLARED GAP: work/ckpt/L14_gs.npz (94 MB) and L14_order.npy (39 MB) are NOT
-# deposited.  Set P2_CKPT to a tree that has them; see docs/C3_FRONTIER.md.
+# ckpt/L14_gs.npz (94 MB) and ckpt/L14_order.npy (41 MB) are deposited (2026-09-25);
+# P2_CKPT overrides the folder.  See ckpt/README.txt.
 CK = os.environ.get('P2_CKPT') or os.path.join(ROOT, 'ckpt')
 L=14; U=8.0; NL=250; NREF=500; ETAS=[0.10,0.15,0.18,0.25]
 FRS=[0.08]
 
 _gs = os.path.join(CK, 'L14_gs.npz')
 if not os.path.isfile(_gs):
-    print("SKIP: %s is not in the deposit (94 MB ground state + 39 MB ranking). "
-          "Set P2_CKPT to a tree that has L14_gs.npz and L14_order.npy; see "
-          "docs/C3_FRONTIER.md, 'what is not deposited'." % _gs)
+    print("SKIP: %s not found. The deposit carries it in ckpt/ (94 MB ground state + "
+          "41 MB ranking); set P2_CKPT to the folder that holds L14_gs.npz and "
+          "L14_order.npy." % _gs)
     sys.exit(3)
 g=np.load(_gs)
 E0=float(g['E0']); psi=g['psi'].astype(float); nup=nd=7

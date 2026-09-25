@@ -110,12 +110,12 @@ Large temporary Krylov memmaps go to `$C3_TMP`, default `build/` (which is `.git
 | `ladder_L8.json` | `PER_ETA=16 python src/frontier/run_ladder.py 8 0.10,0.20,0.30,0.40,0.50,0.56,0.625,0.70,0.80,0.85,0.90,0.95,0.97,0.99` | ≈ 3 min |
 | `verdict_frontier.json` | `python src/frontier/verdict.py 4 6 8` | < 1 s |
 | `published_fraction/PUB_rows.json` | `python src/frontier/pubsum.py` | < 1 s |
-| `published_fraction/L14_FR008.json` | `python src/frontier/run_L14.py` | 37 min — **needs two checkpoints, see §5** |
+| `published_fraction/L14_FR008.json` | `python src/frontier/run_L14.py` | 37 min — reads the two deposited checkpoints in `ckpt/` (§5) |
 | `adversarial/z_fine_L6.json` | `python src/frontier/z_fine.py 6 255,285,291,294,295,296,297,298,299 0.18,0.15,0.05 check` | 6 s |
 | `adversarial/z_rank_L6.json` | `python src/frontier/z_rank.py 6 0.18` | 5 s |
 | `adversarial/z_e0_L6.json` | `python src/frontier/z_e0.py 6 0.85` | 10 s |
 | `adversarial/z_suppK_L8.txt` | `python src/frontier/z_suppK.py 6 8` | 1 min 11 s |
-| `adversarial/z_suppK_sym_L{6,8,10,12,14}.json` | `python src/frontier/z_suppK_sym.py 6 8 10 12`; L=14: `P2_CKPT=<folder with L14_gs.npz> python src/frontier/z_suppK_sym.py 14` | L=12 about a minute |
+| `adversarial/z_suppK_sym_L{6,8,10,12,14}.json` | `python src/frontier/z_suppK_sym.py 6 8 10 12`; L=14: `python src/frontier/z_suppK_sym.py 14` (reads the deposited `ckpt/L14_gs.npz`) | L=12 about a minute |
 | `adversarial/z_suppK_power_L{6,...,14}.json` | `python src/frontier/z_suppK_power.py 8 10 12` (unprojected; documents that its count is round-off, not a support) | minutes |
 | `adversarial/z_kblock_L{6,8}.json` | `python src/frontier/z_kblock.py 6`, `... 8` | seconds; minutes at L=8 |
 | `adversarial/z_momseed_support.json` | `python src/frontier/z_momseed_support.py` | seconds |
@@ -144,7 +144,7 @@ quadrature, and the files will not match.
 | `run_ladder.py 4` at `PER_ETA=12` | **does not match** — see §4 |
 | `z_rank.py`, `z_e0.py` | `z_rank_L6.json`, `z_e0_L6.json` regenerated **exactly** |
 | `z_fine.py`, `z_suppK.py` | run; `z_fine_L6.json` reproduces, `z_suppK` reprints the L=6/L=8 support census |
-| `run_L14.py` | declared gap (§5): exits 3 with a message naming the missing checkpoint |
+| `run_L14.py` | reads the deposited `ckpt/L14_*` (§5); exits 3 naming the file if they are absent |
 
 The residual deviations are ARPACK’s: every `eigsh` in the C3 engine uses an unseeded start vector,
 so a re-run agrees to solver tolerance, not in the last bit. The quantities where the deviation is
@@ -183,7 +183,7 @@ silently repaired.
 
 ## 5. What is NOT deposited, and why
 
-A declared gap is worth more than a covered one. Three remain.
+A declared gap is worth more than a covered one. Two remain; a third, the L=14 checkpoint, was closed on 2026-09-25 (end of this section).
 
 1. **`work/ckpt/L10_order.npy`** — the ranking `src/scaling_lanczos_mf.py` checkpoints. `ckpt/` is
    `.gitignore`d. `fproto.py`, the gate that proves the sweep uses the repository’s own ranking
@@ -191,16 +191,16 @@ A declared gap is worth more than a covered one. Three remain.
    naming the file**, instead of a traceback. Point `P2_CKPT` at a tree that has it, or regenerate
    it with `python src/scaling_lanczos_mf.py 10`. With it: set-overlap 1.000000 at every fraction.
 
-2. **`work/ckpt/L14_gs.npz` (94 MB) and `L14_order.npy` (39 MB)** — the L=14 ground state and
-   ranking. `run_L14.py` reuses them rather than spending three hours recomputing a ground state;
-   they are too large for the deposit. The **result** of that run is deposited
-   (`published_fraction/L14_FR008.json`, with `L14_run.txt`), and the file itself records that the
-   **ranking protocol was not re-run at L=14** — it is inherited from the checkpoint, verified at
-   L=10 by set overlap. Same exit-3 behaviour as above.
-
-3. **`z_fine_L8`** — the L=8 half of the fine-grained frontier scan. Its log is deposited
+2. **`z_fine_L8`** — the L=8 half of the fine-grained frontier scan. Its log is deposited
    (`adversarial/z_fine_L8.txt`, 1089 s of measurement) but it was not re-run in this pass; only the
    L=6 half was. Nothing in the manuscript depends on a number that appears only there.
+
+**Closed 2026-09-25: `ckpt/L14_gs.npz` (94 MB) and `ckpt/L14_order.npy` (41 MB)**, the L=14 ground
+state and ranking, are now in the repository (see `ckpt/README.txt`, with SHA-256 checksums).
+`run_L14.py` reuses them rather than spending three hours recomputing a ground state. The **result**
+of that run is deposited too (`published_fraction/L14_FR008.json`, with `L14_run.txt`), and the file
+itself records that the **ranking protocol was not re-run at L=14**: it is inherited from the
+checkpoint, verified at L=10 by set overlap.
 
 Not deposited because it is not part of C3, and named so that the absence is not mistaken for an
 oversight: the exploratory scripts of the same working tree (`tab.py`, `tighten.py`, `slackL.py`,

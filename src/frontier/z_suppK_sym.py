@@ -14,7 +14,7 @@ the forbidden determinants stay at zero and what is counted is the true support.
 Checks, each fatal: [R, H] = 0 on a random vector; R phi = s phi.
 
     python src/frontier/z_suppK_sym.py 6 8 10 12          (L = 12: about a minute)
-    P2_CKPT=<folder with L14_gs.npz> python src/frontier/z_suppK_sym.py 14
+    python src/frontier/z_suppK_sym.py 14        (reads ckpt/L14_gs.npz; P2_CKPT overrides)
 writes data/c3_frontier/adversarial/z_suppK_sym_L<L>.json
 """
 from __future__ import print_function

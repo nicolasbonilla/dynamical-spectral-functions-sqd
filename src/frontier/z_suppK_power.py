@@ -42,8 +42,7 @@ KMAX = 36
 def _system14():
     """L = 14 from the ground-state checkpoint, exactly as run_L14.py builds it (the
     half-filled ground state of 11.8 million determinants is too slow to recompute here).
-    The checkpoint is NOT in the git deposit (94 MB); set P2_CKPT to the folder holding
-    L14_gs.npz."""
+    The checkpoint is deposited in ckpt/ (94 MB); P2_CKPT overrides the folder."""
     from c0_big import sector_mv
     ck = os.environ.get("P2_CKPT") or os.path.join(ROOT, "ckpt")
     g = np.load(os.path.join(ck, "L14_gs.npz"))
