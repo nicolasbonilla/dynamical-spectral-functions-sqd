@@ -37,8 +37,7 @@ Equation~\eqref{eq:momex} is therefore a weak quadrature statement for a rule of
 rule of $n$ nodes for $d\mu$ is exact through order $2n-1$~\cite{golub2010}, so the $K=1$ row of
 Table~\ref{tab:moments}, with $280$ nodes, would reach order $559$ if its nodes were the Gauss nodes of
 $d\mu$. They are not, and it reaches order $3$; those $555$ orders measure the distance between the
-two objects. This is the measurable content of the correction to the
-published proof: identifying $A_{\mathcal S}$ with an order-$(K{+}1)$ Gauss rule misdescribes the
+two objects. This is the measurable content of the distinction: identifying $A_{\mathcal S}$ with an order-$(K{+}1)$ Gauss rule misdescribes the
 object and the reach such an object would have; the reach $2K+1$ of
 Theorem~\ref{thm:moments} itself is unaffected.
 
@@ -125,8 +124,7 @@ nor $\rho(\eta)$, and neither appears anywhere in this work or in the deposit.
 The prefactor is moreover pinned from below by the two-level family of Sec.~\ref{sec:retraction}. With
 $H=\bigl(\begin{smallmatrix}0&g\\ g&0\end{smallmatrix}\bigr)$ and $\phi=e_0$ one has
 $\braket{\phi|H|\phi}=0$, so $\mathcal K_0=\operatorname{span}\{\phi\}$ carries a single pole at the
-origin while $A$ carries two at $\pm g$; by direct integration at $\eta=0.15$,
-$\lVert A-A_{\mathcal K_0}\rVert_1=1.5197,\ 1.8352,\ 1.9503,\ 1.9832,\ 1.9943,\ 1.9974,\ 1.9984$ for
+origin while $A$ carries two at $\pm g$; by adaptive integration over the whole line at $\eta=0.15$ (\texttt{src/moments\_table.py}), $\lVert A-A_{\mathcal K_0}\rVert_1=1.5197,\ 1.8352,\ 1.9504,\ 1.9835,\ 1.9950,\ 1.9983,\ 1.9995$ for
 $g=1,3,10,30,100,300,1000$ at $\lVert\phi\rVert^{2}=1$, approaching the trivial ceiling
 $2\lVert\phi\rVert^{2}=2$ monotonically. Any $C(\eta)$
 valid uniformly on this family therefore satisfies $C(\eta)\ge2\lVert\phi\rVert^{2}$. A geometric bound
@@ -163,10 +161,10 @@ most $\delta$ for the stated $T$.
 \end{proof}
 
 The cardinality bound $|\mathcal N_\varepsilon|\le1/\varepsilon$ is deterministic, and it is what
-removes the circularity of the published form $T=O(\varepsilon^{-1}\log(|\mathcal S|/\delta))$, in
+removes the circularity of the form $T=O(\varepsilon^{-1}\log(|\mathcal S|/\delta))$, in
 which the random size of the sampler's own output appears inside a bound on the number of draws that
 produce it. Where $\varepsilon^{-1}\le|\mathcal S|$, the new logarithm is also the smaller one, so
-nothing is conceded by the repair.
+nothing is lost.
 
 The scope of $\varepsilon$ needs the same care. It thresholds a Born probability of the time-averaged
 mixture, and Proposition~\ref{prop:shots} makes no statement about $\lVert A-A_{\mathcal S}\rVert_1$.
@@ -175,7 +173,7 @@ bounded only by $|\{x:p(x)<\varepsilon\}|\cdot\varepsilon$, which for a delocali
 many small probabilities can sum to most of the mixture. Second, and decisively, a subspace holding the
 \emph{entire} Born support of the probe---$w_{\mathcal S}=1$ exactly, nothing left to capture at any
 $\varepsilon$---still has relative $L_1$ error $0.28$ at $L=6$ on the open chain of
-Table~\ref{tab:moments}, and $0.43$ at $L=6$ and $0.33$ at $L=8$ on the periodic rings, all at
+Table~\ref{tab:moments}, and $0.43$ at $L=6$ and $0.35$ at $L=8$ on the periodic rings, all at
 $\eta=0.18\,t$ and all relative to $\lVert\phi\rVert^{2}$ (Sec.~\ref{sec:leakage}); it is the $K=0$
 row of Table~\ref{tab:moments}.
 Proposition~\ref{prop:shots} is a statement about the sampler and about nothing else. The spectral

@@ -51,7 +51,10 @@ def one(L, FRs, nl):
     n2 = float(phi @ phi)
     order32, wc32, _ = F.ranking(sysd)
     order64, wc64 = born_order_f64(sysd)
-    supp = np.abs(phi) > 0
+    # supp(phi): amplitudes above 1e-12 of the largest.  '> 0' would count ARPACK round-off on
+    # the structural zeros (213 of them at L = 8, all <= 8e-15; the smallest genuine one is
+    # 5.5e-7) and report 2450 instead of 2237; corrected 2026-09-25, see src/support_witness.py.
+    supp = np.abs(phi) > 1e-12 * np.abs(phi).max()
     log(f"L={L} D={D}: |supp(phi)|={int(supp.sum())} ({supp.sum()/D:.6f}; 1/2+1/L={0.5+1.0/L:.6f})")
     log(f"   configs with EXACTLY zero accumulated Born weight: float32 "
         f"{int((wc32==0).sum())}/{D}   float64 {int((wc64==0).sum())}/{D}")

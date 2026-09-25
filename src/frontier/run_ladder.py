@@ -23,7 +23,10 @@ t = time.time(); order, wc = F.repo_ranking(H, phi, K=18, dt=0.5, sub=16)
 log("repo ranking (K=18,dt=0.5,sub=16 -> 19 snapshots) done in %.1fs" % (time.time()-t))
 
 # ---- condition 5 bookkeeping: zero-amplitude determinants & argsort ties
-supp = np.where(np.abs(phi) > 0)[0]
+# supp(phi) above 1e-12 of the largest amplitude ('> 0' counts ARPACK round-off on the 213
+# structural zeros at L = 8).  Corrected 2026-09-25; ladder_L8.json predates the correction and
+# its 'S*=supp(phi)' row is the 2450-determinant set.  No row of it is quoted in the paper.
+supp = np.where(np.abs(phi) > 1e-12 * np.abs(phi).max())[0]
 log("supp(phi) = %d/%d = %.6f   (1/2+1/L = %.6f)" % (len(supp), D, len(supp)/D, 0.5+1.0/L))
 wcs = np.sort(wc)[::-1]
 

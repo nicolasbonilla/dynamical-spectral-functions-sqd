@@ -54,109 +54,66 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-The result of this paper is negative, and it is a statement about the problem rather than about our
-inequality: from $L=8$ on, in the determinant basis a device measures in, no leakage-type
-certificate---ours or another---can be non-vacuous at low fraction. The reason
-is geometric and it is measured. Zero leakage requires the subspace to contain the Krylov space
-$\mathcal K(H,\phi)$, and the coordinate support of that Krylov space is $296$ of $300$ determinants
-at $L=6$ and all $3920$ of $3920$ at $L=8$---so at $L=8$ the leakage is strictly positive for every
-proper coordinate subspace---and, at an amplitude threshold of $10^{-12}$, the whole sector at
-$L=8$, $10$, $12$ and $14$, the largest of dimension $10\,306\,296$, by two estimators that agree
-wherever both ran (Sec.~\ref{sec:frontier:obstruction}). The obstruction is structural rather than
-incidental, and a property of the basis the device measures in, not of the bound and not of the
-ranking.
+For a spectral function reconstructed by Rayleigh--Ritz on any subspace, Theorem~\ref{thm:leakage}
+bounds the $L_1$ error from below by the Born weight the subspace failed to capture and from above by
+that weight plus the Hamiltonian coupling that leaks across the subspace boundary at the resolution asked
+for, a quantity computed from the Ritz pairs without the answer. The captured weight alone cannot
+replace it: an analytic counterexample and a counting argument rule out any bound indexed on it
+(Sec.~\ref{sec:retraction}). What a Krylov-adequate subspace does guarantee is moment exactness through
+order $2K+1$ and no further (Theorem~\ref{thm:moments}). And no orbital-rotation invariant bounds the
+boundary \emph{usefully} in advance: one-body fermionic magic is constant along an orbit on which the
+determinant support runs from $O(K)$ to $2^{K}$ at bond dimension $2$, and on fibers on which the
+subspace-aware certificate still separates (Theorem~\ref{thm:witness}, Proposition~\ref{prop:leakinv}),
+the general invariant/basis-dependent division being due to Tarabunga \emph{et al.}~\cite{tarabunga2026}.
 
-The two-sided bound is what identifies the object that obstruction is about. By
-Theorem~\ref{thm:leakage} the error of a spectral function reconstructed on a subspace of sampled
-configurations splits into the Born weight the shots failed to capture and the Hamiltonian coupling
-that leaks across the boundary of that subspace at the resolution asked for; only the first of the
-two is bought by drawing more bitstrings, so the error is indexed on the boundary and not on the
-weight. The weight alone cannot carry the statement: no inequality indexed on the captured weight can
-hold, by an analytic counterexample and by counting, and the weight-only Theorem~1(iii) of
-versions~1 and~2 of this preprint is retracted (Sec.~\ref{sec:retraction}). What a Krylov-adequate
-subspace does guarantee is moment exactness through order $2K+1$, with the proof the code realizes
-(Theorem~\ref{thm:moments}). And nothing cheaper bounds that boundary \emph{usefully} from outside: one-body
-fermionic magic is constant along an orbit on which the determinant support runs from $O(K)$ to
-$2^{K}$ at bond dimension $2$, and constant on fibers on which the subspace-aware certificate still
-separates (Theorem~\ref{thm:witness}, Proposition~\ref{prop:leakinv}), the general
-invariant/basis-dependent division being due to Tarabunga \emph{et al.}~\cite{tarabunga2026}.
-
-Measured subspace by subspace at five system sizes, that bound is vacuous at every published
-fraction, at each of the five sizes evaluated, by factors of $1.66$ to $8.61$, converged in Krylov
-depth at $L=12$---not an accident of the constants, but the obstruction in the numbers. The same
-sweep yields the one positive property that survived four independent attacks: the crossing of the
-trivial bound occurs at a true relative $L_1$ error between $1.2\times10^{-3}$ and
-$7.3\times10^{-3}$, median $2.8\times10^{-3}$, over sixteen $(L,\eta)$ cells at $L=6$--$12$ and
-$\eta=0.10$--$0.25\,t$---a drift, not scatter: ordered without exception in both arguments and
-conservative in $L$---and it is computed without the answer (Sec.~\ref{sec:frontier}). Its own limit
-is in the same table: a rule with two constants fitted in $1-w_S$ localizes that crossing about as
-tightly out of sample and more tightly on ten of the fourteen train/test splits, a count that moves
-between six and twelve as the constants are fitted, so we claim no superiority for the certificate as
-a tracker of the error against the captured weight---out of sample it has none. The method is priced
-on three axes rather than one, the third---shots---measured here for the first time
-(Sec.~\ref{sec:prices}), and the primitive is validated against the one answer known exactly and
-independently of it: from the same calculation on the same lattice, the charge scale converges to a
-finite thermodynamic value while the spin scale closes as $\approx2.1/L$, with an independent
+Evaluated at five system sizes up to a sector of dimension $10\,306\,296$, the certificate is vacuous at
+every operating fraction of the resource scan, by factors of $1.66$ to $8.61$, converged in Krylov depth
+at $L=12$; only Fig.~\ref{fig:akwsampled}, at $85\%$ of its sector, is certified, at $350$--$900$ times
+its true error. Two results survive that measurement. The crossing of the trivial bound occurs at a true
+relative $L_1$ error between $1.2\times10^{-3}$ and $7.3\times10^{-3}$ over sixteen $(L,\eta)$ cells, a
+drift, not scatter, ordered in both arguments and conservative in $L$, computed without the answer---with the limit
+that a two-constant rule in $1-w_S$, fitted out of sample, localizes it more tightly on eleven of the
+fourteen splits, so we claim no superiority for the certificate as a tracker of the error against the
+captured weight. And in the determinant basis a device measures in, the coordinate support of the Krylov
+space $\mathcal K(H,\phi)$ is every determinant the reflection about the seed site allows, measured at
+$L=6$ to $14$, so at full captured weight a subspace holding the whole probe leaks unless it contains all
+of them (Sec.~\ref{sec:frontier:obstruction}); the vacuity at the operating fractions, all below full
+captured weight, is measured and not deduced from that fact. The method is priced in support, resolution
+and shots (Sec.~\ref{sec:prices}), and the full-sector references reproduce the opposite finite-size
+scaling of the charge and spin gaps, the spin gap closing as $\approx2/L$ with an independent
 effective-Heisenberg control (Table~\ref{tab:gaps}).
 
-Three limits bound all of it, and we state them as flatly as the results. \emph{First, the
-certificate does not certify the reconstructions this paper reports.} They are, at present,
-uncertified---vacuous at every published fraction and at each of the five sizes evaluated,
-above---and neither a sharper proof nor a rearrangement of the subspace repairs that.
-\emph{Second, the largest momentum-resolved spectrum is $L=12$, by exact diagonalization.} The three
-momentum-resolved responses reported here were computed classically by dynamical DMRG in
-2007~\cite{benthien2007}---at $120$, $100$ and $90$ sites in the charge, spin and single-particle
-channels respectively---and at $L=48$ in the Hubbard chain, $L=64$ in the Heisenberg chain, with
-correction vectors~\cite{nocera2016}; the wider classical toolbox is broader
-still---correction-vector and time-dependent DMRG, Chebyshev matrix-product states and
-kernel-polynomial expansions~\cite{kuehner1999,whitefeiguin2004,holzner2011,kpm2006,paeckel2019}, and
-the real-time propagation of selected configuration-interaction wavefunctions~\cite{tdasci2024}; one
-dimension is where tensor networks, since White's formulation~\cite{whitedmrg1992}, are
-near-optimal~\cite{schollwock2011}, and nothing in this work competes with that standard; the
-vocabulary of the thermodynamic limit is accordingly absent from it (Sec.~\ref{sec:physics}).
-\emph{Third, the certified regime costs more shots than the method saves.} Moving from the published
-fraction to the non-vacuous band multiplies the shots per snapshot needed for the marginal
-configuration by $7.5$ to $10$ at $L=8$ and by $20$ to $35$ at $L=12$, where that configuration
-carries a Born probability of $1$ to $2\times10^{-9}$: a regime a device can certify is, on these
-systems, one in which diagonalizing the whole sector is already the cheaper thing to do.
+Three limits apply. \emph{First,} the certificate does not certify the reconstructions at the operating
+fractions of the resource scan: at full captured weight a certificate of second order in the boundary
+coupling follows from the same identity, but below it, where those fractions lie, one is open. The
+certificate also refers both spectra to the exact ground-state energy (H1); in a shot-based pipeline
+$E_0$ is itself estimated on a sampled subspace, and the shift of $6.7\times10^{-4}\,t$ that $60\%$ of
+the $N$ sector gives at $L=8$ leaves the bound almost unchanged, $+0.20\%$, while multiplying the
+measured error by $16$ (Sec.~\ref{sm:leakage}). \emph{Second,} the largest momentum-resolved spectrum
+here is $L=12$, by exact diagonalization, whereas dynamical DMRG computed the same three channels at $90$
+to $120$ sites in 2007~\cite{benthien2007}, correction vectors reach $L=48$ in the Hubbard
+chain~\cite{nocera2016}, and the classical toolbox is broader
+still~\cite{kuehner1999,whitefeiguin2004,holzner2011,kpm2006,paeckel2019,tdasci2024}; one dimension is
+where tensor networks are near-optimal~\cite{whitedmrg1992,schollwock2011}, and nothing in this work
+competes with that standard. \emph{Third,} the certified regime costs more shots than the method saves:
+moving from the operating fraction to the non-vacuous band multiplies the shots per snapshot needed for
+the marginal configuration by $7.5$ to $10$ at $L=8$ and by $20$ to $35$ at $L=12$, where diagonalizing
+the whole sector is already the cheaper option.
 
-Two questions follow, and only one of them is a matter of more computing. Whether a certified regime
-exists at low sector fraction is now a well-posed measurement rather than an expectation, and the
-calibration above is the instrument for making it; whether it exists at all turns on a prior question
-this work can pose but not answer---whether any single-particle basis leaves the coordinate support
-of $\mathcal K(H,\phi)$ short of the entire sector, since it is that support, and not the quality of
-the sampler, that pins the threshold measured here.
+Whether a certified regime exists at low sector fraction is now a well-posed measurement, and the
+calibrated crossing is the instrument for making it. Whether it exists at all turns on two open
+questions: whether a certificate of second order in the boundary coupling can be evaluated below full
+captured weight without the answer, and whether some single-particle basis gives $\mathcal K(H,\phi)$ a
+coordinate support that is a small fraction of the sector. What this work provides toward both is a
+computable two-sided bound, a measured map of where it is informative and at what cost, and the
+structural reason it is not informative at the fractions sampling reaches.
 
-What this paper leaves behind is therefore narrow and, we think, useful: an obstruction measured
-rather than conjectured, binding a class of certificates and not only ours; a two-sided bound that
-names the boundary as the object the error is indexed on and can be evaluated without the answer; and
-a map of where that bound is informative, its negative half stated in the same voice as its positive
-one.
-
-% ---------------------------------------------------------------------------------
-%  ACKNOWLEDGMENTS -- added 2026-09-19 at the end of the last body section, which is
-%  where REVTeX places this block: main.tex inputs sec_10.tex and then \clearpage
-%  \appendix, so the block falls after the Conclusion and before Appendix A.
-%
-%  WHAT PRA ACTUALLY REQUIRES, checked rather than assumed (2026-09-19):
-%    * Data Availability Statement: REQUIRED.  "All published articles must include a
-%      Data Availability Statement (DAS)" -- journals.aps.org/pra/authors, and
-%      journals.aps.org/authors/data-availability-statements.  Written as Sec. 9.6.
-%    * Conflict of interest: NOT required inside the article.  APS requires authors to
-%      "alert editors to any potential conflict of interest such as sources of funding,
-%      condition of employment, and any limitations on disclosure of data, code, or
-%      experimental details", and only ENCOURAGES a statement in the paper itself
-%      ("authors are encouraged to declare any conflict of interest within the paper
-%      itself using a Conflict of Interest statement") -- journals.aps.org/authors/
-%      editorial-policies.  So none is printed here.  If Nicolas wants one, it goes in
-%      this block; the employment affiliation is the item an editor would expect named.
-%    * Funding: nothing is claimed here, in either direction.  This block asserts only
-%      what can be verified from the deposit, i.e. that the device runs happened.
-%  The IBM sentence is IBM Quantum's standard acknowledgement and disclaimer.
-% ---------------------------------------------------------------------------------
 \begin{acknowledgments}
 We acknowledge the use of IBM~Quantum services for this work; the two device runs reported in
 Sec.~\ref{sec:scope:hw} were executed on \texttt{ibm\_fez} and \texttt{ibm\_marrakesh}. The views
 expressed are those of the author and do not reflect the official policy or position of IBM or the
 IBM~Quantum team.
+
+AI tools were used in the preparation of this manuscript; the author takes full responsibility for
+its content.
 \end{acknowledgments}

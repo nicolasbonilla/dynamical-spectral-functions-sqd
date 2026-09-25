@@ -11,13 +11,19 @@ paper's addition channel
 this script takes the ONE subspace for which the retained Born weight is exactly one and for
 which no ranking, no argsort and no tie-breaking is involved:
 
-    S* = { determinants whose up-string has orbital 0 occupied }  =  supp(phi).
+    S* = supp(phi) = C \ Z,   C = { determinants whose up-string has orbital 0 occupied },
 
-S* is built COMBINATORIALLY from the string tables, never by testing phi against zero: the
-latter would make the subspace depend on ARPACK round-off (at L = 8 the smallest "nonzero"
-amplitude is 1.3e-17).  That the two definitions agree is checked, not assumed (W3).
+where Z is the set of determinants of C on which phi vanishes by symmetry.  |C| / D = 1/2 + 1/L
+exactly (W1).  Z is empty at L = 6; at L = 8 it has 213 elements, because 426 of the 4900
+ground-state amplitudes vanish by symmetry, so |S*| = 2237 = 0.5707 D.  Z is identified from
+the amplitudes, but only across a gap: every discarded |phi| is below 1e-12 relative (ARPACK
+round-off, at most 8e-15) and every kept one above 1e-9 (the smallest is 5.5e-7), so no
+threshold inside the gap moves S* (W3); and |S*| must equal the k = 0 count of the
+reflection-projected Krylov support in data/c3_frontier/adversarial/z_suppK_sym_L{L}.json,
+an independent computation (W8).  (Until 2026-09-25 S* was C itself, which at L = 8 padded
+it with the 213 zero-amplitude determinants; rel-L1(0.18) was then 0.327, now 0.352.)
 
-By construction  |S*| / D = 1/2 + 1/L  EXACTLY  and  w_{S*} = 1  EXACTLY.  It then measures,
+w_{S*} = 1 EXACTLY, with no ranking and no tie-break.  It then measures,
 on a dense frequency grid and by exact diagonalisation of both H and H_{S*} = P H P:
 
     rel-L1(eta) = ||A - A_{S*}||_1 / ||phi||^2 ,
@@ -58,14 +64,13 @@ USAGE
     python src/support_witness.py --check         # compute and verify, write nothing
 
 SELF-VERIFICATION (the script exits non-zero and writes nothing if any of these fails)
-    W1  |S*| == D * (1/2 + 1/L) as an EXACT integer identity
+    W1  |C| == D * (1/2 + 1/L) as an EXACT integer identity, and S* is a subset of C
     W2  |w_{S*} - 1| <= 1e-14                            (support carries all the weight)
-    W3  phi vanishes to machine precision OUTSIDE the combinatorially defined S*, i.e. the
-        operator really does support phi where the counting argument says it does.  The
-        smallest amplitude INSIDE S* is reported as a diagnostic and is NOT a criterion:
-        at L = 8 it is 1.3e-17, which is ARPACK round-off, and a witness must not depend on it
+    W3  phi vanishes to machine precision OUTSIDE C, and inside C the amplitudes split across
+        a gap: every discarded one <= 1e-12 and every kept one >= 1e-9, relative to max|phi|
     W4  the rel-L1 table reproduces the established values at eta = 0.18 t:
-        L = 6 -> 0.431 and L = 8 -> 0.327, atol 0.005
+        L = 6 -> 0.431 and L = 8 -> 0.352, atol 0.005
+    W8  |S*| equals the k = 0 support count of z_suppK_sym_L{L}.json (skipped if absent)
     W5  rel-L1 <= 1 + w_S = 2 at every eta                (the ceiling that forbids a 1/eta law)
     W6  Lambda computed here agrees with src/leakage_certificate.py certify(), an INDEPENDENT
         implementation of the same quantity, to 1e-8 relative
@@ -73,9 +78,9 @@ SELF-VERIFICATION (the script exits non-zero and writes nothing if any of these 
         ANALYTIC truncated-Lorentzian tail (2/pi) arctan(eta/PAD), so the reported rel-L1
         is a property of the subspace and not of the frequency window
 
-RUNTIME (measured from the repository root): L = 6 about 4 s; L = 8 about 184 s
-(one dense eigh of 3920 and one of 2450, plus the certify() cross-check); total
-188 s, under 1 GB.  No QPU.
+RUNTIME (measured from the repository root): L = 6 about 4 s; L = 8 about 3 min
+(one dense eigh of 3920 and one of 2237, plus the certify() cross-check); under 1 GB.
+No QPU.
 """
 import argparse
 import datetime
@@ -114,8 +119,10 @@ SEED = 20260918            # fixed ARPACK start vector -> bit-reproducible E0
 ETAS = (0.05, 0.10, 0.15, 0.18, 0.25, 0.50)
 NGRID = 60001              # dense frequency grid; the window is padded by PAD on both sides
 PAD = 12.0
-AMP_TOL = 1e-12            # W3: smallest admissible nonzero amplitude
-REF_RELL1_AT_018 = {6: 0.431, 8: 0.327}         # W4, from the established-truth record
+AMP_TOL = 1e-12            # W3: an amplitude at or below this (relative) is a structural zero
+KEEP_MIN = 1e-9            # W3: every kept amplitude must lie above this (relative): the gap
+REF_RELL1_AT_018 = {6: 0.431, 8: 0.352}         # W4
+SUPPK_SYM = os.path.join(REPO, "data", "c3_frontier", "adversarial", "z_suppK_sym_L%d.json")
 REF_ATOL = 0.005
 
 _T0 = time.time()
@@ -144,20 +151,26 @@ def build(L):
                    tol=1e-11, maxiter=100000)
     E0 = float(E0[0])
     Psi = V0[:, 0].reshape(Du0, Dd0)
+    ap = np.abs(Psi)
+    n_gs_zero = int((ap <= AMP_TOL * ap.max()).sum())          # structural zeros of Psi_0
+    gs_min_kept = float(ap[ap > AMP_TOL * ap.max()].min())
+    if gs_min_kept < KEEP_MIN * ap.max():
+        fail("(W3) L=%d: a ground-state amplitude %.3e lies inside the gap" % (L, gs_min_kept))
     cdU = AK.cdag_map(L, nup)
     phi = np.asarray((cdU[0] @ Psi).reshape(-1), dtype=float)
     H1, Du1, Dd1 = AK.build_H_explicit(L, U_HUB, nup + 1, nd, T_HOP)
 
-    # S* is defined COMBINATORIALLY, not by testing phi against zero.  phi = c^dag_{0,up}|Psi_0>
-    # is supported, by the structure of the operator, exactly on the determinants whose up-string
-    # has orbital 0 occupied -- and the sector index of a basis state is i = iu * Dd + id.  Taking
-    # S* = {i : phi_i != 0} instead would make the subspace depend on ARPACK round-off: at L = 8
-    # the smallest "nonzero" amplitude that way is 1.3e-17, i.e. noise, not physics.
+    # C: the determinants whose up-string has orbital 0 occupied (sector index i = iu * Dd + id),
+    # where c^dag_{0,up} can put amplitude at all.  S* = supp(phi) removes from C the structural
+    # zeros, whose ARPACK amplitudes are round-off (<= 8e-15 at L = 8) and sit seven orders of
+    # magnitude below the smallest physical one (5.5e-7); W3 checks that gap, W8 the count.
     Sup, _ = AK.strings(L, nup + 1)
     occ0 = np.array([i for i, m in enumerate(Sup) if (m >> 0) & 1], dtype=np.int64)
-    Sstar = (occ0[:, None] * Dd1 + np.arange(Dd1)[None, :]).ravel()
-    Sstar.sort()
-    return E0, phi, H1.tocsr(), Du1 * Dd1, Sstar
+    C = (occ0[:, None] * Dd1 + np.arange(Dd1)[None, :]).ravel()
+    C.sort()
+    a = np.abs(phi[C])
+    Sstar = C[a > AMP_TOL * float(np.abs(phi).max())]
+    return E0, phi, H1.tocsr(), Du1 * Dd1, C, Sstar, (n_gs_zero, d0)
 
 
 def spectral(poles, weights, grid, eta):
@@ -168,29 +181,47 @@ def spectral(poles, weights, grid, eta):
 
 
 def run_L(L):
-    E0, phi, H, D, Sstar = build(L)
+    E0, phi, H, D, C, Sstar, (n_gs_zero, d0) = build(L)
+    log("L=%d  Psi_0: %d of %d amplitudes vanish by symmetry" % (L, n_gs_zero, d0))
     n2 = float(phi @ phi)
     a = np.abs(phi)
-    nS = int(Sstar.size)
-    log("L=%d  D=%d  |S*|=%d  |S*|/D=%.12f   (1/2+1/L = %.12f)"
-        % (L, D, nS, nS / D, 0.5 + 1.0 / L))
+    amax = float(a.max())
+    nC, nS = int(C.size), int(Sstar.size)
+    nZ = nC - nS
+    log("L=%d  D=%d  |C|=%d (1/2+1/L)  |S*|=|supp(phi)|=%d  |S*|/D=%.6f  structural zeros=%d"
+        % (L, D, nC, nS, nS / D, nZ))
 
-    # ---- W1: the support size is an exact integer identity, not a rounded fraction
+    # ---- W1: |C| is an exact integer identity, and S* is inside C
     expected = D * (L + 2) // (2 * L)
-    if D * (L + 2) % (2 * L) or nS != expected:
-        fail("(W1) L=%d: |S*| = %d, expected D*(1/2+1/L) = %d" % (L, nS, expected))
-    # ---- W3: the combinatorial S* really does contain all the amplitude.  phi must vanish
-    # OUTSIDE it to machine precision.  The smallest amplitude INSIDE is only a diagnostic: at
-    # L = 8 it is 1.3e-17, i.e. ARPACK round-off on a component that is structurally zero, and
-    # making a pass criterion out of it would make the witness depend on that noise.
-    amin = float(a[Sstar].min())
-    off = a[np.setdiff1d(np.arange(D), Sstar)] if nS < D else np.zeros(0)
+    if D * (L + 2) % (2 * L) or nC != expected:
+        fail("(W1) L=%d: |C| = %d, expected D*(1/2+1/L) = %d" % (L, nC, expected))
+    if not np.isin(Sstar, C).all():
+        fail("(W1) L=%d: S* is not a subset of C" % L)
+    # ---- W3: phi vanishes outside C, and inside C the amplitudes split across a gap, so the
+    # structural zeros are not a choice of threshold
+    off = a[np.setdiff1d(np.arange(D), C)] if nC < D else np.zeros(0)
     amax_off = float(off.max()) if off.size else 0.0
-    if amax_off > AMP_TOL * max(1.0, float(a.max())):
-        fail("(W3) L=%d: max|phi| OUTSIDE the combinatorial S* is %.3e -- phi is not supported "
-             "where the operator says it is" % (L, amax_off))
-    log("L=%d  |phi| outside S* <= %.3e (machine zero); smallest |phi| inside S* = %.3e "
-        "(diagnostic only)" % (L, amax_off, amin))
+    if amax_off > AMP_TOL * amax:
+        fail("(W3) L=%d: max|phi| OUTSIDE C is %.3e -- phi is not supported where the operator "
+             "says it is" % (L, amax_off))
+    amin = float(a[Sstar].min())
+    zmax = float(a[np.setdiff1d(C, Sstar)].max()) if nZ else 0.0
+    if amin < KEEP_MIN * amax:
+        fail("(W3) L=%d: smallest kept |phi| = %.3e lies inside the gap (%.0e, %.0e) relative"
+             % (L, amin, AMP_TOL, KEEP_MIN))
+    log("L=%d  |phi| outside C <= %.3e; structural zeros <= %.3e; smallest kept |phi| = %.3e "
+        "(gap x%.1e)" % (L, amax_off, zmax, amin, amin / zmax if zmax else float("inf")))
+    # ---- W8: |S*| against the independent reflection-projected Krylov support at k = 0
+    ref_path = SUPPK_SYM % L
+    if os.path.exists(ref_path):
+        with open(ref_path) as fh:
+            k0 = int(json.load(fh)["union_count_by_k"]["1e-12"][0])
+        if k0 != nS:
+            fail("(W8) L=%d: |S*| = %d but z_suppK_sym gives %d at k = 0" % (L, nS, k0))
+        log("(W8) PASS  L=%d |S*| = %d = k=0 support of z_suppK_sym" % (L, nS))
+    else:
+        k0 = None
+        log("(W8) skipped: %s not present" % os.path.relpath(ref_path, REPO))
 
     # ---- w_S is 1 by construction (W2)
     wS = float(phi[Sstar] @ phi[Sstar]) / n2
@@ -293,12 +324,15 @@ def run_L(L):
     log("L=%d  local d log(rel-L1)/d log(eta): %s   (spread x%.2f; a pure 1/eta law would be "
         "-1.000 everywhere)" % (L, " ".join("%.3f" % x for x in slopes), spread))
 
-    return dict(L=L, D=int(D), nS=nS, frac=nS / D, frac_exact="1/2 + 1/L",
+    return dict(L=L, D=int(D), nS=nS, frac=nS / D, n_C=nC, frac_C=nC / D, frac_C_exact="1/2 + 1/L",
+                n_structural_zeros=nZ, suppK_sym_k0=k0,
+                ground_state_zeros=n_gs_zero, ground_state_dimension=int(d0),
                 E0=E0, norm_phi2=n2, w_S=wS,
-                amplitude_gap=dict(min_abs_phi_on_S=amin, max_abs_phi_off_S=amax_off,
-                                   note=("min_abs_phi_on_S is a DIAGNOSTIC: at L=8 it is 1.3e-17, "
-                                         "ARPACK round-off on a structurally zero component. S* "
-                                         "is combinatorial, so this number cannot move it.")),
+                amplitude_gap=dict(min_abs_phi_on_S=amin, max_abs_phi_structural_zero=zmax,
+                                   max_abs_phi_off_C=amax_off,
+                                   note=("S* = C minus the structural zeros; every discarded "
+                                         "amplitude is <= %g and every kept one >= %g relative "
+                                         "to max|phi|" % (AMP_TOL, KEEP_MIN))),
                 table=rows,
                 local_log_slopes_relL1_vs_eta=slopes,
                 local_slope_spread_factor=spread,
@@ -361,10 +395,11 @@ def main():
                 for r in results if r["L"] in REF_RELL1_AT_018},
             n_grid=NGRID, window_pad=PAD, etas=list(ETAS),
             checks=dict(
-                W1="|S*| == D*(1/2 + 1/L) as an exact integer identity",
+                W1="|C| == D*(1/2 + 1/L) as an exact integer identity; S* is a subset of C",
                 W2="|w_S* - 1| <= 1e-14",
-                W3=("|phi| outside the combinatorial S* is <= %g relative to max|phi|; "
-                    "the smallest amplitude inside S* is a diagnostic, not a criterion" % AMP_TOL),
+                W3=("|phi| outside C is <= %g relative to max|phi|; inside C every discarded "
+                    "amplitude is <= %g and every kept one >= %g" % (AMP_TOL, AMP_TOL, KEEP_MIN)),
+                W8="|S*| equals the k=0 count of data/c3_frontier/adversarial/z_suppK_sym_L{L}.json",
                 W4="rel-L1(eta=0.18) reproduces %s within %g" % (REF_RELL1_AT_018, REF_ATOL),
                 W5="rel-L1 <= 1 + w_S = 2 at every eta",
                 W6="Lambda agrees with src/leakage_certificate.py certify() to 1e-8 relative",

@@ -1,0 +1,176 @@
+\section{The leakage certificate and the weight-only bound: proof and details}
+\label{sm:leakage}
+
+\paragraph{The three hypotheses of Theorem~\ref{thm:leakage}.}
+\begin{description}
+\item[(H1) Common origin.] $A$ and $A_P$ are referred to the same $E_0$. A shift common to both cancels
+exactly (verified to $1.000000$ for shifts of $10^{-3}$, $10^{-2}$, $10^{-1}\,t$). If instead $A_P$ is
+referred to $E_0+\delta$, then
+$\lVert A-A_P^{(E_0+\delta)}\rVert_1\le\lVert A-A_P\rVert_1
++\lVert\phi_P\rVert^{2}(4/\pi)\arctan(|\delta|/2\eta)$, an additive term verified to $2\times10^{-5}$
+in all $48$ cases tested and \emph{which the certificate does not control}. A ground state obtained by
+Rayleigh--Ritz on $60\%$ of the $N$-electron sector at $L=8$ gives $\delta=6.7\times10^{-4}\,t$, which
+adds $0.0024$ to a bound of $1.2036$ ($+0.20\%$) while multiplying the \emph{measured} error by $16$.
+No cheap a posteriori control of $\delta$ is available: residual (Weinstein) and Temple
+bounds~\cite{weinstein1934,temple1928} computed on
+ground-state subspaces of $20$--$80\%$ of the $N$ sector at $L=6$ give $\arctan$ terms of $1.76$,
+$1.64$, $1.40$ and $0.92$, all vacuous against the ceiling of $2$.
+\item[(H2) Normalization and support of the $L_1$ norm.] The bound is on
+$\int_{\mathbb R}|A-A_P|\,d\omega$ normalized by $\lVert\phi\rVert^{2}=\int_{\mathbb R}A\,d\omega$. A
+relative error normalized by $\int_W A$ over a finite window and evaluated by quadrature --- the
+convention of this work's own resource scan --- is a different quantity. Measured here,
+$\lVert\phi\rVert^{2}/\int_W A=1.0100$, $1.0309$, $1.0373$ at $\eta=0.05$, $0.15$, $0.18\,t$ ($L=6$)
+and $1.0110$, $1.0278$, $1.0335$ ($L=8$), with a numerator ratio of $1.0040$--$1.0115$ across the $204$
+configurations of Sec.~\ref{sec:frontier}. The two conventions are never interchanged silently in this
+paper.
+\item[(H3) Exact reference.] $A$ is the exact spectral function of the full sector. If the reference is
+itself a Lanczos reconstruction of finite depth $n_\ell$, the theorem does \emph{not} bound
+$\lVert A^{(n_\ell)}-A_P^{(n_\ell)}\rVert_1$. Every measured error in this work is therefore labelled
+with the depth of its reference and with that reference's own drift, and we quote no error lying within
+a factor $20$ of that drift.
+\end{description}
+
+\paragraph{Proof of Theorem~\ref{thm:leakage}.}
+\begin{proof}
+Write $u=R(z)\phi$ and $u_P=R_P(z)\phi_P$, extended by zero outside $\operatorname{ran}P$.
+
+\emph{(1) The split.} Since $u_P\in\operatorname{ran}P$ and $(z-H_P)u_P=\phi_P$ there,
+$(z-H)u_P=zu_P-PHu_P-QHu_P=\phi_P-QHu_P$; subtracting this from $(z-H)u=\phi$ gives
+\begin{equation}
+u-u_P\;=\;R(z)\bigl[\,\phi_Q\;+\;QH\,R_P(z)\phi_P\,\bigr].
+\label{eq:split}
+\end{equation}
+This is the Feshbach--L\"owdin partition of the resolvent~\cite{feshbach1958,lowdin1962}, written as an
+exact identity rather than as an expansion: the first source term is the part of the probe the subspace
+never held, the second is the part of the Hamiltonian that carries amplitude out of it. Only $P^{2}=P$,
+$P^{\dagger}=P$, $H=H^{\dagger}$ and $\eta>0$ are used; no property of the determinant basis, of the
+ranking, or of the sampler enters anywhere below.
+
+\emph{(2) Pointwise.}
+$A-A_P=(\eta/\pi)(\lVert u\rVert+\lVert u_P\rVert)(\lVert u\rVert-\lVert u_P\rVert)$ and
+$\bigl|\lVert u\rVert-\lVert u_P\rVert\bigr|\le\lVert u-u_P\rVert$, so
+$|A-A_P|\le(\eta/\pi)(\lVert u\rVert+\lVert u_P\rVert)\,\lVert u-u_P\rVert$ at every $\omega$.
+
+\emph{(3) Integration.} By Cauchy--Schwarz in $\omega$,
+\begin{widetext}
+\begin{equation*}
+\lVert A-A_P\rVert_1\;\le\;\frac{\eta}{\pi}
+\Bigl[\int\bigl(\lVert u\rVert+\lVert u_P\rVert\bigr)^{2}d\omega\Bigr]^{1/2}
+\Bigl[\int\lVert u-u_P\rVert^{2}d\omega\Bigr]^{1/2}.
+\end{equation*}
+\end{widetext}
+The first bracket is at most $(\pi/\eta)^{1/2}(\lVert\phi\rVert+\lVert\phi_P\rVert)$, by Minkowski in
+$L^{2}(d\omega)$ and the two sum rules. For the second, apply Minkowski to Eq.~\eqref{eq:split}: its
+first term obeys the sum rule with seed $\phi_Q$, contributing exactly
+$(\pi/\eta)^{1/2}\lVert\phi_Q\rVert$; its second obeys
+$\lVert R(z)v\rVert\le\eta^{-1}\lVert v\rVert$, since $H$ is self-adjoint and $\operatorname{Im}z=\eta$,
+and the definition~\eqref{eq:lambda} then contributes at most $(\pi/\eta)^{1/2}\Lambda_P(\eta)/\eta$.
+Multiplying the three factors gives the leakage branch of~\eqref{eq:twobudget}.
+
+\emph{(4) The other two branches.} $A$ and $A_P$ are nonnegative with known integrals, so
+$\lVert A-A_P\rVert_1\le\int A+\int A_P=\lVert\phi\rVert^{2}(1+w_P)$ under no hypothesis at all; and
+$\bigl|\int A-\int A_P\bigr|\le\lVert A-A_P\rVert_1$ gives the lower bound
+$\lVert\phi\rVert^{2}(1-w_P)$.
+
+\emph{(5) The closed form.} $R_P(z)\phi_P=\sum_m c_m(z-\tilde E_m)^{-1}\ket{\tilde m}$, so
+\begin{equation*}
+\bigl\lVert QHR_P(z)\phi_P\bigr\rVert^{2}\;=\;\sum_{m,m'}
+\frac{c_m\bar c_{m'}\,\braket{g_{m'},g_m}}{(z-\tilde E_m)(\bar z-\tilde E_{m'})}\,.
+\end{equation*}
+With $x=\omega+E_0$ the remaining integral is
+$\int dx\,[(x-\tilde E_m+i\eta)(x-\tilde E_{m'}-i\eta)]^{-1}$, which has one pole in each half
+plane; closing above picks up $2\pi i/[(\tilde E_{m'}-\tilde E_m)+2i\eta]$, and multiplying by
+$\eta/\pi$ gives Eq.~\eqref{eq:lambda}.
+\end{proof}
+
+\paragraph{What object is certified.} If the resolvent inside $\operatorname{ran}P$ is itself evaluated
+by a Krylov recursion of depth $n_\ell$, then $\Lambda$ computed on that Krylov space bounds the error
+of the depth-$n_\ell$ reconstruction \emph{and of nothing else}. The convenient inequality
+$\Lambda_{\mathcal K}\ge\Lambda_S$ that would transfer the statement to the dense $A_S$ is false:
+$1169$ of $6000$ random triples violate it, at a minimum ratio of $0.5258$. Every table of
+Sec.~\ref{sec:frontier} carries the depth of the object it certifies for that reason. Full
+reorthogonalization is mandatory throughout: without it $P_{\mathcal K}$ is not a projector --- the
+orthogonality defect reaches $0.238$ at $L=8$, where the captured weight then reads $1.4868$, an
+impossible value --- and $\Lambda$ is inflated thirtyfold.
+
+\paragraph{Relation to the classical error theory, and the scope of the novelty claim.} Nothing in the
+proof is new as analysis, and we say so before a referee does. The split~\eqref{eq:split} is L\"owdin
+partitioning~\cite{lowdin1962}, the same algebra as the Feshbach projection of scattering
+theory~\cite{feshbach1958}; and sixty years of Rayleigh--Ritz and Krylov error analysis for resolvents
+and matrix functions~\cite{saad2011,golub2010,epperly2022} contains every rung of steps (2) and (3),
+along with far sharper residual, Temple and Kato--Temple estimates for individual
+eigenpairs~\cite{temple1928,weinstein1934,kato1949}, and the
+loss-of-orthogonality analysis of Paige~\cite{paige1976} that makes step (5) conditional on
+reorthogonalization, and the polynomial-restart convergence theory of Beattie, Embree and Sorensen~\cite{beattie2005}. Step (3) in particular is the reduced-basis bound on a Galerkin projection onto an arbitrary subspace---the dual norm of the residual over an inf--sup constant~\cite{rozza2008,hesthaven2016}---with that constant equal to $\eta$.
+
+Nor is ``a posteriori'' ours to claim, and we name the prior art rather than wait to be shown it.
+Stopping criteria for rational matrix functions of Hermitian matrices, computed from the residual
+alone, are Frommer and Simoncini's~\cite{frommersimoncini2008}; Jia and Lv's title is this section's
+claim word for word---\emph{a posteriori error estimates of Krylov subspace approximations to matrix
+functions}~\cite{jialv2015}---and Frommer and Schweitzer carry that line to Stieltjes
+functions~\cite{frommerschweitzer2016}; Lanczos approximations to matrix functions carry a posteriori bounds from the same Cauchy-integral argument as step (5)~\cite{chen2022lanczos,xuchen2025block}, and stochastic Lanczos quadrature carries them on an approximated spectral measure itself, in Wasserstein and Kolmogorov--Smirnov distance~\cite{chen2021slq}---a global density of states, not the seeded local measure bounded here; and five months before this work, on \emph{quantum} Krylov,
+Oliveira, Ziems and Glaser introduce ``two new metrics, the imaginary and unitary filters, that
+successfully assess the reliability of the obtained solutions without any knowledge of the true
+eigenspectrum''~\cite{oliveira2026}. That is the framing of this section, established earlier and by others, and the priority is theirs. On the selection side, that a subspace chosen for the energy misses configurations a response needs, and a selection criterion built for the response instead, are Reinholdt, Kjellgren and Kongsted's, for classical selected configuration interaction~\cite{reinholdt2026lr}.
+
+What we did not find in that literature is the conjunction of three things, and it is the whole of the
+novelty claimed here. First, a closed form for the frequency-integrated residual $\Lambda_P(\eta)$, assembled from the Ritz pairs, on a subspace of \emph{coordinates} carrying no Krylov structure, no invariance and no spectral-gap assumption---so that the estimate
+attaches to the set of determinants a sampler returned, which is not the span of the iterates of any
+recursion, and Eq.~\eqref{eq:split} is evaluated on that set directly. Second, that the bound is
+two-sided on the same object: the lower branch is fixed by the captured weight and the upper branch adds what the weight does not control, and Sec.~\ref{sec:frontier} uses the distance between them rather than either alone.
+Third, a \emph{measured} calibration of where that bound crosses the trivial one, over sixteen
+$(L,\eta)$ cells whose true errors span five decades (Sec.~\ref{sec:frontier:calib}), in place of an
+asymptotic statement about the crossing. Whether such a bound is \emph{useful} at the
+fractions sampling reaches is a separate question; it is not settled by the proof, and
+Sec.~\ref{sec:frontier} answers it --- in the negative --- by measurement.
+
+\paragraph{The pooled sweep of Fig.~\ref{fig:thm1iii-violation}, and its limits.}
+The pooled sweep behind Fig.~\ref{fig:thm1iii-violation} contributes $621$ subspaces from five Hamiltonian families and eight construction rules, written by two independent implementations; $15$
+reproduce their target to double-precision round-off and define no ratio. On the $606$ that remain the
+weight-only bound fails on $468$, and restricted to the regime this work operates in, $w_S\ge0.99$, it fails
+on $363$ of $363$, the mildest by a factor $2.10$ (Sec.~\ref{app:counterex}). The compliant cases are
+subspaces so poor that the relative error is already of order unity, where the bound asserts nothing.
+In the configuration of Fig.~\ref{fig:akwsampled} itself --- $L=8$, $\eta=0.18t$, the $3920$-dimensional
+$(N{+}1)$ sector, momentum seeds $\hat c^{\dagger}_{k\uparrow}\ket{\Psi_0}$, both branches, eight
+momenta, subspaces grown in order of accumulated Born weight --- the median violation factor at sector
+fractions $0.50$, $0.70$, $0.85$, $0.95$ is $18.5$, $23.6$, $26.5$, $29.9$, the $64$ rows spanning
+$15.1$ to $57.3$ overall and $15.1$ to $33.7$ at the fraction $0.85$ of Fig.~\ref{fig:akwsampled}. Those medians
+\emph{rise} monotonically, by a factor $1.6$, while the measured error over the same range falls by
+three orders of magnitude, from the $10^{-1}$ level at the lowest fraction to $1.0\times10^{-4}$ at
+$0.95$: the weight-only bound fails worst exactly where the reconstruction is best, which is the opposite
+of what an error bound is for. That is a defect of the functional form and not a pathology at an edge of
+parameter space, and it is therefore measurable: Fig.~\ref{fig:thm1iii-violation} plots it against
+sector fraction and against $\eta$, beside the replacement bound on the same subspaces.
+
+Three properties of that sweep are declared with it, because each of them limits how it may be read.
+Its ranking uses $K=16$ slices, one protocol step short of the $K=18$ of the resource scan of
+Sec.~\ref{sec:prices}. Its momentum seeds have support on $3848$ to $3920$ of the $3920$ determinants and captured weight below one at every fraction, so the support floor derived below for the local seed does not apply to it; the members of a translation orbit carry equal Born weight, so the cut can fall inside a tied orbit. How far a tie-breaking can move an error was measured on a local-seed subspace at $L=6$, fraction $0.85$, whose cut fell among zero-amplitude determinants: ten tie-breakings moved the measured error by ${\pm}20\%$, which is why the violation factors are quoted to three figures at most and why the rise
+across fractions is read as a direction and not as a rate. (That $\pm20\%$ is the spread of the
+\emph{measured error} over tie-breakings of a zero-amplitude cut. It is a different quantity from the
+$6.6\times10^{-4}$ by which ties move the \emph{bound} in the sweep of Sec.~\ref{sec:frontier}, where
+the cut falls below the support floor and only two determinants are tied.) And the error at fraction $0.85$ has two independent determinations that differ by a
+factor $2.3$, so only its order of magnitude is quoted. None of this touches the conclusion: the
+two-level counterexample is analytic, and the counting argument of the next paragraph but one uses no
+ranking, no protocol and no numerics at all. The sweep is corroboration of a conclusion that does not
+depend on it.
+
+\paragraph{Why the weight-only bound fails, in full.}
+The reconstruction is Rayleigh--Ritz on $H_S=P_SHP_S$ (Sec.~\ref{sec:method}), not the restriction of
+$A$ to a subset of its own eigenpairs: the Ritz energies $\tilde E_m$ are not eigenvalues of $H$, so
+weight the subspace \emph{keeps} is nonetheless moved in $\omega$. The obvious sketch elides exactly
+this. Having correctly noted $\int A=\lVert\phi\rVert^{2}$ and $\int A_S=\lVert P_S\phi\rVert^{2}$, it
+bounds the $L_1$ discrepancy by twice the missing weight --- a step legitimate when $[P_S,H]=0$, where
+$A_S$ is $A$ with the outside contributions deleted and
+$\lVert A-A_S\rVert_1=\lVert\phi\rVert^{2}(1-w_S)$ identically, and controlling nothing otherwise. The
+two-level example is the extreme: nothing is discarded there, and every unit of retained weight is
+displaced by $g$. What the integrals do give, with no commutator hypothesis, is
+$\lvert\int A-\int A_S\rvert\le\lVert A-A_S\rVert_{1}$, that is
+$\lVert\phi\rVert^{2}(1-w_S)\le\lVert A-A_S\rVert_{1}$ --- a \emph{lower} bound, with $0$ violations across the $606$ subspaces of the pooled sweep. It survives intact as the
+left-hand half of Theorem~\ref{thm:leakage}: the captured weight does say how wrong the reconstruction
+must be, it never said how wrong it can be.
+
+\paragraph{The normalization of the witness errors.} (Relative here and throughout this subsection means divided by $\lVert\phi\rVert^{2}$, the normalization
+of Theorem~\ref{thm:leakage}; dividing instead by the in-window integral of the exact $A$, as the
+repository's own relative $L_1$ does, moves them by about $1\%$ at $\eta=0.05\,t$ and by $2.6$ to
+$3.3\%$ at $\eta=0.18\,t$, measured in Sec.~\ref{app:hyp}, and the two conventions are not interchanged
+anywhere in this paper without saying so.)

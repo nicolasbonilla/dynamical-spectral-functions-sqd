@@ -1,0 +1,48 @@
+{
+ "L": 6,
+ "U": 8.0,
+ "eta": 0.18,
+ "D": 300,
+ "rows": [
+  {
+   "k_index": 0,
+   "block": 0,
+   "block_size": 50,
+   "suppK": 48,
+   "dimK": 13,
+   "first_nonvacuous": 48,
+   "w_S": 1.0,
+   "bound": 3.0869152593645907e-13
+  },
+  {
+   "k_index": 1,
+   "block": 1,
+   "block_size": 50,
+   "suppK": 50,
+   "dimK": 21,
+   "first_nonvacuous": 49,
+   "w_S": 1.0,
+   "bound": 1.5382606265795673
+  },
+  {
+   "k_index": 2,
+   "block": 2,
+   "block_size": 50,
+   "suppK": 50,
+   "dimK": 21,
+   "first_nonvacuous": 50,
+   "w_S": 1.0,
+   "bound": 2.126538847923224e-13
+  },
+  {
+   "k_index": 3,
+   "block": 3,
+   "block_size": 50,
+   "suppK": 48,
+   "dimK": 13,
+   "first_nonvacuous": 48,
+   "w_S": 1.0,
+   "bound": 2.1268348990497609e-13
+  }
+ ]
+}

@@ -50,10 +50,8 @@
 \label{sec:method}
 
 This section states the measurement primitive, fixes the one definition the rest of the paper turns on,
-and then says --- channel by channel, figure by figure --- which objects here were reconstructed from a
-finite number of measurements and which are full-sector references computed classically. That line is
-routinely drawn nowhere in the text, and a single clause of an abstract is enough to draw it in the
-wrong place. It is drawn here, explicitly, before any result is quoted.
+and says, channel by channel, which objects here were reconstructed from a finite number of
+measurements and which are full-sector references computed classically.
 
 \subsection{Construction}
 For a Hamiltonian $\hat H$ with $N$-electron ground state $\lvert 0\rangle$ of energy $E_0$, the
@@ -70,8 +68,7 @@ A_{p}(\omega)=&\sum_{n}\bigl|\langle n^{N+1}\lvert \hat c^\dagger_p\rvert 0\rang
 energies measured from $E_0$; the chemical potential $\mu=\tfrac12(E^{N+1}_0-E^{N-1}_0)$ places the
 Fermi level mid-gap for the particle--hole-symmetric Hubbard model at half filling. The subspace is
 built in three steps. \emph{(1)}~Prepare the response seeds
-$\lvert\phi^{\pm}\rangle=\hat c^{\dagger}_p\lvert 0\rangle,\ \hat c_p\lvert 0\rangle$ in the
-$(N{\pm}1)$ sectors. \emph{(2)}~Time-evolve each, $\lvert\phi^{\pm}(t_k)\rangle=e^{-i\hat H
+$\lvert\phi^{\pm}\rangle=\hat c^{\dagger}_p\lvert 0\rangle,\ \hat c_p\lvert 0\rangle$ in the $(N{\pm}1)$ sectors (every simulation here takes $\lvert 0\rangle$, the seeds and $e^{-i\hat Ht_k}$ exact; how the non-unitary seed is prepared on a device is not specified by this work). \emph{(2)}~Time-evolve each, $\lvert\phi^{\pm}(t_k)\rangle=e^{-i\hat H
 t_k}\lvert\phi^{\pm}\rangle$, and measure computational-basis bitstrings at each of the $K{+}1$
 snapshots; the union of the \emph{distinct} bitstrings returned is the determinant subspace
 $\mathcal S^{\pm}$. \emph{(3)}~Form $\hat H_{\mathcal S^{\pm}}=P_{\mathcal S^{\pm}}\hat H P_{\mathcal
@@ -177,8 +174,7 @@ are per channel and per stream.}
 %  *** DELETE IT FROM hardware.tex WHEN THIS FILE IS INSTALLED. ***
 % -------------------------------------------------------------------------------------
 \begin{figure*}[tp]\centering\includegraphics[width=\linewidth]{figs/fig_circuit.pdf}
-\caption{\textbf{One sampling primitive, four dynamical responses.} A shallow, ancilla-free
-circuit---state preparation and a Trotter layer repeated $K$ times (Givens rotations for the hopping
+\caption{\textbf{One sampling primitive, four dynamical responses.} An ancilla-free circuit---state preparation and a Trotter layer repeated $K$ times (Givens rotations for the hopping
 $t$, native $R_{zz}$ for the on-site $U\hat n_\uparrow\hat n_\downarrow$)---is measured in the
 computational basis; no Hadamard test or controlled unitary is run on the device. The sampled
 bitstrings define a sector-specific subspace $\mathcal S$ and feed a single classical engine---a Haydock
@@ -244,90 +240,25 @@ weight a subspace captures cannot by itself bound how far the reconstruction has
 no weight-only bound survives contact with Eq.~\eqref{eq:ritz} (Sec.~\ref{sec:retraction}), and why
 Theorem~\ref{thm:leakage} carries a second term indexed on the coupling
 $P_{\mathcal S}\hat HQ_{\mathcal S}$ across the boundary of $\mathcal S$, with $Q_{\mathcal S}$ the
-complementary projector --- exactly what Eq.~\eqref{eq:ritz} discards. Two corollaries are
-used later. A determinant acts on $A_{\mathcal S}$ through $H_{\mathcal S}$ even carrying no seed
-amplitude: at sector fraction $0.85$, $30.2\%$ of the selected determinants at $L=6$ and $36.9\%$ at
-$L=8$ lie outside $\operatorname{supp}(\phi)$, add exactly nothing to the captured weight, and still
-move the Ritz spectrum. And on the smallest subspace of \emph{unit} captured weight, $\mathcal
-S^{\star}=\operatorname{supp}(\phi)$ of size exactly $(\tfrac12+\tfrac1L)\dim$, the relative $L_1$ error
-of Eq.~\eqref{eq:ritz} does not vanish either; it is measured there at both resolutions, on both
-boundary conditions and against its ceiling, in Sec.~\ref{sec:retraction}.
+complementary projector---exactly what Eq.~\eqref{eq:ritz} discards. Two consequences used later, that
+determinants outside $\operatorname{supp}(\phi)$ still move the Ritz spectrum and that the error does not
+vanish on $\operatorname{supp}(\phi)$ itself, are stated in Sec.~\ref{sm:method} and measured in
+Sec.~\ref{sec:retraction}.
 
 \subsection{Provenance: what was reconstructed from shots, channel by channel}\label{sec:method:provenance}
 Table~\ref{tab:provenance} gives, for every dynamical object in this paper, the subspace it was built on
-and the measurements that built it. Three readings the word \emph{sampled} invites are closed off by it.
-
-\paragraph{The neutral channels are references, not reconstructions.} $S(q,\omega)$ and
-$S^{zz}(q,\omega)$ are computed here by a continued fraction over the \emph{entire} $N$-particle sector
-of $853\,776$ determinants at $L=12$, at recursion depth $n_\ell=200$: no subspace is selected and no
-shot is drawn, and the generating scripts say so in their own headers. The primitive \emph{targets}
-these two channels --- that is what Fig.~\ref{fig:circ} asserts, and what the seed algebra supports
---- and targeting a channel is not reconstructing it from measurements;
-they were not, nor were the $A(k,\omega)$ of Fig.~\ref{fig:lattice} or the $\mathrm{N_2}$ series of
-Fig.~\ref{fig:hero}. A reference at finite recursion depth is not the exact spectral function either, so
-its depth is quoted with it, and we quote no error that lies within a factor $20$ of the drift of its
-own reference.
-
-\paragraph{What the Born ranking is, and what it is not.} The two objects it would be easiest to call
-sampled without a budget --- Fig.~\ref{fig:akwsampled}(a,b) and the dashed curve of
-Fig.~\ref{fig:scaling}(b) --- select $\mathcal S$ by sorting the accumulated Born weight
-$\sum_{k}|\langle d\,|\,e^{-i\hat Ht_k}\phi\rangle|^{2}$ of the evolved state over the $K{+}1$ snapshots
-and keeping the top fraction. That weight is the distribution the device draws from, not the
-ground-state amplitudes and not the exact Lehmann residues, so the ranking is \emph{not} a clairvoyant
-oracle: the repository contains one of those, in \texttt{amortized\_recovery.py}, and labels it as such
-there. It is the infinite-shot limit $T\to\infty$ of the declared protocol, approached from above in
-error by any finite budget --- at matched subspace size finite sampling is worse by $1.50\pm0.25$ at
-$L=6$ and $1.96\pm0.12$ at $L=8$ (Table~\ref{tab:finiteshot}) --- and in that limit it selects nothing
-the device could never return: no determinant it ranks carries exactly zero accumulated weight at
-$L=6,8,10$ or $12$, and at $L=12$ no determinant of the whole sector does. What it is not is a
-finite-shot experiment, and it must not be called one. The
-replacement is measured and quoted with its budget: at $L=8$, $T=2.60\times10^{6}$ shots over $K{+}1=19$
+and the measurements that built it. The neutral channels $S(q,\omega)$ and $S^{zz}(q,\omega)$, the
+$A(k,\omega)$ of Fig.~\ref{fig:lattice} and the $\mathrm{N_2}$ series of Fig.~\ref{fig:hero} are
+full-sector references computed by continued fraction, not reconstructions: the primitive targets
+those channels, and targeting a channel is not reconstructing it from measurements. The Born ranking of
+Fig.~\ref{fig:akwsampled}(a,b) and of the published curve of Fig.~\ref{fig:scaling} is the infinite-shot
+limit of the declared protocol---neither a clairvoyant oracle nor a finite-shot experiment---and its
+finite-shot replacement is measured with its budget: at $L=8$, $2.60\times10^{6}$ shots over $19$
 snapshots reach sector fraction $0.835\pm0.0025$ at relative $L_1$ error $(4.81\pm0.27)\times10^{-3}$
-over eight independent shot streams (Fig.~\ref{fig:akwsampled}(c)), and the measured ladder from
-$2.4\times10^{4}$ to $1.9\times10^{7}$ shots for $L=6$ to $L=12$ is Fig.~\ref{fig:scaling}(c) and
-Table~\ref{tab:shots}. The literal configuration of Fig.~\ref{fig:akwsampled}(a,b)---$\eta=0.18\,t$,
-$K=16$, all sixteen channels---has since been run at finite shots: $5.2\times10^{6}$ per channel buy
-panel~(b)'s accuracy, but on a \emph{larger} subspace, so at the announced fraction the penalty is a
-measured $2.80$ and not the $2.05$ Table~\ref{tab:finiteshot} would transfer.
+(Fig.~\ref{fig:akwsampled}(c)), and the literal configuration of Fig.~\ref{fig:akwsampled}(a,b) takes
+$5.2\times10^{6}$ shots per channel. The branch sum rules are identities of the ground state, not
+measurements of a reconstruction; what is guaranteed in advance is moment exactness
+(Theorem~\ref{thm:moments}) and a shot count for high-probability configurations
+(Prop.~\ref{prop:shots}), and the second does not imply the first. The full declarations are in
+Sec.~\ref{sm:method}.
 
-\paragraph{What the a posteriori checks establish.} The branch sum rules $\int A_p^{\pm}\,d\omega$ are
-identities of the ground state, not measurements of a reconstruction. Integrated on the grid the figures
-use, at $L=6$ and $\eta=0.15\,t$, the exact and reconstructed addition branches carry $0.48659$ and
-$0.48647$ --- agreement to $2.4\times10^{-4}$ relative, both falling $2.7\%$ short of the analytic
-$1-\langle\hat n_p\rangle=0.5$ because Lorentzian tails of width $\eta$ leave the finite frequency
-window. That is a genuine consistency check on a zeroth moment, and not an error bound. The certificate
-is the two-sided bound of Theorem~\ref{thm:leakage}, and where it is non-vacuous is measured, not
-asserted, in Sec.~\ref{sec:frontier} --- an essential property given that the classical hardness of a
-specific instance is empirical rather than a theorem (Sec.~\ref{sec:honest}). What is guaranteed in
-advance is narrower and survives intact: a subspace containing the order-$K$ Krylov space reproduces
-that branch's exact spectral moments through order $2K{+}1$, and is realized with high probability by a
-shot budget polynomial in the target support and independent of the Hilbert-space dimension
-(Theorem~\ref{thm:moments} and Prop.~\ref{prop:shots}, Sec.~\ref{sec:moments}).
-
-\subsection{The two budgets}\label{sec:method:budgets}
-The two halves of this paper are the two terms of one inequality. With $Q_{\mathcal S}$ the projector
-complementary to $P_{\mathcal S}$ and
-$w_{\mathcal S}=\lVert P_{\mathcal S}\phi\rVert^{2}/\lVert\phi\rVert^{2}$, the upper branch of
-Eq.~\eqref{eq:twobudget} reads
-\begin{widetext}
-\begin{equation*}
-\lVert A-A_{\mathcal S}\rVert_{1}\ \le\ \bigl(\lVert\phi\rVert+\lVert P_{\mathcal S}\phi\rVert\bigr)
-\Bigl(\ \underbrace{\lVert Q_{\mathcal S}\phi\rVert}_{\text{what shots buy}}
-\ +\ \underbrace{\Lambda_{\mathcal S}(\eta)/\eta}_{\text{what they do not}}\ \Bigr).
-\end{equation*}
-\end{widetext}
-The captured-weight term $\lVert Q_{\mathcal S}\phi\rVert=\lVert\phi\rVert\sqrt{1-w_{\mathcal S}}$ is
-what shots buy:
-it vanishes as the sampler exhausts the Born support of the probe, and Table~\ref{tab:provenance} prices
-that exhaustion in measurements. The leakage term $\Lambda_{\mathcal S}(\eta)/\eta$ is what they do not
-buy. On the subspace that \emph{is} that support --- $\mathcal S^{\star}=\operatorname{supp}(\phi)$, of
-size exactly $(\tfrac12+\tfrac1L)\dim$, fixed by the probe and not by any ranking, so that
-$w_{\mathcal S}=1$ exactly by construction, with no tie-breaking and no zero-amplitude padding --- the
-weight term is identically zero and the relative error is still $0.43$ at $L=6$ and $0.33$ at $L=8$ at
-$\eta=0.18\,t$, rising to $1.15$ and $0.90$ at $\eta=0.05\,t$. $\Lambda_{\mathcal S}(\eta)$ is defined
-by the resolvent at resolution $\eta$ and exists only inside the spectral half of this work: the
-obstruction theorem of Sec.~\ref{sec:nogo} takes it as its subject and would have no subject without
-Sec.~\ref{sec:leakage}. Conversely, Sec.~\ref{sec:leakage} leaves open precisely the question
-Sec.~\ref{sec:nogo} answers --- whether the a posteriori certificate can be replaced by an a priori
-predictor computed from the state. Neither half can be removed without leaving the other incomplete in
-a way we can name.

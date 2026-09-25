@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 """ATK2 / the sharp reframing of 'the frontier'.
 
-Lambda_S = 0  <=>  Q H K(H_S,phi_S) = 0  <=>  span(S) contains an H-invariant subspace
-containing phi  <=>  span(S) contains the Krylov space K = K(H,phi) (dim = # distinct
-overlapping eigenvalues).  Because span(S) is a COORDINATE subspace, this happens iff
+Lambda_S = 0  <=>  Q H K(H_S,phi_S) = 0  <=>  span(S) contains K(H, phi_S), the Krylov space of
+the RETAINED part of the probe; at full captured weight (phi_S = phi) that is K = K(H,phi).
+(Corrected 2026-09-25: the earlier statement used K(H,phi) for every S, which fails for w_S<1.)
+
+WARNING, 2026-09-25: the dense projector below is contaminated where eigenvalues of the two
+reflection sectors (j -> -j about the seed site) are degenerate: eigh mixes them, and the
+reflection-forbidden determinants -- which vanish exactly in every vector of K -- are counted.
+At L = 8 it reports 3920 of 3920; the true support is 3902.  The support quoted in the paper
+is from z_suppK_sym.py, which projects onto the reflection sector of phi.  Because span(S) is a COORDINATE subspace, this happens iff
 S contains the COORDINATE SUPPORT of K,  supp(K) = { i : (P_K)_ii > 0 }.
 
 So  FR_exact := |supp(K)|/D  is a HARD, ranking-independent threshold:

@@ -165,6 +165,43 @@ def strip_tex_comments(text):
     return "\n".join(out)
 
 
+def strip_for_bundle(text):
+    """The .tex text that is SHIPPED: every comment removed, with TeX's reading unchanged.
+
+    arXiv publishes the source, and the working tree's comments are build notes, not paper.
+    A line that is only a comment is dropped whole (TeX reads nothing from it, not even its
+    end of line).  A comment after text is cut but its '%' is kept, because that '%' is what
+    suppresses the end-of-line space.  Same scanner as strip_tex_comments, same CR rule.
+    The clean-room compile below checks the result page by page against the tree's PDF.
+    """
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    out = []
+    for line in text.split("\n"):
+        i, cut = 0, None
+        while i < len(line):
+            c = line[i]
+            if c == "\\":
+                i += 2
+                continue
+            if c == "%":
+                cut = i
+                break
+            i += 1
+        if cut is None:
+            out.append(line)
+        elif line[:cut].strip():
+            out.append(line[:cut] + "%")
+        # else: a whole-line comment, dropped
+    return "\n".join(out)
+
+
+def bundle_bytes(rel, data):
+    """Bytes of member `rel` as shipped: .tex files comment-stripped, everything else as is."""
+    if rel.lower().endswith(".tex"):
+        return strip_for_bundle(data.decode("utf-8")).encode("utf-8")
+    return data
+
+
 def _skip_space(s, i):
     while i < len(s) and s[i] in " \t\r\n":
         i += 1
@@ -373,7 +410,7 @@ def make_tarball(closure, out_path, paper=PAPER):
     tf = tarfile.open(fileobj=buf, mode="w", format=tarfile.USTAR_FORMAT)
     for rel in members:
         src = os.path.join(paper, rel.replace("/", os.sep))
-        data = open(src, "rb").read()
+        data = bundle_bytes(rel, open(src, "rb").read())
         ti = tarfile.TarInfo(rel)
         ti.size = len(data)
         ti.mtime = 0
@@ -469,12 +506,13 @@ def audit_bundle(tar_path, paper=PAPER):
                              "class that typeset a build note on page 43" % (i, name))
             i += 1
 
-    # every shipped byte must be the working tree's byte
+    # every shipped byte must be the working tree's byte (a .tex file after its comments
+    # are stripped by strip_for_bundle; the compile below checks that nothing typeset moved)
     for name, blob in sorted(blobs.items()):
         src = os.path.join(paper, name.replace("/", os.sep))
         if not os.path.isfile(src):
             fails.append("MEMBER HAS NO SOURCE IN THE TREE: %s" % name)
-        elif open(src, "rb").read() != blob:
+        elif bundle_bytes(name, open(src, "rb").read()) != blob:
             fails.append("MEMBER DIFFERS FROM THE TREE: %s" % name)
     return fails, info
 
@@ -1147,7 +1185,7 @@ def _fake_tarball(cl, paper_dir, out_path):
         src = os.path.join(paper_dir, rel.replace("/", os.sep))
         if not os.path.isfile(src):
             continue
-        data = open(src, "rb").read()
+        data = bundle_bytes(rel, open(src, "rb").read())
         ti = tarfile.TarInfo(rel)
         ti.size, ti.mtime, ti.mode = len(data), 0, 0o644
         ti.uid = ti.gid = 0

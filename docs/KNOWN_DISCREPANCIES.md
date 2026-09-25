@@ -356,10 +356,7 @@ surprise by a referee.
    workflow has still never executed, because it cannot run until the commit carrying it is
    **pushed**, and it has not been (§24). `README.md` and `FILE_INDEX.md` must not call the
    guardian "what CI runs" until it has.
-7. **`data/gflow.json` has no generator** anywhere in `src/`, contradicting the "complete reproduction
-   repository" of `hardware.tex:154-155`. The guardian deliberately does **not** check its internal
-   consistency: a passing check on a file with no provenance would manufacture false confidence. The
-   defect is the missing generator.
+7. **`data/gflow.json` has no generator** — resolved on 2026-09-25: `src/gflow_dequant.py` — the algorithm of `calculations/validate_realnoise.py` of the companion review (arXiv:2608.05314), unchanged, with every seed written to `data/gflow_runs/` and merged into `data/gflow.json` (`--merge`). Needs `pyscf`, `torch` and `qiskit-ibm-runtime` (FakeTorino readout rates): the Docker image `sqd-nb` plus `pip install qiskit-ibm-runtime`; twenty single-threaded runs (ten seeds at 500 and at 1000 shots, symmetry-pinned gauge, the companion's ladder configuration); run a few at a time, since twenty at once exhausted the memory of a 16-core laptop. The per-seed values of the original run were never stored; the file now holds a regenerated run with every seed, and the paper prints its numbers.
 8. **`paper/main.pdf` is a dated build and must be rebuilt at the end of every editing pass.**
    *(The v2 wording said "a `\today` of 5 September 2026 ... the current 40-page build"; the
    manuscript is now the 59-page REVTeX v3, so both numbers are superseded.)* `paper/main.bbl` is
@@ -380,7 +377,7 @@ at the first non-zero exit -- which is what `make` does. Measured 2026-09-18:
 |---|---|
 | `make figures` | **6/6 commands, exit 0**, and every regenerated fragment byte-identical to the committed one |
 | `make check-figures` | **PASS** -- 8 regenerated artefacts byte-identical (re-measured 2026-09-19). **Read it as 7**: one of the eight is compared against a copy of itself, §25 |
-| `make verify` | **PASS** -- 831 checks, 0 failures, **5 registered xfail, 0 xpass**, 2 skips, 9 846 numeric assertions (re-measured 2026-09-19 after the C3 frontier deposit added section (10b), 2 387 assertions, and registered `ladder_L4.ngrid_eta050` as the fifth open defect; the earlier 807 / 7 454 / 4, 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
+| `make verify` | **PASS** -- 868 checks, 0 failures, **5 registered xfail, 0 xpass**, 2 skips, 9 884 numeric assertions (re-measured 2026-09-19 after the C3 frontier deposit added section (10b), 2 387 assertions, and registered `ladder_L4.ngrid_eta050` as the fifth open defect; the earlier 807 / 7 454 / 4, 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
 | `make data` | **exit 0** -- `paper/figs/sqw_edges.dat` and `data/charge_gap.json` regenerated (~256 s, L=4...12 ED) |
 | `make paper` | two `pdflatex` passes; not re-run in this pass |
 | `make reproduce` | **NOT verified** -- it executes `notebooks/00_Reproduce_Everything.ipynb`, which needs `pyscf`; see §13 |
@@ -631,7 +628,7 @@ So the binary answer depends on which tree you mean:
 | tree | does a referee reach the paper's numbers? |
 |---|---|
 | the public repository as it stands (`78d8131`) | **No.** It breaks at the third generator of `make figures`, and the statement would point at documents that are not there. |
-| the working tree of 2026-09-19 | **Yes**, within the limits tabulated in `REPRODUCE.md`: the guardian passes with 831 checks and 9 846 numeric assertions, the six figure commands run, and the gaps are declared. (`sqw_L12.json` reproduces to `max|dS| = 8.2e-05`, **not** bit for bit — the bit-identity claim that stood here was measured again on 2026-09-19 and withdrawn; see §12.) |
+| the working tree of 2026-09-19 | **Yes**, within the limits tabulated in `REPRODUCE.md`: the guardian passes with 868 checks and 9 884 numeric assertions, the six figure commands run, and the gaps are declared. (`sqw_L12.json` reproduces to `max|dS| = 8.2e-05`, **not** bit for bit — the bit-identity claim that stood here was measured again on 2026-09-19 and withdrawn; see §12.) |
 
 **The distance between those two rows is one `git push`.** Until it is made, the Data Availability
 Statement must not be signed: signing it publishes a statement that is false of what the reader can

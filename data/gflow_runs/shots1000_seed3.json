@@ -1,0 +1,27 @@
+{
+ "shots": 1000,
+ "seed": 3,
+ "error_mHa": {
+  "raw": 41.26952964409725,
+  "ibm": 38.7155156489456,
+  "ibm+cheap": 26.718163105101667,
+  "gfn-nocheap": 24.961063264044014,
+  "gfn-fused": 21.48713990648332
+ },
+ "E_FCI_Ha": -108.78658007211307,
+ "valid_shots": 732,
+ "noise": {
+  "p10": 0.02294921875,
+  "p01": 0.02001953125,
+  "depol": 0.05,
+  "source": "FakeTorino median readout"
+ },
+ "versions": {
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "pyscf": "2.14.0",
+  "torch": "2.13.0+cpu"
+ },
+ "threads": 1,
+ "seconds": 1710.0
+}

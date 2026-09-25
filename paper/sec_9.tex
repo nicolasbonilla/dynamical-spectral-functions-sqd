@@ -154,308 +154,81 @@
 \section{Hardware, scope, and the region where the method has no advantage}
 \label{sec:scope}\label{sec:honest}
 
-Three claims of the previous version were larger than the quantity that fixes them: the hardware claim
-is fixed by a subspace size, the chemistry claim by a set of sector dimensions, and the advantage claim
-by the same bond dimension this paper puts forward as its own cost tracker. This section states each
-with its fixing quantity attached, and derives---rather than concedes---the region in which this method
-has no advantage over a classical one.
-
 \subsection{The two hardware runs, and what ``exact by coverage'' means}
 \label{sec:scope:hw}
 
-Both device runs are preserved in full and they are the entirety of the quantum hardware used in this
-work. The first was executed on the IBM~Heron processor \texttt{ibm\_fez} (job
-\texttt{d9s16avpemts73ct6g8g}): the $L=6$ Hubbard chain at $U/t=4$, $\eta=0.15\,t$, $12$ qubits,
-$3.5\times10^{5}$ computational-basis shots---$5\times10^{4}$ on each of seven circuits
-$k=0,\dots,6$, of which $k=0$ is the $t=0$ reference---pooled into one subspace,
-under TREX readout twirling, Pauli twirling and dynamical decoupling and
-with no zero-noise extrapolation
-(Fig.~\ref{fig:circ} is the primitive, Fig.~\ref{fig:heron}(a) the
-result). Self-consistent configuration recovery returned $|\mathcal S|=300$ determinants of an
-$(N{+}1)$ sector of dimension $300$; the recorded relative $L_1$ is $0.0$, and the deposited provenance
-string says why in its own words---the reconstructed $A_{\rm hw}$ equals the exact $A$ byte for byte
-because the recovered subspace spans the whole sector.
+Both device runs are preserved in full and are the entirety of the quantum hardware used in this work.
+The first, on the IBM~Heron processor \texttt{ibm\_fez}, sampled the $L=6$ Hubbard chain at $U/t=4$
+with $12$ qubits and $3.5\times10^{5}$ shots, and configuration recovery returned all $300$ determinants
+of the $(N{+}1)$ sector, so the reconstructed $A_{\rm hw}$ equals the exact $A$ \emph{by coverage}:
+Rayleigh--Ritz on the whole sector is its diagonalization, and the vanishing error is an identity rather
+than a measurement of device fidelity (Fig.~\ref{fig:heron}(a)). The circuits prepared a
+computational-basis $(N{+}1)$ determinant rather than $\hat c^{\dagger}_p\lvert\Psi_0\rangle$ and applied
+$R_{xx}R_{yy}$ hopping without Jordan--Wigner strings, so they are not the primitive of
+Fig.~\ref{fig:circ}; the run establishes that the pipeline executes end to end on a processor, and
+nothing about accuracy at incomplete coverage. The second, stretched $\mathrm{N_2}$ at $24$ qubits on
+\texttt{ibm\_marrakesh}, reaches $0.59\pm0.14$~mHa of the exact active-space energy after recovery,
+below the $29.5$~mHa of the noiseless simulation of the same circuit (Fig.~\ref{fig:heron}(b)). The
+record does not store the recovered subspace sizes on which that comparison turns, so it cannot say
+whether device noise helps, although the mechanism is established elsewhere~\cite{vaquero2026}. What is
+controlled is recovery against no recovery on the same corrupted bitstrings, and there the gain grows
+with the noise (Figs.~\ref{fig:noiserec} and~\ref{fig:noise}). These runs are smaller than the
+spectral records of Refs.~\cite{vilchez2025,granet2026akw,quantinuum_dsf2026} and are not offered as a
+scale result; the full account, the job identifiers and the shot arithmetic are in
+Sec.~\ref{sm:scope}.
 
-That number is exact \emph{by coverage}, and the distinction is not rhetorical: at
-$|\mathcal S|=\dim$, Rayleigh--Ritz on $\operatorname{span}(\mathcal S)$ \emph{is} diagonalization of
-the full sector, $P_{\mathcal S}HP_{\mathcal S}=H$, and a vanishing error is an identity rather than a
-measurement of device fidelity. The run establishes that the pipeline executes end to end on a
-processor---transpiled circuits, device counts, recovery to the correct particle-number sector, and the
-classical Lehmann assembly of Sec.~\ref{sec:method}---which is what a proof of principle is, and it
-establishes nothing about accuracy at incomplete coverage, the regime the rest of this paper is about.
-The caption of Fig.~\ref{fig:heron} already said ``exact by coverage'', while the abstract of v1--v2
-said the method ``runs on the IBM Heron processor'' and the conclusion said ``demonstrated on'' it.
-Both claimed more than $|\mathcal S|=\dim$ can support and both are withdrawn: the runs are
-\emph{executed on} the named processors, and the coverage qualification now governs the abstract and
-the conclusion as well as the caption.
-
-\paragraph{The second run, and a comparison we withdraw.} Stretched $\mathrm{N_2}$ ($R=2.0$~\AA,
-CAS(10e,12o)/cc-pVDZ, $24$ qubits) was executed on \texttt{ibm\_marrakesh} (job
-\texttt{da125f2ein7c73bcsqs0}, $10^{4}$ shots, double-factorized Trotter circuit). Averaged over $8$
-recovery seeds on the cached device counts it reaches $0.59\pm0.14$~mHa of the exact active-space value
-(best seed $0.40$~mHa), while the noiseless statevector simulation of the same shallow circuit stops at
-$29.5$~mHa (Fig.~\ref{fig:heron}(b)). Versions~1--2 read that contrast as device noise \emph{helping},
-and we withdraw the reading, because the mechanism named for it is a statement about a quantity the
-record does not contain: recovery is said to turn corrupted bitstrings into valid configurations and
-thereby \emph{enlarge} the variational subspace---a valid-shot economy, not a fidelity gain---so the
-comparison is decided by the two recovered subspace sizes, and neither is stored. The same gap runs
-through the controlled sweep, whose script saves the size of the naively post-selected subspace and not
-of the recovered one, so the two places where an error \emph{below} the noiseless value is
-reported---CO from $1.73$ to $0.63$~mHa and $\mathrm{C_2}$ from $0.184$ to $0.026$~mHa, between
-$\varepsilon=0$ and $\varepsilon=20$--$30\%$---rest on the same unrecorded variable, at the price of one
-line in a script that already builds the subspace.
-
-The mechanism itself is not in dispute, and the group that established it belongs in the paragraph
-that withdraws our measurement of it, not in a referee's report. On the dissociation of
-$\mathrm{N_2}$ in a large active space, with the same LUCJ ansatz used for the run above,
-Vaquero-Sabater, Carreras, Broers, Shirakawa, Yunoki and Casanova report that ``sampling noise can
-enhance Hilbert-space exploration by generating additional configurations beyond those supported by
-the ideal ansatz,'' and that ``when combined with configuration recovery, this leads to systematically
-improved energies''~\cite{vaquero2026}: the same molecule, the same ansatz and the same mechanism as
-the reading withdrawn above, and there it is carried by a controlled comparison. What this work
-withdraws is therefore its own measurement of the effect and not the effect. Our two arms differ in
-the one quantity neither of them recorded, so they cannot be evidence either way, whatever the
-literature independently establishes.
-
-What \emph{is} controlled is the comparison in which both arms consume the same corrupted bitstrings at
-the same rate with the same seeds and differ only in the recovery step, and there the gain from
-recovery is measured and grows with the noise: at $\varepsilon=2\%$ eighteen of nineteen molecules
-reach chemical accuracy with recovery against seventeen without it, at $\varepsilon=30\%$ recovery
-roughly halves the error on $\mathrm{N_2}$ ($31.9\to13.2$~mHa, Fig.~\ref{fig:noiserec}), and on the
-Hubbard chain it holds the spectral relative $L_1$ near $0.05$ out to $\varepsilon\approx16\%$
-(Fig.~\ref{fig:noise})---seed-averaged, with $\pm1$~s.d.\ bands, at matched noise. That is the noise
-result of this work.
-
-\paragraph{Scale.} These runs are $12$ and $24$ qubits, and the same class of observable has been
-executed elsewhere at larger scale---retarded spin Green's functions of the one-dimensional
-Fermi--Hubbard model on IBM~Heron~r2 at up to $30$ qubits~\cite{vilchez2025}, an ARPES-type
-$A(k,\omega)$ on a $27$-site chain at $54$ qubits~\cite{granet2026akw}, dynamical structure factors
-on trapped ions against scattering data~\cite{quantinuum_dsf2026}---so our device record is smaller
-than every entry in that class and is not offered as a scale result. It is not the smallest such record
-either, and we name the one below it: a spectral function was reconstructed on a trapped-ion device
-from a four-qubit Hubbard dimer~\cite{greenediniz2024}. What is new in our run
-is the object assembled, the $(N{\pm}1)$-sector Lehmann construction from a bitstring-sampled subspace,
-at a size where the coverage question is degenerate, and Sec.~\ref{sec:prices} says how degenerate in
-shots: the $3.5\times10^{5}$ spent---seven circuits at $5\times10^{4}$ shots each, pooled into one
-subspace---are $14.4$ times the $(2.43\pm0.34)\times10^{4}$ that Table~\ref{tab:shots} measures for one
-orbital seed and one branch at $L=6$, so complete coverage of a $300$-dimensional sector is what the
-budget predicts rather than a surprise.\footnote{Table~\ref{tab:shots} replicates the repository protocol, $K=18$ with $19$ snapshots,
-at $U/t=8$ rather than the $U/t=4$ of the device run; this is a consistency statement between two
-budgets, not an identity.} The first size at which a device run would test the reconstruction rather
-than the pipeline is $L=8$: sector $3\,920$, at $(2.70\pm0.13)\times10^{5}$ shots per orbital seed and
-branch---a factor $1.3$ \emph{below} what was already spent here, so what confined this run to $L=6$
-was not the shot budget. The momentum-resolved observable at that size is a different matter: sixteen
-channels, ${\approx}4\times10^{6}$ shots, an order of magnitude above this job.
-
-\subsection{The molecular suite, and the size of its sectors}
-\label{sec:scope:mol}
-
-The nineteen-molecule suite reconstructs the orbital-projected addition spectral function $A(\omega)$
-at dissociation in a valence bond-breaking active space, against a subspace grown by multinomial
-sampling of the time-evolved probe: $8\,000$ draws at each of $27$ evolution times,
-$2.16\times10^{5}$ per molecule, at $\eta=0.10$~Ha, from a single fixed random seed and with no spread
-reported across seeds. What decides the reach of that test is not the shot budget but the sector it is
-poured into, and Table~\ref{tab:molscope} gives it.
-
-\begin{table*}[tp]\centering\small
-\caption{\textbf{What the nineteen-molecule reconstruction tests.} The suite grouped by whether the
-reported error is an approximation or an identity. $D$ is the dimension of the $(N{+}1)$ sector the
-reconstruction runs in---all nineteen species take the addition branch---and $|\mathcal S|$ the
-absolute subspace size at the end of the protocol. Top row: five sectors of
-dimension $2$, one of $3$ and one of $6$, where the reported error is identically zero and where in
-three cases the sampled subspace is the entire two-dimensional sector. Middle row: five further cases
-whose subspace already contains the whole support of the probe, so what is reported is floating-point
-round-off. Bottom row: the seven cases in which a truncation costs something. The largest sector in the
-suite is $300$, the dimension of the $L=6$ Hubbard sector of Sec.~\ref{sec:scope:hw}, against
-$731\,808$ at $L=12$ on the lattice side of this work.}\label{tab:molscope}
-\begin{tabular}{lcccc}
-\toprule
- & count & $D$ & $|\mathcal S|$ & rel-$L_1$\\
-\midrule
-sector of dimension $\le6$       & $7$ & $2$--$6$    & $1$--$2$   & $0$ exactly\\
-subspace spans the probe support & $5$ & $24$--$90$  & $6$--$12$  & $\le1.4\times10^{-14}$\\
-genuine truncation               & $7$ & $20$--$300$ & $5$--$149$ & $2.2\times10^{-6}$--$1.0\times10^{-4}$\\
-\bottomrule
-\end{tabular}
-\end{table*}
-
-% --- float declarations moved here from main.tex (placement only):
-%     declared at the head of the section that discusses them instead of at
-%     its end, so the double-column queue drains across the section instead
-%     of into a run of float-only pages.  Declaration ORDER is unchanged, so
-%     no figure and no table is renumbered.
-\input{table_molecules_v3.tex}
-\input{carried/fig_hero.tex}
 \input{carried/fig_heron.tex}
-\input{carried/fig_noise.tex}
-\input{carried/fig_noiserec.tex}
 
-Twelve of the nineteen reconstructions are exact by construction rather than by approximation, and the
-dimensions say why: seven sectors have dimension six or less, and five more are exhausted by six to
-twelve determinants. The sentence of v1--v2 concluding from this suite that the reconstruction is
-``both exact and efficient across chemistry'' is withdrawn, because on twelve of the nineteen there is
-nothing for efficiency to mean. A second label goes with it: the suite was described as
-``FCI-verified'' to better than $10^{-5}$~Ha, but the comparison behind that phrase is an active-space
-CASCI energy against itself, and the residual the appendix records is $1.1\times10^{-13}$~Ha across all
-$38$ points---a convergence check on a deterministic diagonalization, worth keeping in the
-reproducibility appendix at its true magnitude, but not a validation against an independent method.
 
-What the suite does test is the bottom row of Table~\ref{tab:molscope}, and it is a result. On seven
-Hamiltonians---$\mathrm{O_2}$, CN, NO, CO, $\mathrm{N_2}$, $\mathrm{NH_3}$ and $\mathrm{H_6}$, in
-sectors of dimension $20$ to $300$---the same primitive reproduces the orbital-projected $A(\omega)$ to
-a relative $L_1$ between $2.2\times10^{-6}$ and $1.0\times10^{-4}$ from $21\%$ to $50\%$ of the sector.
-Those seven are independent chemical Hamiltonians rather than one molecule repeated, and their
-agreement is a consistency check of the primitive outside the Hubbard family. It is not a scaling
-statement and is not on a common axis with Sec.~\ref{sec:prices}, since the Hamiltonians, the
-broadening and the error level all differ. Per-species dimensions, subspace sizes and bond dimensions
-are in App.~\ref{app:repro}, whose column $D$ is the one whose absence from
-Table~\ref{tab:molecules}---which prints $|\mathcal S|/D$ and never $D$---made the scope invisible.
-% %TODO(table): add a $D$ column to table_molecules.tex.  Until it is there, this sentence must keep
-% pointing at App.~\ref{app:repro} and must not say that Table~\ref{tab:molecules} carries $D$.
 
-\subsection{The boomerang: a region of no advantage, derived from our own resource statement}
+\paragraph{The molecular suite.} The nineteen-molecule suite and the dimensions of its sectors are in Sec.~\ref{sec:scope:mol}. Twelve of the nineteen reconstructions are exact by construction, because their sampled subspaces, of at most twelve determinants, already contain the probe's Krylov space, so the suite cannot show that the reconstruction is efficient across chemistry. On the seven Hamiltonians with sectors of dimension $20$ to $300$ the same primitive reproduces the orbital-projected $A(\omega)$ to a relative $L_1$ between $2.2\times10^{-6}$ and $1.0\times10^{-4}$ from $21\%$ to $50\%$ of the sector: a consistency check of the primitive outside the Hubbard family, not a scaling statement.
+
+\subsection{A region of no advantage, derived from our own resource statement}
 \label{sec:scope:boomerang}
 
-The resource statement of Sec.~\ref{sec:nogo} has a consequence for the standing of this method, and we
-derive it here rather than wait to have it put to us. What tracks the determinant support is $\chi$,
-the minimal bond dimension across a bipartition in the working basis (Sec.~\ref{sec:nogo:chi}). But
-$\chi$ is, by definition, the cost parameter of a matrix-product representation of the same state. A
-cost claim built on a basis-dependent boundary quantity therefore cannot select for the quantum side of
-the comparison: wherever our own diagnostic says the determinant support is small it says a
-matrix-product state is small too, and both methods are charged the same number. The thesis of
-Sec.~\ref{sec:nogo} implies its own region of no advantage, and implies it more sharply than an
-external objection would.
+The cost tracker this paper puts forward, the bond dimension $\chi$ (Sec.~\ref{sec:nogo}), is by
+definition the cost parameter of a matrix-product representation of the same state: wherever it says
+the determinant support is small, a matrix-product state is small too. The instance is in the
+literature: the $7\,260$ trajectories of a $120$-qubit Fermi--Hubbard dynamics
+experiment~\cite{qctrlfh2026} were reproduced by tensor contraction at bond dimension
+$32$~\cite{ouyang2026}, the pattern in which tensor-network, Pauli-propagation and matchgate methods
+have overtaken earlier hardware
+demonstrations~\cite{kim2023,tindall2024,begusic2024,kemper2026,belagali2026,extraferm}; on the
+ground-state energy the strong classical selectors already win on
+cost~\cite{reinholdt2025,zhangotten2026,gaberle2026}; and in one dimension dynamical DMRG computed all
+three momentum-resolved channels reported here nineteen years ago~\cite{benthien2007}. Within the region
+this work measures---Hubbard rings at $L\le14$, nineteen active spaces, and a largest minimal bond
+dimension of $42$ over the $74$ deposited exact ground states---there is no computation performed here
+that a classical method cannot perform, and we make no advantage claim at any size reached. Where that region
+would end is at a target whose minimal bond dimension is large in every ordering while the
+sampled support stays compact, a property of geometry and orbital connectivity that two-dimensional
+lattices and molecular orbital graphs would test and that nothing here measures (Sec.~\ref{sm:scope}).
 
-The instance is in the literature and it is not marginal. Ouyang, Chi and Chan reproduce the $7\,260$
-trajectories of the Fermi--Hubbard dynamics experiment of Hartnett \emph{et al.}---$120$ qubits, up to
-$90$ Trotter steps~\cite{qctrlfh2026}---by tensor contraction at bond dimension $32$, faster and to
-higher accuracy than the device run~\cite{ouyang2026}: the
-same pattern in which tensor-network and Pauli-propagation methods have overtaken earlier hardware
-demonstrations, the first ``quantum utility'' claim~\cite{kim2023} among
-them~\cite{tindall2024,begusic2024,kemper2026}, and in which unitary cluster-Jastrow sampling is
-itself now classically reproduced, including by an extended matchgate
-simulator~\cite{belagali2026,extraferm}---against which the standing worst-case hardness result for
-that circuit family, its embedding of instantaneous-quantum-polynomial
-sampling~\cite{bremner2016,hafid2025}, is not a contradiction but a statement about a different
-regime. Two architecture-independent results point
-the same way: polynomial-time classical estimation of expectation values in noisy
-circuits~\cite{schuster2025}, and classical estimation in noiseless chaotic circuits across
-geometries~\cite{angrisani2025}. On the ground-state energy the strong classical
-selectors~\cite{holmeshci2016,sharmashci2017,tubmanasci2016} already win on
-cost~\cite{reinholdt2025,zhangotten2026,gaberle2026}, and the case for a generic exponential advantage
-in ground-state chemistry was found wanting before that~\cite{leechan2023}; v1--v2 conceded this
-without reservation and we concede it again.
-
-One framing does not survive, and it is ours. Versions~1--2 opened by arguing that the energy is where
-classical methods have caught up, and moved the target to dynamics; in one dimension that inverts,
-because dynamical DMRG computed all three of the momentum-resolved channels reported here nineteen
-years ago~\cite{benthien2007} (Sec.~\ref{sec:intro}, Sec.~\ref{sec:physics}).
-Dynamics in one dimension is where classical methods arrived first, and no framing of this work
-says otherwise. Within the region this work measures---one-dimensional Hubbard rings at $L\le14$, the
-nineteen active spaces, and a largest minimal bond dimension of $42$ over the $74$ deposited exact
-ground states, attained on a molecular active space, the largest on the lattice being $38$ in the
-two-leg ladder---there is no computation performed
-here that a classical method cannot perform, and we make no advantage claim at any size reached.
-Deriving one's own no-advantage region is a stronger position than conceding it; the credit does not
-change the fact, and the fact is the one just stated.
-
-The same derivation says where the boomerang stops, and that is the measurement this subsection closes
-on. The controlled contrast of Sec.~\ref{sec:nogo:chi} is a search for a target on which the two costs
-come apart: at one-body magic matched to within $1\%$, the two-leg ladder carries $\chi=13$ against the
-chain's $5$ at $L=6$ and $\chi=38$ against $8$ at $L=8$, while its determinant support exceeds the
-chain's by $1.52$, $1.68$ and $2.24\times$. The quantity to look for is a target whose minimal bond
-dimension is large in \emph{every} ordering while the sampled support stays compact---a property of
-geometry and orbital connectivity rather than of dimensionality, so two-dimensional lattices and
-molecular orbital graphs are where it would be measured, and nothing here measures it.
-Section~\ref{sec:frontier} supplies the second coordinate of that search: in the determinant basis the
-Krylov space of the probe already has full coordinate support at $L=8$, so a non-vacuous leakage
-certificate at small sector fraction requires a different working basis, not a better ranking within
-this one.
-
-\subsection{The dequantization test, and a resolution floor that five seeds cannot cross}
-\label{sec:scope:dequant}
-
-The one place where a learned model could remove the quantum sampling from this pipeline is the
-generation of the dominant determinants, and we tested it. On an under-sampled device head for
-$\mathrm{N_2}$ ($1\,000$ shots, five seeds), a cheap classical Epstein--Nesbet perturbative
-tail~\cite{cipsi1973} applied to the \emph{same} histogram---no additional shots, no additional quantum
-processing, one application of $H$ to the sampled wavefunction---cuts the energy error from
-$39.24\pm3.95$ to $26.98\pm0.66$~mHa, a $31\%$ reduction. A generative flow network~\cite{bengio2021}
-trained as a tail completer and fused onto that corrected prior then moves the point estimate a further
-$4.04$~mHa, to $22.94\pm3.30$~mHa.
-
-Whether that further $4.04$~mHa is resolved cannot be decided from the deposited record, and we say so
-rather than settle it by choosing a convention. The deposit holds five summary rows and a note that the
-per-seed values are available on request: the seeds are paired across conditions, but the pairing is
-not stored. A paired $t$ statistic for a difference of $4.04$~mHa between arms of standard deviation
-$0.66$ and $3.30$ over five seeds is then bounded only by the correlation between the arms, the
-standard deviation of the differences lying anywhere in $[\,|3.30-0.66|,\,3.30+0.66\,]=[2.64,3.96]$ and
-the statistic accordingly in $t\in[2.281,3.422]$, against a two-sided critical value of $2.776$ at four
-degrees of freedom. The interval brackets the critical value, so no reading of the deposited numbers
-decides the question; and the two ratios quoted in v1--v2, ``$3.1$~s.d.'' and ``$1.2$~s.d.'', are the
-difference divided by one arm's standard deviation, which is not a test statistic for a difference at
-all, and are withdrawn with the reading they supported.
-
-A second limit is not repaired by repairing the deposit, because it belongs to the design. With five
-paired seeds the exact two-sided sign test cannot return a $p$-value below $2/2^{5}=0.0625$, and the
-signed-rank test shares that floor: \emph{no} five-seed comparison in this family can be declared
-significant by a distribution-free test, whatever its effect size. Six paired seeds bring the floor to
-$0.031$ and are the minimum design that could resolve anything. What survives every admissible pairing
-is the classical step: for its $12.26$~mHa improvement the same construction gives $t\ge5.95$ and
-$p\le0.004$ at four degrees of freedom across the whole range of correlation between the arms.
-
-Both figures of this test are therefore withdrawn and the surviving statement is made in prose. The
-generative comparison goes because no script in the deposited source produces its data file---the
-figure script carries the five numbers as literals copied from a file belonging to a different project,
-and the deposited note records a sector dimension that does not match the active space named beside
-it---and a figure the deposit cannot regenerate does not belong in a version that asks for credit for
-its deposit. The amortized companion result goes for a reason internal to its own numbers: across six
-leave-one-out folds both arms sit at relative $L_1$ between $0.62$ and $0.88$, individual folds
-reaching $1.25$, against the $0.05$ acceptance threshold used everywhere else here, so it compares two
-reconstructions that both fail it; and its oracle arm is worse than the untrained classical selector in
-two of six folds at three of the four subspace fractions, which a well-defined oracle cannot be.
-
-What the test establishes is the statement we keep. On this instance the dominant determinants are
-supplied by the device sampling and recovered by drawing more shots, not manufactured by a learned
-generator---the class of construction is by now several: physics-informed generative priors, neural
-quantum states built on selected configurations, autoregressive and dual-channel samplers for selected
-configuration interaction, and neural-network
-classifiers~\cite{pigensqd,nqssc2026,arnnsci2026,hinqs2026,zeni2026}; the largest single improvement available to an under-sampled sample-based head costs no
-quantum resources at all and should be the default post-processing step, since a demonstration that
-omits it is measured against a baseline that is too weak; and the defensible role for a learned model
-is the one that consumes the device histogram or schedules device
-work~\cite{huang2022,qesem2025,algorithmiq2026,vargashernandez2024,vargashernandez2019,vargashernandez2025},
-the boundary
-the companion study maps from the ground-state side~\cite{review}.
+\paragraph{A dequantization test.} On an under-sampled device head for $\mathrm{N_2}$ ($1\,000$ shots, ten paired seeds), a classical Epstein--Nesbet prior~\cite{cipsi1973} applied to the same histogram cuts the energy error by $36\%$, from $38.22$ to $24.38$~mHa (paired $t_9=12.37$, all ten seeds), while a generative flow network~\cite{bengio2021} fused onto that prior moves it a further $1.80$~mHa, a difference ten paired seeds do not resolve ($t_9=1.19$) and whose sign reverses between two five-seed halves; at $500$ shots the fused generator is worse than the classical control (Sec.~\ref{app:dequant}). On this instance the dominant determinants are supplied by the device sampling and completed by a classical prior rather than manufactured by a learned generator, and the largest improvement available to an under-sampled head costs no quantum resources at all.
 
 \subsection{Scope, declared}
 \label{sec:scope:declared}
 
-Collected in one place, so that no reader has to assemble it from five sections. The lattice results
-are one-dimensional Hubbard rings at $L\le12$ with $\eta=0.10$--$0.18\,t$, which is the
+The momentum-resolved spectra are one-dimensional Hubbard rings at $L\le12$ with $\eta=0.10$--$0.18\,t$ (the support, certificate and shot measurements reach $L=14$), which is the
 exact-diagonalization convention for this observable---Xu, Lu, Tohyama and Shao compute it at $L=12$
 and $\eta=0.2\,t$ at half filling, and at $L=16$ at quarter filling, in the extended
 Peierls--Hubbard chain~\cite{xu2024}---but the resolution
 criterion the dynamical-DMRG literature applies at those
-sizes is not met here, and Sec.~\ref{sec:physics} quotes that criterion in its original words and
-withdraws the three terms it did not license instead of enlarging $\eta$: the size was never the
-indefensible part, the words were. The published subspace curves are the infinite-shot limit of the
+sizes is not met here, and Sec.~\ref{sec:physics} quotes that criterion in its original words and uses none of the three terms it would not license, rather than enlarge $\eta$. The published subspace curves are the infinite-shot limit of the
 declared ranking protocol, and finite-shot fractions are reported only where
 Table~\ref{tab:finiteshot} attaches a measured budget and a seed count. The certificate of
-Theorem~\ref{thm:leakage} is vacuous at every fraction this work publishes, by factors of $1.66$ to
-$8.61$ at the five sizes measured, so the reconstructions reported here are at present uncertified and
+Theorem~\ref{thm:leakage} is vacuous at every operating fraction of the resource scan (Fig.~\ref{fig:akwsampled}, at $85\%$, is the certified exception), by factors of $1.66$ to
+$8.61$ at the five sizes measured, so the reconstructions at those fractions are at present uncertified and
 the non-vacuity threshold is given as a bracket rather than as a number (Sec.~\ref{sec:frontier}). The device record is the two runs of Sec.~\ref{sec:scope:hw}, at $12$ and
 $24$ qubits, the first exact by coverage; the chemistry record is Table~\ref{tab:molscope}. No result
 in this work is offered as evidence of an advantage over a classical method, at any size reached here.
 
-What the work does claim is four things, each with its measurement attached: one sampling primitive
-returning four frequency-resolved channels from a single measurement protocol (Fig.~\ref{fig:circ}); a
+What the work does claim is four things, each with its measurement attached: one sampling primitive that targets four frequency-resolved channels, of which the single-particle ones are reconstructed here from ranked or sampled subspaces and the two neutral ones are full-sector references (Table~\ref{tab:provenance}); a
 two-sided a posteriori bound on the error of the reconstruction, with its non-vacuity threshold
 measured at five sizes up to a sector of dimension $10\,306\,296$ and its crossing calibrated to a true
 relative error of ${\approx}3\times10^{-3}$ within a factor of three (Sec.~\ref{sec:frontier}); an
 obstruction theorem showing that no orbital-rotation invariant supplies a cheaper a priori predictor of
-that bound (Sec.~\ref{sec:nogo}); and three measured prices---support, resolution and shots---of which
-the third had no number at all before this version (Sec.~\ref{sec:prices}).
+that bound (Sec.~\ref{sec:nogo}); and three measured prices---support, resolution and shots---of which the third is measured here (Sec.~\ref{sec:prices}).
 
 
 % ---------------------------------------------------------------------------------
@@ -563,12 +336,10 @@ the resource statistics---are additionally \emph{regenerable}: the computation s
 them are deposited in \texttt{src/}, and \texttt{docs/REPRODUCE.md} gives the reproduction commands
 together with a measured table of what a clean clone does and does not reach. An automated guardian
 (\texttt{python src/verify.py}) recomputes the underlying physics by exact diagonalization and checks
-the deposited artefacts against it---$831$ checks over $9\,846$ numeric assertions, exiting non-zero on
+the deposited artefacts against it---$868$ checks over $9\,884$ numeric assertions, exiting non-zero on
 any discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in
 the tables and in the abstract; it is not a proof that every sentence of this manuscript is verified,
-and six items are printed by name on every run: four known open defects, and two declared gaps in
-its own coverage---the source of Fig.~\ref{fig:thm1iii-violation}, and the four artefacts behind
-Table~\ref{tab:moments}, none of which survives in the deposit.
+and five items are printed by name on every run: four known open defects, and one declared gap in its own coverage, the source of Fig.~\ref{fig:thm1iii-violation}.
 
 The quantum-hardware results are deposited as the arrays that enter the figures, together with the
 backend name, the shot count and the IBM~Quantum job identifier for each of the two runs
@@ -578,12 +349,10 @@ the IBM~Quantum service by job identifier, which requires an account and a job t
 retrievable, so the classical post-processing of the raw counts cannot be re-run from the deposited
 files alone. The hardware runs themselves cannot be regenerated in any case---the jobs are closed, and
 a device executed today has a different calibration, so new counts would be new data rather than a
-reproduction. For the generative-model control of Sec.~\ref{sec:scope:dequant} only the five summary
-rows are deposited, in \texttt{data/gflow.json}; no script in the repository regenerates them, which is
-the reason given there for withdrawing the two figures that were built on them, and the per-seed values
-are available from the author on reasonable request. Known gaps between the deposited code and the
+reproduction. The dequantization control of Sec.~\ref{app:dequant} is regenerated seed by seed by \texttt{src/gflow\_dequant.py}, which needs \texttt{pyscf} and \texttt{torch} and writes \texttt{data/gflow.json}. Known gaps between the deposited code and the
 deposited artefacts---six of the seventeen figures enter as PDF with no standalone \LaTeX{} source in
 the deposit, the tables plotted in Fig.~\ref{fig:thm1iii-violation} are deposited but the script that
-builds them is not, three deposited computation scripts have no deposited output, and parts of the
+builds them is not, three deposited computation scripts have no deposited output, the $L=14$ ground-state checkpoint ($94$~MB), on which the largest vacuity factor and the $L=14$ support count rest, is not in the repository, and parts of the
 pipeline require \texttt{pyscf} or an IBM~Quantum account---are enumerated in
-\texttt{docs/KNOWN\_DISCREPANCIES.md} rather than left for the reader to discover.
+\texttt{docs/KNOWN\_DISCREPANCIES.md}.
+

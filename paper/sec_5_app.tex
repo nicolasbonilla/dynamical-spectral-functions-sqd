@@ -6,7 +6,7 @@
 
 Theorem~\ref{thm:leakage} holds under three hypotheses. Each is a statement about the pipeline that
 produced the reconstruction rather than about the theorem, so each has to be checked against the
-pipeline, and none of the three is checked anywhere in the deposit of versions~1--2. We check all
+pipeline. We check all
 three here, with numbers, for the sweep of Sec.~\ref{sec:frontier}, and add the two protocol
 declarations and the decomposition that section quotes.
 
@@ -55,14 +55,12 @@ while the certificate is evaluated on the reorthogonalized Krylov space; the dif
 two has been measured at a single point at $L=8$---relative $L_1$ of $1.2454\times10^{-3}$ against
 $1.2464\times10^{-3}$---and never bounded, and at $L=12$ it has never been measured at all.
 
-\paragraph{Ranking, ties and support.} Two properties of the cut are declared with the protocol, a
-tie-breaking defect having cost this work numbers before. No determinant of any of the four sectors
-carries exactly zero accumulated Born weight, so the cut is never filled with configurations the
+\paragraph{Ranking, ties and support.} Two properties of the cut are declared with the protocol. Only the reflection-forbidden determinants ($4$, $18$, $48$, $200$ at $L=6$--$12$) carry exactly zero accumulated Born weight, and they rank last, so the cut is never filled with configurations the
 device would never sample in the infinite-shot limit; ties at the cut involve two determinants (four
 at $L=6$, at fractions $0.80$ and $0.85$) and move the bound by at most $6.6\times10^{-4}$ relative.
-Above the support floor $\tfrac12+\tfrac1L$ of Sec.~\ref{sec:retraction}, on the other hand, the
+Above the support floor $\lvert\operatorname{supp}(\phi)\rvert/D$ of Sec.~\ref{sec:retraction}, on the other hand, the
 ranking selects among determinants outside $\operatorname{supp}(\phi)$: at fraction $0.85$ that is
-$30.2\%$ of $S$ at $L=6$, $36.9\%$ at $L=8$ and ${\approx}39.6\%$ at $L=10$. Those contribute nothing
+$30.2\%$ of $S$ at $L=6$, $42.0\%$ at $L=8$ and ${\approx}39.6\%$ at $L=10$. Those contribute nothing
 to $w_S$, and they do change $H_S$. The depth uncertainty quoted in Sec.~\ref{sec:frontier} is the
 full recomputation of $\mathrm{FR}^{\ast}$ with $L=12$ capped at $n_\ell=300$: it moves by $0.0024$,
 $0.0021$, $0.0012$ and $0.0000$ at $\eta=0.10$, $0.15$, $0.18$ and $0.25\,t$.

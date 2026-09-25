@@ -1,0 +1,57 @@
+\section{The dequantization test}
+\label{sec:scope:dequant}\label{app:dequant}
+The one place where a learned model could remove the quantum sampling from this pipeline is the
+generation of the dominant determinants, and we tested it on stretched $\mathrm{N_2}$ (cc-pVDZ,
+$R=2.5$~\AA, CAS(10e,12o), $792$ strings per spin, orbitals in the $D_{\infty h}$ symmetry-adapted
+gauge), where the exact energy is available to score against. A device head is emulated by drawing
+$1\,000$ configurations from the exact FCI marginal and corrupting them with a Heron-class noise
+model---$5\%$ depolarizing replacement and asymmetric readout at the median rates of the
+FakeTorino calibration, $0.0229$ for $1\to0$ and $0.0200$ for $0\to1$---after which
+$24\%$ of the shots carry the wrong particle number. From that one histogram a subspace of
+$D=120$ strings per spin is built four ways and scored on the exact energy, over ten seeds paired
+across the four. A single-pass analogue of the occupation-based configuration recovery of
+Ref.~\cite{robledomoreno2025} gives $38.22\pm2.62$~mHa. A cheap classical Epstein--Nesbet perturbative
+prior~\cite{cipsi1973}, which completes the subspace from one application of $H$ to the Hartree--Fock
+determinant---no additional shots, no additional quantum processing---gives $24.38\pm4.02$~mHa. A generative
+flow network~\cite{bengio2021} trained on the recovered histogram fused with that prior gives
+$22.57\pm1.60$~mHa, and trained on the histogram alone $25.55\pm1.84$~mHa (means and standard deviations over the
+ten seeds).
+
+The classical step is resolved beyond any reading of the seeds: it lowers the error by
+$13.85$~mHa, a $36\%$ reduction, in all ten seeds, with paired $t_9=12.37$; at $500$
+shots it is larger still, $54\%$ with $t_9=36.2$. The generative step is not. On top
+of the classical prior the fused generator lowers the error by a further $1.80\pm4.78$~mHa,
+in six of the ten seeds, with paired $t_9=1.19$ ($p=0.26$), and without the prior it is
+not distinguishable from the classical control ($1.17$~mHa, $\lvert t_9\rvert=0.92$). At
+$500$ shots both generative arms are \emph{worse} than the classical control: the fused one by
+$5.31$~mHa ($\lvert t_9\rvert=3.27$, $p=0.010$, worse in nine of the ten seeds),
+the one without the prior by $15.33$~mHa ($\lvert t_9\rvert=10.3$).
+
+The two halves of the ten seeds are the two five-seed runs of the companion
+study~\cite{review}, and they show why five seeds do not decide this comparison. Over seeds
+$0$--$4$ the fused generator is ahead of the classical control by $5.23\pm3.19$~mHa in
+every seed, with $t_4=3.67$, beyond the two-sided critical value $2.776$; over seeds $5$--$9$
+it is behind, $-1.62\pm3.46$~mHa with $t_4=-1.05$. The companion reports
+$+5.23\pm3.19$ and $-1.83$~mHa for the same two runs; the first is reproduced here to the
+fourth decimal and the second to $0.21$~mHa. A five-seed $t$ test can therefore clear its critical
+value and fail to replicate, and a distribution-free test cannot help, since with five seeds the
+exact two-sided sign test and the signed-rank test both floor at $p=2/2^{5}=0.0625$; with ten the
+floor is $0.002$, which the classical step reaches. \texttt{src/gflow\_dequant.py} writes every seed
+to \texttt{data/gflow\_runs/}, and \texttt{data/gflow.json} holds the paired statistics quoted here.
+
+What the test establishes is the statement we keep. On this instance the dominant determinants are
+supplied by the device sampling and completed by a classical prior, not manufactured by a learned
+generator: the largest improvement available to an under-sampled head costs no quantum resources at
+all and should be the default post-processing step, since a demonstration that omits it is measured
+against a baseline that is too weak, and a learned generator adds nothing on top of it that ten
+seeds resolve. The class of learned constructions that select or generate the determinants
+themselves is by now several---neural quantum states built on selected configurations,
+autoregressive and dual-channel samplers for selected configuration interaction, and neural-network
+classifiers~\cite{nqssc2026,arnnsci2026,hinqs2026,zeni2026}---and the defensible role for a learned
+model is the one that consumes the device histogram, as physics-informed generative recovery of
+hardware samples does~\cite{pigensqd}, or schedules device work, as generative models for
+measurement grouping do~\cite{vargashernandez2024,vargashernandez2025}, alongside the non-learned
+error-mitigation and validation protocols that already sit at that
+interface~\cite{qesem2025,algorithmiq2026} and learners that process device output coherently in
+quantum memory~\cite{huang2022}; this is the boundary the companion study maps from the
+ground-state side~\cite{review}.

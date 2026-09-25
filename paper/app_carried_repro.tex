@@ -54,5 +54,63 @@ $\mathcal F_1$--$\log_2|\mathcal S|$ $r=0.80$). The $|\mathcal S|/D$ reported in
 Table~\ref{tab:molecules} is a \emph{distinct} quantity---the fraction of the $(N{+}1)$ sector used in
 the spectral \emph{reconstruction}, not the ground-state support tabulated here. Every active-space FCI
 energy is converged to better than $10^{-12}$~Ha (the largest residual across all $38$ points is
-$1.1\times10^{-13}$~Ha), comfortably below the $10^{-5}$~Ha quoted in the main text; the ground-state
+$1.1\times10^{-13}$~Ha); the ground-state
 energies, full Cartesian geometries, and orbital active-space indices are provided as ancillary files.
+
+\subsection{The molecular suite, and the size of its sectors}
+\label{sec:scope:mol}
+\input{carried/fig_hero.tex}
+\input{carried/fig_noise.tex}
+\input{carried/fig_noiserec.tex}
+
+The nineteen-molecule suite reconstructs the orbital-projected addition spectral function $A(\omega)$
+at dissociation in a valence bond-breaking active space, against a subspace grown by multinomial
+sampling of the time-evolved probe: $8\,000$ draws at each of $27$ evolution times,
+$2.16\times10^{5}$ per molecule, at $\eta=0.10$~Ha, from a single fixed random seed and with no spread
+reported across seeds. What decides the reach of that test is not the shot budget but the sector it is
+poured into, and Table~\ref{tab:molscope} gives it.
+
+\begin{table*}[tp]\centering\small
+\caption{\textbf{What the nineteen-molecule reconstruction tests.} The suite grouped by whether the
+reported error is an approximation or an identity. $D$ is the dimension of the $(N{+}1)$ sector the
+reconstruction runs in---all nineteen species take the addition branch---and $|\mathcal S|$ the
+absolute subspace size at the end of the protocol. Top row: five sectors of
+dimension $2$, one of $3$ and one of $6$, where the reported error is identically zero and where in
+three cases the sampled subspace is the entire two-dimensional sector. Middle row: five further cases
+whose subspace contains the probe's Krylov space $\mathcal K(H,\phi)$, so what is reported is floating-point round-off (containing the probe's support alone would not suffice, Sec.~\ref{sec:retraction}). Bottom row: the seven cases in which a truncation costs something. The largest sector in the
+suite is $300$, the dimension of the $L=6$ Hubbard sector of Sec.~\ref{sec:scope:hw}, against
+$731\,808$ at $L=12$ on the lattice side of this work.}\label{tab:molscope}
+\begin{tabular}{lcccc}
+\toprule
+ & count & $D$ & $|\mathcal S|$ & rel-$L_1$\\
+\midrule
+sector of dimension $\le6$       & $7$ & $2$--$6$    & $1$--$2$   & $0$ exactly\\
+subspace contains $\mathcal K(H,\phi)$ & $5$ & $24$--$90$  & $6$--$12$  & $\le1.4\times10^{-14}$\\
+genuine truncation               & $7$ & $20$--$300$ & $5$--$149$ & $2.2\times10^{-6}$--$1.0\times10^{-4}$\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+% --- float declarations moved here from main.tex (placement only):
+%     declared at the head of the section that discusses them instead of at
+%     its end, so the double-column queue drains across the section instead
+%     of into a run of float-only pages.  Declaration ORDER is unchanged, so
+%     no figure and no table is renumbered.
+\input{table_molecules_v3.tex}
+
+Twelve of the nineteen reconstructions are exact by construction rather than by approximation, and the
+dimensions say why: seven sectors have dimension six or less, and in five more the six to twelve sampled determinants already contain $\mathcal K(H,\phi)$. The suite therefore cannot show that the reconstruction is efficient across chemistry: on twelve of the nineteen there is nothing for efficiency to mean. Its energy check is an active-space CASCI energy against itself, and the residual the appendix records is $1.1\times10^{-13}$~Ha across all
+$38$ points---a convergence check on a deterministic diagonalization, worth keeping in the
+reproducibility appendix at its true magnitude, but not a validation against an independent method.
+
+What the suite does test is the bottom row of Table~\ref{tab:molscope}, and it is a result. On seven
+Hamiltonians---$\mathrm{O_2}$, CN, NO, CO, $\mathrm{N_2}$, $\mathrm{NH_3}$ and $\mathrm{H_6}$, in
+sectors of dimension $20$ to $300$---the same primitive reproduces the orbital-projected $A(\omega)$ to
+a relative $L_1$ between $2.2\times10^{-6}$ and $1.0\times10^{-4}$ from $21\%$ to $50\%$ of the sector.
+Those seven are independent chemical Hamiltonians rather than one molecule repeated, and their
+agreement is a consistency check of the primitive outside the Hubbard family. It is not a scaling
+statement and is not on a common axis with Sec.~\ref{sec:prices}, since the Hamiltonians, the
+broadening and the error level all differ. Per-species dimensions, subspace sizes and bond dimensions
+are in Sec.~\ref{app:repro}, whose column $D$ is the $N$-electron dimension; the $(N{+}1)$ dimension of each species is $\binom{n_{\rm o}}{n_\uparrow+1}\binom{n_{\rm o}}{n_\downarrow}$ ($300$ against $400$ for $\mathrm{N_2}$).
+% %TODO(table): add a $D$ column to table_molecules.tex.  Until it is there, this sentence must keep
+% pointing at Sec.~\ref{app:repro} and must not say that Table~\ref{tab:molecules} carries $D$.

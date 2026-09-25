@@ -24,7 +24,7 @@ The companion documents are [`REPRODUCE.md`](REPRODUCE.md) (how to run everythin
 | `data/c3_frontier/ladder_L{4,6,8}.json` | the exact five-rung instrumentation of the Theorem-B proof (no Krylov anywhere): where the slack is lost, rung by rung |
 | `data/c3_frontier/verdict_frontier.json` | 54 rows: where the frontier sits at each rung of the proof, i.e. how much of it is Cauchy–Schwarz and how much is physics |
 | `data/c3_frontier/published_fraction/` | the four points measured at the fractions the manuscript actually publishes (`_PUB`), their summary `PUB_rows.json`, and the L=14 point `L14_FR008.json` with its run log |
-| `data/c3_frontier/adversarial/` | the four adversarial re-runs named in the provenance note of `sec_5_body.tex` |
+| `data/c3_frontier/adversarial/` | the adversarial re-runs named in the provenance note of `sec_5_body.tex`, and (2026-09-25) the reflection-projected Krylov support, the momentum-block certificate and the momentum-seed support quoted in Secs. III and V |
 | `data/c3_frontier/null/` | the post-processing that tests the certificate against the null a referee will propose (`1−w_S`), and the out-of-sample test of the calibration |
 | `data/c3_frontier/C3_tables.txt`, `L1*.txt` | the tables and the run logs of the sweep, as produced |
 | `src/frontier/` | **24 Python files.** Group A the engine, B the gates, C the proof ladder, D the adversarial re-runs, E the published-fraction rows, F the post-processing |
@@ -115,6 +115,10 @@ Large temporary Krylov memmaps go to `$C3_TMP`, default `build/` (which is `.git
 | `adversarial/z_rank_L6.json` | `python src/frontier/z_rank.py 6 0.18` | 5 s |
 | `adversarial/z_e0_L6.json` | `python src/frontier/z_e0.py 6 0.85` | 10 s |
 | `adversarial/z_suppK_L8.txt` | `python src/frontier/z_suppK.py 6 8` | 1 min 11 s |
+| `adversarial/z_suppK_sym_L{6,8,10,12,14}.json` | `python src/frontier/z_suppK_sym.py 6 8 10 12`; L=14: `P2_CKPT=<folder with L14_gs.npz> python src/frontier/z_suppK_sym.py 14` | L=12 about a minute |
+| `adversarial/z_suppK_power_L{6,...,14}.json` | `python src/frontier/z_suppK_power.py 8 10 12` (unprojected; documents that its count is round-off, not a support) | minutes |
+| `adversarial/z_kblock_L{6,8}.json` | `python src/frontier/z_kblock.py 6`, `... 8` | seconds; minutes at L=8 |
+| `adversarial/z_momseed_support.json` | `python src/frontier/z_momseed_support.py` | seconds |
 | `null/CALIB_OOS.json` | `python src/frontier/calib_oos.py` | < 1 s |
 | `null/NULL_WS4.json` | `python src/frontier/null_ws4.py` | < 1 s |
 | the null’s out-of-sample tables | `python src/frontier/null_ws5.py`, `null_ws6.py`, `null_ws7.py` | < 1 s each, stdout only |
@@ -133,7 +137,7 @@ quadrature, and the files will not match.
 | `frun.py 6 400 0.20 290 290` | `pt_L6_FR0.20_nl400.json`: headline columns (w_S, Λ̂/η, bounds, rel-L1) to **3.5 × 10⁻¹⁶** |
 | `frun.py 8 500 0.56 500` | `pt_L8_FR0.56_nl500.json`: headline columns to **6.8 × 10⁻¹⁴** |
 | `frun12.py 8 150 0.85 500 1 _coordcheck` | `pt_L8_FR0.85_nl150_coordcheck.json`: headline columns to **6.0 × 10⁻⁹** |
-| `ftie.py` | `ties.json` to **2.1 × 10⁻¹⁰** |
+| `ftie.py` | `ties.json` to **2.1 × 10⁻¹⁰**; re-run 2026-09-25 after `supp(phi)` was redefined as the amplitudes above 10⁻¹² of the largest: only `supp`, `supp_frac` and `out_of_supp_in_S` at L=8 changed (2450 → 2237; 36.9 % → 42.0 % at FR = 0.85) |
 | `fvalid.py` | part (A) **PASS** (A1–A6), part (B) reproduces Λ_S to 2 × 10⁻¹³ and Λ_K to 5 × 10⁻⁷ |
 | `fproto.py` (with the checkpoint) | ranking set-overlap **1.000000** with the repository’s own `L10_order.npy` at every fraction, K=18 |
 | `run_ladder.py 6` at `PER_ETA=16` | `ladder_L6.json`: `ngrid` identical everywhere; every other field to **1.6 × 10⁻³** or better |
@@ -155,6 +159,12 @@ truncation residuals, i.e. numbers whose whole content is that they are small.
 `fron_lib.make_grid` widened its integration window from a constant `pad = 4.0` to
 `pad = max(4, 40 η)`. The L=4 ladder therefore predates its own library; the L=6 and L=8 ladders
 (17:40 and 17:59) do not.
+
+A second, smaller mismatch with today's scripts: `run_ladder.py` counted `supp(phi)` as `|phi| > 0`,
+which includes ARPACK round-off on the 213 determinants where symmetry zeroes the L=8 amplitude,
+so the `S*=supp(phi)` row of `ladder_L8.json` is the 2450-determinant set, not the 2237-determinant
+support. The script now uses the 10⁻¹² threshold of `src/support_witness.py`; that row is not quoted
+in the paper (the witness is `data/support_witness.json`), and `verdict.py` reads only the `FR=` rows.
 
 Re-running it today reproduces every field except the ω grid: `ngrid` at η = 0.50 goes from **1497
 to 2265**, and the finer, wider quadrature moves the numbers that depend on it.

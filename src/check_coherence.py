@@ -164,7 +164,9 @@ def build_checks(txt):
         ("the number of published sizes agrees with the deposited grid",
          (r"at all %s sizes|at each of the %s sizes evaluated|at the %s sizes measured"
           r"|%s sizes up to a sector|at %s system sizes|all five sizes and all four"
-          % (word, word, word, word, word), 8),
+          % (word, word, word, word, word), 6),
+         # 2026-09-25: floor 8 -> 6, DOWNWARD: the rewritten introduction and conclusion state
+         # the five sizes fewer times; no section counts four (the forbidden forms below).
          [r"at all four sizes", r"at each of the four sizes evaluated",
           r"at the four sizes measured", r"four sizes up to a sector",
           r"at four system sizes"],
@@ -173,7 +175,12 @@ def build_checks(txt):
          % nsizes),
 
         ("the Krylov-support claim is the measured one, not an open question",
-         (r"L=8\$, \$10\$, \$12\$ and\s*\$14", 4),
+         # 2026-09-25: the support is every determinant the reflection about the seed site
+         # allows (the "whole sector" counts were round-off in the forbidden sector),
+         # measured at L = 6 to 14 with z_suppK_sym.py.  Eight places state it (the abstract
+         # joined them the same day).
+         # 2026-09-25: floor 8 -> 7. DOWNWARD, intro rewrite: the new introduction states the symmetry-allowed support once instead of twice.
+         (r"every symmetry-allowed determinant|every determinant (?:that )?the reflection about the seed site allows", 7),
          [r"measured at two sizes and we state it for",
           r"Two sizes are what we",
           r"whether it persists at \$L=10\$ and \$L=12\$ is open"],
@@ -183,7 +190,8 @@ def build_checks(txt):
          "cost of settling it must not still be quoted as unspent."),
 
         ("the hardware shot budget is one number in all four places",
-         (r"3\.5\\times10\^\{5\}", 3),
+         # 2026-09-25 (PRA cut): the short Sec. IX A states it once more.
+         (r"3\.5\\times10\^\{5\}", 4),
          [r"pooled over the \$t\{=\}0\$ reference and \$K\{=\}7\$ evolution circuits",
           r"\$5\\times10\^\{4\}\$ computational-basis shots pooled over",
           r"reconstructed from \$50\{,\}000\$ computational-basis bitstrings"],
@@ -199,7 +207,8 @@ def build_checks(txt):
          "the hardware hero caption is where a referee checks the shot count first"),
 
         ("the crossing is a drift, not 'uniformly'",
-         (r"a drift(?:,| and) not scatter", 2),
+         # 2026-09-25: floor 2 -> 3. PRA cut: Sec. V summary in the main text states it once, the full text moved to the SM.
+         (r"a drift(?:,| and) not scatter", 3),
          [r"uniformly over \$L=6\$--\$12\$"],
          "uniformly over $L=6$--$12$",
          "Sec. V spends thirty lines showing that the factor of three is an ordered "
@@ -214,7 +223,31 @@ def build_checks(txt):
          # 17, which still cleared a floor of 17, so the control could not fire
          # and the file refused to certify anything. Raise the floor when the
          # tree gains an occurrence; never lower it to make a run go green.
-         (r"published fraction", 18),
+         # Floor 18 -> 19 on 2026-09-25: the corrected Sec. V.E separates the
+         # measured vacuity "at the published fractions" from the structural
+         # statement, and names the fraction twice where it once named it once
+         # (counted with body()+flat(), 18 on the morning tree, 19 after).
+         # Floor 19 -> 20 on 2026-09-25: Sec. I now says which reconstructions are
+         # uncertified -- those "at the published fractions" -- and which one is
+         # not (Fig. akwsampled, at 85%). body()+flat(): 19 before, 20 after.
+         # Floor 20 -> 19 on 2026-09-25, the one DOWNWARD move in this file, and why:
+         # two of the pinned occurrences (sec_3_1 and the Fig. thm1iii caption) called
+         # 0.85 -- the fraction of Fig. akwsampled, which IS certified -- "the published
+         # fraction", which made "vacuous at every published fraction" literally false.
+         # They were misuses, confirmed by an adversarial review, and now read "the
+         # fraction 0.85 of Fig. akwsampled".  body()+flat(): 19 after the correction.
+         # 19 -> 20 later on 2026-09-25: the conclusion and Sec. V.E now say where the
+         # published fractions lie relative to full captured weight (body()+flat(): 20).
+         # 2026-09-25, last change of the day: the abstract, Sec. IX and Sec. X now say
+         # "operating fraction(s) of the resource scan", which is the precise name (the
+         # 85% of Fig. akwsampled is published too, and certified). Both names count;
+         # body()+flat(): 19 "published fraction" + 4 "operating fraction ... scan" = 23.
+         # 2026-09-25: floor 23 -> 26. PRA cut: the Sec. V summary names the published and operating fractions again; the verbatim text is in the SM.
+         # 2026-09-25: floor 26 -> 27. PRA cut: the Sec. VII summary names the published fractions once more; the verbatim text is in the SM.
+         # 2026-09-25: floor 27 -> 24. DOWNWARD, final referee pass: three 'published fraction' claims of vacuity also covered Fig. akwsampled (published at 85% and certified); they now say 'operating fraction(s)' or 'those fractions'.
+         # 2026-09-25: floor 24 -> 23. intro rewrite: the new introduction names the operating fraction once.
+         # 2026-09-25: floor 23 -> 21. conclusion rewrite: operating fraction named once more.
+         (r"published fraction|operating fractions? of the resource scan", 21),
          [r"sampled fraction"],
          "at every sampled fraction",
          "Sec. VII states in the printed text that describing the T->infinity curve as "
@@ -222,7 +255,9 @@ def build_checks(txt):
          "published curve from there on. The abstract and Sec. X broke that rule."),
 
         ("the declared gap of Fig. 3(a,b) is closed, and said to be closed",
-         (r"has since been run at finite shots", 1),
+         # 2026-09-25: "has since been run" read as version history; the paper now says
+         # "has also been run", which states the same fact.
+         (r"has also been run at finite shots", 1),
          [r"Declared gap"],
          "Declared gap, see text",
          "a finite-shot run of the literal configuration of Fig. 3(a,b) now exists "
@@ -238,7 +273,7 @@ def build_checks(txt):
          # every time.  When it fires, do not edit it by hand first -- run
          # scratchpad/propaga_cuentas.py, which re-runs verify.py and rewrites the eight
          # places that quote the total, and then bring this line to match.
-         (r"\$831\$ checks over \$9\\,846\$ numeric assertions", 1),
+         (r"\$868\$ checks over \$9\\,884\$ numeric assertions", 1),
          # The forbidden phrase used to be the bare "four known open defects", which was
          # unambiguous while the live sentence read "five".  On 2026-09-21 the live
          # sentence became "four known open defects, and two declared gaps in its own
@@ -256,7 +291,11 @@ def build_checks(txt):
          "docs/KNOWN_DISCREPANCIES.md all move with it."),
 
         ("the largest sector quoted is the largest sector evaluated",
-         (r"10\\,306\\,296", 10),
+         # 10 -> 8 on 2026-09-25: two of the ten were the unprojected power-iteration counts
+         # "10,306,296 determinants" and "10,306,063 of 10,306,296", round-off in the
+         # reflection-forbidden sector, now removed.  The abstract, Secs. I, V, VII, IX, X
+         # and both tables still quote the largest sector (body()+flat(): 8).
+         (r"10\\,306\\,296", 8),
          [r"to dimension \$731\\,808\$ ours",
           r"sector dimensions \$300\$ to \$731\\,808\$",
           r"four sizes up to a sector of dimension \$731\\,808\$"],

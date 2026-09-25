@@ -7,20 +7,17 @@
 \label{app:counterex}
 
 \paragraph{The three-level family.} Section~\ref{sec:retraction} exhibits a two-level instance forcing
-the constant of the weight-only bound~\eqref{eq:weightonly} to its trivial value at $w_S=1$. With $w_S<1$
-strictly the failure is unbounded. Take
+the constant of the weight-only bound~\eqref{eq:weightonly} to its trivial value at $w_S=1$. With $w_S<1$ strictly, the weight term alone fails without bound. Take
 $H=\operatorname{diag}\bigl(\bigl(\begin{smallmatrix}0&g\\ g&0\end{smallmatrix}\bigr),\delta\bigr)$,
 $\phi=e_0+\varepsilon e_2$ and $S=\{0\}$, so that $1-w_S=\varepsilon^{2}/(1+\varepsilon^{2})$ may be
-made as small as wished while the weight displaced to $\pm g$ stays $O(1)$. The ratio of the measured
-error to the weight-only bound then diverges as $\delta^{-2}$ in the displacement $\delta$ of the
-discarded component; we measured it to $7.6\times10^{7}$ before double precision limits the family.
+made as small as wished while the weight displaced to $\pm g$ stays $O(1)$. The ratio of the measured error to the weight term then diverges as $\varepsilon^{-2}$ at fixed $g/\eta$: the error stays of order $\lVert\phi\rVert^{2}$ while the weight term is $2\lVert\phi\rVert^{2}(1-w_S)=2\varepsilon^{2}$, and $\delta$, the energy of the discarded component, does not enter. Any $C>0$ in the second term caps the ratio.
 
 \paragraph{The pooled sweep behind Fig.~\ref{fig:thm1iii-violation}.} Five machine-readable scans,
 written by two independent implementations, contribute $621$ subspaces: $243$ from the original sweep,
 and $162+112+104$ from a re-implementation deposited as \texttt{cert\_stress.json},
 \texttt{cert\_akw.json} and \texttt{cert\_teqsci.json}. Fifteen reproduce the target to
 double-precision round-off (relative $L_1\le10^{-10}$) and define no ratio, leaving $606$ live
-subspaces over four Hamiltonian families --- Hubbard chains, XXZ, $t$--$V$, Anderson and sparse random
+subspaces over five Hamiltonian families --- Hubbard chains, XXZ, $t$--$V$, Anderson and sparse random
 matrices --- and eight construction rules, of which $156$ are finite-shot realizations at $4000$ shots
 per snapshot and the remainder deterministic weight-ordered or structured selections. On those $606$:
 the weight-only bound fails on $468$; among the $363$ with $w_S\ge0.99$ --- the regime a sampling
@@ -32,9 +29,8 @@ bound is $0.9999999997$, attained on four subspaces with $w_S=0$ exactly, where 
 trivial branch is an identity rather than an inequality. The leakage branch is the smaller of the two
 on only $61$ of the $606$: the sweep shows that the bound \emph{holds}, not that it is tight.
 
-\paragraph{Independent re-verification.} The $378$ rows of the three deposited scans were re-audited
-for this version by a script sharing no code with the one that produced them. It confirms $378$ of
+\paragraph{Independent re-verification.} The $378$ rows of the three deposited scans were re-audited by a script sharing no code with the one that produced them. It confirms $378$ of
 $378$ for each side of Eq.~\eqref{eq:twobudget}; a largest error-to-bound ratio of $0.9999999997$ over
 the $376$ rows that define one; the exclusion lemma~\eqref{eq:exclusion} on $378$ of $378$, with $357$
 rows at $K_S=-1$ and $21$ at $w_S=1$ exactly; and violations of the weight-only bound on $219$ of the
-$219$ finite-ratio rows with $w_S\ge0.99$, the mildest by a factor $2.00$.
+$219$ finite-ratio rows with $w_S\ge0.99$, the mildest by a factor $2.00$. The plotted pool gives $2.10$ for the same subspace (XXZ, $\Delta=2$, $\eta=0.9$, fraction $0.75$) because its three certificate scans were read from an earlier run of the same scans, not from the deposited files; the two runs differ on $28$ XXZ and $t$--$V$ stress subspaces, and on the deposited files the pool gives $469$ violations of $606$ and survival on $137$ of $243$ below $w_S=0.99$. Both place every row with $w_S\ge0.99$ at least a factor two from compliance.

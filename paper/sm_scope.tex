@@ -1,0 +1,135 @@
+\section{Hardware and scope: full account}
+\label{sm:scope}
+
+Three claims one could make for this method are larger than the quantity that fixes them: the hardware claim
+is fixed by a subspace size, the chemistry claim by a set of sector dimensions, and the advantage claim
+by the same bond dimension this paper puts forward as its own cost tracker. This section states each
+with its fixing quantity attached, and derives---rather than concedes---the region in which this method
+has no advantage over a classical one.
+
+\paragraph{The two hardware runs.} Both device runs are preserved in full and they are the entirety of the quantum hardware used in this
+work. The first was executed on the IBM~Heron processor \texttt{ibm\_fez} (job
+\texttt{d9s16avpemts73ct6g8g}): the $L=6$ Hubbard chain at $U/t=4$, $\eta=0.15\,t$, $12$ qubits,
+$3.5\times10^{5}$ computational-basis shots---$5\times10^{4}$ on each of seven circuits
+$k=0,\dots,6$, of which $k=0$ is the $t=0$ reference---pooled into one subspace,
+under TREX readout twirling, Pauli twirling and dynamical decoupling and
+with no zero-noise extrapolation
+(Fig.~\ref{fig:heron}(a) is the result; the circuits prepared the computational-basis $(N{+}1)$ determinant with orbitals $0$--$3\!\uparrow$ and $0$--$2\!\downarrow$ occupied rather than $\hat c^{\dagger}_p\lvert\Psi_0\rangle$, and their hopping layer applies $R_{xx}R_{yy}$ rotations without Jordan--Wigner strings, so they are not the primitive of Fig.~\ref{fig:circ}; because the recovered subspace is the whole sector, neither affects the reported $A_{\rm hw}$). Self-consistent configuration recovery returned $|\mathcal S|=300$ determinants of an
+$(N{+}1)$ sector of dimension $300$; the recorded relative $L_1$ is $0.0$, and the deposited provenance
+string says why in its own words---the reconstructed $A_{\rm hw}$ equals the exact $A$ byte for byte
+because the recovered subspace spans the whole sector.
+
+That number is exact \emph{by coverage}, and the distinction is not rhetorical: at
+$|\mathcal S|=\dim$, Rayleigh--Ritz on $\operatorname{span}(\mathcal S)$ \emph{is} diagonalization of
+the full sector, $P_{\mathcal S}HP_{\mathcal S}=H$, and a vanishing error is an identity rather than a
+measurement of device fidelity. The run establishes that the pipeline executes end to end on a
+processor---transpiled circuits, device counts, recovery to the correct particle-number sector, and the
+classical Lehmann assembly of Sec.~\ref{sec:method}---which is what a proof of principle is, and it
+establishes nothing about accuracy at incomplete coverage, the regime the rest of this paper is about.
+The runs are therefore described as \emph{executed on} the named processors, not as demonstrating the method on them, and the coverage qualification applies wherever they are mentioned.
+
+\paragraph{The second run, and a comparison the record cannot decide.} Stretched $\mathrm{N_2}$ ($R=2.0$~\AA,
+CAS(10e,12o)/cc-pVDZ, $24$ qubits) was executed on \texttt{ibm\_marrakesh} (job
+\texttt{da125f2ein7c73bcsqs0}, $10^{4}$ shots, double-factorized Trotter circuit). Averaged over $8$
+recovery seeds on the cached device counts it reaches $0.59\pm0.14$~mHa of the exact active-space value
+(best seed $0.40$~mHa), while the noiseless statevector simulation of the same shallow circuit stops at
+$29.5$~mHa (Fig.~\ref{fig:heron}(b)). That contrast invites the reading that device noise \emph{helps}, and the record cannot support it, because the mechanism named for it is a statement about a quantity the
+record does not contain: recovery is said to turn corrupted bitstrings into valid configurations and
+thereby \emph{enlarge} the variational subspace---a valid-shot economy, not a fidelity gain---so the
+comparison is decided by the two recovered subspace sizes, and neither is stored. The same gap runs
+through the controlled sweep, whose script saves the size of the naively post-selected subspace and not
+of the recovered one, so the two places where an error \emph{below} the noiseless value is
+reported---CO from $1.73$ to $0.63$~mHa and $\mathrm{C_2}$ from $0.184$ to $0.026$~mHa, between
+$\varepsilon=0$ and $\varepsilon=20$--$30\%$---rest on the same unrecorded variable, at the price of one
+line in a script that already builds the subspace.
+
+The mechanism itself is not in dispute. On the dissociation of
+$\mathrm{N_2}$ in a large active space, with the same LUCJ ansatz used for the run above,
+Vaquero-Sabater, Carreras, Broers, Shirakawa, Yunoki and Casanova report that ``sampling noise can
+enhance Hilbert-space exploration by generating additional configurations beyond those supported by
+the ideal ansatz,'' and that ``when combined with configuration recovery, this leads to systematically
+improved energies''~\cite{vaquero2026}: the same molecule, the same ansatz and the same mechanism, and there it is carried by a controlled comparison. What this work cannot claim is its own measurement of the effect, not the effect: our two arms differ in
+the one quantity neither of them recorded, so they cannot be evidence either way, whatever the
+literature independently establishes.
+
+What \emph{is} controlled is the comparison in which both arms consume the same corrupted bitstrings at
+the same rate with the same seeds and differ only in the recovery step, and there the gain from
+recovery is measured and grows with the noise: at $\varepsilon=2\%$ eighteen of nineteen molecules
+reach chemical accuracy with recovery against seventeen without it, at $\varepsilon=30\%$ recovery
+roughly halves the error on $\mathrm{N_2}$ ($31.9\to13.2$~mHa, Fig.~\ref{fig:noiserec}), and on the
+Hubbard chain it holds the spectral relative $L_1$ near $0.05$ out to $\varepsilon\approx16\%$
+(Fig.~\ref{fig:noise})---seed-averaged, with $\pm1$~s.d.\ bands, at matched noise. That is the noise
+result of this work.
+
+\paragraph{Scale.} These runs are $12$ and $24$ qubits, and the same class of observable has been
+executed elsewhere at larger scale---retarded spin Green's functions of the one-dimensional
+Fermi--Hubbard model on IBM~Heron~r2 at up to $30$ qubits~\cite{vilchez2025}, an ARPES-type
+$A(k,\omega)$ on a $27$-site chain at $54$ qubits~\cite{granet2026akw}, dynamical structure factors
+on trapped ions against scattering data~\cite{quantinuum_dsf2026}---so our device record is smaller
+than every entry in that class and is not offered as a scale result. It is not the smallest such record
+either, and we name the one below it: a spectral function was reconstructed on a trapped-ion device
+from a four-qubit Hubbard dimer~\cite{greenediniz2024}. What is new in our run
+is the object assembled, the $(N{\pm}1)$-sector Lehmann construction from a bitstring-sampled subspace,
+at a size where the coverage question is degenerate, and Sec.~\ref{sec:prices} says how degenerate in
+shots: the $3.5\times10^{5}$ spent---seven circuits at $5\times10^{4}$ shots each, pooled into one
+subspace---are $14.4$ times the $(2.43\pm0.34)\times10^{4}$ that Table~\ref{tab:shots} measures for one
+orbital seed and one branch at $L=6$, so complete coverage of a $300$-dimensional sector is what the
+budget predicts rather than a surprise.\footnote{Table~\ref{tab:shots} replicates the repository protocol, $K=18$ with $19$ snapshots,
+at $U/t=8$ rather than the $U/t=4$ of the device run; this is a consistency statement between two
+budgets, not an identity.} The first size at which a device run would test the reconstruction rather
+than the pipeline is $L=8$: sector $3\,920$, at $(2.70\pm0.13)\times10^{5}$ shots per orbital seed and
+branch---a factor $1.3$ \emph{below} what was already spent here, so what confined this run to $L=6$
+was not the shot budget. The momentum-resolved observable at that size is a different matter: sixteen
+channels, ${\approx}4\times10^{6}$ shots, an order of magnitude above this job.
+
+\paragraph{The region of no advantage, in full.} The resource statement of Sec.~\ref{sec:nogo} has a consequence for the standing of this method, and we
+derive it here rather than wait to have it put to us. What tracks the determinant support is $\chi$,
+the minimal bond dimension across a bipartition in the working basis (Sec.~\ref{sec:nogo:chi}). But
+$\chi$ is, by definition, the cost parameter of a matrix-product representation of the same state. A
+cost claim built on a basis-dependent boundary quantity therefore cannot select for the quantum side of
+the comparison: wherever our own diagnostic says the determinant support is small it says a
+matrix-product state is small too, and both methods are charged the same number. The thesis of
+Sec.~\ref{sec:nogo} implies its own region of no advantage, and implies it more sharply than an
+external objection would.
+
+The instance is in the literature and it is not marginal. Ouyang, Chi and Chan reproduce the $7\,260$
+trajectories of the Fermi--Hubbard dynamics experiment of Hartnett \emph{et al.}---$120$ qubits, up to
+$90$ Trotter steps~\cite{qctrlfh2026}---by tensor contraction at bond dimension $32$, faster and to
+higher accuracy than the device run~\cite{ouyang2026}: the
+same pattern in which tensor-network and Pauli-propagation methods have overtaken earlier hardware
+demonstrations, the first ``quantum utility'' claim~\cite{kim2023} among
+them~\cite{tindall2024,begusic2024,kemper2026}, and in which unitary cluster-Jastrow sampling is
+itself now classically reproduced, including by an extended matchgate
+simulator~\cite{belagali2026,extraferm}---against which the standing worst-case hardness result for
+that circuit family, its embedding of instantaneous-quantum-polynomial
+sampling~\cite{bremner2016,hafid2025}, is not a contradiction but a statement about a different
+regime. Two architecture-independent results point
+the same way: polynomial-time classical estimation of expectation values in noisy
+circuits~\cite{schuster2025}, and classical estimation in noiseless chaotic circuits across
+geometries~\cite{angrisani2025}. On the ground-state energy the strong classical
+selectors~\cite{holmeshci2016,sharmashci2017,tubmanasci2016} already win on
+cost~\cite{reinholdt2025,zhangotten2026,gaberle2026}, and the case for a generic exponential advantage
+in ground-state chemistry was found wanting before that~\cite{leechan2023}, and we concede it without reservation.
+
+One framing does not survive. It is tempting to argue that the energy is where classical methods have caught up and to move the target to dynamics; in one dimension that inverts,
+because dynamical DMRG computed all three of the momentum-resolved channels reported here nineteen
+years ago~\cite{benthien2007} (Sec.~\ref{sec:intro}, Sec.~\ref{sec:physics}).
+Dynamics in one dimension is where classical methods arrived first, and no framing of this work
+says otherwise. Within the region this work measures---one-dimensional Hubbard rings at $L\le14$, the
+nineteen active spaces, and a largest minimal bond dimension of $42$ over the $74$ deposited exact
+ground states, attained on a molecular active space, the largest on the lattice being $38$ in the
+two-leg ladder---there is no computation performed
+here that a classical method cannot perform, and we make no advantage claim at any size reached.
+Deriving one's own no-advantage region is a stronger position than conceding it; the credit does not
+change the fact, and the fact is the one just stated.
+
+The same derivation says where the boomerang stops, and that is the measurement this subsection closes
+on. The controlled contrast of Sec.~\ref{sec:nogo:chi} is a search for a target on which the two costs
+come apart: at one-body magic matched to within $1\%$, the two-leg ladder carries $\chi=13$ against the
+chain's $5$ at $L=6$ and $\chi=38$ against $8$ at $L=8$, while its determinant support exceeds the
+chain's by $1.52$, $1.68$ and $2.24\times$. The quantity to look for is a target whose minimal bond
+dimension is large in \emph{every} ordering while the sampled support stays compact---a property of
+geometry and orbital connectivity rather than of dimensionality, so two-dimensional lattices and
+molecular orbital graphs are where it would be measured, and nothing here measures it.
+Section~\ref{sec:frontier} supplies the second coordinate of that search: in the determinant basis the
+Krylov space of the probe already has coordinate support on every symmetry-allowed determinant at $L=8$ ($3902$ of $3920$), so zero leakage at full captured weight requires a different working basis; whether a non-vacuous certificate at small sector fraction does is open (Sec.~\ref{sec:frontier:obstruction}).

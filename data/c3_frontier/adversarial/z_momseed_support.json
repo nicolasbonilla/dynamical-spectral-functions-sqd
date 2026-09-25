@@ -1,0 +1,95 @@
+{
+ "generated_by": "src/frontier/z_momseed_support.py",
+ "model": "1D Hubbard ring, PBC, half filling, U/t=8",
+ "seed": "phi_k = L^-1/2 sum_j e^{ikj} c^dag_{j,up}|Psi_0>",
+ "thresholds": "1e-10 and 1e-8 of max|phi_k|, required to agree",
+ "arpack_seed": 20260918,
+ "results": [
+  {
+   "L": 6,
+   "D": 300,
+   "rows": [
+    {
+     "m": 0,
+     "k_over_pi": 0.0,
+     "support": 288
+    },
+    {
+     "m": 1,
+     "k_over_pi": 0.3333333333333333,
+     "support": 300
+    },
+    {
+     "m": 2,
+     "k_over_pi": 0.6666666666666666,
+     "support": 300
+    },
+    {
+     "m": 3,
+     "k_over_pi": 1.0,
+     "support": 288
+    },
+    {
+     "m": 4,
+     "k_over_pi": 1.3333333333333333,
+     "support": 300
+    },
+    {
+     "m": 5,
+     "k_over_pi": 1.6666666666666667,
+     "support": 300
+    }
+   ],
+   "support_min": 288,
+   "support_max": 300
+  },
+  {
+   "L": 8,
+   "D": 3920,
+   "rows": [
+    {
+     "m": 0,
+     "k_over_pi": 0.0,
+     "support": 3848
+    },
+    {
+     "m": 1,
+     "k_over_pi": 0.25,
+     "support": 3920
+    },
+    {
+     "m": 2,
+     "k_over_pi": 0.5,
+     "support": 3920
+    },
+    {
+     "m": 3,
+     "k_over_pi": 0.75,
+     "support": 3920
+    },
+    {
+     "m": 4,
+     "k_over_pi": 1.0,
+     "support": 3848
+    },
+    {
+     "m": 5,
+     "k_over_pi": 1.25,
+     "support": 3920
+    },
+    {
+     "m": 6,
+     "k_over_pi": 1.5,
+     "support": 3920
+    },
+    {
+     "m": 7,
+     "k_over_pi": 1.75,
+     "support": 3920
+    }
+   ],
+   "support_min": 3848,
+   "support_max": 3920
+  }
+ ]
+}

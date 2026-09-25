@@ -1,0 +1,94 @@
+\section{Moment exactness: the proof route, the conjecture and the shot bound}
+\label{sm:moments}
+
+That proof is three lines of Rayleigh--Ritz, and it is not the proof this statement is usually given.
+The usual route argues that an order-$(K{+}1)$ quadrature ``matches the first $2K+1$ moments
+exactly'', and $2K+1$ is exactly what Table~\ref{tab:moments} measures: the \emph{reach} is right,
+the route is not. What does not hold here
+is the identification of $A_{\mathcal S}$ with a Gaussian-quadrature rule built by a nonorthogonal
+Lanczos/Krylov construction. No such object is built anywhere in this work: every reconstruction
+diagonalizes $P_{\mathcal S}HP_{\mathcal S}$ on a coordinate subspace, so $d\mu_{\mathcal S}$ carries
+$|\mathcal S|$ nodes, not $K+1$, and the orders that separate the two objects measure the distance between them,
+not an error in the published reach. The conclusion is right, the route is not, and the correct route
+is also the more general one (Sec.~\ref{app:moments:exact}).
+
+Equation~\eqref{eq:momex} invites a corollary: ``consequently, at fixed broadening
+$\eta>0$, the smoothed reconstruction converges geometrically,
+$\lVert A-A_{\mathcal K_K}\rVert_{1}\le C(\eta)\,\rho(\eta)^{-K}$.'' It does not follow, and it is
+not a corollary here. Moment exactness is a list of $2K+2$ linear identities, and the $L_1$
+distance between two Lorentzian-broadened measures is not a finite linear functional of them;
+moment exactness supplies neither of the two ingredients a conversion would need
+(Sec.~\ref{app:moments:conj}), and neither $C(\eta)$ nor
+$\rho(\eta)$ is derived or exhibited anywhere in this work or in the deposit. We therefore state the
+claim as what it is.
+
+One constraint on any answer is already available. The two-level family of Sec.~\ref{sec:retraction}
+has $\mathcal K_0=\operatorname{span}\{\phi\}$, and by direct integration at $\eta=0.15$ its
+$\lVert A-A_{\mathcal K_0}\rVert_{1}$ is $1.983$ at $g/\eta=2\times10^{2}$ and $1.998$ at
+$g/\eta=6.7\times10^{3}$, rising to $2\lVert\phi\rVert^{2}$. Evaluating Conjecture~\ref{conj:geom} at
+$K=0$ therefore forces $C(\eta)\ge2\lVert\phi\rVert^{2}$: the same family that forces the trivial
+constant on the weight-only bound forces it here on the prefactor. Whatever content the conjecture has
+must be carried by $\rho(\eta)^{-K}$ alone, and in particular it cannot be non-vacuous at the small $K$
+at which a shot-limited subspace operates.
+
+One figure of this work is read against that conjecture and not against a theorem. A geometric collapse $\text{rel-}L_1\sim\rho^{-K}$ with $\rho\approx1.7$, fitted to panel~(b) of Fig.~\ref{fig:method}, is easily reported as ``precisely the geometric convergence guaranteed by the
+moment-exactness theorem''. It is guaranteed by no such thing---that is the corollary ruled out
+above---and the fit does not carry the claim on its own either. The panel is one of the two places in this work where
+the sampling is genuine and its budget is declared---multinomial draws at $4000$ shots per time step,
+eight seeds, $\eta=0.15\,t$, so $T=4000(K{+}1)$ and $T=5.2\times10^{4}$ at the last
+point---and the fit uses six of its thirteen measured points, inside a window selected after the fact
+($4\le K\le9$, set as a literal in \texttt{spectral\_validation\_max.py}). Across that window the mean
+subspace the sampler returns grows from $179$ to $236$ determinants of the $300$-dimensional sector, so
+decay in the Krylov order is confounded with growth in $|\mathcal S|$; and the $K$ of the abscissa is
+the number of measured time slices, not the $K_{\mathcal S}$ of the weight-only bound, which is $-1$ at
+all thirteen points by Eq.~\eqref{eq:exclusion}. No rate is fitted to that window here, and the
+caption claims none.
+What the panel does show, over all thirteen points, with its eight-seed band and with $T$ attached, is
+that the error falls by a factor $32$ as the measured Krylov order is climbed at fixed $\eta$, from
+$0.59$ at $K=0$ to $0.0185$ at $K=12$, with a single non-monotone step at $K=3$ inside the discovery
+phase; that is the statement its caption makes.
+
+There is a sharper reason not to read Eq.~\eqref{eq:momex} as an error bound, and
+Table~\ref{tab:moments} contains it. For a coordinate subspace $P_{\mathcal S}$ is diagonal, so
+$\operatorname{span}(\mathcal S)\supseteq\mathcal K_K$ at any $K\ge0$ already forces
+$\operatorname{supp}(\phi)\subseteq\mathcal S$, that is $w_{\mathcal S}=1$ exactly---as the fourth
+column records for all three rows. Moment exactness here is strictly stronger than unit captured
+weight, and unit captured weight is precisely the condition under which Sec.~\ref{sec:leakage} measures
+the error to be $O(1)$. The two meet in the first row: the $K=0$ member of the ladder \emph{is} the
+witness $\mathcal S^{\ast}=\operatorname{supp}(\phi)$ of Sec.~\ref{sec:leakage}, of size $(\tfrac12+\tfrac1L)D$ at $L=6$ and fixed by the probe rather than by any ranking. It is moment-exact through
+order $1$, it holds the entire Born weight of the probe, and at $\eta=0.18\,t$ its relative $L_1$ error
+is $0.28$ on the open chain of Table~\ref{tab:moments} at $L=6$, and $0.43$ at $L=6$ and $0.35$ at $L=8$ on the periodic rings on which Sec.~\ref{sec:leakage} reports it: a measured range of
+$0.28$--$0.43$ at unit captured weight, whose lower end is the very system on which the method
+validation of Sec.~\ref{sec:method} is performed. (All three are $\lVert A-A_{\mathcal S}\rVert_1$
+divided by $\lVert\phi\rVert^{2}$, the normalization of Theorem~\ref{thm:leakage}; the size of the
+conversion to the repository's own in-window relative $L_1$ is measured in
+Sec.~\ref{sec:retraction}, and the two conventions are never interchanged silently.) Exactness of $2K+2$ numbers is
+what the structure certifies; the curve is certified, at fixed $\eta$ and on the subspace in hand, by
+Theorem~\ref{thm:leakage}, whose own non-vacuity is measured rather than assumed
+(Sec.~\ref{sec:frontier}).
+
+What Eq.~\eqref{eq:shots} does \emph{not} say belongs in the same breath, and in the main text rather
+than in an appendix. The parameter $\varepsilon$ thresholds a Born probability; it is not a spectral
+accuracy, and no step of the argument connects it to $\lVert A-A_{\mathcal S}\rVert_{1}$. Arbitrarily
+many configurations may each carry $p(x)<\varepsilon$ while jointly carrying most of the mixture; and,
+decisively, even at $w_{\mathcal S}=1$ exactly---nothing left to capture at any $\varepsilon$---the
+relative error is $O(1)$, as Sec.~\ref{sec:leakage} measures and the first row of
+Table~\ref{tab:moments} exhibits. Capturing the high-probability configurations is a statement about
+the sampler, not about the spectrum.
+
+Two compositions of the bound follow easily from it, and neither is made here. ``A sampling-capture
+bound polynomial in $|\mathcal S|$ and independent of the Hilbert-space dimension'' is a pair of
+clauses that are literally true and jointly empty, because this same work
+measures $|\mathcal S|\sim e^{1.05L}$ for these lattices, Eq.~\eqref{eq:supportexp}, so a budget
+polynomial in $|\mathcal S|$ is exponential in $L$, and independence of the Hilbert-space dimension is
+no saving when the quantity the budget is polynomial in grows exponentially itself. And the fall of the
+required sector fraction with $L$ is not ``the favourable face of the
+polynomial-shot bound'': it is not a face of that bound at all. Equation~\eqref{eq:shots} relates a
+shot budget to a Born-probability threshold and contains no statement about $|\mathcal S|/D$, about
+$L$, or about any trend in either.
+
+What stands in their place is the narrower statement Eq.~\eqref{eq:shots} does support, and it is the stronger
+one for being narrow: that many shots buy, at confidence $1-\delta$, every configuration above Born
+weight $\varepsilon$, and nothing further. What the resulting subspace costs, and what it is worth, are
+separate measurements, reported as three independent prices---support, resolution and shots---in
+Sec.~\ref{sec:prices}.

@@ -41,14 +41,13 @@
 
 % ======================================= [BODY] ======================================
 
-\section{Two budgets: what the shots buy and what they do not}
+\section{Two budgets: the missed weight and the boundary}
 \label{sec:leakage}
 
 The object a sample-based calculation delivers is a subspace, and the object a user wants is an error
 bar on the response built inside it. This section proves the bound that connects them. It is two-sided,
 it holds for \emph{any} orthogonal projector and therefore for any set of configurations a sampler
-might return, and its upper branch separates into two terms with different economics: one falls as more
-bitstrings are drawn, the other does not move at all. Everything after it is an evaluation of that
+might return, and its upper branch separates into two terms with different economics: the first is fixed by the captured weight and vanishes once the probe's support is held; the second is not controlled by the weight, although it falls as the subspace grows. Everything after it is an evaluation of that
 separation --- Sec.~\ref{sec:frontier} measures where the resulting certificate says something,
 Sec.~\ref{sec:nogo} shows that no invariant of the state can replace it, and Sec.~\ref{sec:prices}
 prices both terms in shots.
@@ -101,8 +100,7 @@ being complex conjugates. Two features of Eq.~\eqref{eq:lambda} carry the practi
 paper. It is assembled from objects the reconstruction has already produced --- the Ritz vectors and
 their coefficients --- plus one matrix--vector product $H\ket{\tilde m}$ per Ritz vector, so evaluating
 it costs a small multiple of the diagonalization that produced $A_P$ and \emph{does not require} $A$.
-And it vanishes exactly when $\operatorname{span}(S)$ contains the Krylov space $\mathcal K(H,\phi)$,
-which is a far more demanding condition than it looks: Sec.~\ref{sec:frontier:obstruction} measures it.
+And it vanishes exactly when $\operatorname{span}(S)$ contains $\mathcal K(H,\phi_P)$, the Krylov space of the retained part of the probe: $QHR_P(z)\phi_P$ vanishes for every $z$ exactly when $\mathcal K(H_P,\phi_P)$ is invariant under $H$, and it then coincides with $\mathcal K(H,\phi_P)$. For a subspace that holds the whole probe, $w_P=1$, the condition is that $\operatorname{span}(S)$ contain $\mathcal K(H,\phi)$ itself---far more demanding than it looks, as Sec.~\ref{sec:frontier:obstruction} measures.
 
 \subsection{The bound}
 
@@ -117,8 +115,8 @@ Eqs.~\eqref{eq:lehmannA}--\eqref{eq:lambda}. Then
 \;\le\;\lVert A-A_P\rVert_{1}\;\le\;
 \min\Bigl\{\,\lVert\phi\rVert^{2}\bigl(1+w_P\bigr),\;
 \bigl(\lVert\phi\rVert+\lVert\phi_P\rVert\bigr)
-\bigl(\,\underbrace{\lVert\phi_Q\rVert}_{\text{what shots buy}}
-+\underbrace{\Lambda_P(\eta)/\eta}_{\text{what they do not}}\,\bigr)\Bigr\},
+\bigl(\,\underbrace{\lVert\phi_Q\rVert}_{\text{missed weight}}
++\underbrace{\Lambda_P(\eta)/\eta}_{\text{boundary leakage}}\,\bigr)\Bigr\},
 \label{eq:twobudget}
 \end{equation}
 % The restatement below used to sit in a SECOND widetext, with this clause as column
@@ -136,109 +134,26 @@ $\widehat\Lambda_P=\Lambda_P/\lVert\phi\rVert$,
 \end{widetext}
 \end{theorem}
 
-\noindent Three hypotheses carry it. They are properties of the \emph{pipeline} that produced $A_P$
-rather than of the inequality, each is load-bearing, and each is checked against this paper's own
-pipeline in App.~\ref{app:hyp}.
 
-\begin{description}
-\item[(H1) Common origin.] $A$ and $A_P$ are referred to the same $E_0$. A shift common to both cancels
-exactly (verified to $1.000000$ for shifts of $10^{-3}$, $10^{-2}$, $10^{-1}\,t$). If instead $A_P$ is
-referred to $E_0+\delta$, then
-$\lVert A-A_P^{(E_0+\delta)}\rVert_1\le\lVert A-A_P\rVert_1
-+\lVert\phi_P\rVert^{2}(4/\pi)\arctan(|\delta|/2\eta)$, an additive term verified to $2\times10^{-5}$
-in all $48$ cases tested and \emph{which the certificate does not control}. A ground state obtained by
-Rayleigh--Ritz on $60\%$ of the $N$-electron sector at $L=8$ gives $\delta=6.7\times10^{-4}\,t$, which
-adds $0.0024$ to a bound of $1.2036$ ($+0.20\%$) while multiplying the \emph{measured} error by $16$.
-No cheap a posteriori control of $\delta$ is available: residual (Weinstein) and Temple
-bounds~\cite{weinstein1934,temple1928} computed on
-ground-state subspaces of $20$--$80\%$ of the $N$ sector at $L=6$ give $\arctan$ terms of $1.76$,
-$1.64$, $1.40$ and $0.92$, all vacuous against the ceiling of $2$.
-\item[(H2) Normalization and support of the $L_1$ norm.] The bound is on
-$\int_{\mathbb R}|A-A_P|\,d\omega$ normalized by $\lVert\phi\rVert^{2}=\int_{\mathbb R}A\,d\omega$. A
-relative error normalized by $\int_W A$ over a finite window and evaluated by quadrature --- the
-convention of this work's own resource scan --- is a different quantity. Measured here,
-$\lVert\phi\rVert^{2}/\int_W A=1.0100$, $1.0309$, $1.0373$ at $\eta=0.05$, $0.15$, $0.18\,t$ ($L=6$)
-and $1.0110$, $1.0278$, $1.0335$ ($L=8$), with a numerator ratio of $1.0040$--$1.0115$ across the $204$
-configurations of Sec.~\ref{sec:frontier}. The two conventions are never interchanged silently in this
-paper.
-\item[(H3) Exact reference.] $A$ is the exact spectral function of the full sector. If the reference is
-itself a Lanczos reconstruction of finite depth $n_\ell$, the theorem does \emph{not} bound
-$\lVert A^{(n_\ell)}-A_P^{(n_\ell)}\rVert_1$. Every measured error in this work is therefore labelled
-with the depth of its reference and with that reference's own drift, and we quote no error lying within
-a factor $20$ of that drift.
-\end{description}
-
-\begin{proof}
-Write $u=R(z)\phi$ and $u_P=R_P(z)\phi_P$, extended by zero outside $\operatorname{ran}P$.
-
-\emph{(1) The split.} Since $u_P\in\operatorname{ran}P$ and $(z-H_P)u_P=\phi_P$ there,
-$(z-H)u_P=zu_P-PHu_P-QHu_P=\phi_P-QHu_P$; subtracting this from $(z-H)u=\phi$ gives
-\begin{equation}
-u-u_P\;=\;R(z)\bigl[\,\phi_Q\;+\;QH\,R_P(z)\phi_P\,\bigr].
-\label{eq:split}
-\end{equation}
-This is the Feshbach--L\"owdin partition of the resolvent~\cite{feshbach1958,lowdin1962}, written as an
-exact identity rather than as an expansion: the first source term is the part of the probe the subspace
-never held, the second is the part of the Hamiltonian that carries amplitude out of it. Only $P^{2}=P$,
-$P^{\dagger}=P$, $H=H^{\dagger}$ and $\eta>0$ are used; no property of the determinant basis, of the
-ranking, or of the sampler enters anywhere below.
-
-\emph{(2) Pointwise.}
-$A-A_P=(\eta/\pi)(\lVert u\rVert+\lVert u_P\rVert)(\lVert u\rVert-\lVert u_P\rVert)$ and
-$\bigl|\lVert u\rVert-\lVert u_P\rVert\bigr|\le\lVert u-u_P\rVert$, so
-$|A-A_P|\le(\eta/\pi)(\lVert u\rVert+\lVert u_P\rVert)\,\lVert u-u_P\rVert$ at every $\omega$.
-
-\emph{(3) Integration.} By Cauchy--Schwarz in $\omega$,
-\begin{widetext}
-\begin{equation*}
-\lVert A-A_P\rVert_1\;\le\;\frac{\eta}{\pi}
-\Bigl[\int\bigl(\lVert u\rVert+\lVert u_P\rVert\bigr)^{2}d\omega\Bigr]^{1/2}
-\Bigl[\int\lVert u-u_P\rVert^{2}d\omega\Bigr]^{1/2}.
-\end{equation*}
-\end{widetext}
-The first bracket is at most $(\pi/\eta)^{1/2}(\lVert\phi\rVert+\lVert\phi_P\rVert)$, by Minkowski in
-$L^{2}(d\omega)$ and the two sum rules. For the second, apply Minkowski to Eq.~\eqref{eq:split}: its
-first term obeys the sum rule with seed $\phi_Q$, contributing exactly
-$(\pi/\eta)^{1/2}\lVert\phi_Q\rVert$; its second obeys
-$\lVert R(z)v\rVert\le\eta^{-1}\lVert v\rVert$, since $H$ is self-adjoint and $\operatorname{Im}z=\eta$,
-and the definition~\eqref{eq:lambda} then contributes at most $(\pi/\eta)^{1/2}\Lambda_P(\eta)/\eta$.
-Multiplying the three factors gives the leakage branch of~\eqref{eq:twobudget}.
-
-\emph{(4) The other two branches.} $A$ and $A_P$ are nonnegative with known integrals, so
-$\lVert A-A_P\rVert_1\le\int A+\int A_P=\lVert\phi\rVert^{2}(1+w_P)$ under no hypothesis at all; and
-$\bigl|\int A-\int A_P\bigr|\le\lVert A-A_P\rVert_1$ gives the lower bound
-$\lVert\phi\rVert^{2}(1-w_P)$.
-
-\emph{(5) The closed form.} $R_P(z)\phi_P=\sum_m c_m(z-\tilde E_m)^{-1}\ket{\tilde m}$, so
-\begin{equation*}
-\bigl\lVert QHR_P(z)\phi_P\bigr\rVert^{2}\;=\;\sum_{m,m'}
-\frac{c_m\bar c_{m'}\,\braket{g_{m'},g_m}}{(z-\tilde E_m)(\bar z-\tilde E_{m'})}\,.
-\end{equation*}
-With $x=\omega+E_0$ the remaining integral is
-$\int dx\,[(x-\tilde E_m+i\eta)(x-\tilde E_{m'}-i\eta)]^{-1}$, which has one pole in each half
-plane; closing above picks up $2\pi i/[(\tilde E_{m'}-\tilde E_m)+2i\eta]$, and multiplying by
-$\eta/\pi$ gives Eq.~\eqref{eq:lambda}.
-\end{proof}
+\noindent Three hypotheses carry it, each a property of the \emph{pipeline} that produced $A_P$ rather
+than of the inequality: \emph{(H1)} $A$ and $A_P$ are referred to the same $E_0$; \emph{(H2)} the $L_1$
+norm is taken over the whole line and normalized by $\lVert\phi\rVert^{2}$; \emph{(H3)} $A$ is the exact
+spectral function of the full sector. Each is load-bearing and each is checked against this paper's own
+pipeline in Sec.~\ref{app:hyp}; the proof, from the Feshbach--L\"owdin split of the resolvent
+(Eq.~\eqref{eq:split}) and Cauchy--Schwarz in $\omega$, is in Sec.~\ref{sm:leakage}.
 
 \subsection{What the two branches are, and what they are not}
 
-\paragraph{The separation is the economics.} The first summand of the leakage branch,
-$\lVert\phi_Q\rVert=\lVert\phi\rVert\sqrt{1-w_P}$, is the Born weight of the probe the subspace failed
-to hold: it is what more shots buy, and Table~\ref{tab:provenance} prices that purchase channel by
-channel. The second, $\Lambda_P(\eta)/\eta$, reads the off-diagonal block $PHQ$ and is untouched by the
-sampler --- drawing further bitstrings enlarges $S$, and enlarging $S$ moves the boundary rather than
-removing it. Section~\ref{sec:retraction} turns this from a reading into a measurement: on
+\paragraph{What the weight does not control.} The first summand of the leakage branch, $\lVert\phi_Q\rVert=\lVert\phi\rVert\sqrt{1-w_P}$, is the Born weight of the probe the subspace failed to hold: it vanishes once the sampler holds the probe's Born support, and Table~\ref{tab:provenance} prices that purchase channel by channel. The second, $\Lambda_P(\eta)/\eta$, reads the off-diagonal block $PHQ$, and the captured weight does not control it: along the sampler's ranking it falls as $S$ grows (Sec.~\ref{sec:frontier}), but a subspace can hold the whole probe and still leak. Section~\ref{sec:retraction} turns this from a reading into a measurement: on
 $\mathcal S^{\star}=\operatorname{supp}(\phi)$, where the first summand vanishes identically and by
-construction, the relative $L_1$ error is still $0.43$ at $L=6$ and $0.33$ at $L=8$ at $\eta=0.18\,t$
-on the periodic rings, against a ceiling of $2$.
+construction, the relative $L_1$ error remains of order one, against a ceiling of $2$.
 
 \paragraph{A certificate, not an error estimate.} The gap between the bound and the measured error is
 large, and it is not the accident of a constant. At \emph{fixed} $P$ the looseness is stable --- within
 $\pm17\%$ ($L=6$) and $\pm25\%$ ($L=8$) over a decade in $\eta$ --- but across subspaces it varies by a
 factor $51$, and at the threshold where the leakage branch first improves on the trivial one it is
-$3\times10^{2}$ to $2.4\times10^{3}$ (Sec.~\ref{sec:frontier:calib}). Calling
-Eq.~\eqref{eq:twobudget} an error estimate would be refutable in one line. What it is, is an exclusion;
-Sec.~\ref{sec:frontier} reports what it excludes, and at what fraction of the sector.
+$3\times10^{2}$ to $2.4\times10^{3}$ (Sec.~\ref{sec:frontier:calib}). Eq.~\eqref{eq:twobudget} is therefore an exclusion, not an error
+estimate; Sec.~\ref{sec:frontier} reports what it excludes, and at what fraction of the sector.
 
 \paragraph{Only one of the two terms is a posteriori.} $\Lambda_P(\eta)$ is computable from $H$,
 $\operatorname{ran}P$, $\phi$ and the Ritz vectors alone. The weight term is not: $w_P$ needs the exact
@@ -247,49 +162,24 @@ the optimistic direction. The complete bound is therefore \emph{not} evaluable b
 already have the answer, and we never claim that it is; Sec.~\ref{sec:frontier:calib} gives the
 conservative substitution that makes the decision itself a posteriori in the regime where it is used.
 
-\paragraph{What object is certified.} If the resolvent inside $\operatorname{ran}P$ is itself evaluated
-by a Krylov recursion of depth $n_\ell$, then $\Lambda$ computed on that Krylov space bounds the error
-of the depth-$n_\ell$ reconstruction \emph{and of nothing else}. The convenient inequality
-$\Lambda_{\mathcal K}\ge\Lambda_S$ that would transfer the statement to the dense $A_S$ is false:
-$1169$ of $6000$ random triples violate it, at a minimum ratio of $0.5258$. Every table of
-Sec.~\ref{sec:frontier} carries the depth of the object it certifies for that reason. Full
-reorthogonalization is mandatory throughout: without it $P_{\mathcal K}$ is not a projector --- the
-orthogonality defect reaches $0.238$ at $L=8$, where the captured weight then reads $1.4868$, an
-impossible value --- and $\Lambda$ is inflated thirtyfold.
-
-\paragraph{Relation to the classical error theory, and the scope of the novelty claim.} Nothing in the
-proof is new as analysis, and we say so before a referee does. The split~\eqref{eq:split} is L\"owdin
-partitioning~\cite{lowdin1962}, the same algebra as the Feshbach projection of scattering
-theory~\cite{feshbach1958}; and sixty years of Rayleigh--Ritz and Krylov error analysis for resolvents
-and matrix functions~\cite{saad2011,golub2010,epperly2022} contains every rung of steps (2) and (3),
-along with far sharper residual, Temple and Kato--Temple estimates for individual
-eigenpairs~\cite{temple1928,weinstein1934,kato1949}, and the
-loss-of-orthogonality analysis of Paige~\cite{paige1976} that makes step (5) conditional on
-reorthogonalization, and the polynomial-restart convergence theory of Beattie, Embree and
-Sorensen~\cite{beattie2005}.
-
-Nor is ``a posteriori'' ours to claim, and we name the prior art rather than wait to be shown it.
-Stopping criteria for rational matrix functions of Hermitian matrices, computed from the residual
-alone, are Frommer and Simoncini's~\cite{frommersimoncini2008}; Jia and Lv's title is this section's
-claim word for word---\emph{a posteriori error estimates of Krylov subspace approximations to matrix
-functions}~\cite{jialv2015}---and Frommer and Schweitzer carry that line to Stieltjes
-functions~\cite{frommerschweitzer2016}; and five months before this version, on \emph{quantum} Krylov,
-Oliveira, Ziems and Glaser introduce ``two new metrics, the imaginary and unitary filters, that
-successfully assess the reliability of the obtained solutions without any knowledge of the true
-eigenspectrum''~\cite{oliveira2026}. That is the framing of this section, established earlier and by
-others, and the priority is theirs.
-
-What we did not find in that literature is the conjunction of three things, and it is the whole of the
-novelty claimed here. First, a closed form for $\Lambda_P(\eta)$ on a subspace of \emph{coordinates}
-carrying no Krylov structure, no invariance and no spectral-gap assumption---so that the estimate
-attaches to the set of determinants a sampler returned, which is not the span of the iterates of any
-recursion, and Eq.~\eqref{eq:split} is evaluated on that set directly. Second, that the bound is
-two-sided on the same object: the lower branch fixes what more shots can buy and the upper branch what
-they cannot, and Sec.~\ref{sec:frontier} uses the distance between them rather than either alone.
-Third, a \emph{measured} calibration of where that bound crosses the trivial one, over sixteen
-$(L,\eta)$ cells whose true errors span five decades (Sec.~\ref{sec:frontier:calib}), in place of an
-asymptotic statement about the crossing. Whether such a bound is \emph{useful} at the
-fractions sampling reaches is a separate question; it is not settled by the proof, and
-Sec.~\ref{sec:frontier} answers it --- in the negative --- by measurement.
+\paragraph{Prior art, and what is new.} Nothing in the proof is new as analysis. The split is L\"owdin
+partitioning~\cite{lowdin1962}, the algebra of the Feshbach projection~\cite{feshbach1958}; Rayleigh--Ritz
+and Krylov error analysis for resolvents and matrix
+functions~\cite{saad2011,golub2010,epperly2022,temple1928,weinstein1934,kato1949,paige1976,beattie2005}
+contains every rung of its steps, and the integration step is the reduced-basis bound on a Galerkin
+projection with inf--sup constant $\eta$~\cite{rozza2008,hesthaven2016}. A posteriori estimates for Krylov
+approximations to matrix functions are due to Frommer and Simoncini, Jia and Lv, and Frommer and
+Schweitzer~\cite{frommersimoncini2008,jialv2015,frommerschweitzer2016}, with Lanczos and
+stochastic-Lanczos-quadrature versions~\cite{chen2022lanczos,xuchen2025block,chen2021slq}; on quantum
+Krylov, Oliveira, Ziems and Glaser assess reliability without knowledge of the true
+spectrum~\cite{oliveira2026}; and a response-targeted selection criterion for classical selected
+configuration interaction is Reinholdt, Kjellgren and Kongsted's~\cite{reinholdt2026lr}. The priority
+for the a posteriori framing is theirs. What we add is the conjunction of three things: a closed form
+for $\Lambda_P(\eta)$ from the Ritz pairs on a subspace of \emph{coordinates}, with no Krylov structure,
+invariance or gap assumption; a bound two-sided on the same object; and a measured calibration of where
+it crosses the trivial bound (Sec.~\ref{sec:frontier:calib}). Whether it is useful at the fractions
+sampling reaches is answered, in the negative, in Sec.~\ref{sec:frontier}; the full comparison with that
+literature is in Sec.~\ref{sm:leakage}.
 
 \input{sec_3_1.tex}
+

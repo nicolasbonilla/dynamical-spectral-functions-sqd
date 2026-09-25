@@ -44,32 +44,13 @@
 \label{sec:nogo}
 
 Section~\ref{sec:leakage} leaves one question open: can the a posteriori certificate be replaced by an
-a priori predictor computed from the state? $\Lambda_S(\eta)/\eta$ is cheap, but it is cheap \emph{after}
-the subspace exists; a quantity read off $\ket{\Psi_0}$ before any circuit runs would be worth more. The
-natural candidates are the resource monotones of fermionic non-Gaussianity, efficiently measurable from
-two-point functions, which a large recent literature has put in exactly that role. None of them can play
-it, for either term of Eq.~\eqref{eq:twobudget}, and the two statements are about two different objects,
-which we separate here once and keep separate throughout. The first is about the determinant support the
-shots must populate: a \emph{static} count on the ground state, written $|\mathcal S|_{\varepsilon_w}$
-below, and the quantity the cost analysis of this paper has always been about. The second is about the
-leakage $\Lambda_S(\eta)/\eta$, and its $S$ is not that count at all---it is the coordinate subspace of
-Theorem~\ref{thm:leakage}, the one the sampler returned. Only the second is an obstruction on the
-theorem's own variable, and it is the one that makes this section inseparable from
-Sec.~\ref{sec:leakage}: $\Lambda_S(\eta)$ is defined by the resolvent at resolution $\eta$ and does not
-exist outside the spectral half of this work. Remove Sec.~\ref{sec:leakage} and
-Proposition~\ref{prop:leakinv} loses its subject; remove this section and the question above stays
-unanswered. What replaces the predictor is not a cheaper functional but the measured map of
+a priori predictor computed from the state before any circuit runs? The natural candidates are the
+monotones of fermionic non-Gaussianity, efficiently measurable from two-point functions
+(Sec.~\ref{sm:nogo} reviews them). None can play that role, for either term of
+Eq.~\eqref{eq:twobudget}: not for the static determinant support $|\mathcal S|_{\varepsilon_w}$ of the
+ground state that the shots must populate, and not for the leakage $\Lambda_S(\eta)/\eta$ of the
+coordinate subspace the sampler returned. What replaces the predictor is the measured map of
 Sec.~\ref{sec:frontier}.
-
-The candidates have a sharp algebraic origin. Matchgate (free-fermion) circuits are classically
-simulable~\cite{valiant2002,terhaldivincenzo2002,bravyi2005flo,jozsamiyake2008}, and what leaves that
-manifold is fermionic non-Gaussianity: any pure non-Gaussian state injected into a matchgate circuit
-promotes it to universality~\cite{hebenstreit2019}, the fermionic counterpart of qubit
-magic~\cite{bravyikitaev2005,leone2022sre}. A ladder of measures quantifies it---Gaussian rank and
-extent~\cite{cudbystrelchuk2023}, non-Gaussian gate counts~\cite{reardonsmith2024,diaskoenig2024},
-including the count that makes a state efficiently learnable~\cite{melehera2025}, covariance-matrix
-monotones~\cite{tarabunga2026,collura2026}, and convolution- and entropy-based measures built on the
-violation of Wick's theorem~\cite{coffman2025}.
 
 \subsection{The collapse: one-body magic is a single 1-RDM invariant}
 \label{sec:nogo:collapse}
@@ -100,36 +81,15 @@ reduces to a single 1-RDM invariant,
 \label{eq:collapse}
 \end{equation}
 \end{widetext}
-exact on any number-conserving state and verified state by state to $10^{-13}$ across the dissociation of
-$\mathrm{N_2}$ and the suite of Table~\ref{tab:molecules}, that is on the $38$ molecular ground states
-of this work. For spin-restricted natural orbitals
-($g_{a\uparrow}=g_{a\downarrow}=n_a/2$) it equals $2N_{\mathrm u}$, the quadratic
-effectively-unpaired-electron index $N_{\mathrm u}=\sum_a n_a(2-n_a)$ of Takatsuka--Fueno--Yamaguchi and
-of Staroverov--Davidson~\cite{takatsuka1978,staroverov2000}, and $\mathrm{tr}[\gamma(1-\gamma)]$ is the
-Gigena--Rossignoli one-body-entanglement linear entropy~\cite{gigena2020}.\footnote{$2N_{\mathrm u}$ is
-the quadratic index, distinct from the linear $\sum_a\min(n_a,2-n_a)$ of
-Head-Gordon~\cite{headgordon2003}. A cleanly singly-occupied spin orbital contributes $0$ to
-$\mathcal F_1$ but $2$ to $2N_{\mathrm u}$, so on the five spin-polarized members of
-Table~\ref{tab:molecules} ($\mathrm{O_2},\mathrm{NO},\mathrm{CN},\mathrm{OH},\mathrm{BeH}$) the two differ
-and we report $\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$ directly. Outside number conservation the
-collapse fails: a paired Gaussian state hides fractional occupations in anomalous correlators and keeps
-$\mathcal F_1=0$.}
-
-We claim no novelty for the algebra. Equation~\eqref{eq:collapse} is an immediate number-conserving
-specialization of the antiflatness of Ref.~\cite{sierant2026}; $N_{\mathrm u}$ has been the standard
-diagnostic of unpaired density since 1978~\cite{takatsuka1978}; and the ensemble form was noted
-independently and contemporaneously, for interacting-integrable eigenstates, by \'Swi\k{e}tek \emph{et
-al.}~\cite{swietek2026}. What we add is the exact, state-by-state \emph{dictionary}: three
-literatures---fermionic magic, effectively-unpaired electrons, one-body entanglement---name one quantity.
-The verification is the $38$ molecular states just quoted; the further equality to $2N_{\mathrm u}$ is
-checked on the closed-shell members, the five spin-polarized ones being excluded for the reason given
-in the footnote. The $36$ lattice ground states of this work are number conserving, so
-Eq.~\eqref{eq:collapse} applies to them by the same algebra, but they were not part of that
-state-by-state check and we do not count them in it. The consequence we carry
-forward is structural and equally exact: being a function of the occupation spectrum alone,
-$\mathcal F_1$ inherits the orbital-rotation invariance of the eigenvalues of $\gamma$. It is a genuine,
-cheap, exactly computed invariant of the state, and it is that invariance the two following subsections
-use.
+exact on any number-conserving state and verified state by state to $10^{-13}$ on the $38$ molecular
+ground states of this work. For spin-restricted natural orbitals it equals $2N_{\mathrm u}$, the
+effectively-unpaired-electron index~\cite{takatsuka1978,staroverov2000}, and
+$\mathrm{tr}[\gamma(1-\gamma)]$ is the one-body-entanglement linear entropy~\cite{gigena2020}. The
+algebra is an immediate number-conserving specialization of the antiflatness of
+Ref.~\cite{sierant2026}, noted independently for interacting-integrable eigenstates~\cite{swietek2026};
+what we carry forward is its consequence. Being a function of the occupation spectrum alone,
+$\mathcal F_1$ is invariant under orbital rotations (the spin-polarized cases and the dictionary are in
+Sec.~\ref{sm:nogo}).
 
 \subsection{The geminal witness, and what an invariant cannot certify}
 \label{sec:nogo:witness}
@@ -137,7 +97,7 @@ use.
 The obstruction is not a continuity artifact. For the \emph{raw} determinant support---the unthresholded
 Slater rank---no continuous functional of a fixed set of reduced density matrices can lower-bound the
 count at all, rank being coefficient-insensitive and not lower-semicontinuous, like the CP tensor
-rank~\cite{desilvalim2008}; that argument (App.~\ref{app:theorem}) does \emph{not} transfer to the
+rank~\cite{desilvalim2008}; that argument (Sec.~\ref{app:theorem}) does \emph{not} transfer to the
 operative, coefficient-\emph{sensitive} $|\mathcal S|_{\varepsilon_w}$, which collapses to $1$ along the same
 path as the functionals. What obstructs the operative quantities is a symmetry, exhibited by a family
 whose amplitudes are $\Theta(1)$ and therefore threshold-robust: an antisymmetrized product of $K$
@@ -166,45 +126,13 @@ tensor network---representable, contractible and Born-samplable in $O(K)$: magic
 unbounded at fixed $O(1)$ simulation cost.
 \end{theorem}
 
-\noindent The proof is four short block-diagonal computations (App.~\ref{app:witness}); the step worth
-flagging here is that at $\theta=\pi/4$ a single maximally-paired geminal is the two-determinant cat,
-whose Majorana covariance \emph{vanishes identically}, so \emph{every} order of antiflatness saturates its
-maximum at once. All four values are reproduced by exact diagonalization for $K=1,\dots,4$.
-
-\begin{figure*}[tp]\centering\input{figs/fig_witness_native.tex}
-\caption{\textbf{The geminal orbit witness (Theorem~\ref{thm:witness}).} Antisymmetrized products of
-strongly orthogonal geminals in their localized (pairing) basis, where $\chi=2$ and the state is a
-classically tractable tensor network. \textbf{(a)}~As $K$ grows, $\mathcal F_1=2N_{\mathrm u}=4K$,
-$\mathcal F_2=4K$ and $|\mathcal S|=2^{K}$ all diverge while the bond dimension never exceeds $2$.
-\textbf{(b)}~At $K=3$, sweeping the pairing angle drives both $\mathcal F_1$ and $\mathcal F_2$ to their
-maximum at $\theta=\pi/4$---where the covariance vanishes and all orders saturate---with
-$\mathcal F_2>\mathcal F_1$ off the peak and $\chi=2$ throughout. Because $\mathcal F_k$ is
-orbital-rotation invariant the same values persist on the whole orbit, along which the cost runs from
-$O(K)$ to exponential.}\label{fig:witness}\end{figure*}
-
-\paragraph{The orbit is the argument.} The witness is not the trivial ``a product state is easy''
-(Fig.~\ref{fig:witness}). Because $\mathcal F_1$ and $\mathcal F_2$ are invariant under number-conserving
-orbital rotations~\cite{sierant2026}, the whole orbit $\{U\ket{\Psi_K}\}$ carries the \emph{same}
-$(\mathcal F_1,\mathcal F_2)=(4K,4K)$ while the cost in the fixed computational basis---bond dimension and
-Born-sampling time---runs from $O(K)$ at the localized representative up to exponential. Two conclusions
-follow, each in the only direction the construction supports: a Gaussian-invariant fermionic magic is not
-a sufficient certificate of hardness and does not lower-bound the cost (there $\chi=2$ while
-$\mathcal F_k=4K\to\infty$); and $\mathcal F_k$ does not determine the cost, being constant on an orbit
-along which the cost varies exponentially. In a generic rotated basis the Born sampling of $\ket{\Psi_K}$
-is plausibly classically hard---the free-fermionic-linear-optics-with-magic-input regime of the Fermion
-Sampling advantage scheme~\cite{fermionsampling2022}---while $\mathcal F_k$ is unchanged: any hardness
-that appears belongs to the sampler's fixed frame. We are silent on whether magic is \emph{necessary} for
-hardness, and we anchor the easy end to an external result rather than our own, since for this paired
-class the additive-error estimation of amplitudes, overlaps and number correlators under free-fermionic
-dynamics is classically efficient~\cite{oh2026}.
-
-\paragraph{The same orbit reaches the leakage.} The orbit argument was written for $|\mathcal S|$; it
-extends to the second budget of Eq.~\eqref{eq:twobudget}, with its statement corrected. An invariant upper
-bound on $\Lambda_S(\eta)/\eta$ \emph{does} exist---it is exhibited inside the proposition below, and we
-tested it on $1600$ hostile cases (GOE/GUE, near-degenerate, banded, $\lVert H\rVert\sim300$) with zero
-violations and with its first link attained, minimum ratio $1.0000000000$. The correct statement is
-therefore one of non-vacuity, not of non-existence: the same logical form the $|\mathcal S|$ no-go always
-had, where the sector dimension is likewise an invariant upper bound that says nothing.
+\noindent The proof is four block-diagonal computations (Sec.~\ref{app:witness}), and all four values
+are reproduced by exact diagonalization for $K=1,\dots,4$ (Fig.~\ref{fig:witness}). The orbit is the
+argument: $\mathcal F_k$ is invariant under number-conserving orbital rotations~\cite{sierant2026}, so
+the whole orbit $\{U\ket{\Psi_K}\}$ carries the same $(\mathcal F_1,\mathcal F_2)=(4K,4K)$ while the
+cost in the fixed computational basis runs from $O(K)$ to exponential. A Gaussian-invariant fermionic
+magic therefore neither lower-bounds the cost nor determines it. The same orbit reaches the second
+budget of Eq.~\eqref{eq:twobudget}, where an invariant upper bound on the leakage exists but is useless:
 
 \begin{proposition}[Fibers on which every orbital-rotation invariant gives a vacuous leakage certificate]
 \label{prop:leakinv}
@@ -235,270 +163,29 @@ The statement is one of non-determination and non-vacuity, not of non-existence:
 to bound the leakage, they fail to bound it usefully.
 \end{proposition}
 
-Table~\ref{tab:fiber} is the exhibit. The two endpoints of each fiber are the \emph{same} rotation angle
-applied within one geminal block and across two blocks, which is why the captured weight agrees bit for
-bit. An exhaustive search over all $276$ coordinate subspaces of that size at $K=2$ settles both ends.
-At the aligned endpoint the global minimum of the certificate over the $276$ is $0.856$ and it is
-attained by the protocol's own subspace: the subspace the sampler would return is the best available
-one. At the rotated endpoint the minimum over the same $276$ is exactly the trivial bound, attained
-only by subspaces of vanishing captured weight: \emph{no} determinant subspace of that size certifies
-anything there.
+\noindent The fibers (Table~\ref{tab:fiber}), an exhaustive search over the $276$ subspaces of that
+size at $K=2$, and four limits of the exhibit---a matched pair at one angle, a margin over the trivial
+bound that shrinks from $2.29$ to $1.69$ between $K=2$ and $K=4$, a small-leakage endpoint realized
+only by the stabilizer of the state, and sector dimensions of at most $3920$---are in
+Sec.~\ref{sm:nogo}.
 
-\begin{table*}[tp]\centering\small
-\caption{\textbf{Fibers of fixed invariants with moving leakage}, at $s=\pi/16$, $\delta=0.01$,
-$\eta=0.10$, $|\mathcal S|=2^{K-1}$, $w_S=0.961940$, $\tau(w_S)=0.795$. Along each row the spectrum,
-every Lehmann weight, $\lVert\phi\rVert^2$, $|\mathcal S|$ and all $\mathcal F_k$ are identical between
-the two endpoints ($w_S$ to $2.2\times10^{-16}$), so the first term of Eq.~\eqref{eq:twobudget} is fixed
-and only the second moves. Quantities are relative ($\widehat\Lambda_S=\Lambda_S/\lVert\phi\rVert$) and
-``certificate'' is $\min\{(1+\sqrt{w_S})(\sqrt{1-w_S}+\widehat\Lambda_S/\eta),\,1+w_S\}$, the relative
-form of Theorem~\ref{thm:leakage}; ``al.''\ and ``rot.''\ label the aligned and rotated endpoints of the
-fiber. A continuous angle sweep is in App.~\ref{app:witness}.}
-\label{tab:fiber}
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}lccccc@{}}
-\toprule
-$K$ ($\dim(N{+}1)$) & $\mathcal F_1{=}\mathcal F_2{=}\mathcal F_3$
- & $\widehat\Lambda/\eta$ al. & $\widehat\Lambda/\eta$ rot.
- & cert.\ al. & cert.\ rot. \\
-\midrule
-$2$ \ ($24$)   & $8$  & $0.237$ & $2.326$ & $\mathbf{0.856}$ & $1.962$ (trivial) \\
-$3$ \ ($300$)  & $12$ & $0.323$ & $2.336$ & $\mathbf{1.026}$ & $1.962$ (trivial) \\
-$4$ \ ($3920$) & $16$ & $0.391$ & $2.346$ & $\mathbf{1.161}$ & $1.962$ (trivial) \\
-\bottomrule
-\end{tabular}
-\end{table*}
+\paragraph{The cost side: a bilateral obstruction whose sign is not stable.} Unlike $\mathcal F_1$, the
+determinant support is basis dependent, and both directions of the decoupling are realized
+(Fig.~\ref{fig:decoupling}): a free-fermion ground state has $\mathcal F_1=0$ and a site-basis support
+of $35$, $336$, $3496$ and $37361$ at $L=4$--$10$; along a Hubbard chain raising $U$ raises
+$\mathcal F_1$ while lowering $|\mathcal S|_{\varepsilon_w}$; across the nineteen molecules the two rise
+together. Within each of the six $(L,N)$ strata of the Hubbard sweep the rank correlation of
+$\mathcal F_1$ with $|\mathcal S|_{\varepsilon_w}$ is exactly $-1$ (stratified Kendall $\tau=-1.000$,
+exact one-sided permutation $p=3.35\times10^{-13}$ against independent orderings within each stratum,
+a null that six strata sharing one mechanism do not satisfy), while it is $+1.000$ in the chain and
+ladder families and $+0.86$ across the molecules: an excellent rank predictor whose sign reverses
+between families, as an orbital invariant compared with a basis-dependent count must. The bond
+dimension $\chi$, a rigorous floor on the raw support, tracks the thresholded one better (mean
+within-stratum $\rho=0.948$), but it is itself basis dependent, measured rather than predicted, and
+blind to the leakage. The division between Gaussian-invariant and basis-dependent quantities is due to
+Tarabunga \emph{et al.}~\cite{tarabunga2026} and to Leone and Bittel~\cite{leonebittel2026}; what the
+construction adds is a family on which every order of the invariant is maximal at $O(K)$ cost, and
+fibers on which the invariants are frozen while the certificate of Theorem~\ref{thm:leakage} still
+separates. The stratified statistics, the molecular set, which does not discriminate, and the two
+families where $\mathcal F_1$ wins are in Secs.~\ref{sm:nogo} and~\ref{app:stats}.
 
-% --- float declarations moved here from main.tex (placement only):
-%     declared at the head of the section that discusses them instead of at
-%     its end, so the double-column queue drains across the section instead
-%     of into a run of float-only pages.  Declaration ORDER is unchanged, so
-%     no figure and no table is renumbered.
-\input{figs/captions.tex}
-\input{carried/fig_ladder.tex}
-
-\paragraph{What this exhibit is not.} Four limits are declared with it, and they are why we call it a
-fiber and not a sweep of the orbit. \emph{(i)}~The evidence is a matched pair at $s=\pi/16$ for $K=2,3,4$.
-At the maximal-pairing angle $s=\pi/4$ the Born distribution of $\phi$ is exactly flat over $2^{K}$
-determinants, so ``the top $|\mathcal S|$ of the Born distribution'' does not define a subspace at all
-($6$, $70$ and $12870$ equally valid outputs at $K=2,3,4$); any contrast quoted at that angle is a
-tie-breaking artifact and not a property of the fiber, and the sweep of App.~\ref{app:witness} stops
-at $s=0.654$ for that reason. \emph{(ii)}~Nothing here grows with the system, and two separate quantities shrink. The ratio of the
-two leakages falls, $9.80\to7.23\to6.01$ from $K=2$ to $K=4$, and it dies as the perturbation is turned
-up, from $28.7$ at $\delta=0.0025$ to $1.03$ at $\delta=0.3$. More to the point---because it is the
-quantity the proposition actually rests on---so does the margin of the certificate over the trivial
-bound: $1.962/0.856=2.29$, $1.962/1.026=1.91$, $1.962/1.161=1.69$, a fall of $26\%$ across the only
-three sizes available. Where that fall would reach unity we do not say: a linear extrapolation in $K$,
-a log-linear one and the last step alone place it between $K=6$ and $K=8$, the decrements are
-themselves decelerating, and three points do not support a number---which is exactly the objection this
-paper makes to its own fraction headline in Sec.~\ref{sec:prices}. A statement of non-vacuity needs one
-fiber and not a magnitude, and the fiber at $K=4$ is still non-vacuous by $69\%$; but ``the effect grows
-with $K$'' is false here, and the trend is the one a referee would find first, so we state it ourselves. \emph{(iii)}~The small-leakage
-endpoint is realized only by the aligned basis, which is the stabilizer of the state
-($|\braket{\Psi(0)|\Psi(U_{\rm in})}|=1.000000000000$); at the fiber angle $s=\pi/16$, every generator
-that actually moves the state gives $\widehat\Lambda/\eta\in[2.34,5.61]$. That range is a statement
-about generators at one angle and not about the angle sweep of App.~\ref{app:witness}, whose rotated
-endpoint descends to $1.61$ as $s\to0$ because the rotation itself is being switched off. The rhetorical parallel with the $|\mathcal S|$ witness---where
-the state genuinely runs from $O(K)$ to $2^{K}$---is therefore lost, and Sec.~\ref{sec:nogo:asym} states
-that asymmetry in the form a referee would. \emph{(iv)}~The scale is a toy: $2K\le8$ orbitals, sector
-dimension $\le3920$, no instance at the $L=12$ Hubbard scale of Sec.~\ref{sec:frontier}.
-
-What the exhibit delivers survives all four limits and is measured: on fibers where every invariant is
-fixed to $10^{-14}$ and the captured Born weight to $2.2\times10^{-16}$, the certificate of
-Theorem~\ref{thm:leakage} separates a non-vacuous value from the trivial bound in every row of
-Table~\ref{tab:fiber}, and a quantity constant on those fibers cannot make that distinction. The a priori
-predictor asked for at the head of this section does not exist in the invariant class; what stands in its
-place is the subspace-aware certificate, whose non-vacuous region is mapped, not asserted, in
-Sec.~\ref{sec:frontier}.
-
-\subsection{The obstruction is bilateral, and its sign is not stable}
-\label{sec:nogo:bilateral}
-
-The same symmetry closes the cost side, in both directions (Fig.~\ref{fig:decoupling}). The cost
-statistic of this section is the \emph{static} determinant support $|\mathcal S|_{\varepsilon_w}$: the
-number of fixed-basis Slater determinants of the \emph{ground state} carrying all but $\varepsilon_w$ of
-its weight. Three tolerances called $0.05$ or $0.01$ appear in this paper and they are three different
-objects, so we subscript all of them. $\varepsilon_w$ cuts the support: $\varepsilon_w=10^{-2}$ for the
-molecular suite (\texttt{n19\_suite.py}, $99\%$ of the weight) and $\varepsilon_w=2.5\times10^{-3}$ for
-the lattice families (\texttt{cost\_vs\_entanglement.py}, $99.75\%$, written there as
-$1-\varepsilon^{2}$ with $\varepsilon=0.05$). $\varepsilon_\chi=0.05$ cuts the Schmidt spectrum for
-$\chi$, by discarded tail $\le\varepsilon_\chi^{2}$, in both families. Neither is the third $0.05$ of
-this work, which is a threshold on a relative $L_1$ spectral error at a stated resolution and defines
-the \emph{dynamical} support $|\mathcal S|_\eta$ of Sec.~\ref{sec:prices}; and neither is the $S$ of
-Theorem~\ref{thm:leakage}, which is whatever the sampler returned. This subsection is about
-$|\mathcal S|_{\varepsilon_w}$ and about nothing else. Where the \emph{raw} support---determinants of
-nonzero amplitude---is meant we say so, because the two do not obey the same bounds. Unlike $\mathcal F_1$, $|\mathcal S|$ is basis dependent: a
-single Slater determinant has $|\mathcal S|=1$ in its own natural orbitals and exponentially many terms in
-a generic basis. An orbital rotation is a free operation that leaves the occupation spectrum, hence
-$\mathcal F_1$, exactly fixed while changing $|\mathcal S|$; a quantity invariant under operations that
-change $|\mathcal S|$ at fixed value cannot determine it.
-
-Both directions are realized and neither is a limiting case. A free-fermion ground state at $U=0$---one
-Slater determinant, $\mathcal F_1=0$, the minimum---has site-basis support growing exponentially,
-$|\mathcal S|=35,\,336,\,3496,\,37361$ for $L=4,6,8,10$: minimal invariant, divergent cost. Along a
-Hubbard chain at fixed filling, raising $U$ \emph{raises} $\mathcal F_1$ while \emph{lowering}
-$|\mathcal S|$ as the ground state localizes: rising invariant, falling cost. Across the nineteen
-molecules of Table~\ref{tab:molecules} the two rise \emph{together} (Pearson $r=0.80$ on
-$\log_2|\mathcal S|$), both merely tracking static correlation. The relationship is two-sided and its sign
-is not stable---the signature of comparing an orbital invariant to a basis variant.
-
-We state what this is and what it is not. It is not a refutation of anyone's claim:
-Refs.~\cite{sierant2026,collura2026} propose $\mathcal F_k$ as a magic monotone for matchgate circuits,
-which is what it is, and no one proposed it as a predictor of the determinant support. It is our own
-no-go, about our own cost, and a corollary consistent with---not a competitor to---the
-invariant/basis-dependent dichotomy of Tarabunga \emph{et al.}~\cite{tarabunga2026}, who six weeks before
-this work set out the same division on general grounds: occupation entropies are Gaussian invariants and
-lower-bound the non-Gaussian gate count, while participation entropies in the natural-orbital basis are
-basis dependent and \emph{upper-bound the classical simulation cost}. That is the quantity on the useful
-side of the division, and the priority is theirs. The same acknowledgement is owed to Leone and
-Bittel~\cite{leonebittel2026}, whose fermionic entropy---equal to the squared Frobenius norm of the
-correlation matrix, with an unbiased $O(\varepsilon^{-2})$ estimator---is a Gaussian monotone of the
-same class and appeared seventeen days before v1 of this work.
-% RESOLVED 2026-09-18: the key `leonebittel2026' exists in the bibliography (Leone, Bittel,
-%  arXiv:2607.29670) and the parenthesis is now a \cite.  It is NOT \cite{bittel2025}, which is
-%  Bittel-Mele-Eisert-Leone, arXiv:2409.17953, a different paper; both keys are in the list.
-What our construction adds to that division is the constructive instance it does not
-contain: a family (Theorem~\ref{thm:witness}) on which every order of the invariant is maximal while the
-cost is $O(K)$, and fibers (Proposition~\ref{prop:leakinv}) on which the invariants are frozen to
-$10^{-14}$ while the certificate of Theorem~\ref{thm:leakage} still separates.
-
-\subsection{Two blindnesses, and why we do not sell them as one symmetry}
-\label{sec:nogo:asym}
-
-The two halves of this section are not one statement wearing two hats. On the cost side the invariance
-is a genuine physical group: the Gaussian orbital
-rotations $\mathrm U(n_{\rm o})$ are free operations, they act on the whole problem, and along one orbit
-the cost sweeps an \emph{extensive} range, $O(K)$ to $2^{K}$, at fixed invariant---a symmetry argument in
-the ordinary sense. On the precision side it is weaker and of a different kind: $\Lambda_S(\eta)$ reads
-the off-diagonal block $P_SHQ_S$ in the working basis, and an invariant is blind to that
-block---informational blindness, not a gauge. The orbit there does not sweep an extensive range; as
-declared above, the small-leakage endpoint is realized only by the stabilizer of the state, and the
-contrast shrinks with $K$ rather than growing.
-
-What joins the two is therefore not a symmetry at all, and nothing stronger is claimed for it than what
-it is: the ``$+$'' of Eq.~\eqref{eq:twobudget}, one inequality whose two summands are the two halves of
-this paper, one bought by shots and one not, each carrying its own obstruction. What makes that join a
-measurement rather than an analogy is that both summands have been evaluated on the same object,
-$\mathcal S^{\ast}=\operatorname{supp}(\phi)$, where the first summand is identically zero while
-the second still leaves a relative $L_1$ error of $0.43$ at $L=6$ and $0.33$ at $L=8$ on the periodic
-rings at $\eta=0.18\,t$, and $0.28$ on the open chain (Secs.~\ref{sec:leakage} and~\ref{sec:moments}).
-
-\subsection{What does track the cost: \texorpdfstring{$\chi$}{chi}, and the statistics the right way up}
-\label{sec:nogo:chi}
-
-The computable lower bounds on $|\mathcal S|$ are themselves basis dependent. The orbital-Schmidt rank
-across a bipartition---the tensor-network bond dimension $\chi$~\cite{schollwock2011}---is a rigorous
-floor on the \emph{raw} support,\footnote{For any state and any bipartition into $(\mathrm L,\mathrm R)$,
-$\chi\le|\mathcal S|$ with $|\mathcal S|$ the number of determinants of nonzero amplitude: each
-determinant factorizes across the cut, so the matricization $A_{D_{\mathrm L},D_{\mathrm R}}=c_D$ has at
-most $|\mathcal S|$ nonzero entries and rank at most $|\mathcal S|$. It is elementary, which is why we
-record it as an observation, and it is proved for the raw support only: once amplitudes are thresholded
-the inequality need not survive---in the molecular suite $|\mathcal S|$ is cut at $99\%$ of the weight
-while $\chi$ is cut at a discarded tail of $\varepsilon_\chi^{2}=2.5\times10^{-3}$, i.e.\ at $99.75\%$,
-so the two are not truncated at the same place---and the measured $|\mathcal S|_{\varepsilon_w}$ falls
-below $\chi$ in $7$ of the $38$ molecular points. It is also one-sided and can be exponentially loose: Theorem~\ref{thm:witness} has
-$\chi=2$ at $|\mathcal S|_{\mathrm{pair}}=2^{K}$.} and, empirically, a tracker of the measured
-$|\mathcal S|_{\varepsilon_w}$. It is not the winner of a contest: $\chi$ is measured rather than
-predicted, and it has no purchase on the leakage at all. On the fibers of Table~\ref{tab:fiber} it is
-\emph{identical} at the two endpoints---$2$ and $2$ at $K=3$, $1$ and $1$ at $K=4$, at equal raw
-support---while $\widehat\Lambda/\eta$ moves by a factor $6$--$7$; in a control at $K=3$ it jumps from
-$2$ to $16$ with $\widehat\Lambda/\eta=2.336$ and relative $L_1=0.238$ unchanged to three figures; and
-across a subfamily of $58$ points on which $\chi$ and the raw support are \emph{exactly} equal,
-$\widehat\Lambda/\eta$ still varies by $2.8$ and the measured error by $8.3$. The only tracker of the
-leakage is the boundary coupling $\lVert P_SHQ_S\rVert$ of Sec.~\ref{sec:leakage}. What follows is a
-statement about $|\mathcal S|_{\varepsilon_w}$ and about nothing else.
-
-\paragraph{The Hubbard sweep, stratified.} The $30$ lattice points are not $30$ independent observations.
-They are six $(L,N)$ strata---$(6,6),(6,4),(8,8),(8,6),(10,10),(10,8)$---each swept over the same five
-values $U=1,2,4,8,16$. Within every stratum the rank correlation of $\mathcal F_1$ with
-$|\mathcal S|_{\varepsilon_w}$ is $-1.0000$, exactly, in all six; the corresponding
-$\rho(\chi,|\mathcal S|_{\varepsilon_w})$ are $1.000$, $0.894$, $0.949$, $0.975$, $0.975$, $0.894$, mean
-$0.948$. The stratified Kendall statistics are $\tau=-1.000$ for $\mathcal F_1$, with $0$ concordant
-pairs out of $60$, and $\tau=+1.000$ for $\chi$, with $50$ concordant, $0$ discordant and $10$ tied.
-Because each $\mathcal F_1$ stratum is a perfect reversal of five points, the exact one-sided
-stratified permutation $p$-value is $(1/120)^{6}=3.35\times10^{-13}$, against $1.93\times10^{-10}$ for
-$\chi$, which has ties. Both take a product across strata and therefore assume the six independent.
-They are not six independent experiments: they are three lengths crossed with two fillings, on one code
-path and one $U$ grid. The per-stratum coefficients, Fisher's more conservative combination and the tie
-structure are in App.~\ref{app:stats}.
-
-Two pooled coefficients are available over these same $30$ points: $\rho=0.57$ for $\chi$, which
-invites the reading that the bond dimension tracks the cost, and $\rho=-0.11$ for
-$\mathcal F_1$, which invites the reading that it carries no evidence. Neither reading is used
-here, and for one reason. The $30$
-points are six deterministic five-point sweeps; the effective $n$ is $\approx6$, not $30$; and pooling
-strata with different offsets destroys within-stratum structure. Here it destroys it in our favour on
-one coefficient and against us on the other, which is precisely why neither may be kept. What is used
-instead is the within-stratum evidence above, which is stronger on both sides and symmetric between
-them:
-$\mathcal F_1$ anti-orders the support perfectly in all six strata, and $\chi$ orders it at a mean
-$\rho$ of $0.948$.
-
-That the evidence is stronger does not make it what we were about to call it. A rank correlation of
-exactly $-1$ in all six strata is the strongest evidence a rank statistic can give of a
-\emph{deterministic monotone} relation between $\mathcal F_1$ and the support inside a stratum---with
-the wrong sign. In this family $\mathcal F_1$ is not decoupled from the cost; it is an excellent rank
-predictor of it whose \emph{sign} reverses from family to family: $+1.000$ in the chain and ladder
-sweeps below, $+0.86$ across the molecules, $-1.000$ within every Hubbard stratum. That is the failure
-mode the no-go of Secs.~\ref{sec:nogo:witness} and~\ref{sec:nogo:bilateral} predicts for an orbital
-invariant compared against a basis variant, and ``unstable in sign'', not ``decoupled'', is the phrase
-the measurement supports. The physical content is one mechanism observed six times---raising $U$
-localizes the ground state, so $|\mathcal S|_{\varepsilon_w}$ falls and $\chi$ falls while
-$\mathcal F_1$ rises---and a $p$-value of $3.35\times10^{-13}$ is the probability of six coincident
-orderings under that one mechanism, not evidence that it generalizes beyond the one-dimensional
-Hubbard family in which it was measured.
-
-\paragraph{The molecular set does not discriminate, and now we can show it.} The $n=38$ molecular
-points are $19$ molecules at two geometries---dependent pairs, not $38$ draws---and $76\%$ of them lie
-in some tie in $|\mathcal S|_{\varepsilon_w}$, $11$ pinned at the floor $|\mathcal S|=1$. The
-comparison the molecular set is asked to settle is not resolvable by any of three procedures: $\rho=0.90$ for $\chi$ against
-$0.86$ for $\mathcal F_1$ differ by $0.039$, a molecule-level cluster bootstrap puts a $95\%$ interval
-of $[-0.070,+0.189]$ on that difference, and Williams's and Steiger's tests for dependent correlations
-give $p=0.35$. The pooled pair over all $74$ states, $0.72$ against $0.60$, is likewise unresolved. The
-text already said that the molecular set does not separate the two candidate resources; it now has the
-formal statement (App.~\ref{app:stats}), and the whole weight of the separation rests on the stratified
-Hubbard sweep above.
-
-\paragraph{The two families where $\mathcal F_1$ wins, written out.} In the matched chain and two-leg
-ladder families of Fig.~\ref{fig:ladder} ($n=3$ each), $\rho(\mathcal F_1,|\mathcal S|)=+1.000$ exactly,
-against $\rho(\chi,|\mathcal S|)=0.50$ and $0.87$. We report it and then dismantle it. The parameter swept
-there is $L$, not $U$: for the open chains $\mathcal F_1/L=1.6008,\,1.6020,\,1.6031$ at $L=6,8,10$, that
-is $\mathcal F_1=1.60\,L$ to three figures, so $\rho=+1$ restates ``both quantities grow with system
-size'' and nothing else, and conditioning on $L$ leaves zero degrees of freedom. The three chain rows are
-moreover literal duplicates of three of the $30$ Hubbard rows---the $U=8$, half-filled entries at
-$L=6,8,10$, identical to the last digit in $\mathcal F_1$, $|\mathcal S|$ and $\chi$---so they are not
-independent evidence. And with $n=3$ the smallest attainable permutation $p$-value is $1/6$: less evidence
-than three coin flips. What the chain/ladder pair does establish is the controlled contrast it was built
-for, which needs no correlation coefficient to read: at $\mathcal F_1$ equal to within $1\%$, the ladder's
-support exceeds the chain's by up to ${\sim}2.2\times$, while $\chi$ moves from $5$ to $13$ at $L=6$ and
-from $8$ to $38$ at $L=8$.
-
-\paragraph{What stands, and where the tracker fails too.} Figure~\ref{fig:master} consolidates the
-picture over all $74$ exact ground states: the determinant support is bounded below by the bond
-dimension in the raw count, and the bond dimension is the better empirical tracker of the thresholded
-one. It is not a monotone tracker, and the exception is in the same file as the rule. Within every
-Hubbard stratum $\chi$ orders the support at $\rho=0.89$--$1.00$. Along the chain family, where the
-swept parameter is $L$ and not $U$, it does not: $\chi=5,8,6$ at $L=6,8,10$ while
-$|\mathcal S|_{\varepsilon_w}=147,\,880,\,5084$, so $\chi$ \emph{falls} across the last step while the
-cost grows by $5.8$, and $\rho(\chi,|\mathcal S|_{\varepsilon_w})$ there is $0.50$; in the ladder family
-$\chi$ is flat at $38$ over that same step while the cost grows by $7.7$. That non-monotonicity of the
-chain $\chi$ is stated here explicitly, and it is a limit on $\chi$ itself. What
-$\mathcal F_1$ does instead is fail in two \emph{additional} and visibly distinct ways---the Hubbard
-branch runs the wrong way at a stratified $\tau=-1.000$, and the chain/ladder points sit at identical
-$\mathcal F_1$ with $|\mathcal S|_{\varepsilon_w}$ differing by up to ${\sim}2.2\times$. Neither statement supplies the
-predictor this section set out to find, $\chi$ being itself basis dependent, measured rather than
-predicted, and blind to the leakage. What $\mathcal F_1$ \emph{is} remains intact and useful: a faithful,
-efficiently measurable detector of static (multireference) correlation, generalizing to fermionic
-non-Gaussianity, and to the nineteen molecules of Table~\ref{tab:molecules}, the qubit non-stabilizerness
-peak of molecular bonding~\cite{sarkis2025} and its reported proportionality to Hartree--Fock weight,
-itself reported to break down beyond the Coulson--Fischer point~\cite{seibert2026}; that a single-particle
-invariant can be maximal while bond entanglement stays $O(1)$ is the fermionic counterpart of the
-separation between magic and entanglement reported for qubit matrix-product
-states~\cite{frautarabunga2024}. The cost is a
-property of the sampler's frame, read after the fact by $\chi$ and priced in Sec.~\ref{sec:prices}; the
-error is a property of the subspace's boundary, read after the fact by $\Lambda_S(\eta)$ and mapped in
-Sec.~\ref{sec:frontier}. Per-species $|\mathcal S|_{\varepsilon_w}$, $D$ and $\chi$ are in
-App.~\ref{app:repro}; the full stratified analysis---the six per-stratum coefficients, the exact
-one-sided permutation values, the tie structure, the cluster bootstrap and the dependent-correlation
-tests---is in App.~\ref{app:stats}.
-
-% =============================================================================

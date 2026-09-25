@@ -38,7 +38,7 @@ published and this file is the one that is wrong.**
 > are deposited in `src/`, and `docs/REPRODUCE.md` gives the reproduction commands together with a
 > measured table of what a clean clone does and does not reach. An automated guardian
 > (`python src/verify.py`) recomputes the underlying physics by exact diagonalization and checks the
-> deposited artefacts against it — 831 checks over 9 846 numeric assertions, exiting non-zero on any
+> deposited artefacts against it — 868 checks over 9 884 numeric assertions, exiting non-zero on any
 > discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in the
 > tables and in the abstract; it is not a proof that every sentence of this manuscript is verified, and
 > six items are printed by name on every run: four known open defects, and two declared gaps
@@ -52,11 +52,7 @@ published and this file is the one that is wrong.**
 > identifier, which requires an account and a job that is still retrievable, so the classical
 > post-processing of the raw counts cannot be re-run from the deposited files alone. The hardware runs
 > themselves cannot be regenerated in any case — the jobs are closed, and a device executed today has a
-> different calibration, so new counts would be new data rather than a reproduction. For the
-> generative-model control of Sec. IX D only the five summary rows are deposited, in `data/gflow.json`;
-> no script in the repository regenerates them, which is the reason given there for withdrawing the two
-> figures that were built on them, and the per-seed values are available from the author on reasonable
-> request. Known gaps between the deposited code and the deposited artefacts — six of the seventeen
+> different calibration, so new counts would be new data rather than a reproduction. The dequantization control of App. dequant is regenerated seed by seed by `src/gflow_dequant.py`, which needs `pyscf` and `torch` and writes `data/gflow.json`. Known gaps between the deposited code and the deposited artefacts — six of the seventeen
 > figures enter as PDF with no standalone LaTeX source in the deposit, the tables plotted in Fig. 17 are
 > deposited but the script that builds them is not, three deposited computation scripts have no
 > deposited output, and parts of the pipeline require `pyscf` or an IBM Quantum account — are enumerated
@@ -278,9 +274,9 @@ That string has been corrected in the deposited file.
 |---|---|
 | that every figure can be **recompiled** from the deposit | **six of the seventeen** ship as PDF with no `.tex` source inside the repository — `fig_akw_native.pdf`, `fig_circuit.pdf`, `fig_hero.pdf`, `fig_noise_score.pdf`, `fig_spinqw.pdf`, `fig_sqw.pdf`; the list was taken from the `\includegraphics` lines of the current build, not from a document. The other eleven are native pgfplots fragments. (`KNOWN_DISCREPANCIES.md` §5 still says "ten of the twenty" and still cites `fig_molecular_gallery.pdf` and its 19 PyMOL PNGs — that figure is **withdrawn in v3**. Part 4 item 2.) |
 | that Fig. 17 can be **regenerated** | its ten `n3_*.dat` tables are deposited, but `build_n3.py` is not, and two of its four inputs are not in `data/`. The guardian registers this as an open defect and refuses to "check" the figure by re-reading what it prints. |
-| that **Table IV** (`tab:moments`, Sec. IV) can be **regenerated** | its three rows come from `final_out.txt` (K = 0, 1), `bc2_out.txt` (K = 2), `control_out.txt` (the negative control, 300 draws, seed 20260918) and `toy_out.txt` (the two-level series of App. B), produced by `verify_final.py`, `verify_bc2.py`, `verify_control.py` and `verify_toy.py`. **None of those eight files exists** — searched across `release/` and the author's whole working tree on 2026-09-21; the header comment of `paper/sec_4_body.tex` had claimed until that date that the `.txt` files were at least in the working tree, and that was no longer true. The guardian registers it in `COVERAGE_GAP_V3` and prints it by name on every run rather than "checking" the table by re-reading what it prints. **It is cheap to close and should be**: the table is L = 6, sector dimension 300, exact diagonalization of the (N+1, S_z = +1) sector (`paper/sec_4_app.tex:53`). Disclosed here because arXiv publishes the LaTeX source, and a limitation a reader can only find by downloading the `.tex` is a limitation that was hidden. |
+| that **Table IV** (`tab:moments`, Sec. IV) can be **regenerated** | **yes, since 2026-09-25.** The eight intermediate files the table was first built from were never deposited; `src/moments_table.py` rebuilds the L = 6 open-chain sector from scratch and writes `data/moments_table.json` (the three rows, the negative control of 300 draws at seed 20260918, and the two-level series of App. B), and `src/verify.py` asserts every printed entry against it. |
 | that `make reproduce` runs | it executes a notebook that requires `pyscf`, which is not installed in the verified environment. It was **not** run in this pass and no claim is made for it. |
-| that the GFlowNet comparison is reproducible | `data/gflow.json` holds five summary rows; **no script in `src/` generates it.** Part 1 now says both halves of this — no generator *and* raw on request — rather than only the second. |
+| that the GFlowNet comparison is reproducible | **yes, since 2026-09-25.** `src/gflow_dequant.py` — the algorithm of `calculations/validate_realnoise.py` of the companion review (arXiv:2608.05314), unchanged, with every seed written to `data/gflow_runs/` and merged into `data/gflow.json` (`--merge`). Needs `pyscf`, `torch` and `qiskit-ibm-runtime` (FakeTorino readout rates): the Docker image `sqd-nb` plus `pip install qiskit-ibm-runtime`; twenty single-threaded runs (ten seeds at 500 and at 1000 shots, symmetry-pinned gauge, the companion's ladder configuration); run a few at a time, since twenty at once exhausted the memory of a 16-core laptop. The five v2 summary rows were the only record of the original run (no per-seed values were stored anywhere); the paper now prints the regenerated per-seed statistics, and `src/verify.py` checks them against `data/gflow.json`. |
 | that the hardware measurement can be re-obtained | see 2.5. |
 | that the classical post-processing of the raw counts runs offline | see 2.5. It does not; the counts are not deposited. |
 | that the guardian runs in continuous integration | `.github/workflows/ci.yml` exists and is valid, and `.gitignore` no longer excludes it, but **it has never executed**: it cannot until the commit containing it is pushed. The sentence *"The guardian is executed on every commit by continuous integration"* may be added to Part 1 **only after** a run has actually completed. |
@@ -334,14 +330,7 @@ Kept in full, because a DAS that quietly improves is a DAS nobody can audit.
 12. **"one panel whose four free-fermion support sizes are written into the figure source itself"** —
     no longer true of anything. Panel (c) of that figure was rebuilt for v3 and none of the four numbers
     appears in any figure source the manuscript builds (2.2).
-13. **"For the generative-model control of Fig. 18"** — **Fig. 18 does not exist in v3.** `fig:gflow` and
-    `fig:amort` are withdrawn (`main.tex:229-242`, `sec_9.tex` Sec. 9.4: *"Both figures of this test are
-    therefore withdrawn and the surviving statement is made in prose"*). The deposited `data/gflow.json`
-    still underlies numbers the manuscript prints (39.24 +- 3.95, 26.98 +- 0.66, 22.94 +- 3.30 mHa), so
-    the sentence is kept and re-pointed at **Sec. IX D**. Two further clauses were changed with it: the
-    manuscript's own reason for the withdrawal (no deposited script regenerates the file) is now stated
-    in the DAS instead of being left for the reader to collide with, and *"available from the authors"*
-    became *"from the author"* — there is one.
+13. **"For the generative-model control of Fig. 18"** — resolved on 2026-09-25. The comparison stays in the paper (App. dequant and Sec. IX), and its data file now has a generator: `src/gflow_dequant.py` — the algorithm of `calculations/validate_realnoise.py` of the companion review (arXiv:2608.05314), unchanged, with every seed written to `data/gflow_runs/` and merged into `data/gflow.json` (`--merge`). Needs `pyscf`, `torch` and `qiskit-ibm-runtime` (FakeTorino readout rates): the Docker image `sqd-nb` plus `pip install qiskit-ibm-runtime`; twenty single-threaded runs (ten seeds at 500 and at 1000 shots, symmetry-pinned gauge, the companion's ladder configuration); run a few at a time, since twenty at once exhausted the memory of a 16-core laptop. The pairing across conditions that v2 could only bound is now computed.
 14. **"each resolves its output path from its own location on disk and writes into the repository's own
     `data/` directory"** — **still false**, for four scripts, in a new way (2.3). The clause is removed
     from Part 1 rather than repaired in prose: it is a claim about code hygiene that a DAS does not need

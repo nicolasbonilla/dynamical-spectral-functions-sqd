@@ -237,27 +237,26 @@ sample-based spectral functions}
 % at all -- verified against the class, not assumed.
 
 \begin{abstract}
-Sample-based quantum diagonalization builds a spectral function inside the determinant subspace
-a device's measured bitstrings populate. Its accuracy has been judged by the captured Born
-weight. That weight cannot carry the judgement, and no certificate of its kind can. The error is
-set by the subspace's boundary, not its contents: for Rayleigh--Ritz on any projector the
-relative $L_1$ error lies between $1-w$ and $(1+\sqrt{w})(\sqrt{1-w}+\Lambda(\eta)/\eta)$, with
-$w$ the captured weight and $\Lambda$ the boundary coupling of $H$ at $\eta$, from the Ritz
-pairs. Shots buy the first down, not the second: on the probe's Born support, where the first
-vanishes, the error is still $0.33$--$0.43$ at $\eta=0.18t$ against a ceiling of 2. An analytic
-counterexample forces any weight-only constant to it, and Theorem 1(iii) of versions~1--2 is
-retracted. Measured, it is vacuous: on Hubbard sectors to dimension $10\,306\,296$ it exceeds
-the trivial bound at every published fraction, at all five sizes, by $1.66$--$8.61$, so the
-reconstructions are uncertified. The reason is structural: the probe's Krylov space has
-coordinate support on the whole sector at $L=8,10,12,14$, amplitude $10^{-12}$, so leakage is
-strictly positive for every proper coordinate subspace, and no leakage-type certificate in that
-basis, ours or any, can be non-vacuous at low fraction. What survives: over sixteen $(L,\eta)$
-cells spanning five decades of error the crossing sits at $1.2$--$7.3\times10^{-3}$, computed
-without the answer; a two-parameter rule fitted in $1-w$ matches it on ten of fourteen
-out-of-sample splits; we claim no superiority. No orbital invariant substitutes: one-body magic
-collapses to $4\,\mathrm{tr}[\gamma(1-\gamma)]$, constant along an orbit whose support runs
-$O(K)$ to $2^{K}$; its rank correlation with that support is $-1$ in all six strata, exact
-$p=3.3\times10^{-13}$; pooled it reads null. We claim no quantum advantage.
+Sample-based quantum diagonalization builds a subspace from a device's measured bitstrings. From
+one protocol -- computational-basis samples of a real-time evolved probe, no Hadamard test -- we
+reconstruct the single-particle $A(\omega)$ and $A(k,\omega)$ of the 1D Hubbard model on that
+subspace. We prove that for Rayleigh--Ritz on any orthogonal projector the relative $L_1$ error
+lies between $1-w$ and $\min\{1+w,(1+\sqrt{w})(\sqrt{1-w}+\widehat\Lambda(\eta)/\eta)\}$, with
+$w$ the captured weight and $\widehat\Lambda$ the boundary coupling at resolution $\eta$,
+assembled from the Ritz pairs without the answer. Weight alone cannot certify: an analytic
+counterexample forces any bound indexed on it to its trivial value, and on the probe's support,
+where $w=1$ exactly, the error is still $0.35$--$0.43$ at $\eta=0.18\,t$ against a ceiling of
+$2$. A subspace containing the order-$K$ Krylov space reproduces the moments through order
+$2K+1$, and no further. Measured to dimension $10\,306\,296$, the bound is vacuous at every
+operating fraction of the resource scan, at all five sizes, by $1.66$--$8.61$, and informative
+only well above them; it crosses the trivial bound at a true error of $1.2$--$7.3\times10^{-3}$,
+though a two-constant rule in $1-w$ is tighter on 11 of 14 splits. In the determinant basis the
+probe's Krylov space has coordinate support on every symmetry-allowed determinant, so at full
+weight only a subspace holding all of them has zero leakage; for a momentum probe a momentum
+block, $1/L$ of the sector, does. At full weight a second-order certificate follows; below it,
+where every operating fraction lies, one is open. One-body fermionic magic does not predict the
+support in advance: its rank correlation with it is $-1$ in each of six strata (exact
+$p=3.3\times10^{-13}$ against independent orderings) but changes sign between families.
 \end{abstract}
 
 \maketitle
@@ -304,12 +303,18 @@ $p=3.3\times10^{-13}$; pooled it reads null. We claim no quantum advantage.
 
 \input{sec_10.tex}
 
-% The one-column driver carried \FloatBarrier here (main_test.tex:176).  placeins
-% is not loaded -- it documents that it does not handle double-column floats -- so
-% the barrier is \clearpage, which does flush them.  Without it six body floats of
-% Sec. IX were composed inside Appendix A.
 \clearpage
-\appendix
+\input{bibliography.tex}
+
+\input{sm_begin.tex}
+\input{sm_method.tex}
+\input{sm_leakage.tex}
+\input{sm_moments.tex}
+\input{sm_frontier.tex}
+\input{sm_nogo.tex}
+\input{sm_prices.tex}
+\input{sm_physics.tex}
+\input{sm_scope.tex}
 \input{sec_3_app.tex}
 \input{figs/float_n3.tex}
 \input{sec_4_app.tex}
@@ -318,9 +323,6 @@ $p=3.3\times10^{-13}$; pooled it reads null. We claim no quantum advantage.
 \input{app_carried_theorem.tex}
 \input{app_stats.tex}
 \input{app_carried_repro.tex}
-
-% \FloatBarrier of main_test.tex:189, same substitution.
-\clearpage
-\input{bibliography.tex}
+\input{app_dequant.tex}
 
 \end{document}

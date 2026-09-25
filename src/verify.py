@@ -813,21 +813,8 @@ COVERED_FRAGMENTS = {
 # Close an entry by WRITING THE CHECK, not by deleting the entry.
 # ---------------------------------------------------------------------------
 COVERAGE_GAP_V3 = {
-    "tab:moments (Sec. IV)": (
-        "the three rows of Table tab:moments come from four .txt artefacts -- final_out.txt "
-        "(rows K=0,1), bc2_out.txt (row K=2), control_out.txt (the negative control, 300 "
-        "draws, seed 20260918) and toy_out.txt (the two-level series of app:moments:conj) -- "
-        "produced by verify_final.py, verify_bc2.py, verify_control.py and verify_toy.py. "
-        "NONE OF THE EIGHT FILES EXISTS ANY MORE: not in release/, and not in the author's "
-        "working tree either, which is what the header comment of paper/sec_4_body.tex still "
-        "claimed on 2026-09-21. So the table is not regenerable from the deposit and this "
-        "guardian will not pretend otherwise by re-reading what the table prints. "
-        "Declared here, and in docs/DATA_AVAILABILITY.md, rather than left to a LaTeX comment "
-        "that arXiv publishes with the source. "
-        "To close this: the table is CHEAP -- L=6, sector dimension 300, exact "
-        "diagonalization of the (N+1, Sz=+1) sector (paper/sec_4_app.tex:53) -- so rewrite "
-        "the four scripts against that construction, deposit them with their outputs, and "
-        "assert the three rows here. Write the check; do not delete this entry."),
+    # "tab:moments (Sec. IV)" was declared here until 2026-09-25; it is closed by
+    # src/moments_table.py and the assertions in section 9.2 below.
     "fig_thm1iii_violation_native.tex": (
         "the fragment plots eight n3_*.dat tables (2432 rows) built by build_n3.py from "
         "data/cert_stress.json, data/cert_akw.json and two JSONs that are NOT in data/. "
@@ -1088,6 +1075,167 @@ def section9(rep, root, ctx):
         rep.emit(XFAIL, "coverage gap: %s" % _donde,
                  "the manuscript typesets this and no check in this file anchors "
                  "it to a dataset. %s" % COVERAGE_GAP_V3[_gapkey], 1)
+    # ------------------------------------------------ tab:moments, regenerated (2026-09-25)
+    # The four lost artefacts are replaced by src/moments_table.py, which rebuilds the
+    # L = 6 open-chain sector from scratch (independently of src/frontier/c0_lib.py) and
+    # writes data/moments_table.json.  The rows printed in sec_4_body.tex, the negative
+    # control and the two-level series of sec_4_app.tex are asserted against it.  The
+    # roundoff entries (max_{j<=2K+1} eps_j, "largest over six implementations") are not
+    # asserted digit by digit: they are floating-point residues, and only their order is
+    # claimed.
+    def _tex_sci(x, nd):
+        e = int(math.floor(math.log10(abs(x))))
+        m = round(x / 10 ** e, nd)
+        if m >= 10:
+            m, e = m / 10, e + 1
+        return ("%.*f" % (nd, m)) + "\\times10^{%d}" % e
+    _mt = os.path.join(root, "data", "moments_table.json")
+    if not os.path.exists(_mt):
+        rep.missing("tab:moments regenerated",
+                    "data/moments_table.json is absent; run python src/moments_table.py")
+    else:
+        with open(_mt, encoding="utf-8") as _fh:
+            _M = json.load(_fh)
+        _rows = {r["K"]: r for r in _M["table"]["rows"]}
+        with open(os.path.join(root, "paper", "sec_4_body.tex"), encoding="utf-8") as _fh:
+            _t4 = _fh.read()
+        with open(os.path.join(root, "paper", "sec_4_app.tex"), encoding="utf-8") as _fh:
+            _t4a = " ".join(_fh.read().split())
+        for _K in (0, 1, 2):
+            _m = re.search(r"\$%d\$ & \$(\d+)\$ & \$([\d.]+)\$" % _K, _t4)
+            rep.eq_int("tab:moments |S| at K=%d" % _K, int(_m.group(1)) if _m else -1,
+                       _rows[_K]["S"])
+            rep.eq("tab:moments |S|/D at K=%d" % _K, float(_m.group(2)) if _m else -1.0,
+                   _rows[_K]["frac"], tol=5e-4)
+        for _K in (0, 1):
+            _rel = _tex_sci(_rows[_K]["rel_eps_2K2"], 1)
+            _abs = _tex_sci(_rows[_K]["abs_eps_2K2"], 2)
+            rep.truth("tab:moments eps_{2K+2} at K=%d" % _K, _rel in _t4 and _abs in _t4,
+                      "relative %s and absolute %s as printed" % (_rel, _abs),
+                      "the table does not print the regenerated %s (relative) and %s "
+                      "(absolute)" % (_rel, _abs))
+        _nc = _M["negative_control"]
+        rep.truth("tab:moments negative control", _nc["fail_at_zeroth_moment"] == _nc["draws"]
+                  == 300 and "every single draw fails" in " ".join(_t4.split()),
+                  "300 of 300 random size-200 subspaces fail at the zeroth moment",
+                  "regenerated control: %d of %d fail" % (_nc["fail_at_zeroth_moment"],
+                                                         _nc["draws"]))
+        _tl = ",\\ ".join("%.4f" % x["L1"] for x in _M["two_level"])
+        rep.truth("app:moments:conj two-level series", _tl in _t4a,
+                  "the seven values printed are the converged ones",
+                  "sec_4_app.tex does not print the converged series %s" % _tl)
+    # ------------------------------------------------ the support witness S* = supp(phi)
+    # (2026-09-25) supp(phi) is counted above 1e-12 of the largest amplitude, across a gap
+    # that src/support_witness.py checks (W3) and against the independent k = 0 count of
+    # z_suppK_sym (W8).  Every sentence that quotes the witness, its size, the support floor
+    # of Sec. III or the out-of-support share of the Born cut is asserted here.
+    _sw = read_json(root, "data/support_witness.json")
+    _swr = {r["L"]: r for r in _sw["results"]}
+    _rel = lambda L, e: [t["relL1"] for t in _swr[L]["table"] if abs(t["eta"] - e) < 1e-12][0]
+    _body = " ".join(" ".join(open(os.path.join(root, "paper", f), encoding="utf-8").read()
+                              .split()) for f in sorted(os.listdir(os.path.join(root, "paper")))
+                     if f.endswith(".tex"))
+    _q = "$0.43$ at $L=6$ and $%.2f$ at $L=8$" % _rel(8, 0.18)
+    _all18 = re.findall(r"\$0\.\d\d\$ at \$L=6\$ and \$0\.\d\d\$ at \$L=8\$", _body)
+    rep.truth("support witness: rel-L1(0.18) at L=6, 8", "%.2f" % _rel(6, 0.18) == "0.43"
+              and _body.count(_q) >= 1 and all(x == _q for x in _all18),
+              "%s, %d times" % (_q, _body.count(_q)),
+              "the witness errors printed are not those of data/support_witness.json (%.4f, %.4f)"
+              % (_rel(6, 0.18), _rel(8, 0.18)))
+    _q = "rising to $%.2f$ and $%.2f$ at $\\eta=0.05" % (_rel(6, 0.05), _rel(8, 0.05))
+    _all05 = re.findall(r"rising to \$[\d.]+\$ and \$[\d.]+\$ at \$\\eta=0\.05", _body)
+    rep.truth("support witness: rel-L1(0.05) at L=6, 8", _body.count(_q) >= 1
+              and all(x == _q for x in _all05),
+              "%s, %d times" % (_q, _body.count(_q)),
+              "the eta = 0.05 t witness errors printed are not %.4f, %.4f"
+              % (_rel(6, 0.05), _rel(8, 0.05)))
+    rep.eq("support witness: |S*|/D at L=8 == 0.571", _swr[8]["frac"], 0.571, tol=5e-4)
+    rep.eq_int("support witness: |S*| at L=8 printed as 2237", _swr[8]["nS"], 2237,
+               "the paper prints 2237 of 3920 for supp(phi) at L=8")
+    rep.eq_int("support witness: |S*| at L=6 == (1/2+1/L)D", _swr[6]["nS"], 200)
+    rep.truth("support witness: 426 of the 4900 ground-state amplitudes vanish",
+              _swr[8]["ground_state_zeros"] == 426 and _swr[8]["ground_state_dimension"] == 4900
+              and "$426$ of the $4900$ ground-state amplitudes" in _body,
+              "%d of %d" % (_swr[8]["ground_state_zeros"], _swr[8]["ground_state_dimension"]),
+              "the ground-state zero count printed is not the deposited one")
+    _k0 = {L: read_json(root, "data/c3_frontier/adversarial/z_suppK_sym_L%d.json" % L)
+           for L in (10, 12, 14)}
+    rep.eq("support floor at L=10 == 0.600",
+           _k0[10]["union_count_by_k"]["1e-12"][0] / _k0[10]["sector_dimension"], 0.600, tol=5e-4)
+    _lo = min(_k0[L]["union_count_by_k"][th][0] / _k0[L]["sector_dimension"]
+              for L in (12, 14) for th in ("1e-10", "1e-12"))
+    rep.truth("support floor above 0.54 at L=12, 14 at both thresholds", _lo > 0.54,
+              "smallest |supp(phi)|/D = %.4f" % _lo,
+              "the floor printed for L = 12, 14 is not supported: %.4f" % _lo)
+    # ------------------------------------------------ the dequantization control (App. dequant)
+    # (2026-09-25) data/gflow.json is written by src/gflow_dequant.py with every seed (ten seeds,
+    # symmetry-pinned gauge, the companion review's ladder configuration).  The statistics are
+    # RE-DERIVED here from the per-seed values, and every number the appendix and Sec. IX print
+    # is asserted.
+    _gf = read_json(root, "data/gflow.json")["runs"]
+    _gtxt = " ".join(open(os.path.join(root, "paper", "app_dequant.tex"), encoding="utf-8")
+                     .read().split())
+    _s9 = " ".join(open(os.path.join(root, "paper", "sec_9.tex"), encoding="utf-8").read().split())
+
+    def _pt(a, b):
+        _d = np.asarray(a, float) - np.asarray(b, float)
+        return (_d.mean(), _d.std(ddof=1), _d.mean() / (_d.std(ddof=1) / np.sqrt(_d.size)),
+                int((_d > 0).sum()))
+
+    _A = {k: np.asarray(v["per_seed"], float) for k, v in _gf["1000"]["methods"].items()}
+    _B = {k: np.asarray(v["per_seed"], float) for k, v in _gf["500"]["methods"].items()}
+    rep.eq_int("gflow.json: ten paired seeds at 1000 and at 500 shots",
+               len({len(v) for v in list(_A.values()) + list(_B.values())} | {10}), 1,
+               "every method at both shot counts must carry the same ten seeds")
+    _cl, _ge, _gn = (_pt(_A["ibm"], _A["ibm+cheap"]), _pt(_A["ibm+cheap"], _A["gfn-fused"]),
+                     _pt(_A["ibm+cheap"], _A["gfn-nocheap"]))
+    _cl5, _ge5, _gn5 = (_pt(_B["ibm"], _B["ibm+cheap"]), _pt(_B["ibm+cheap"], _B["gfn-fused"]),
+                        _pt(_B["ibm+cheap"], _B["gfn-nocheap"]))
+    _ha = _pt(_A["ibm+cheap"][:5], _A["gfn-fused"][:5])
+    _hb = _pt(_A["ibm+cheap"][5:], _A["gfn-fused"][5:])
+    _need = ["$%.2f\\pm%.2f$" % (_A[k].mean(), _A[k].std(ddof=1))
+             for k in ("ibm", "ibm+cheap", "gfn-fused", "gfn-nocheap")]
+    _need += ["$%.2f$~mHa, a $%.0f\\%%$ reduction, in all ten seeds, with paired $t_9=%.2f$"
+              % (_cl[0], 100 * _cl[0] / _A["ibm"].mean(), _cl[2]),
+              "$%.0f\\%%$ with $t_9=%.1f$" % (100 * _cl5[0] / _B["ibm"].mean(), _cl5[2]),
+              "a further $%.2f\\pm%.2f$~mHa" % (_ge[0], _ge[1]),
+              "with paired $t_9=%.2f$" % _ge[2],
+              "($%.2f$~mHa, $\\lvert t_9\\rvert=%.2f$)" % (abs(_gn[0]), abs(_gn[2])),
+              "$%.2f$~mHa ($\\lvert t_9\\rvert=%.2f$," % (abs(_ge5[0]), abs(_ge5[2])),
+              "$%.2f$~mHa ($\\lvert t_9\\rvert=%.1f$)" % (abs(_gn5[0]), abs(_gn5[2])),
+              "by $%.2f\\pm%.2f$~mHa in every seed, with $t_4=%.2f$" % (_ha[0], _ha[1], _ha[2]),
+              "$%.2f\\pm%.2f$~mHa with $t_4=%.2f$" % (_hb[0], _hb[1], _hb[2])]
+    for _q in _need:
+        rep.truth("App. dequant prints %s" % _q[:52], _q in _gtxt, _q,
+                  "the appendix does not print the re-derived %s" % _q)
+    rep.truth("App. dequant verdicts: classical 10/10; fused unresolved at 1000; worse at 500",
+              _cl[3] == 10 and abs(_ge[2]) < 2.262 and _ge5[0] < 0 and abs(_ge5[2]) > 2.262
+              and _ha[3] == 5 and _hb[0] < 0,
+              "t9 critical 2.262 (two-sided 5%)",
+              "a verbal verdict of App. dequant no longer matches data/gflow.json")
+    _q9 = ("from $%.2f$ to $%.2f$~mHa (paired $t_9=%.2f$, all ten seeds)"
+           % (_A["ibm"].mean(), _A["ibm+cheap"].mean(), _cl[2]))
+    rep.truth("Sec. IX dequantization paragraph matches gflow.json", _q9 in _s9 and
+              ("a further $%.2f$~mHa, a difference ten paired seeds do not resolve ($t_9=%.2f$)"
+               % (_ge[0], _ge[2])) in _s9, _q9,
+              "Sec. IX prints numbers that are not those of data/gflow.json")
+    _ms = {r["L"]: r for r in
+           read_json(root, "data/c3_frontier/adversarial/z_momseed_support.json")["results"]}
+    _q = "support on $%d$ to $%d$ of the $%d$ determinants" % (
+        _ms[8]["support_min"], _ms[8]["support_max"], _ms[8]["D"])
+    rep.truth("momentum-seed support at L=8 (z_momseed_support.json)", _q in _body,
+              _q, "the momentum-seed support printed in Sec. III is not the deposited %s" % _q)
+    _ti = {b["L"]: {p["FR"]: p for p in b["points"]}
+           for b in read_json(root, "data/c3_frontier/ties.json")}
+    for _L, _want in ((6, "30.2"), (8, "42.0")):
+        _p = _ti[_L][0.85]
+        _got = "%.1f" % (100.0 * _p["out_of_supp_in_S"] / _p["S"])
+        rep.truth("ties.json: share of S outside supp(phi) at L=%d, FR=0.85" % _L,
+                  _got == _want and ("$%s\\%%$" % _want) in _body,
+                  "%s%% (%d of %d)" % (_got, _p["out_of_supp_in_S"], _p["S"]),
+                  "the out-of-support share printed (%s%%) is not the deposited %s%%"
+                  % (_want, _got))
+
     uncovered = sorted(inputs - COVERED_FRAGMENTS)
     rep.truth("every native figure source the paper \\input's is opened here",
               not uncovered,

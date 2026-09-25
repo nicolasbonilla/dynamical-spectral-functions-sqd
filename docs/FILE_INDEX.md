@@ -100,7 +100,7 @@ line-level `\input` expander finds two floats in this manuscript instead of thir
 
 | File | Purpose |
 |---|---|
-| `verify.py` | **The adversarial guardian** (~15 s, numpy/scipy only). Recomputes the half-filled Hubbard ground states for both boundary conditions (open chain 9.6047, periodic ring 9.3851) and the geminal witness from first principles, then checks **831 checks / 9 846 numeric assertions** across `data/*.json`, `data/c3_frontier/*.json`, `paper/*.tex` (the abstract included), `paper/figs/*.tex` and `paper/figs/*.dat` against them. Its section **(10b)** opens the 54 C3 point files and re-derives all 204 grid rows — see [`C3_FRONTIER.md`](C3_FRONTIER.md) §7; seven negative controls for that section fire and name the defect. Exits non-zero and names the defect. `[XFAIL]` lines are registered open defects (`KNOWN_OPEN`), open claims (`CLAIMS_OPEN`) and declared coverage gaps (`COVERAGE_GAP_V3`); they do not set the exit code. `--fast` is for editing loops and **certifies nothing** (it exits 3). |
+| `verify.py` | **The adversarial guardian** (~15 s, numpy/scipy only). Recomputes the half-filled Hubbard ground states for both boundary conditions (open chain 9.6047, periodic ring 9.3851) and the geminal witness from first principles, then checks **868 checks / 9 884 numeric assertions** across `data/*.json`, `data/c3_frontier/*.json`, `paper/*.tex` (the abstract included), `paper/figs/*.tex` and `paper/figs/*.dat` against them. Its section **(10b)** opens the 54 C3 point files and re-derives all 204 grid rows — see [`C3_FRONTIER.md`](C3_FRONTIER.md) §7; seven negative controls for that section fire and name the defect. Exits non-zero and names the defect. `[XFAIL]` lines are registered open defects (`KNOWN_OPEN`), open claims (`CLAIMS_OPEN`) and declared coverage gaps (`COVERAGE_GAP_V3`); they do not set the exit code. `--fast` is for editing loops and **certifies nothing** (it exits 3). |
 | `check_figures.py` | Regenerates six generators into a throw-away tree and diffs 8 artefacts against the committed ones. **Read its PASS as 7, not 8** — one artefact is compared with a copy of itself, and the run rewrites four files in the working tree; measured, with a negative control, in `KNOWN_DISCREPANCIES.md` §25. |
 | `check_provenance.py` | **New, 2026-09-19.** Derives the figure inventory from `paper/main.tex` and fails if `FIGURE_PROVENANCE.md`, the `main.tex` float census or `check_figures.py`'s artefact list no longer describes the manuscript. Prints the orphan inventory. Nine self-tests with negative controls run first; it exits 2 if one does not fire. |
 | `check_tarball.py` | Compares `paper/arxiv-submission.tar.gz` with the current `paper/` tree, so no document has to carry a hand-written count. |
@@ -140,6 +140,7 @@ line-level `\input` expander finds two floats in this manuscript instead of thir
 | `leakage_certificate.py` | The certificate itself, with a self-test. | `leakage_certificate_selftest.json` |
 | `leakage_certificate_suite.py` | The 606-subspace sweep behind Sec. V and Fig. 17. Writes the frontier files under a **computed** name, which is why `cert_frontier_*.json` appear orphaned. | `cert_akw.json`, `cert_stress.json`, `cert_teqsci.json`, `cert_frontier_6-8.json`, `cert_frontier_10.json` |
 | `support_witness.py` | Support witness behind Sec. VI. | `support_witness.json` |
+| `gflow_dequant.py` | Dequantization control of App. dequant (needs pyscf, torch, qiskit-ibm-runtime). | `gflow.json`, `gflow_runs/` |
 | `apsg_witness.py` | The **provable** geminal witness: `F_k` large yet χ=2, `\|S\|=2^K`. | `apsg_witness.json` |
 
 ### Molecular suite and the resource theory
@@ -247,7 +248,8 @@ excluded from the arXiv package, so the deposit costs the submission nothing.
 | `molecular_noise.json`, `molecular_noise_sweep.json` | Fig. 16 `fig:noiserec` |
 | `n2_hero.json` | Fig. 13 `fig:hero` |
 | `headtohead_ms.json` | **no figure in v3** — `fig:bench` was withdrawn; the data stays |
-| `gflow.json`, `amortized_recovery.json` | **no figure in v3** — `fig:gflow` and `fig:amort` were withdrawn by Sec. 9.4. `gflow.json` additionally has **no generator anywhere in `src/`** (§11.2 item 7) |
+| `gflow.json`, `gflow_runs/` | App. dequant and Sec. IX (the dequantization control), written by `src/gflow_dequant.py` |
+| `amortized_recovery.json` | **not used by the paper** — no figure, no table and no number in the text. `gflow.json` additionally has **no generator anywhere in `src/`** (§11.2 item 7) |
 | `sqw_edges_provenance.json` | the provenance record of `figs/sqw_edges.dat` |
 | `sampled_akw_figure_numbers.json` | the number→source manifest of Fig. 3 |
 
