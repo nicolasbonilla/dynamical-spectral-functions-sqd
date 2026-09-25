@@ -1,0 +1,30 @@
+{
+  "title": "Captured weight and boundary leakage bound the error of sample-based spectral functions — reproduction repository",
+  "upload_type": "software",
+  "description": "<p>Reproduction deposit for N. Bonilla Vargas, <em>Captured weight and boundary leakage bound the error of sample-based spectral functions</em>, arXiv:2608.16436 (v3). It contains the manuscript sources (main text and Supplemental Material), every computation script, the deposited data behind every figure and quoted number, and an automated guardian (<code>python src/verify.py</code>, 868 checks over 9,884 numeric assertions) that recomputes the underlying physics by exact diagonalization and checks the deposit against it. Code under the MIT licence; manuscript, data and documentation under CC BY 4.0. Known gaps are listed in <code>docs/KNOWN_DISCREPANCIES.md</code>.</p>",
+  "creators": [
+    {
+      "name": "Bonilla Vargas, Nicolás",
+      "affiliation": "Universidad Nacional de Colombia",
+      "orcid": "0009-0006-6155-4391"
+    }
+  ],
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "keywords": [
+    "quantum computing",
+    "sample-based quantum diagonalization",
+    "spectral functions",
+    "a posteriori error bounds",
+    "fermionic non-Gaussianity",
+    "Hubbard model",
+    "reproducible research"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "arXiv:2608.16436",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-preprint"
+    }
+  ]
+}

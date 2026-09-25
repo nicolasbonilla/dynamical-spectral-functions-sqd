@@ -30,7 +30,9 @@ repository-code: "https://github.com/nicolasbonilla/dynamical-spectral-functions
 url: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
 version: "3.0.0"
 date-released: "2026-09-25"
-license: "MIT AND CC-BY-4.0"
+license:
+  - "MIT"
+  - "CC-BY-4.0"
 keywords:
   - quantum computing
   - sample-based quantum diagonalization
