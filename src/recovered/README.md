@@ -5,8 +5,9 @@ not in this deposit (`docs/KNOWN_DISCREPANCIES.md` §27): Fig. 6 (`fig:gapscalin
 `make_fig_gapscaling.py`) and Fig. S5 (`fig:thm1iii-violation`, built by `build_n3.py`). Both scripts,
 and the scripts behind two of the inputs of the second, were written on 2026-09-18 in the author's
 session scratch directory and never committed. They were found there on 2026-09-26, copied out of it
-unchanged (the untouched copies, with SHA-256 checksums, are kept outside this repository), and
-deposited here.
+(the untouched copies, with SHA-256 checksums, are kept outside this repository), and deposited here.
+The five record files are unchanged: four byte-identical, and `fix_n3_caption.py` identical except
+for its line endings (CRLF → LF). The two generators were ported, as the table says.
 
 They live in a subdirectory, not in `src/`, on purpose: they are a recovery, not part of the pipeline
 the manuscript was submitted with, and `src/verify.py` counts the files at the top level of `src/`.

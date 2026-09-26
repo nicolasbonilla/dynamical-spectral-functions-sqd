@@ -127,7 +127,8 @@ The v3 manuscript typesets **seventeen** figures; `main.aux` is the authority
   now reads `(c) Hubbard: $\chi$ runs forwards`, and **grep finds none of those four numbers in any figure
   source used by the current build**. They survive only as prose, in `paper/sec_6_body.tex:329`
   (`paper/resource.tex`, where the old text said they were printed, is superseded and not built).
-* **Fig. 17** (`fig:thm1iii-violation`) is the one that needed checking rather than assuming. It plots
+* **Fig. 17** of the 2026-09-19 build, printed Fig. S5 in v3 (`fig:thm1iii-violation`), is the one that
+  needed checking rather than assuming. It plots
   **eight** `n3_*.dat` tables (counted by grepping the fragment with a case-correct pattern — a
   lower-case-only character class silently misses `n3_thmB_eta.dat` and `n3_thmB_frac.dat` and returns
   six); two further `n3_*.dat` files, `n3_fig5_eta.dat` and `n3_fig5_frac.dat`, are read not by the
@@ -265,7 +266,7 @@ in under a minute by opening either file:
 
 | file | what is actually in it |
 |---|---|
-| `data/heron_spectral.json` | `L, U, eta, nsector, grid[600], A_exact[600], A_hw[600], A_local[600], backend, shots, job_id, hw_relL1, hw_S` — **post-processed spectral arrays**. No bitstring, no count, no list of recovered determinants. |
+| `data/heron_spectral.json` | `L, U, eta, nsector, grid[600], A_exact[600], A_hw[600], A_local[600], backend, shots, job_id, hw_relL1, hw_S` — **post-processed spectral arrays**. No bitstring, no count, no list of retained determinants. |
 | `data/hw_lucj_n2_result.json` | energies. The key that reads like a histogram, `hist_hw`, is **five SQD iteration energies** (−108.781…, −108.801…, −108.806…, −108.807…), not a measurement histogram. |
 
 A scan of every `data/*.json` for a key containing *counts*, *bit* or *hist* in the measurement sense
@@ -291,7 +292,7 @@ circuit output — `KNOWN_DISCREPANCIES.md` §30. The coverage statement is unch
 
 | not claimed | why |
 |---|---|
-| that every figure can be **recompiled** from the deposit | **six of the seventeen** ship as PDF with no `.tex` source inside the repository — `fig_akw_native.pdf`, `fig_circuit.pdf`, `fig_hero.pdf`, `fig_noise_score.pdf`, `fig_spinqw.pdf`, `fig_sqw.pdf`; the list was taken from the `\includegraphics` lines of the current build, not from a document. The other eleven are native pgfplots fragments. *(2026-09-26: the six standalone sources are now deposited in `paper/figs/src/` and each recompiles to a pixel-identical rendering of the committed PDF; two of the rasters they embed were recoloured by a step that is not deposited, and no deposited script writes the third — so "recompiled" is now true and "regenerated from data" is still not claimed.)* (`KNOWN_DISCREPANCIES.md` §5 still says "ten of the twenty" and still cites `fig_molecular_gallery.pdf` and its 19 PyMOL PNGs — that figure is **withdrawn in v3**. Part 4 item 2.) |
+| that every figure can be **recompiled** from the deposit | **six of the seventeen** ship as PDF with no `.tex` source inside the repository — `fig_akw_native.pdf`, `fig_circuit.pdf`, `fig_hero.pdf`, `fig_noise_score.pdf`, `fig_spinqw.pdf`, `fig_sqw.pdf`; the list was taken from the `\includegraphics` lines of the current build, not from a document. The other eleven are native pgfplots fragments. *(2026-09-26: the six standalone sources are now deposited in `paper/figs/src/` and each recompiles to a pixel-identical rendering of the committed PDF; none of the three rasters they embed can be regenerated here — the viridis input of `src/recolor_akw_v2.py`, which wrote `akw_field_v2.png`, is not deposited, the step that recoloured `sqw_field.png` is not deposited, and no deposited script writes `spinqw_field.png` — so "recompiled" is now true and "regenerated from data" is still not claimed.)* (Until 2026-09-19 `KNOWN_DISCREPANCIES.md` §5 said "ten of the twenty" and cited `fig_molecular_gallery.pdf` and its 19 PyMOL PNGs; it has since been re-counted to six of the seventeen, and that figure is **withdrawn in v3**. Part 4 item 2.) |
 | that Fig. 17 (Fig. S5 as printed) can be **regenerated** | its ten `n3_*.dat` tables are deposited, but `build_n3.py` is not, and two of its four inputs are not in `data/`. The guardian registers this as an open defect and refuses to "check" the figure by re-reading what it prints. *(2026-09-26: `src/recovered/build_n3.py` and all of its inputs are now deposited and regenerate the ten tables byte-for-byte, guarded by `check_figures.py`; the claim is still not made in Part 1 because the manuscript's sentence predates it, and `verify.py` still has no check of its own on the ratios.)* |
 | that **Table II** (`tab:moments`, Sec. IV; Table IV of an earlier build) can be **regenerated** | **yes, since 2026-09-25.** The eight intermediate files the table was first built from were never deposited; `src/moments_table.py` rebuilds the L = 6 open-chain sector from scratch and writes `data/moments_table.json` (the three rows, the negative control of 300 draws at seed 20260918, and the two-level series of App. B), and `src/verify.py` asserts every printed entry against it. |
 | that `make reproduce` runs | it executes a notebook that requires `pyscf`, which is not installed in the verified environment. It was **not** run in this pass and no claim is made for it. |
@@ -393,7 +394,7 @@ plotted value is deposited"; Part 1 says **one**.
   them cannot be an exception for them. The new checker did not catch this because it validates the
   *label set* against the manuscript, not the *contents* of a cell.
 * **"Fig. 17: two of the four JSONs behind the plotted ratios are not deposited"** — true, and it is in
-  Part 1, in the known-gaps sentence. The ratios Fig. 17 *plots* are the deposited `n3_*.dat` tables;
+  Part 1, in the known-gaps sentence. The ratios Fig. 17 (printed Fig. S5) *plots* are the deposited `n3_*.dat` tables;
   what is missing is what *built* them. Deposit gap and regenerability gap are different claims and the
   DAS makes them in different sentences (2.2).
 

@@ -27,8 +27,9 @@
 > **And the retraction, in the same breath.** Versions 1–2 of this preprint claimed a *weight-only*
 > bound. An analytic counterexample forces its constant to the trivial value, and it is **withdrawn**.
 > On Hubbard sectors up to dimension 10 306 296 the replacement is worse than the trivial bound at
-> every published fraction, at all five sizes, by factors of 1.66–8.61 — **so those reconstructions are
-> uncertified**. What survives is a calibration: over sixteen `(L,η)` cells whose true errors span five
+> every operating fraction of the resource scan, at all five sizes, by factors of 1.66–8.61 — **so those
+> reconstructions are uncertified**; the one reconstruction drawn at 85% of its sector (Fig. 3) is the
+> certified exception, loosely. What survives is a calibration: over sixteen `(L,η)` cells whose true errors span five
 > decades, the bound crosses the trivial one at a true relative error of `1.2–7.3×10⁻³`, median
 > `2.8×10⁻³`, computed without the answer. **Yet a two-constant rule in `1−w`, fitted out of sample,
 > localizes that error more tightly on 11 of 14 train/test splits, so no superiority is claimed for the
@@ -79,8 +80,9 @@ all this is [`docs/DATA_AVAILABILITY.md`](docs/DATA_AVAILABILITY.md).
    (boundary leakage `Λ̂(η)/η`).
 2. **A retraction, and what replaces it.** The weight-only bound of versions 1–2 is withdrawn: an
    analytic counterexample forces its constant to the trivial value, and none of 606 test subspaces
-   violates the replacement. The obstruction is structural — at `L=8` the probe's Krylov space touches
-   every determinant of the sector.
+   violates the replacement. The obstruction is structural — in the determinant basis the probe's
+   Krylov space has coordinate support on every symmetry-allowed determinant, measured from `L=6` to
+   `L=14`, so at full captured weight only a subspace holding all of them has zero leakage.
 3. **An obstruction theorem for one-body magic.** The fermionic AntiFlatness collapses to a single
    1-RDM invariant `F₁ = 4 tr[γ(1−γ)] = 2Nᵤ`. Being an orbital-rotation (Gaussian) invariant, it is
    **provably decoupled** from the basis-dependent support `|S|`: constant along an orbit on which the
@@ -100,7 +102,7 @@ the same circuits keeps 0 of 350 000 shots under that reading and all of them un
 (stretched N₂, CAS(10e,12o), 24 qubits), recovery over 8 seeds reaches 0.59 ± 0.14 mHa of the exact
 active-space energy, below the 29.5 mHa of a noiseless simulation of the same circuit. The recovered
 subspace sizes on which that comparison turns were not stored, so the record cannot say whether device
-noise helps. Neither run says anything about accuracy at incomplete coverage.
+noise helps. The `ibm_fez` run says nothing about accuracy at incomplete coverage.
 
 ---
 
@@ -183,10 +185,10 @@ make paper                              # -> paper/main.pdf
 ```
 
 **How v3 was built and submitted:** see **[`docs/ARXIV_SUBMISSION.md`](docs/ARXIV_SUBMISSION.md)** (v3 was
-submitted on 2026-09-25 from a package built by `src/build_arxiv_bundle.py`, and announces on
-2026-09-28). **`paper/arxiv-submission.tar.gz` is the frozen snapshot of what was posted as v2 and must
-never be re-uploaded**: 17 files in `paper/` have since moved ahead of it (17 files differ and 21 are
-bundle-only), and the bundle still contains the two fabricated rows of `figs/sqw_edges.dat` and the
+submitted on 2026-09-25 from a package built by `src/build_arxiv_bundle.py`, and is scheduled to
+announce on 2026-09-28). **`paper/arxiv-submission.tar.gz` is the frozen snapshot of what was posted as
+v2 and must never be re-uploaded**: 17 files in `paper/` have since moved ahead of it, 21 of its files
+no longer exist in `paper/`, and the bundle still contains the two fabricated rows of `figs/sqw_edges.dat` and the
 seven v2 body files the v3 sections replace. Run `python src/check_tarball.py` for the live comparison,
 and see [`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md) §7.
 
@@ -206,16 +208,18 @@ and see [`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md) §7.
 | **The 19-molecule suite** | ⚠️ runs, but needs `pyscf`; **untested in this pass**, so the molecular checks are transcription checks, not recomputations | `python src/n19_suite.py` etc. |
 | **The v1–v2 narrated notebook** | ⚠️ **a record, not the v3 reproduction path** — it reproduces the v1–v2 figure set, several of which v3 withdrew, needs `pyscf` and was **not run**; use `src/verify.py` and `docs/REPRODUCE.md` | `notebooks/00_Reproduce_Everything.ipynb` |
 | **Matrix-free scaling** to 28 qubits | ✅ (RAM-staged, resumable) | `src/scaling_lanczos_mf.py` |
-| **Figures** | ⚠️ **8 of 17 are byte-for-byte guarded** (Figs. 2, 3, 6, 9, S2, S3, S8, and the ten tables of S5). Nine are not: four have no deposited generator (Figs. 1, S1, S4, 5), and five ship as a PDF (Figs. 4, 7, 8, S6, S7). The standalone sources of all six PDF figures (Fig. 1 included) are deposited since 2026-09-26 and recompile pixel-identically, but no script guards them, and two of their rasters were recoloured by a step that is not deposited. *(Until 2026-09-26: 6 of 17, and the generators of Figs. 6 and S5 were not in the tree.)* | inventory in [`docs/FIGURE_PROVENANCE.md`](docs/FIGURE_PROVENANCE.md) |
+| **Figures** | ⚠️ **8 of 17 are guarded by regeneration**, two of them only in part: Figs. 2, 3, 9, S2, S3 and S8 byte-for-byte; Fig. 6 byte-for-byte after one provenance-timestamp comment line is normalised; Fig. S5 in its ten `.dat` tables only (the fragment's whisker literals and its ratios are not guarded, `verify.py`'s declared coverage gap). Nine are not guarded: four have no deposited generator (Figs. 1, S1, S4, 5), and five ship as a PDF (Figs. 4, 7, 8, S6, S7). The standalone sources of all six PDF figures (Fig. 1 included) are deposited since 2026-09-26 and recompile pixel-identically, but no script guards them, and none of the three rasters they embed can be regenerated here: the viridis input of `src/recolor_akw_v2.py` (which writes `akw_field_v2.png`) is not deposited, the step that recoloured `sqw_field.png` is not deposited, and no deposited script writes `spinqw_field.png`. *(Until 2026-09-26: 6 of 17, and the generators of Figs. 6 and S5 were not in the tree.)* | inventory in [`docs/FIGURE_PROVENANCE.md`](docs/FIGURE_PROVENANCE.md) |
 | **IBM Heron hardware runs** | ⚠️ needs an IBM Quantum account, and the jobs are closed | `notebooks/` (tokens scrubbed; **no raw counts are deposited**) |
 
-> **`paper/main.pdf` is the v3 manuscript** as compiled on 2026-09-25: 66 pages, one column, a 25-page
+> **`paper/main.pdf` is the v3 manuscript** as recompiled on 2026-09-26: 66 pages, one column, a 25-page
 > main text followed by the Supplemental Material. The build log shows 0 errors, 0 undefined references
 > or citations and 0 overfull `\hbox` (two overfull `\vbox`, of 5.8 pt and 12.1 pt). It differs from the
-> source package submitted to arXiv as v3 only in two later edits: the Zenodo DOI in the
+> source package submitted to arXiv as v3 in three later edits: the Zenodo DOI in the
 > data-availability statement and in the repository reference (which now carries the current title),
-> and the sentence noting that the L=14 checkpoint is deposited. Run `make paper` after any further
-> source edit.
+> the sentence noting that the L=14 checkpoint is deposited, and the disclosure of 2026-09-26 that the
+> L=6 `ibm_fez` run was post-selected in reversed bit order, without configuration recovery or
+> readout-error mitigation (Secs. IX A and S8, Table I, the caption of Fig. 9;
+> `docs/KNOWN_DISCREPANCIES.md` §30). Run `make paper` after any further source edit.
 >
 > **CI.** `.github/workflows/ci.yml` runs `make verify` and `make check-figures` on every push, and has
 > done so since 2026-09-19 (see the Actions tab). `make check-coherence` was added as a third job on

@@ -21,8 +21,13 @@ nada antes de contar: se cuenta la cadena que se va a pegar, tal cual.
 
 USO
 ---
-    python src/abs_paste.py            # imprime las dos versiones y sus cuentas
-    python src/abs_paste.py --write    # ademas deja build/abstract_arxiv.txt
+    python src/abs_paste.py            # imprime las dos versiones y sus cuentas,
+                                       # y SIEMPRE escribe build/abstract_arxiv.txt
+
+NOTE (2026-09-26): the script ALWAYS writes build/abstract_arxiv.txt, before printing (see
+main()); a --write flag is accepted and ignored.  An earlier version of this docstring said the
+file was written only with --write.  Running the script therefore replaces the copy of the
+abstract filed for v3 that sits in build/; that copy is also kept outside the repository.
 """
 from __future__ import print_function
 

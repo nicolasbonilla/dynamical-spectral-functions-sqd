@@ -206,14 +206,15 @@ A repair pass in August mistakenly propagated the ring value into the open-chain
 reverted on 2026-09-05. **Changing 9.3851 to 9.6047 in `fig_scaling2_native.tex` would reintroduce the
 same error in the opposite direction.** A warning comment now sits in the figure file itself.
 
-## 5. Six of the seventeen figures enter the manuscript as PDF with no `.tex` source in the deposit — **sources DEPOSITED 2026-09-26; two rasters still OPEN**
+## 5. Six of the seventeen figures enter the manuscript as PDF with no `.tex` source in the deposit — **sources DEPOSITED 2026-09-26; three rasters still OPEN**
 
 *2026-09-26: the six standalone sources were recovered from the author's scratch directory and are
 deposited in `paper/figs/src/` (§29). Recompiled there with `pdflatex`, each renders pixel-identically
-to the committed PDF at 216 dpi, with identical extracted text. What stays open is upstream of two of
-them: the hot-coloured rasters `akw_field_v2.png` and `sqw_field.png` are deposited as rendered, and the
-recolouring step that made them is not (§13); no deposited script writes `spinqw_field.png`. The
-figures still enter the manuscript as PDF. The text below is the record of the gap as it stood.*
+to the committed PDF at 216 dpi, with identical extracted text. What stays open is upstream of three of
+them: the hot-coloured rasters `akw_field_v2.png` and `sqw_field.png` are deposited as rendered, but
+`akw_field_v2.png` was written by `src/recolor_akw_v2.py`, whose viridis input is not deposited, and the
+step that recoloured `sqw_field.png` is not deposited (§13); no deposited script writes
+`spinqw_field.png`. The figures still enter the manuscript as PDF. The text below is the record of the gap as it stood.*
 
 *Re-counted 2026-09-19 by `src/check_provenance.py`; the v2 count of "ten of the twenty" is
 superseded, five of those ten having been withdrawn with their figures.*
@@ -411,7 +412,7 @@ at the first non-zero exit -- which is what `make` does. Measured 2026-09-18:
 | target | result |
 |---|---|
 | `make figures` | **6/6 commands, exit 0**, and every regenerated fragment byte-identical to the committed one |
-| `make check-figures` | **PASS** -- 8 regenerated artefacts byte-identical (re-measured 2026-09-19). Before the §25 repair of the same day one of the eight was compared against a copy of itself; since that repair all 8 are guarded |
+| `make check-figures` | **PASS** -- 8 regenerated artefacts byte-identical (re-measured 2026-09-19). Before the §25 repair of the same day one of the eight was compared against a copy of itself; since that repair all 8 are guarded. *Since 2026-09-26: 19 artefacts from 8 generators, one comment line of the Fig. 6 fragment normalised (§29)* |
 | `make verify` | **PASS** -- 872 checks, 0 failures, **5 registered xfail, 0 xpass**, 2 skips, 9 889 numeric assertions (re-measured 2026-09-26 after the hardware bit-order check and three phrase guards were added, +4 checks and +5 assertions; before that 868 / 9 884, re-measured 2026-09-19 after the C3 frontier deposit added section (10b), 2 387 assertions, and registered `ladder_L4.ngrid_eta050` as the fifth open defect; the earlier 807 / 7 454 / 4, 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
 | `make data` | **exit 0** -- `paper/figs/sqw_edges.dat` and `data/charge_gap.json` regenerated (~256 s, L=4...12 ED) |
 | `make paper` | two `pdflatex` passes; not re-run in this pass |
@@ -891,7 +892,8 @@ statevector simulation of the same seven circuits, 50 000 shots each, keeps **0 
 notebook reading and **all 350 000** (support 300 of 300) under the correct one. The same reading applied to
 the retained L=8 device counts of the companion P3 run keeps 18 260 of 350 000 shots instead of 82 697.
 
-Consequences, stated in Sec. IX A, Sec. S9 and the caption of the hardware figure since 2026-09-26:
+Consequences, stated in Sec. IX A, Sec. S8, the hardware row of Table I and the caption of the hardware
+figure since 2026-09-26:
 (i) all 300 determinants retained from the device arose from device errors that changed the spin balance;
 (ii) no configuration recovery was applied -- the text of v3 as submitted to arXiv on 2026-09-25 says
 "configuration recovery returned all 300 determinants", which is wrong; (iii) SamplerV2 ran with

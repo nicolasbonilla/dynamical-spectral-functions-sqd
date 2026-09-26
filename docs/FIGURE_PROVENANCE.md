@@ -116,8 +116,9 @@ Until those two constants are resolved from `__file__` and `data/`, read the che
 honest status of Fig. S5 (`fig:thm1iii-violation`). *Since 2026-09-26 the builder and its inputs are
 deposited (`src/recovered/build_n3.py`, `data/thm1iii_violation/`) and `check_figures.py`
 regenerates all ten tables byte-for-byte; the coverage gap stays, because the check it names has
-still not been written.* Closing it means depositing `build_n3.py`
-and its two missing inputs, adding the fragment to `src/check_figures.py`, and anchoring the ratios.
+still not been written.* What remains to close it is that check: a test in `verify.py` that anchors
+the plotted ratios to the certificate rows. The fragment itself is not diffed by `check_figures.py`; it is
+read by `build_n3.py`, whose self-check requires its legend counts to match the tables.
 
 ---
 
@@ -131,7 +132,10 @@ again. Converged dE = **0.59 ± 0.14 mHa** (best seed 0.40); noiseless sim 29.5 
 Confirmed authoritative by Nicolás (2026-08-17); per-seed trajectories restored 2026-08-17.
 
 **A(ω) / ibm_fez** = the `ibm_fez` L=6 Hubbard run (|S|=300/300, exact by coverage). File:
-`heron_spectral.json` → `figs/heron_hot.dat`.
+`heron_spectral.json` → `figs/heron_hot.dat`. The 300 determinants were retained by post-selection in
+reversed bit order, so every one of them came from a device error; no configuration recovery and no
+readout-error mitigation were applied (measurement twirling, Pauli twirling and dynamical decoupling
+only) — `KNOWN_DISCREPANCIES.md` §30.
 
 ---
 
