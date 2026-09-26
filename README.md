@@ -30,7 +30,9 @@
 > every published fraction, at all five sizes, by factors of 1.66–8.61 — **so those reconstructions are
 > uncertified**. What survives is a calibration: over sixteen `(L,η)` cells whose true errors span five
 > decades, the bound crosses the trivial one at a true relative error of `1.2–7.3×10⁻³`, median
-> `2.8×10⁻³`, computed without the answer. **No quantum advantage is claimed.**
+> `2.8×10⁻³`, computed without the answer. **Yet a two-constant rule in `1−w`, fitted out of sample,
+> localizes that error more tightly on 11 of 14 train/test splits, so no superiority is claimed for the
+> bound as an error tracker.** **No quantum advantage is claimed.**
 
 **Repository:** <https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd> — this URL is the
 one the manuscript's data-availability statement points to. It is also in
@@ -40,33 +42,31 @@ This repository is the **reproduction record** of the paper: every number and ev
 script and a data file, except the declared gaps below, listed in [`docs/REPRODUCE.md`](docs/REPRODUCE.md) and
 [`docs/FILE_INDEX.md`](docs/FILE_INDEX.md), and `python src/verify.py` recomputes the physics and checks
 the deposit against it. **It is not a claim that everything re-runs here.** What a clean clone reaches —
-and the parts it does not, because they need `pyscf`, an IBM Quantum account, or a figure source that is
+and the parts it does not, because they need `pyscf`, an IBM Quantum account, or a figure step that is
 not deposited — is tabulated, measured rather than asserted, at the end of
 [`docs/REPRODUCE.md`](docs/REPRODUCE.md), and the gaps are enumerated in
 [`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md). The statement that may be published about
 all this is [`docs/DATA_AVAILABILITY.md`](docs/DATA_AVAILABILITY.md).
 
-> **Companion works.** Review — *Machine learning for sample-based quantum diagonalization: generative
-> configuration recovery and the classical-simulability frontier* ([arXiv:2608.05314](https://arxiv.org/abs/2608.05314)).
-> Method — *Self-falsifying quantum spectroscopy: a transportable necessary-condition screen for
-> quantum-computed dynamical spectra* (companion, arXiv posting in progress).
+> **Companion works.** Review — *Machine learning for sample-based quantum diagonalization: a review of
+> generative configuration recovery and the classical-simulability frontier* ([arXiv:2608.05314](https://arxiv.org/abs/2608.05314)).
+> Method — *Reconstruction-independent moment tests for quantum-computed dynamical spectra* (in preparation).
 
 ---
 
 ## Figure gallery
 
-| Momentum-resolved `A(k,ω)` (exact Mott map) | The resource thesis (74 exact states) |
+| Momentum-resolved `A(k,ω)` (exact Mott map) | The resource thesis (74 rows, 71 distinct exact states) |
 |:---:|:---:|
 | ![akw](docs/img/akw.png) | ![resource](docs/img/resource.png) |
-| **Charge structure factor `S(q,ω)` — gapped** | **Spin structure factor `S^zz(q,ω)` — gapless** |
+| **Charge structure factor `S(q,ω)`, L=12** | **Spin structure factor `S^zz(q,ω)`, L=12** |
 | ![sqw](docs/img/sqw.png) | ![spinqw](docs/img/spinqw.png) |
-| **Scaling: fraction falls, absolute cost grows** | **IBM Heron hardware (two real runs)** |
+| **Scaling: fraction falls, absolute cost grows** | **IBM Heron hardware (two runs, stated at their size)** |
 | ![scaling](docs/img/scaling.png) | ![hardware](docs/img/hardware.png) |
 | **The geminal witness: magic large, `χ = 2`** | **N₂ dissociation hero (`F₁ = 2Nᵤ`)** |
 | ![witness](docs/img/witness.png) | ![hero](docs/img/hero.png) |
 
-<div align="center"><em>The two collective channels come from the <strong>same sampling primitive</strong>: the
-<strong>spin–charge separation</strong> of the 1D Mott insulator — charge gapped (Δ≈5t), spin gapless (πJ/2≈0.79t).</em></div>
+<div align="center"><em>Both collective channels come from the <strong>same sampling primitive</strong>. At L=12 each is a set of discrete poles, so the paper uses the spin–charge contrast (spin scale πJ/2≈0.79t, far below the charge gap Δ≈4.97t) as a check of the method, not as a result, and calls neither channel a continuum or gapless (Sec. VIII).</em></div>
 
 ---
 
@@ -91,9 +91,13 @@ all this is [`docs/DATA_AVAILABILITY.md`](docs/DATA_AVAILABILITY.md).
    nineteen-molecule suite; the three prices (support, resolution, shots) measured rather than
    asserted; and two real **IBM Heron** runs.
 
-**Headline hardware number:** stretched N₂ on `ibm_marrakesh` reaches **0.59 ± 0.14 mHa** of exact FCI
-via noise-assisted configuration recovery (the same shallow circuit gives 29.5 mHa in noiseless
-simulation).
+**Hardware, stated at its size.** Two runs were executed on IBM Heron processors. On `ibm_fez` (L=6
+Hubbard, 12 qubits), recovery returned all 300 determinants of the sector, so the reconstructed A(ω)
+equals the exact one *by coverage*: an identity, not a fidelity measurement. On `ibm_marrakesh`
+(stretched N₂, CAS(10e,12o), 24 qubits), recovery over 8 seeds reaches 0.59 ± 0.14 mHa of the exact
+active-space energy, below the 29.5 mHa of a noiseless simulation of the same circuit. The recovered
+subspace sizes on which that comparison turns were not stored, so the record cannot say whether device
+noise helps. Neither run says anything about accuracy at incomplete coverage.
 
 ---
 
@@ -101,36 +105,45 @@ simulation).
 
 ```
 .
-├── src/                       # 62 computation & figure scripts (run from repo root as `python src/X.py`)
+├── src/                       # 62 computation & figure scripts, plus 28 in src/frontier/ (the C3 sweep); run from repo root as `python src/X.py`
 │   ├── verify.py              #   the adversarial guardian: recomputes the physics, then checks the deposit
 │   ├── check_figures.py       #   do the committed generators still produce the committed fragments?
 │   ├── check_provenance.py    #   does the documentation still describe the manuscript? (derives it from main.tex)
 │   ├── akw_lanczos.py …       #   exact-diagonalization engines + spectral/resource/scaling compute
-│   └── make_*.py              #   one data-driven figure generator per figure (no hand-typed numbers)
-├── data/                      # 37 authoritative datasets: every plotted number (*.json)
+│   ├── make_*.py              #   one data-driven figure generator per figure (no hand-typed numbers)
+│   └── recovered/             #   the generators of Figs. 6 and S5 and their compute, recovered 2026-09-26 (README inside)
+├── data/                      # 38 datasets, plus data/c3_frontier/ (95 files), data/gflow_runs/ (20) and
+│                              #   data/thm1iii_violation/ (the inputs of Fig. S5): every plotted number (*.json)
+├── ckpt/                      # the L=14 ground-state checkpoint (94 MB) and ranking, with SHA-256 (deposited 2026-09-25)
 ├── notebooks/
-│   ├── 00_Reproduce_Everything.ipynb   #   ★ MASTER notebook (needs pyscf)
+│   ├── 00_Reproduce_Everything.ipynb   #   the v1–v2 narrated pipeline, kept as a record (needs pyscf)
 │   ├── HW_LUCJ_N2_Heron_READY.ipynb    #   IBM Heron N₂ energy   (token SCRUBBED — see below)
 │   └── Spectral_Heron.ipynb            #   IBM Heron A(ω)        (token SCRUBBED — see below)
-├── paper/                     # the v3 manuscript: REVTeX 4.2, two columns, Physical Review A
+├── paper/                     # the v3 manuscript: REVTeX 4.2 (aps, pra), one column for submission
 │   ├── main.tex               #   preamble, abstract and the \input list
-│   ├── sec_1.tex … sec_10.tex #   the ten body sections
-│   ├── sec_*_app.tex, app_*.tex#  the seven appendices
+│   ├── sec_1.tex … sec_10.tex #   the ten sections of the main text
+│   ├── sm_*.tex               #   nine Supplemental Material files: Secs. S1–S8 (sm_begin.tex opens the SM)
+│   ├── sec_*_app.tex, app_*.tex#  Secs. S9–S16 of the Supplemental Material (the former appendices)
 │   ├── carried/               #   nine one-float wrappers carried verbatim from v2
 │   ├── figs/                  #   11 native fragments, 6 figure PDFs, 19 plotted .dat tables, captions
-│   ├── main.pdf               #   the compiled preprint (59 pp)
+│   │   └── src/               #   the standalone sources of the 6 figure PDFs (deposited 2026-09-26)
+│   ├── main.pdf               #   the compiled preprint (66 pp)
 │   └── arxiv-submission.tar.gz#   the FROZEN arXiv v2 bundle — a record, never a source
-├── _superseded/               # the v2 manuscript and the five figures v3 withdrew, kept for the trail
+├── _superseded/               # the v2-era manuscript, the five figures v3 withdrew and the v1 README thumbnails, kept for the trail
 ├── docs/
 │   ├── REPRODUCE.md           #   figure/number → script → exact command, and what a clean clone cannot reach
 │   ├── FILE_INDEX.md          #   every file, described, plus the orphan inventory
 │   ├── FIGURE_PROVENANCE.md   #   figure → source → generator → data → job id
 │   ├── KNOWN_DISCREPANCIES.md #   where running a script does NOT reproduce the deposit (read this)
 │   ├── DATA_AVAILABILITY.md   #   the statement drafted for PRA, and the audit behind each sentence
-│   └── img/                   #   README thumbnails
+│   ├── C3_FRONTIER.md         #   the C3 certificate-frontier sweep behind Sec. V, file by file
+│   ├── ARXIV_SUBMISSION.md    #   how the v3 source package was built and submitted
+│   └── img/                   #   README thumbnails, rendered from the v3 figures by make_thumbnails.py
+├── .github/workflows/ci.yml   # CI: `make verify`, `make check-figures` and `make check-coherence` on every push
 ├── requirements.txt           # Python dependencies
 ├── Makefile                   # `make verify`, `make check-figures`, `make figures`, `make paper`, `make ci`
 ├── CITATION.cff               # citation metadata
+├── .zenodo.json               # Zenodo deposit metadata
 └── LICENSE                    # MIT (code) + CC-BY-4.0 (paper text, figures and data)
 ```
 
@@ -156,7 +169,7 @@ python src/check_figures.py # or: make check-figures
 # 2c. does the DOCUMENTATION still describe the manuscript? (derived from paper/main.tex)
 python src/check_provenance.py          # add -v for the orphan inventory, --markdown for the table
 
-# 3. reproduce everything in one narrated pass (needs pyscf)
+# 3. the v1–v2 narrated pipeline, kept as a record (needs pyscf; NOT the v3 figure set)
 jupyter notebook notebooks/00_Reproduce_Everything.ipynb    # or headless: make reproduce
 
 # 4. regenerate a single data-driven figure fragment from its committed data
@@ -166,43 +179,44 @@ python src/make_decoupling_native.py    # -> paper/figs/fig_decoupling_native.te
 make paper                              # -> paper/main.pdf
 ```
 
-**Posting to arXiv?** See **[`docs/ARXIV_SUBMISSION.md`](docs/ARXIV_SUBMISSION.md)**. **`paper/arxiv-submission.tar.gz`
-is the frozen snapshot of what was posted as v2 and must never be re-uploaded**:
-17 files in `paper/` have since moved ahead of it and two more have been deleted from the tree, and
-the bundle still contains the two fabricated rows of `figs/sqw_edges.dat` and the seven v2 body files
-the v3 sections replace. Run `python src/check_tarball.py` for the live comparison, and see
-[`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md) §7.
+**How v3 was built and submitted:** see **[`docs/ARXIV_SUBMISSION.md`](docs/ARXIV_SUBMISSION.md)** (v3 was
+submitted on 2026-09-25 from a package built by `src/build_arxiv_bundle.py`, and announces on
+2026-09-28). **`paper/arxiv-submission.tar.gz` is the frozen snapshot of what was posted as v2 and must
+never be re-uploaded**: 17 files in `paper/` have since moved ahead of it (17 files differ and 21 are
+bundle-only), and the bundle still contains the two fabricated rows of `figs/sqw_edges.dat` and the
+seven v2 body files the v3 sections replace. Run `python src/check_tarball.py` for the live comparison,
+and see [`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md) §7.
 
 ---
 
 ## Reproducibility at a glance
 
-*Measured 2026-09-19 unless the row says otherwise.*
+*Measured 2026-09-19 unless the row says otherwise; the guardian rows were re-measured on 2026-09-26.*
 
 | Layer | Reproducible here? | How |
 |---|---|---|
-| **The guardian** | ✅ **PASS** — 868 checks, 0 failures, 9 884 numeric assertions, 5 xfail, 0 xpass, 2 skips, ~9 s *(2026-09-19, after the C3 frontier deposit added section (10b))* | `python src/verify.py` (or `make verify`) |
-| **The documentation** | ✅ **PASS** — derived from `paper/main.tex`: 34 floats, 17 figures, 17 tables | `python src/check_provenance.py` |
+| **The guardian** | ✅ **PASS** — 868 checks, 0 failures, 9 884 numeric assertions, 5 xfail, 0 xpass, 2 skips *(re-measured 2026-09-26 on a fresh clone: 868 pass, 0 fail, 9 884 assertions, 5 xfail, 2 skips, ~30 s)* | `python src/verify.py` (or `make verify`) |
+| **The documentation** | ✅ **PASS** — derived from `paper/main.tex`: 60 source files, 34 floats, 17 figures, 17 tables *(2026-09-26)* | `python src/check_provenance.py` |
 | **Manuscript coherence** | ✅ **PASS** — 10 cross-section claims, 20 synthetic controls, all 20 fire *(2026-09-19)*. New that day, because the other three guardians were green while seven sections contradicted each other: they compare a printed number against a deposited file, not a claim against a claim | `python src/check_coherence.py` |
-| **The figure generators** | ✅ **PASS on 8 artefacts, all 8 genuinely guarded** *(2026-09-19)*. Until that day the eighth was compared with a copy of itself, because its generator hard-coded two absolute paths; both are gone and the repair is measured, with controls, in `KNOWN_DISCREPANCIES.md` §25 | `python src/check_figures.py` |
+| **The figure generators** | ✅ **PASS on 19 artefacts from 8 generators** *(2026-09-26)* — the six of 2026-09-19 and the two recovered that day into `src/recovered/`; one provenance-timestamp comment line of the Fig. 6 fragment is normalised, and the run says so. Measured with four negative controls in `KNOWN_DISCREPANCIES.md` §29. (Until 2026-09-19 one of the first eight artefacts was compared with a copy of itself; §25.) | `python src/check_figures.py` |
 | **Exact diagonalization, numpy/scipy only** (`A(ω)`, `A(k,ω)`, `S(q,ω)`, `S^zz`, the two gaps, the χ–\|S\| resource map, the geminal witness, the scaling) | ✅ **verified locally**, minutes | `python src/<script>.py`; see `docs/REPRODUCE.md` |
 | **The 19-molecule suite** | ⚠️ runs, but needs `pyscf`; **untested in this pass**, so the molecular checks are transcription checks, not recomputations | `python src/n19_suite.py` etc. |
-| **Everything, one coherent pass** | ⚠️ **not verified** — the master notebook needs `pyscf` | `notebooks/00_Reproduce_Everything.ipynb` |
+| **The v1–v2 narrated notebook** | ⚠️ **a record, not the v3 reproduction path** — it reproduces the v1–v2 figure set, several of which v3 withdrew, needs `pyscf` and was **not run**; use `src/verify.py` and `docs/REPRODUCE.md` | `notebooks/00_Reproduce_Everything.ipynb` |
 | **Matrix-free scaling** to 28 qubits | ✅ (RAM-staged, resumable) | `src/scaling_lanczos_mf.py` |
-| **Figures** | ⚠️ **6 of 17 are byte-for-byte guarded.** Eleven are not: four have no deposited generator, six ship as a PDF whose source is not deposited, and two (Figs. 10 and 17) name a generator that is not in the tree | inventory in [`docs/FIGURE_PROVENANCE.md`](docs/FIGURE_PROVENANCE.md) |
+| **Figures** | ⚠️ **8 of 17 are byte-for-byte guarded** (Figs. 2, 3, 6, 9, S2, S3, S8, and the ten tables of S5). Nine are not: four have no deposited generator (Figs. 1, S1, S4, 5), and five ship as a PDF (Figs. 4, 7, 8, S6, S7). The standalone sources of all six PDF figures (Fig. 1 included) are deposited since 2026-09-26 and recompile pixel-identically, but no script guards them, and two of their rasters were recoloured by a step that is not deposited. *(Until 2026-09-26: 6 of 17, and the generators of Figs. 6 and S5 were not in the tree.)* | inventory in [`docs/FIGURE_PROVENANCE.md`](docs/FIGURE_PROVENANCE.md) |
 | **IBM Heron hardware runs** | ⚠️ needs an IBM Quantum account, and the jobs are closed | `notebooks/` (tokens scrubbed; **no raw counts are deposited**) |
 
-> **`paper/main.pdf` is current.** Rebuilt 2026-09-19 with three `pdflatex` passes after the last
-> source edit: **59 pages, 0 errors, 0 undefined references, 0 undefined citations, 5 Overfull
-> \hbox** (worst 6.96 pt), 2 Overfull `\vbox` of 7.68 pt, 39 Underfull `\hbox`, no float too
-> large and no float stuck. Checked, not assumed: no file under `paper/` is newer than it, and
-> its extracted text is identical page for page to the arXiv package built in a clean room by
-> `src/build_arxiv_bundle.py` (same 286 195 characters, same text SHA-1 `875e939f03c72e64`). It now prints `R_eq(H₂O) = 0.958`, the value
-> the geometry in `src/n19_suite.py` gives. Run `make paper` after any further source edit.
+> **`paper/main.pdf` is the v3 manuscript** as compiled on 2026-09-25: 66 pages, one column, a 25-page
+> main text followed by the Supplemental Material. The build log shows 0 errors, 0 undefined references
+> or citations and 0 overfull `\hbox` (two overfull `\vbox`, of 5.8 pt and 12.1 pt). It differs from the
+> source package submitted to arXiv as v3 only in two later edits: the Zenodo DOI in the
+> data-availability statement and in the repository reference (which now carries the current title),
+> and the sentence noting that the L=14 checkpoint is deposited. Run `make paper` after any further
+> source edit.
 >
-> **CI has still never run.** `.github/workflows/ci.yml` is tracked and both its commands pass
-> locally, but the workflow cannot execute until the commit carrying it is **pushed**, and the four
-> repair commits on local `main` are unpushed. `KNOWN_DISCREPANCIES.md` §24.
+> **CI.** `.github/workflows/ci.yml` runs `make verify` and `make check-figures` on every push, and has
+> done so since 2026-09-19 (see the Actions tab). `make check-coherence` was added as a third job on
+> 2026-09-26 and runs from the next push on, so that the workflow runs what `make ci` runs.
 
 **Data availability:** the statement drafted for Physical Review A, and the audit of what the deposit
 does and does not support, are in [`docs/DATA_AVAILABILITY.md`](docs/DATA_AVAILABILITY.md).
@@ -231,6 +245,10 @@ If you use this work, please cite it (see [`CITATION.cff`](CITATION.cff)):
              sample-based spectral functions},
   author  = {Bonilla Vargas, Nicol\'as},
   journal = {arXiv preprint arXiv:2608.16436},
+  eprint        = {2608.16436},
+  archivePrefix = {arXiv},
+  primaryClass  = {quant-ph},
+  doi     = {10.48550/arXiv.2608.16436},
   year    = {2026}
 }
 ```

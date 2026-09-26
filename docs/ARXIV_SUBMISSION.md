@@ -1,5 +1,17 @@
 # arXiv submission — the **v3** source package
 
+**Status (2026-09-26): v3 was submitted on 2026-09-25 from `build/arxiv-v3.tar.gz` (sha256 be20bc64a52d5eb0c535c882e50c9ef71f54655693ecdc4d311b5f333f00de66), 66 pages; it is queued and announces on 2026-09-28. The steps below are the record of how it was built.**
+
+> *What was uploaded, measured 2026-09-26 from that tarball:* **76 files** — 60 `.tex`, 10 `.dat`,
+> 6 `.pdf` — 2 556 509 bytes uncompressed, 2 066 193 gzipped, built at the tree of commit `12a4324`
+> ("v3 as submitted to arXiv"). After the comment stripping the builder applies, every member is
+> identical to `paper/` at `12a4324`; `paper/` at `f83c49f` differs from it in `bibliography.tex` and
+> `sec_9.tex` only (the Zenodo DOI and the deposited-checkpoint sentence, added after submission).
+> `build/` is gitignored and the next run of the builder overwrites it, so a copy of the uploaded
+> package and of the filed Comments and abstract is kept outside the repository. The counts in §§2–3
+> below (66 files, 62 pages) are the measurements of 2026-09-19, before the main text was cut to
+> 25 pages and the Supplemental Material split out; they are kept as that record.
+
 > # ⛔ DO NOT UPLOAD `paper/arxiv-submission.tar.gz`
 >
 > That file is the **frozen arXiv v2 package**, kept deliberately as a historical record. Measured,
@@ -230,7 +242,7 @@ This is a **replacement (v3)** of an existing entry, not a new submission.
 | **Authors** | Nicolás Bonilla Vargas |
 | **Abstract** | copy the `abstract` environment from `paper/main.tex` (**it changed in v3**). **Type the ten Greek letters as Unicode characters (η, ρ, γ, Λ) and keep the exponents and subscripts (`10^-3`, `L_1`): so typed it is 1910 characters against arXiv's limit of 1920. Spelled out as `eta`, `rho`, ... it is 1940 and arXiv rejects it.** The margin depends on the convention, so do not retype it: **run `python src/abs_paste.py` and paste from `build/abstract_arxiv.txt`**, which is written UTF-8 without BOM and is the string this table describes. Measured by that script on the current sources: **1908 with the Greek in Unicode (margin 12), 1925 spelled out (over by 5)**, 308 words, one paragraph, no raw LaTeX left in it (0 backslashes, 0 `$`, 0 braces). *(Until 2026-09-21 this row pointed at `scratchpad/cierre/abs_paste.py`, which lived in a session scratchpad and no longer exists — a submission instruction that points at a deleted script is not an instruction, so the script now lives in the deposit.)* Note that `mide_resumen.py` deletes `^` and `_` before counting and therefore reads 8 characters short; `abs_paste.py` counts the string it writes, unmodified. |
 | **License** | CC BY 4.0 |
-| **Comments** | *** arXiv ENFORCES A 400-CHARACTER LIMIT ON THIS FIELD. *** The block this table used to carry was about 800 and the form rejects it outright -- discovered on 2026-09-23 with the submission already open, because this row had been written without checking the limit. The 397-character replacement is in `build/arxiv_comments.txt`, generated and counted rather than retyped; it keeps the counts, the retraction with its cause, the vacuity range and the repository URL, and drops the detail of the rank correlations, which lives in `docs/KNOWN_DISCREPANCIES.md` where that line points. Superseded block, kept for the record: paste the block below verbatim (measured 2026-09-19: 62 pages, 17 figures, 17 tables). arXiv asks that a replacement merge the old comments with the new ones, and that the reason for the replacement appear in this field. |
+| **Comments** | *** arXiv ENFORCES A 400-CHARACTER LIMIT ON THIS FIELD. *** The block this table used to carry was about 800 and the form rejects it outright -- discovered on 2026-09-23 with the submission already open, because this row had been written without checking the limit. The 397-character replacement is in `build/arxiv_comments.txt`, generated and counted rather than retyped (filed on 2026-09-25; it begins *"66 pages, 17 figures, 17 tables (25-page main text, then supplement)"*, and is quoted in full below the superseded block); it keeps the counts, the retraction with its cause, the vacuity range and the repository URL, and drops the detail of the rank correlations, which lives in `docs/KNOWN_DISCREPANCIES.md` where that line points. Superseded block, kept for the record: paste the block below verbatim (measured 2026-09-19: 62 pages, 17 figures, 17 tables). arXiv asks that a replacement merge the old comments with the new ones, and that the reason for the replacement appear in this field. |
 
 ```
 62 pages, 17 figures, 17 tables. Code, data and full reproduction repository:
@@ -245,6 +257,12 @@ stratified test. Further claims of v1-v2 are not made here and are listed, item 
 item, in docs/KNOWN_DISCREPANCIES.md of the repository above.
 ```
 
+The Comments field as filed for v3 on 2026-09-25 (397 characters, from `build/arxiv_comments.txt`):
+
+```
+66 pages, 17 figures, 17 tables (25-page main text, then supplement). v3: major revision, retitled. Theorem 1(iii) of v1-v2 does not hold - an analytic counterexample forces its constant to the trivial value - and is replaced by a proved two-sided leakage bound, vacuous at the resource-scan fractions by 1.66-8.61. Code and data: https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd
+```
+
 
 ### Steps
 
@@ -253,10 +271,12 @@ item, in docs/KNOWN_DISCREPANCIES.md of the repository above.
 2. Sign in at <https://arxiv.org>, open `arXiv:2608.16436`, choose **Replace**.
 3. Upload **`build/arxiv-v3.tar.gz`** — *not* `paper/arxiv-submission.tar.gz`.
 4. When asked for the processor, choose **LaTeX with PDFLaTeX**.
-5. Review arXiv's generated PDF: **62 pages**, and the last body page must read `X. CONCLUSION`
-   with no stray build note above it.
+5. Review arXiv's generated PDF: **66 pages** for the package submitted on 2026-09-25 (62 in the
+   build of 2026-09-19 this list was written for), and the last main-text page must read
+   `X. CONCLUSION` with no stray build note above it.
 6. Update the abstract and the Comments field; keep CC BY 4.0.
-7. After announcement, update the badge and `CITATION.cff` with the v3 date.
+7. After announcement, update the badge and `CITATION.cff` with the v3 date. — **pending, 2026-09-28**
+   (v3 is queued; until the announcement arxiv.org/abs/2608.16436 still shows v2 under the old title).
 
 ---
 

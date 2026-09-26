@@ -1,7 +1,7 @@
 # Data Availability Statement — for Physical Review A
 
 *Third pass 2026-09-19, the pass that finally **pasted** the statement into the manuscript*
-(`paper/sec_9.tex`, Sec. IX F, `\label{sec:scope:data}`) — v3 had shipped with no DAS at all while the
+(`paper/sec_9.tex`, Sec. IX F then, Sec. IX D in v3 as printed, `\label{sec:scope:data}`) — v3 had shipped with no DAS at all while the
 header of `sec_9.tex` claimed to have taken the paragraph over from `hardware.tex`. This pass also
 re-measured every sentence of Part 1 against the deposit of 2026-09-19 and **rewrote five of them**;
 what changed and why is in Part 3, items 9-13.*
@@ -62,6 +62,14 @@ published and this file is the one that is wrong.**
 > parts of the pipeline require `pyscf` or an IBM Quantum account — are enumerated in
 > `docs/KNOWN_DISCREPANCIES.md`.
 
+*2026-09-26: two clauses of the known-gaps sentence above — no standalone LaTeX source for the six PDF
+figures, and no deposited builder for the Fig. S5 tables — were true of the deposit when v3 was
+submitted on 2026-09-25, and have been **conservative** since the recovery of 2026-09-26: the six
+sources are in `paper/figs/src/` and the builder, with its inputs, in `src/recovered/` and
+`data/thm1iii_violation/` (`KNOWN_DISCREPANCIES.md` §29). This file does not edit the manuscript's text;
+bringing the sentence up to date is a manuscript edit, left to the next version. Nothing the sentence
+says the deposit contains has been removed.*
+
 **Acknowledgments**, added in the same pass at the end of `paper/sec_10.tex` (end of the main text):
 
 > **Acknowledgments.** We acknowledge the use of IBM Quantum services for this work; the two device runs
@@ -91,6 +99,8 @@ that explains whether and how authors are sharing their data"*,
 3. **The deposit must be committed.** Everything described above is true of the working tree. Until it is
    committed and pushed, `git clone` delivers an earlier tree in which several of these sentences are
    false. **Signing the DAS while the repairs are uncommitted publishes a false statement.**
+   *(Done: the repairs were pushed on 2026-09-19, CI has run on every push since, and a fresh clone of
+   GitHub main passes `src/verify.py` — re-measured 2026-09-26, `KNOWN_DISCREPANCIES.md` §24.)*
 
 ---
 
@@ -125,7 +135,10 @@ The v3 manuscript typesets **seventeen** figures; `main.aux` is the authority
   deposited in `paper/figs/`, so the Part 1 sentence is true of this figure. What is *not* deposited is
   `build_n3.py`, which wrote them, and two of its four inputs. That is a *regenerability* gap, not a
   deposit gap, and Part 1 puts it in the known-gaps sentence, where it belongs; the guardian registers
-  it as an open defect and prints it on every run. *(The counts in circulation disagree and all three
+  it as an open defect and prints it on every run. *(2026-09-26: `build_n3.py` and its inputs are now
+  deposited — `src/recovered/`, `data/thm1iii_violation/` — and regenerate all ten tables
+  byte-for-byte; the guardian's coverage gap stays, because it names a check that is still not
+  written.)* *(The counts in circulation disagree and all three
   are defensible readings of different questions: `verify.py` says "ten n3_*.dat tables" — every file;
   `FIGURE_PROVENANCE.md` says "eight" — what the fragment reads; a careless grep says six. Part 1
   therefore carries no count at all.)*
@@ -276,14 +289,14 @@ That string has been corrected in the deposited file.
 
 | not claimed | why |
 |---|---|
-| that every figure can be **recompiled** from the deposit | **six of the seventeen** ship as PDF with no `.tex` source inside the repository — `fig_akw_native.pdf`, `fig_circuit.pdf`, `fig_hero.pdf`, `fig_noise_score.pdf`, `fig_spinqw.pdf`, `fig_sqw.pdf`; the list was taken from the `\includegraphics` lines of the current build, not from a document. The other eleven are native pgfplots fragments. (`KNOWN_DISCREPANCIES.md` §5 still says "ten of the twenty" and still cites `fig_molecular_gallery.pdf` and its 19 PyMOL PNGs — that figure is **withdrawn in v3**. Part 4 item 2.) |
-| that Fig. 17 can be **regenerated** | its ten `n3_*.dat` tables are deposited, but `build_n3.py` is not, and two of its four inputs are not in `data/`. The guardian registers this as an open defect and refuses to "check" the figure by re-reading what it prints. |
-| that **Table IV** (`tab:moments`, Sec. IV) can be **regenerated** | **yes, since 2026-09-25.** The eight intermediate files the table was first built from were never deposited; `src/moments_table.py` rebuilds the L = 6 open-chain sector from scratch and writes `data/moments_table.json` (the three rows, the negative control of 300 draws at seed 20260918, and the two-level series of App. B), and `src/verify.py` asserts every printed entry against it. |
+| that every figure can be **recompiled** from the deposit | **six of the seventeen** ship as PDF with no `.tex` source inside the repository — `fig_akw_native.pdf`, `fig_circuit.pdf`, `fig_hero.pdf`, `fig_noise_score.pdf`, `fig_spinqw.pdf`, `fig_sqw.pdf`; the list was taken from the `\includegraphics` lines of the current build, not from a document. The other eleven are native pgfplots fragments. *(2026-09-26: the six standalone sources are now deposited in `paper/figs/src/` and each recompiles to a pixel-identical rendering of the committed PDF; two of the rasters they embed were recoloured by a step that is not deposited, and no deposited script writes the third — so "recompiled" is now true and "regenerated from data" is still not claimed.)* (`KNOWN_DISCREPANCIES.md` §5 still says "ten of the twenty" and still cites `fig_molecular_gallery.pdf` and its 19 PyMOL PNGs — that figure is **withdrawn in v3**. Part 4 item 2.) |
+| that Fig. 17 (Fig. S5 as printed) can be **regenerated** | its ten `n3_*.dat` tables are deposited, but `build_n3.py` is not, and two of its four inputs are not in `data/`. The guardian registers this as an open defect and refuses to "check" the figure by re-reading what it prints. *(2026-09-26: `src/recovered/build_n3.py` and all of its inputs are now deposited and regenerate the ten tables byte-for-byte, guarded by `check_figures.py`; the claim is still not made in Part 1 because the manuscript's sentence predates it, and `verify.py` still has no check of its own on the ratios.)* |
+| that **Table II** (`tab:moments`, Sec. IV; Table IV of an earlier build) can be **regenerated** | **yes, since 2026-09-25.** The eight intermediate files the table was first built from were never deposited; `src/moments_table.py` rebuilds the L = 6 open-chain sector from scratch and writes `data/moments_table.json` (the three rows, the negative control of 300 draws at seed 20260918, and the two-level series of App. B), and `src/verify.py` asserts every printed entry against it. |
 | that `make reproduce` runs | it executes a notebook that requires `pyscf`, which is not installed in the verified environment. It was **not** run in this pass and no claim is made for it. |
 | that the GFlowNet comparison is reproducible | **yes, since 2026-09-25.** `src/gflow_dequant.py` — the algorithm of `calculations/validate_realnoise.py` of the companion review (arXiv:2608.05314), unchanged, with every seed written to `data/gflow_runs/` and merged into `data/gflow.json` (`--merge`). Needs `pyscf`, `torch` and `qiskit-ibm-runtime` (FakeTorino readout rates): the Docker image `sqd-nb` plus `pip install qiskit-ibm-runtime`; twenty single-threaded runs (ten seeds at 500 and at 1000 shots, symmetry-pinned gauge, the companion's ladder configuration); run a few at a time, since twenty at once exhausted the memory of a 16-core laptop. The five v2 summary rows were the only record of the original run (no per-seed values were stored anywhere); the paper now prints the regenerated per-seed statistics, and `src/verify.py` checks them against `data/gflow.json`. |
 | that the hardware measurement can be re-obtained | see 2.5. |
 | that the classical post-processing of the raw counts runs offline | see 2.5. It does not; the counts are not deposited. |
-| that the guardian runs in continuous integration | `.github/workflows/ci.yml` exists and is valid, and `.gitignore` no longer excludes it, but **it has never executed**: it cannot until the commit containing it is pushed. The sentence *"The guardian is executed on every commit by continuous integration"* may be added to Part 1 **only after** a run has actually completed. |
+| that the guardian runs in continuous integration | *(2026-09-26: it does — the workflow has run, green, on every push since 2026-09-19; whether to add the sentence to Part 1 is a manuscript edit for the next version.)* When written: `.github/workflows/ci.yml` exists and is valid, and `.gitignore` no longer excludes it, but **it has never executed**: it cannot until the commit containing it is pushed. The sentence *"The guardian is executed on every commit by continuous integration"* may be added to Part 1 **only after** a run has actually completed. |
 | that `paper/arxiv-submission.tar.gz` is a source of data | it is the frozen v2 bundle and **still contains two fabricated data rows** and the superseded `19184`/`824504`; see the banner at the top of `KNOWN_DISCREPANCIES.md`. Part 1 no longer points at the arXiv source package at all — see §3 item 4. It is kept as a historical record and **must never be uploaded as v3**. |
 
 ### 2.7 The hardware runs, in one table

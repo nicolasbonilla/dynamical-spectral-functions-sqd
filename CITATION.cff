@@ -51,6 +51,10 @@ preferred-citation:
       orcid: "https://orcid.org/0009-0006-6155-4391"
   year: 2026
   journal: "arXiv preprint"
+  url: "https://arxiv.org/abs/2608.16436"
+  identifiers:
+    - type: doi
+      value: "10.48550/arXiv.2608.16436"
   notes: >-
     arXiv:2608.16436. Versions 1 and 2 were titled "Dynamical spectral functions from bitstring-sampled
     quantum subspaces: entanglement, not one-body magic, tracks the sampling cost"; in version 3 the
