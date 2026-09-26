@@ -18,10 +18,12 @@ help:
 	@echo "make figures       - regenerate the native pgfplots fragments IN PLACE"
 	@echo "make data          - regenerate the deposited tables that have a generator (~4 min)"
 	@echo "make ci            - what .github/workflows/ci.yml runs: verify + check-figures"
+	@echo "                     + check-coherence"
 	@echo "make paper         - compile paper/main.tex -> paper/main.pdf"
 	@echo "make all           - figures + paper"
-	@echo "make reproduce     - execute notebooks/00_Reproduce_Everything.ipynb (needs pyscf;"
-	@echo "                     NOT verified in the 2026-09-18 pass -- see docs/KNOWN_DISCREPANCIES.md)"
+	@echo "make reproduce     - execute notebooks/00_Reproduce_Everything.ipynb, the v1-v2"
+	@echo "                     narrated pipeline kept as a record (needs pyscf; NOT the v3"
+	@echo "                     figure set; NOT verified -- see docs/KNOWN_DISCREPANCIES.md)"
 	@echo "make clean         - remove LaTeX aux files (keeps main.pdf)"
 	@echo ""
 	@echo "Where output goes: every compute script writes into THIS clone's data/ by default"
@@ -80,7 +82,9 @@ figures:
 	$(PYTHON) src/make_table.py
 	@echo "OK: data-driven fragments regenerated. Committed paper/figs/ remains authoritative."
 
-# ---- reproduce EVERYTHING in one coherent notebook (narrated end-to-end pipeline) ----
+# ---- the v1-v2 narrated pipeline, kept as a record (it is NOT the v3 figure set) ----
+# The notebook was written for arXiv:2608.16436v1-v2 and reproduces figures v3 withdrew; the
+# reproduction path of the v3 manuscript is src/verify.py and docs/REPRODUCE.md.
 # HONEST STATUS: this target was NOT verified in the 2026-09-18 pass.  It executes a notebook
 # that imports pyscf, which is not installed in the environment the other targets were checked
 # in.  Every other target in this file was run to completion and its result recorded in

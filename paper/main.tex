@@ -1,5 +1,5 @@
 % =====================================================================================
-%  main.tex  --  Physical Review A submission, REVTeX 4.2, two columns.
+%  main.tex  --  REVTeX 4.2 (aps, pra), one column for submission.
 %
 %  Generated from revtex/src/ by revtex/convert.py; this preamble is the only
 %  hand-written file in ms/.  Everything else in ms/ is script output, so the
@@ -29,8 +29,11 @@
                     % The journal sets the two-column version at production.
                     % Three builds of this same source, measured:
                     %   twocolumn  59 pp, 5 overfull   -- the journal look
-                    %   onecolumn  62 pp, 2 overfull   -- this one
+                    %              (measured 2026-09-19, before the SM restructuring)
+                    %   onecolumn  66 pp, 0 overfull (2026-09-25, 25-page main text + SM) -- this one
+                    %              (0 overfull \hbox; two overfull \vbox)
                     %   preprint  118 pp, 6 overfull   -- 12pt double-spaced, doubles it
+                    %              (measured 2026-09-19, before the SM restructuring)
                     % One column costs three pages and removes three overfull boxes,
                     % because the 17 \widetext blocks -- which exist only to let wide
                     % mathematics escape a 246 pt column, and which leave half-column
@@ -41,11 +44,10 @@
                     % else in this preamble needs to change, and the starred floats
                     % and \widetext blocks are inert rather than wrong in one column.
   amsmath,amssymb,  % REVTeX loads them itself, in the order it wants
-  groupedaddress,   % NOT superscriptaddress.  With one author and one affiliation the
-                    % superscript form prints "Nicolas Bonilla Vargas^{1,*}" over
-                    % "^1 Daita AI"; grouped prints the affiliation plainly under the
-                    % name, which is APS house style for a single-affiliation paper.
-                    % Both forms were rendered and compared before choosing.
+  groupedaddress,   % NOT superscriptaddress.  One author, three affiliations: grouped
+                    % stacks the three plainly under the name (AUTHOR BLOCK note below).
+                    % Both forms were rendered and compared before choosing -- on
+                    % 2026-09-19, when the block still had one affiliation.
   nofootinbib,      % keep \footnote out of the reference list (3 footnotes in the text)
   longbibliography, % INERT here: it only affects BibTeX output through apsrev4-2.bst,
                     % and this manuscript ships a hand-written thebibliography.  Kept
@@ -147,13 +149,15 @@
 % instead.  Nothing else was loosened: \dbltopfraction stays at 0.92, so every page
 % that carries a top float still keeps at least 53.8 pt -- about five lines -- of
 % text, exactly as before.  Measured on that tree: 13 text-free pages -> 2, 59 -> 57.
+% (Measured 2026-09-19, before the SM restructuring; the build of 2026-09-25 is 66 pp.)
 % RE-MEASURED 2026-09-19, after Sec. 5 grew a fifth size and a fourth table: the
 % loosened fractions were no longer enough by themselves -- tab:shotfrontier and
 % tab:certified still each qualified for a float-only page, and one of those pages
 % carried a single small table over 60 %% blank.  Both are now [t] rather than [tp]
 % (the only two floats of the 34 that are); nothing is stuck, nothing is too large,
 % and the manuscript is 59 pages with no half-empty page and three text-free pages,
-% all three of them full-page figures.
+% all three of them full-page figures.  (Measured 2026-09-19, before the SM
+% restructuring.)
 \renewcommand{\dblfloatpagefraction}{0.99}
 
 % ---- theorem environments -------------------------------------------------------

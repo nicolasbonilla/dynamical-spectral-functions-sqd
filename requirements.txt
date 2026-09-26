@@ -22,3 +22,6 @@ scikit-learn>=1.3
 # qiskit-ibm-runtime>=0.20
 # qiskit-addon-sqd>=0.6
 # ffsim>=0.0.40
+#
+# OPTIONAL -- only for src/gflow_dequant.py, the dequantization control (it also needs pyscf):
+# torch>=2.0, qiskit-ibm-runtime>=0.20  (src/gflow_dequant.py, dequantization control)

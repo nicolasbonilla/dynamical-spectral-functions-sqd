@@ -60,8 +60,8 @@ def main():
     print("  present only in the bundle (deleted from the tree since v2) : %d" % len(only))
     for f in only:
         print("      %s" % f)
-    print("\nThe bundle is the frozen arXiv v2 source.  It must be rebuilt before any v3")
-    print("submission; until then it would re-upload the superseded files listed above.")
+    print("\nThis is the frozen v2 source; v3 is built by src/build_arxiv_bundle.py.")
+    print("Never re-upload this bundle: it would re-post the superseded files listed above.")
     return 0
 
 

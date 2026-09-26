@@ -5,12 +5,16 @@
 # RUN — not once, on any commit. The exclusion is gone; what follows is what CI
 # actually does, and nothing else is claimed for it.
 #
-# Two jobs, both of them just `make` targets so that a reader can run the identical
-# check locally:
-#   guardian  -> make verify        (src/verify.py: recompute the physics, then check
-#                                    every deposited artefact against it)
-#   figures   -> make check-figures (regenerate every generated fragment into a scratch
-#                                    tree and diff it against the committed one)
+# Three jobs, each of them just a `make` target so that a reader can run the identical
+# check locally -- together they are `make ci`:
+#   guardian  -> make verify          (src/verify.py: recompute the physics, then check
+#                                      every deposited artefact against it)
+#   figures   -> make check-figures   (regenerate every generated fragment into a scratch
+#                                      tree and diff it against the committed one)
+#   coherence -> make check-coherence (does the manuscript still agree with itself?
+#                                      added 2026-09-26: the Makefile said `make ci` is
+#                                      what this workflow runs, and until then it ran
+#                                      only the first two)
 name: CI
 
 on:
@@ -55,3 +59,18 @@ jobs:
       # disagree — this is the job that notices.
       - name: make check-figures
         run: make check-figures
+
+  coherence:
+    name: Manuscript agrees with itself (make check-coherence)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # Standard library only; numpy and scipy are installed so that the job runs in the
+      # same environment as the other two.
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && pip install numpy scipy
+      - name: make check-coherence
+        run: make check-coherence

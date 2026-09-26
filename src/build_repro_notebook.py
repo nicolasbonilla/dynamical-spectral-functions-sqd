@@ -7,6 +7,16 @@ def code(*lines):return {"cell_type": "code", "metadata": {}, "execution_count":
 
 cells = []
 
+# 2026-09-26: the first cell says what this notebook is today -- a record of the v1-v2
+# pipeline, not the reproduction path of the v3 manuscript.  The same cell was prepended to
+# the committed notebook, so a regeneration keeps it.
+cells.append({"cell_type": "markdown", "metadata": {}, "source": [
+"> **Record of the v1–v2 pipeline.** This notebook was written for arXiv:2608.16436v1–v2 (then titled\n",
+"> *Dynamical spectral functions from bitstring-sampled quantum subspaces: entanglement, not one-body\n",
+"> magic, tracks the sampling cost*). It reproduces the v1–v2 figure set, several of which v3 withdrew,\n",
+"> and it needs `pyscf`. It is not the reproduction path of the current manuscript: use\n",
+"> `python src/verify.py` and `docs/REPRODUCE.md`."]})
+
 cells.append(md(
 "# Reproduce **everything** — one coherent pipeline",
 "",
