@@ -386,7 +386,7 @@ in `paper/figs/`, because `src/verify.py` names it. That asymmetry is deliberate
 |---|---|
 | `00_Reproduce_Everything.ipynb` | **The v1–v2 narrated pipeline, kept as a record** — written for arXiv:2608.16436v1–v2, it reproduces the v1–v2 figure set, several of which v3 withdrew, and it is **not** the reproduction path of the v3 manuscript (use `src/verify.py` and `REPRODUCE.md`); its first cell says so since 2026-09-26. Assembled by `src/build_repro_notebook.py`. **Needs `pyscf`; not verified in this pass.** |
 | `HW_LUCJ_N2_Heron_READY.ipynb` | N₂ energy on `ibm_marrakesh`: LUCJ circuit, sampling, self-consistent recovery, 8-seed error-bar cell. Credentials scrubbed. **Its saved cell outputs are an older run** (`d9qe731dsedc73af67d0`) and are not the paper's numbers. A first cell added on 2026-09-26 says that the manuscript reports this run as *executed on* the device, not as a demonstration, and that the record cannot say whether noise helps. |
-| `Spectral_Heron.ipynb` | `A(ω)` on `ibm_fez`: the L=6 Hubbard spectral run (full-sector coverage). Credentials scrubbed. |
+| `Spectral_Heron.ipynb` | `A(ω)` on `ibm_fez`: the L=6 Hubbard spectral run (full-sector coverage). Kept as it ran: its post-processing reads the bitstrings in reversed order and applies post-selection only, with no configuration recovery, and the `# TREX` of its sampler cell is measurement twirling, not readout-error mitigation (`KNOWN_DISCREPANCIES.md` §30; a note in its first cell says so since 2026-09-26). Credentials scrubbed. |
 
 Both hardware notebooks have the API **token and instance CRN removed** (placeholders), and neither
 ships raw counts: they fetch them from the IBM Quantum service by job id.

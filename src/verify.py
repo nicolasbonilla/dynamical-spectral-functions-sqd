@@ -707,7 +707,7 @@ CLAIMS_RETRACTED = {
     "abstract.runs_on_heron": dict(
         where="paper/main.tex",
         text=r"and runs on the",
-        why="data/heron_spectral.json carries hw_S = 300 of nsector = 300: the recovered "
+        why="data/heron_spectral.json carries hw_S = 300 of nsector = 300: the retained "
             "subspace is the WHOLE sector, so A_hw == A_exact by coverage, not by "
             "fidelity.  The caption of the hardware figure already says 'exact by "
             "coverage'; the abstract and the conclusion do not.  'executed on' is the "
@@ -3291,7 +3291,7 @@ def main(argv=None):
               (rel < 1e-9) == (her["hw_S"] == her["nsector"]),
               "hw_S = %d of nsector = %d -- exact BY COVERAGE, not by fidelity"
               % (her["hw_S"], her["nsector"]),
-              "the coverage identity broke: hw_relL1=%.3g with hw_S=%d of %d. If the recovered "
+              "the coverage identity broke: hw_relL1=%.3g with hw_S=%d of %d. If the retained "
               "subspace is no longer the full sector, a zero error is a fidelity claim and must "
               "be defended as one" % (rel, her["hw_S"], her["nsector"]))
     bo = read_json(root, "data/hw_bitorder_check.json")
@@ -3302,7 +3302,7 @@ def main(argv=None):
               "every determinant retained from the device is a device error"
               % (bo["total_shots"], bo["kept_correct_reading"], bo["support_correct_reading"],
                  bo["sector_dimension"]),
-              "the deposited bit-order check no longer says what Sec. IX A and Sec. S9 print: %r" % bo)
+              "the deposited bit-order check no longer says what Sec. IX A and Sec. S8 print: %r" % bo)
 
     # -----------------------------------------------------------------------
     section9(rep, root, dict(obc=OBC, pbc=PBC, mF=mF, mS=mS, mX=mX, hF=hF, hS=hS, hX=hX,

@@ -8,6 +8,16 @@ principle that the spectral pipeline runs end-to-end on a real device -- NOT a f
 NOT a beyond-classical claim; at this system size full-sector coverage makes rel-L1=0 automatic.
 We now plot the REAL saved hardware array A_hw (from the committed json, sourced from Google Drive)
 as discrete markers on the exact target -- they coincide because of full-sector coverage."""
+# --- CORRECTION (2026-09-26; docs/KNOWN_DISCREPANCIES.md s.30) ---------------
+# The docstring above and the text box this script writes into fig_heron_native.tex (a SUPERSEDED
+# version of the hardware figure; the manuscript's is paper/carried/fig_heron.tex) are wrong in
+# three phrases, left unchanged here so that the output stays what it was:
+#   "recovered configs" -- no configuration recovery ran; the notebook post-selected on particle
+#     number and S_z, reading each bitstring in reversed bit order, so every one of the 300 retained
+#     determinants came from a device error (src/hw_bitorder_check.py);
+#   "TREX" -- twirling.enable_measure is measurement twirling; SamplerV2 returns twirled raw counts
+#     and the run had no readout-error mitigation;
+#   "proof of principle" -- the panel is an execution record.
 # --- DEPOSIT PATHS (repaired 2026-09-18, second pass) -----------------------
 # This figure generator addresses every file it reads and writes by a path relative
 # to the repository root ('data/...', 'paper/figs/...'), so it only ever worked when

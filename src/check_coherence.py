@@ -191,7 +191,7 @@ def build_checks(txt):
 
         ("the hardware shot budget is one number in all four places",
          # 2026-09-25 (PRA cut): the short Sec. IX A states it once more.
-         # 2026-09-25: floor 4 -> 7. 2026-09-26: Sec. IX A and Sec. S9 now also print the budget when disclosing the reversed bit order of the L=6 run
+         # 2026-09-25: floor 4 -> 7. 2026-09-26: Sec. IX A and Sec. S8 now also print the budget when disclosing the reversed bit order of the L=6 run
          (r"3\.5\\times10\^\{5\}", 7),
          [r"pooled over the \$t\{=\}0\$ reference and \$K\{=\}7\$ evolution circuits",
           r"\$5\\times10\^\{4\}\$ computational-basis shots pooled over",
