@@ -728,6 +728,23 @@ CLAIMS_RETRACTED = {
             "paper/figs/sqw_edges.dat that no computation produced (q=0 and q=2, with the "
             "lower edge hand-set equal to Delta).  Those rows are gone; the sentence is "
             "not."),
+    "hw.configuration_recovery": dict(
+        where="body",
+        text=r"configuration recovery returned",
+        why="the L=6 ibm_fez run (job d9s16avpemts73ct6g8g) was plain post-selection on particle "
+            "number and S_z, in reversed bit order (notebooks/Spectral_Heron.ipynb cell 15); no "
+            "configuration recovery was applied, and every retained shot is a device error "
+            "(data/hw_bitorder_check.json)."),
+    "hw.trex": dict(
+        where="body",
+        text=r"TREX",
+        why="SamplerV2 ran with measurement twirling (twirling.enable_measure); it returns twirled raw "
+            "counts and applies no readout-error extinction, so the run had no readout mitigation."),
+    "hw.proof_of_principle": dict(
+        where="paper/carried/fig_heron.tex",
+        text=r"a proof of principle",
+        why="the retained shots of panel (a) are all device errors (reversed bit order); the panel "
+            "is an execution record, not a proof of principle of the method."),
     "fig_scaling2.beyond_classical": dict(
         where="paper/figs/fig_scaling2_native.tex",
         text=r"{beyond-classical}",
@@ -1997,7 +2014,8 @@ def section9(rep, root, ctx):
 # ===========================================================================
 
 def section10(rep, root):
-    rep.head("(10) RETRACTED CLAIMS -- seven sentences that must stay out of the manuscript")
+    rep.head("(10) RETRACTED CLAIMS -- %d sentences that must stay out of the manuscript"
+             % len(CLAIMS_RETRACTED))
     for key in sorted(CLAIMS_RETRACTED):
         claim_check(rep, root, key)
 
@@ -3276,6 +3294,15 @@ def main(argv=None):
               "the coverage identity broke: hw_relL1=%.3g with hw_S=%d of %d. If the recovered "
               "subspace is no longer the full sector, a zero error is a fidelity claim and must "
               "be defended as one" % (rel, her["hw_S"], her["nsector"]))
+    bo = read_json(root, "data/hw_bitorder_check.json")
+    rep.truth("hw_bitorder_check.json: the notebook's reversed bit order retains none of the intended shots",
+              bo["kept_notebook_reading"] == 0 and bo["kept_correct_reading"] == bo["total_shots"] == 350000
+              and bo["support_correct_reading"] == bo["sector_dimension"] == her["nsector"],
+              "0 of %d noiseless shots kept under int(bs[::-1],2), all %d (support %d/%d) under int(bs,2): "
+              "every determinant retained from the device is a device error"
+              % (bo["total_shots"], bo["kept_correct_reading"], bo["support_correct_reading"],
+                 bo["sector_dimension"]),
+              "the deposited bit-order check no longer says what Sec. IX A and Sec. S9 print: %r" % bo)
 
     # -----------------------------------------------------------------------
     section9(rep, root, dict(obc=OBC, pbc=PBC, mF=mF, mS=mS, mX=mX, hF=hF, hS=hS, hX=hX,

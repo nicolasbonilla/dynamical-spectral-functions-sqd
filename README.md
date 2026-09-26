@@ -92,8 +92,11 @@ all this is [`docs/DATA_AVAILABILITY.md`](docs/DATA_AVAILABILITY.md).
    asserted; and two real **IBM Heron** runs.
 
 **Hardware, stated at its size.** Two runs were executed on IBM Heron processors. On `ibm_fez` (L=6
-Hubbard, 12 qubits), recovery returned all 300 determinants of the sector, so the reconstructed A(ω)
-equals the exact one *by coverage*: an identity, not a fidelity measurement. On `ibm_marrakesh`
+Hubbard, 12 qubits), post-selection retained all 300 determinants of the sector, so the reconstructed
+A(ω) equals the exact one *by coverage*: an identity, not a fidelity measurement. The notebook read the
+bitstrings in reversed qubit order, so every retained shot is a device error: a noiseless simulation of
+the same circuits keeps 0 of 350 000 shots under that reading and all of them under the correct one
+(`src/hw_bitorder_check.py`; `docs/KNOWN_DISCREPANCIES.md` §30). On `ibm_marrakesh`
 (stretched N₂, CAS(10e,12o), 24 qubits), recovery over 8 seeds reaches 0.59 ± 0.14 mHa of the exact
 active-space energy, below the 29.5 mHa of a noiseless simulation of the same circuit. The recovered
 subspace sizes on which that comparison turns were not stored, so the record cannot say whether device
@@ -105,7 +108,7 @@ noise helps. Neither run says anything about accuracy at incomplete coverage.
 
 ```
 .
-├── src/                       # 62 computation & figure scripts, plus 28 in src/frontier/ (the C3 sweep); run from repo root as `python src/X.py`
+├── src/                       # 63 computation & figure scripts, plus 28 in src/frontier/ (the C3 sweep); run from repo root as `python src/X.py`
 │   ├── verify.py              #   the adversarial guardian: recomputes the physics, then checks the deposit
 │   ├── check_figures.py       #   do the committed generators still produce the committed fragments?
 │   ├── check_provenance.py    #   does the documentation still describe the manuscript? (derives it from main.tex)
@@ -195,7 +198,7 @@ and see [`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md) §7.
 
 | Layer | Reproducible here? | How |
 |---|---|---|
-| **The guardian** | ✅ **PASS** — 868 checks, 0 failures, 9 884 numeric assertions, 5 xfail, 0 xpass, 2 skips *(re-measured 2026-09-26 on a fresh clone: 868 pass, 0 fail, 9 884 assertions, 5 xfail, 2 skips, ~30 s)* | `python src/verify.py` (or `make verify`) |
+| **The guardian** | ✅ **PASS** — 872 checks, 0 failures, 9 889 numeric assertions, 5 xfail, 0 xpass, 2 skips *(re-measured 2026-09-26 after the hardware bit-order check was added: 872 pass, 0 fail, 9 889 assertions, 5 xfail, 2 skips, ~30 s)* | `python src/verify.py` (or `make verify`) |
 | **The documentation** | ✅ **PASS** — derived from `paper/main.tex`: 60 source files, 34 floats, 17 figures, 17 tables *(2026-09-26)* | `python src/check_provenance.py` |
 | **Manuscript coherence** | ✅ **PASS** — 10 cross-section claims, 20 synthetic controls, all 20 fire *(2026-09-19)*. New that day, because the other three guardians were green while seven sections contradicted each other: they compare a printed number against a deposited file, not a claim against a claim | `python src/check_coherence.py` |
 | **The figure generators** | ✅ **PASS on 19 artefacts from 8 generators** *(2026-09-26)* — the six of 2026-09-19 and the two recovered that day into `src/recovered/`; one provenance-timestamp comment line of the Fig. 6 fragment is normalised, and the run says so. Measured with four negative controls in `KNOWN_DISCREPANCIES.md` §29. (Until 2026-09-19 one of the first eight artefacts was compared with a copy of itself; §25.) | `python src/check_figures.py` |

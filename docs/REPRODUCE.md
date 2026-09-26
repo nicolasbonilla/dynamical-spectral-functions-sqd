@@ -156,7 +156,7 @@ the 2026-09-18 pass and say so.
 
 | command | result |
 |---|---|
-| `python src/verify.py` | **PASS** — 868 checks, 0 failures, 9 884 numeric assertions, 5 registered xfail, 0 xpass, 2 skips *(2026-09-19, after section (10b) and the `ladder_L4` open defect arrived with the C3 frontier deposit; the 807 / 7 454 / 4 reading of earlier the same day is superseded)* |
+| `python src/verify.py` | **PASS** — 872 checks, 0 failures, 9 889 numeric assertions, 5 registered xfail, 0 xpass, 2 skips *(2026-09-26, after the hardware bit-order check; 868 / 9 884 on 2026-09-19, after section (10b) and the `ladder_L4` open defect arrived with the C3 frontier deposit; the 807 / 7 454 / 4 reading of earlier the same day is superseded)* |
 | `python src/check_provenance.py` | **PASS** — the documentation describes the manuscript in the tree *(2026-09-19)* |
 | `python src/check_tarball.py` | runs; reports 9 byte-identical / 17 differ / 21 bundle-only against the frozen v2 bundle *(2026-09-19)* |
 | `python src/check_figures.py` | **PASS** on 8 artefacts, **all 8 genuinely guarded** since the §25 repair — verified by seeding each artefact with a sentinel line and checking it is gone after the run, and by snapshotting sha256 + mtime of all 231 files to confirm the run writes nothing into the repository *(2026-09-19)*. **PASS on 19 artefacts from 8 generators** since the recovery of 2026-09-26, with four negative controls and a 381-file snapshot that shows it still writes nothing (§29) |

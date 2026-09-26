@@ -1,0 +1,14 @@
+{
+ "what": "noiseless statevector sampling of the seven L=6 circuits of the ibm_fez run; shots kept by the (N+1=7, Sz=+1) post-selection under the correct and the notebook (reversed) bit readings",
+ "L": 6,
+ "U": 4.0,
+ "circuits": 7,
+ "shots_per_circuit": 50000,
+ "total_shots": 350000,
+ "kept_correct_reading": 350000,
+ "support_correct_reading": 300,
+ "kept_notebook_reading": 0,
+ "support_notebook_reading": 0,
+ "sector_dimension": 300,
+ "conclusion": "under the notebook reading no shot of the intended circuits is retained, so every determinant retained from the device came from a device error"
+}

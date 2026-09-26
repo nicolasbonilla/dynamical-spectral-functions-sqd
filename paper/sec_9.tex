@@ -159,14 +159,19 @@
 
 Both device runs are preserved in full and are the entirety of the quantum hardware used in this work.
 The first, on the IBM~Heron processor \texttt{ibm\_fez}, sampled the $L=6$ Hubbard chain at $U/t=4$
-with $12$ qubits and $3.5\times10^{5}$ shots, and configuration recovery returned all $300$ determinants
-of the $(N{+}1)$ sector, so the reconstructed $A_{\rm hw}$ equals the exact $A$ \emph{by coverage}:
+with $12$ qubits and $3.5\times10^{5}$ shots, and post-selection on particle number and $S_z$ retained all
+$300$ determinants of the $(N{+}1)$ sector, so the reconstructed $A_{\rm hw}$ equals the exact $A$ \emph{by coverage}:
 Rayleigh--Ritz on the whole sector is its diagonalization, and the vanishing error is an identity rather
 than a measurement of device fidelity (Fig.~\ref{fig:heron}(a)). The circuits prepared a
 computational-basis $(N{+}1)$ determinant rather than $\hat c^{\dagger}_p\lvert\Psi_0\rangle$ and applied
 $R_{xx}R_{yy}$ hopping without Jordan--Wigner strings, so they are not the primitive of
-Fig.~\ref{fig:circ}; the run establishes that the pipeline executes end to end on a processor, and
-nothing about accuracy at incomplete coverage. The second, stretched $\mathrm{N_2}$ at $24$ qubits on
+Fig.~\ref{fig:circ}. The post-selection, moreover, read each bitstring in reversed qubit order, which
+reflects the chain and exchanges the two spin species: under that reading none of the $3.5\times10^{5}$
+shots of a noiseless simulation of the same seven circuits is retained, against all of them under the
+correct reading, so every one of the $300$ retained determinants arose from a device error
+(\texttt{src/hw\_bitorder\_check.py}). The run therefore establishes that the pipeline executes end to
+end on a processor, not that the device sampled the intended distribution, and nothing about accuracy
+at incomplete coverage. The second, stretched $\mathrm{N_2}$ at $24$ qubits on
 \texttt{ibm\_marrakesh}, reaches $0.59\pm0.14$~mHa of the exact active-space energy after recovery,
 below the $29.5$~mHa of the noiseless simulation of the same circuit (Fig.~\ref{fig:heron}(b)). The
 record does not store the recovered subspace sizes on which that comparison turns, so it cannot say
@@ -337,7 +342,7 @@ the resource statistics---are additionally \emph{regenerable}: the computation s
 them are deposited in \texttt{src/}, and \texttt{docs/REPRODUCE.md} gives the reproduction commands
 together with a measured table of what a clean clone does and does not reach. An automated guardian
 (\texttt{python src/verify.py}) recomputes the underlying physics by exact diagonalization and checks
-the deposited artefacts against it---$868$ checks over $9\,884$ numeric assertions, exiting non-zero on
+the deposited artefacts against it---$872$ checks over $9\,889$ numeric assertions, exiting non-zero on
 any discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in
 the tables and in the abstract; it is not a proof that every sentence of this manuscript is verified,
 and five items are printed by name on every run: four known open defects, and one declared gap in its own coverage, the source of Fig.~\ref{fig:thm1iii-violation}.

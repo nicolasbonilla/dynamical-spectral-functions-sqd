@@ -12,12 +12,20 @@ work. The first was executed on the IBM~Heron processor \texttt{ibm\_fez} (job
 \texttt{d9s16avpemts73ct6g8g}): the $L=6$ Hubbard chain at $U/t=4$, $\eta=0.15\,t$, $12$ qubits,
 $3.5\times10^{5}$ computational-basis shots---$5\times10^{4}$ on each of seven circuits
 $k=0,\dots,6$, of which $k=0$ is the $t=0$ reference---pooled into one subspace,
-under TREX readout twirling, Pauli twirling and dynamical decoupling and
-with no zero-noise extrapolation
-(Fig.~\ref{fig:heron}(a) is the result; the circuits prepared the computational-basis $(N{+}1)$ determinant with orbitals $0$--$3\!\uparrow$ and $0$--$2\!\downarrow$ occupied rather than $\hat c^{\dagger}_p\lvert\Psi_0\rangle$, and their hopping layer applies $R_{xx}R_{yy}$ rotations without Jordan--Wigner strings, so they are not the primitive of Fig.~\ref{fig:circ}; because the recovered subspace is the whole sector, neither affects the reported $A_{\rm hw}$). Self-consistent configuration recovery returned $|\mathcal S|=300$ determinants of an
-$(N{+}1)$ sector of dimension $300$; the recorded relative $L_1$ is $0.0$, and the deposited provenance
+under measurement twirling, Pauli twirling and dynamical decoupling, with no readout-error
+mitigation applied to the counts and no zero-noise extrapolation
+(Fig.~\ref{fig:heron}(a) is the result; the circuits prepared the computational-basis $(N{+}1)$ determinant with orbitals $0$--$3\!\uparrow$ and $0$--$2\!\downarrow$ occupied rather than $\hat c^{\dagger}_p\lvert\Psi_0\rangle$, and their hopping layer applies $R_{xx}R_{yy}$ rotations without Jordan--Wigner strings, so they are not the primitive of Fig.~\ref{fig:circ}; because the retained subspace is the whole sector, neither affects the reported $A_{\rm hw}$). No configuration recovery was applied. The notebook post-selected on particle number and $S_z$ after
+reading each bitstring in reversed qubit order (\texttt{int(bs[::-1],2)}), which maps qubit $q$ to $11-q$:
+site $i$ to $5-i$ and spin $\uparrow$ to $\downarrow$. The circuits conserve both quantities and start
+from four $\uparrow$ and three $\downarrow$ electrons, so under that reading their own output falls in
+the $S_z=-1$ sector and is discarded: in a noiseless statevector simulation of the same seven circuits,
+$0$ of $3.5\times10^{5}$ shots are retained, against all $3.5\times10^{5}$ and the full sector of $300$
+under the correct reading (\texttt{src/hw\_bitorder\_check.py}, \texttt{data/hw\_bitorder\_check.json}).
+The $|\mathcal S|=300$ determinants retained from the device therefore all came from device errors that
+changed the spin balance; the device counts needed to redo the post-selection are not part of the
+deposit (Sec.~\ref{sec:scope:data}). The recorded relative $L_1$ is $0.0$, and the deposited provenance
 string says why in its own words---the reconstructed $A_{\rm hw}$ equals the exact $A$ byte for byte
-because the recovered subspace spans the whole sector.
+because the retained subspace spans the whole sector.
 
 That number is exact \emph{by coverage}, and the distinction is not rhetorical: at
 $|\mathcal S|=\dim$, Rayleigh--Ritz on $\operatorname{span}(\mathcal S)$ \emph{is} diagonalization of

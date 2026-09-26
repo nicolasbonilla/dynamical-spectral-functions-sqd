@@ -191,7 +191,8 @@ def build_checks(txt):
 
         ("the hardware shot budget is one number in all four places",
          # 2026-09-25 (PRA cut): the short Sec. IX A states it once more.
-         (r"3\.5\\times10\^\{5\}", 4),
+         # 2026-09-25: floor 4 -> 7. 2026-09-26: Sec. IX A and Sec. S9 now also print the budget when disclosing the reversed bit order of the L=6 run
+         (r"3\.5\\times10\^\{5\}", 7),
          [r"pooled over the \$t\{=\}0\$ reference and \$K\{=\}7\$ evolution circuits",
           r"\$5\\times10\^\{4\}\$ computational-basis shots pooled over",
           r"reconstructed from \$50\{,\}000\$ computational-basis bitstrings"],
@@ -273,7 +274,7 @@ def build_checks(txt):
          # every time.  When it fires, do not edit it by hand first -- run
          # scratchpad/propaga_cuentas.py, which re-runs verify.py and rewrites the eight
          # places that quote the total, and then bring this line to match.
-         (r"\$868\$ checks over \$9\\,884\$ numeric assertions", 1),
+         (r"\$872\$ checks over \$9\\,889\$ numeric assertions", 1),
          # The forbidden phrase used to be the bare "four known open defects", which was
          # unambiguous while the live sentence read "five".  On 2026-09-21 the live
          # sentence became "four known open defects, and two declared gaps in its own

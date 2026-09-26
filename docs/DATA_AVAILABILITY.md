@@ -39,7 +39,7 @@ published and this file is the one that is wrong.**
 > are deposited in `src/`, and `docs/REPRODUCE.md` gives the reproduction commands together with a
 > measured table of what a clean clone does and does not reach. An automated guardian
 > (`python src/verify.py`) recomputes the underlying physics by exact diagonalization and checks the
-> deposited artefacts against it — 868 checks over 9 884 numeric assertions, exiting non-zero on any
+> deposited artefacts against it — 872 checks over 9 889 numeric assertions, exiting non-zero on any
 > discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in the
 > tables and in the abstract; it is not a proof that every sentence of this manuscript is verified, and
 > five items are printed by name on every run: four known open defects, and one declared gap in its own
@@ -280,10 +280,12 @@ from. `docs/REPRODUCE.md` carried the same false sentence ("the notebooks ship w
 counts") and has been corrected.
 
 One further honesty item, repeated here because a DAS is where a reader looks for it: the deposited
-`heron_spectral.json` records `hw_S = 300` out of `nsector = 300`. The recovered subspace is the **whole**
+`heron_spectral.json` records `hw_S = 300` out of `nsector = 300`. The retained subspace is the **whole**
 sector, so `A_hw` matches `A_exact` **by coverage, not by fidelity** — and it matches to machine
 precision (max|diff| = 7.9 × 10⁻¹⁵), not byte-for-byte as the file's own provenance string used to say.
-That string has been corrected in the deposited file.
+That string has been corrected in the deposited file. *(2026-09-26: those 300 determinants were retained by
+post-selection in reversed bit order, so all of them came from device errors, not from the intended
+circuit output — `KNOWN_DISCREPANCIES.md` §30. The coverage statement is unchanged.)*
 
 ### 2.6 What the DAS does **not** claim, and why
 

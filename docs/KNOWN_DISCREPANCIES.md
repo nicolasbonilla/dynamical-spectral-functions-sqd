@@ -412,7 +412,7 @@ at the first non-zero exit -- which is what `make` does. Measured 2026-09-18:
 |---|---|
 | `make figures` | **6/6 commands, exit 0**, and every regenerated fragment byte-identical to the committed one |
 | `make check-figures` | **PASS** -- 8 regenerated artefacts byte-identical (re-measured 2026-09-19). Before the §25 repair of the same day one of the eight was compared against a copy of itself; since that repair all 8 are guarded |
-| `make verify` | **PASS** -- 868 checks, 0 failures, **5 registered xfail, 0 xpass**, 2 skips, 9 884 numeric assertions (re-measured 2026-09-19 after the C3 frontier deposit added section (10b), 2 387 assertions, and registered `ladder_L4.ngrid_eta050` as the fifth open defect; the earlier 807 / 7 454 / 4, 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
+| `make verify` | **PASS** -- 872 checks, 0 failures, **5 registered xfail, 0 xpass**, 2 skips, 9 889 numeric assertions (re-measured 2026-09-26 after the hardware bit-order check and three phrase guards were added, +4 checks and +5 assertions; before that 868 / 9 884, re-measured 2026-09-19 after the C3 frontier deposit added section (10b), 2 387 assertions, and registered `ladder_L4.ngrid_eta050` as the fifth open defect; the earlier 807 / 7 454 / 4, 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
 | `make data` | **exit 0** -- `paper/figs/sqw_edges.dat` and `data/charge_gap.json` regenerated (~256 s, L=4...12 ED) |
 | `make paper` | two `pdflatex` passes; not re-run in this pass |
 | `make reproduce` | **NOT verified** -- it executes `notebooks/00_Reproduce_Everything.ipynb`, which needs `pyscf`; see §13. That notebook is the **v1–v2 pipeline**, kept as a record: it reproduces the v1–v2 figure set, several of which v3 withdrew, and it is not the reproduction path of the v3 manuscript |
@@ -623,7 +623,7 @@ both stages without any merge step. A scan of **every** file in `data/` now find
 The provenance string of the deposited file said `A_hw==A_exact byte-for-byte`. Measured:
 `max|A_hw - A_exact| = 7.9e-15`, `rel-L1 = 8.9e-15`. The stored `hw_relL1 = 0.0` is that number rounded,
 not an identity, and the two arrays are **not** byte-identical. The substance is unaffected -- the
-agreement is at machine precision because the recovered subspace is the whole sector, which is a coverage
+agreement is at machine precision because the retained subspace is the whole sector, which is a coverage
 statement and not a fidelity claim -- but the word was wrong and is now the measured number.
 
 ## 22. `data/` was covered by neither half of `LICENSE` -- **REPAIRED (second pass)**
@@ -875,3 +875,33 @@ inputs are still absent (§13). **And the manuscript as submitted to arXiv on 20
 before this deposit:** its data statement says the builder of the Fig. S5 tables and the standalone
 sources of the six PDF figures are not deposited. That was true of the submitted deposit; it is now
 conservative. Changing it is a manuscript edit, left to the next version.
+
+## 30. The L=6 `ibm_fez` run was post-selected in reversed bit order, without configuration recovery -- **FOUND AND DISCLOSED 2026-09-26**
+
+`notebooks/Spectral_Heron.ipynb` (cell 15, the hardware post-processing) turns each measured bitstring into a
+Fock integer with `int(bs[::-1], 2)`. Qiskit prints qubit q as `bs[-1-q]`, so the correct integer is
+`int(bs, 2)`; the reversed reading maps qubit q to 11-q, i.e. site i to 5-i and spin up to spin down. The
+circuits conserve particle number and S_z and start from 4 up + 3 down electrons, so under the reversed
+reading their own output lands in the S_z = -1 sector and is discarded by the (N+1 = 7, S_z = +1) filter.
+The local validation (cell 9) sampled statevector indices directly and never went through that function,
+which is why it did not catch the error.
+
+Measured with `python src/hw_bitorder_check.py` (writes `data/hw_bitorder_check.json`): a noiseless
+statevector simulation of the same seven circuits, 50 000 shots each, keeps **0 of 350 000** shots under the
+notebook reading and **all 350 000** (support 300 of 300) under the correct one. The same reading applied to
+the retained L=8 device counts of the companion P3 run keeps 18 260 of 350 000 shots instead of 82 697.
+
+Consequences, stated in Sec. IX A, Sec. S9 and the caption of the hardware figure since 2026-09-26:
+(i) all 300 determinants retained from the device arose from device errors that changed the spin balance;
+(ii) no configuration recovery was applied -- the text of v3 as submitted to arXiv on 2026-09-25 says
+"configuration recovery returned all 300 determinants", which is wrong; (iii) SamplerV2 ran with
+measurement twirling and returns twirled raw counts, so the "TREX" of the v3 text was not readout
+mitigation. What does not change: `hw_S = 300 = nsector`, `A_hw = A_exact` by coverage, every number and
+figure. Under the correct reading the noiseless circuits alone already reach the whole sector. The device
+counts needed to redo the post-selection are not in the deposit. The notebook is kept as it ran. `verify.py`
+now checks the deposited numbers and refuses the three phrases (`hw.configuration_recovery`, `hw.trex`,
+`hw.proof_of_principle` in `CLAIMS_RETRACTED`).
+
+The second hardware run (`ibm_marrakesh`, N2) passes the device bit array straight to
+`qiskit_addon_sqd.fermion.diagonalize_fermionic_hamiltonian`, which reads the bits itself; it has no manual
+bit reversal.
