@@ -1,0 +1,100 @@
+\documentclass[border=6pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,decorations.pathreplacing}
+\tikzset{eleg/.style={dash pattern=on 2.6pt off 2pt}}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{colormaps}
+\pgfplotsset{colormap={mplhot}{rgb255=(11,0,0) rgb255=(32,0,0) rgb255=(53,0,0) rgb255=(74,0,0) rgb255=(97,0,0) rgb255=(118,0,0) rgb255=(139,0,0) rgb255=(160,0,0) rgb255=(184,0,0) rgb255=(205,0,0) rgb255=(226,0,0) rgb255=(247,0,0) rgb255=(255,16,0) rgb255=(255,37,0) rgb255=(255,58,0) rgb255=(255,79,0) rgb255=(255,102,0) rgb255=(255,123,0) rgb255=(255,144,0) rgb255=(255,165,0) rgb255=(255,189,0) rgb255=(255,210,0) rgb255=(255,231,0) rgb255=(255,252,0) rgb255=(255,255,31) rgb255=(255,255,62) rgb255=(255,255,94) rgb255=(255,255,125) rgb255=(255,255,160) rgb255=(255,255,192) rgb255=(255,255,223) rgb255=(255,255,255)}}
+\definecolor{inkPrim}{HTML}{1B1B1B}
+\definecolor{coral}{HTML}{F0653F}
+
+\begin{document}
+\begin{tikzpicture}[font=\rmfamily]
+% ===================== main map: exact A(k,omega), L=12 =====================
+\begin{axis}[
+  name=main,
+  width=13.8cm, height=8.6cm, enlargelimits=false, axis on top,
+  colormap name=mplhot, point meta min=0, point meta max=0.55,
+  xmin=0, xmax=2, ymin=-9, ymax=9,
+  xtick={0,0.5,1,1.5,2}, xticklabels={$0$,$\tfrac12$,$1$,$\tfrac32$,$2$},
+  ytick={-8,-6,-4,-2,0,2,4,6,8},
+  minor x tick num=1, minor y tick num=1,
+  xmajorgrids, ymajorgrids, xminorgrids, yminorgrids,
+  major grid style={white, opacity=0.20, line width=0.3pt},
+  minor grid style={white, opacity=0.09, line width=0.2pt},
+  extra y ticks={2.484,-2.484},
+  extra y tick labels={,},
+  extra y tick style={grid=none, major tick length=7pt, tick style={coral, line width=1.3pt},
+    tick label style={font=\footnotesize}},
+  tick align=outside, ytick pos=left,
+  axis line style={inkPrim, line width=0.6pt}, tick style={inkPrim, line width=0.6pt},
+  tick label style={font=\footnotesize},
+  xlabel={momentum \; $k/\pi$}, ylabel={frequency \; $\omega/t$}, label style={font=\small},
+  colorbar, colorbar style={width=0.28cm, ylabel={spectral intensity \; $A(k,\omega)$},
+    ylabel style={font=\small}, yticklabel style={font=\footnotesize}, ytick={0,0.1,0.2,0.3,0.4,0.5}},
+]
+  \addplot graphics[xmin=0,xmax=2,ymin=-9,ymax=9]{akw_field_v2.png};
+
+  % ---- the 12 physical momenta (k-continuum is a periodic cubic spline of these) ----
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:0,9)--(axis cs:0,8.45);
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:0.16667,9)--(axis cs:0.16667,8.45);
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:0.33333,9)--(axis cs:0.33333,8.45);
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:0.5,9)--(axis cs:0.5,8.45);
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:0.66667,9)--(axis cs:0.66667,8.45);
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:0.83333,9)--(axis cs:0.83333,8.45);
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:1,9)--(axis cs:1,8.45);
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:1.16667,9)--(axis cs:1.16667,8.45);
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:1.33333,9)--(axis cs:1.33333,8.45);
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:1.5,9)--(axis cs:1.5,8.45);
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:1.66667,9)--(axis cs:1.66667,8.45);
+  \draw[white,line width=0.7pt,opacity=0.9](axis cs:1.83333,9)--(axis cs:1.83333,8.45);
+  \node[white, font=\scriptsize, fill=black, fill opacity=0.5, text opacity=1, inner sep=1.6pt,
+        rounded corners=1pt, anchor=north west] at (axis cs:0.02,8.35) {12 exact momenta};
+  \node[white, font=\scriptsize, fill=black, fill opacity=0.5, text opacity=1, inner sep=1.6pt,
+        rounded corners=1pt, anchor=north east] at (axis cs:1.98,8.35) {$U/t=8,\ \eta=0.18\,t$};
+
+  % Fermi level (mid-gap)
+  \addplot[white, densely dashed, line width=0.9pt] coordinates {(0,0) (2,0)};
+  \node[white, font=\footnotesize, fill=black, fill opacity=0.62, text opacity=1, inner sep=1.3pt,
+        rounded corners=1pt, anchor=south west] at (axis cs:0.02,0.18) {$E_F$};
+
+  % Hubbard bands
+  \node[white, font=\footnotesize\itshape, fill=black, fill opacity=0.55, text opacity=1, inner sep=2pt,
+        rounded corners=1.5pt] at (axis cs:1.0,7.2) {upper Hubbard band: electron addition ($\omega>0$)};
+  \node[white, font=\footnotesize\itshape, fill=black, fill opacity=0.55, text opacity=1, inner sep=2pt,
+        rounded corners=1.5pt] at (axis cs:1.12,-7.9) {lower Hubbard band: electron removal ($\omega<0$)};
+
+  % --- k_F guide (Mott-gap horizontal projection lines removed per request) ---
+  \draw[white, dash pattern=on 5pt off 2.5pt on 1.5pt off 2.5pt, line width=0.7pt] (axis cs:0.5,-2.484) -- (axis cs:0.5,-9);
+  \draw[white, line width=1.3pt, {Stealth[length=2.6mm]}-{Stealth[length=2.6mm]}]
+        (axis cs:0.5,-2.32) -- (axis cs:0.5,2.32);
+  \node[circle, fill=white, draw=inkPrim, line width=0.5pt, minimum size=4.8pt, inner sep=0]
+        at (axis cs:0.5,2.484) {};
+  \node[circle, fill=white, draw=inkPrim, line width=0.5pt, minimum size=4.8pt, inner sep=0]
+        at (axis cs:0.5,-2.484) {};
+  \node[white, font=\scriptsize\bfseries, fill=black, fill opacity=0.66, text opacity=1, inner sep=1.7pt,
+        rounded corners=1pt, anchor=east] at (axis cs:0.44,1.75) {$\mu^{+}$};
+  \node[white, font=\scriptsize\bfseries, fill=black, fill opacity=0.66, text opacity=1, inner sep=1.7pt,
+        rounded corners=1pt, anchor=east] at (axis cs:0.44,-1.75) {$\mu^{-}$};
+  \node[white, font=\footnotesize\bfseries, fill=black, fill opacity=0.6, text opacity=1, inner sep=1.5pt,
+        rounded corners=1pt, anchor=east] at (axis cs:0.45,-8.45) {$k_F$};
+  % the gap value: EXACT charge gap from N+-1 ground-state energies (ED-verified)
+  \node[white, font=\footnotesize\bfseries, fill=black, fill opacity=0.80, text opacity=1,
+        inner sep=2.5pt, rounded corners=2pt, anchor=west] at (axis cs:0.565,0.7)
+        {Mott gap $\Delta$};
+  % --- spin-charge separation: validated spinon branch (pi J/2) riding the holon (charge) continuum ---
+  \addplot[white, densely dotted, line width=0.5pt, forget plot] coordinates {(0.000,-3.269) (0.083,-3.242) (0.167,-3.164) (0.250,-3.039) (0.333,-2.877) (0.417,-2.687) (0.500,-2.484) (0.583,-2.687) (0.667,-2.877) (0.750,-3.039) (0.833,-3.164) (0.917,-3.242) (1.000,-3.269) (1.083,-3.242) (1.167,-3.164) (1.250,-3.039) (1.333,-2.877) (1.417,-2.687) (1.500,-2.484) (1.583,-2.687) (1.667,-2.876) (1.750,-3.039) (1.833,-3.164) (1.917,-3.242) (2.000,-3.269)};
+  \addplot[white, densely dotted, line width=0.5pt, forget plot] coordinates {(0.000,3.269) (0.083,3.242) (0.167,3.164) (0.250,3.039) (0.333,2.877) (0.417,2.687) (0.500,2.484) (0.583,2.687) (0.667,2.877) (0.750,3.039) (0.833,3.164) (0.917,3.242) (1.000,3.269) (1.083,3.242) (1.167,3.164) (1.250,3.039) (1.333,2.877) (1.417,2.687) (1.500,2.484) (1.583,2.687) (1.667,2.876) (1.750,3.039) (1.833,3.164) (1.917,3.242) (2.000,3.269)};
+  \node[white, font=\scriptsize\bfseries, fill=black, fill opacity=0.6, text opacity=1,
+        inner sep=1.5pt, rounded corners=1pt, anchor=west] at (axis cs:0.16,-1.55) {spinon};
+  \draw[white, line width=0.6pt, -{Stealth[length=1.3mm]}] (axis cs:0.30,-1.85) -- (axis cs:0.30,-2.78);
+  \node[white, font=\scriptsize\bfseries, fill=black, fill opacity=0.6, text opacity=1,
+        inner sep=1.5pt, rounded corners=1pt] at (axis cs:1.15,-6.75) {holon};
+  \draw[white, line width=0.6pt, -{Stealth[length=1.3mm]}] (axis cs:1.15,-6.45) -- (axis cs:1.0,-5.3);
+\end{axis}
+\end{tikzpicture}
+\end{document}

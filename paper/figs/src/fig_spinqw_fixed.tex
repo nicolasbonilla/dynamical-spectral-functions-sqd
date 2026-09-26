@@ -1,0 +1,83 @@
+\documentclass[border=6pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,decorations.pathreplacing}
+\tikzset{eleg/.style={dash pattern=on 2.6pt off 2pt}}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{colormaps}
+\pgfplotsset{colormap={mplhot}{rgb255=(11,0,0) rgb255=(32,0,0) rgb255=(53,0,0) rgb255=(74,0,0) rgb255=(97,0,0) rgb255=(118,0,0) rgb255=(139,0,0) rgb255=(160,0,0) rgb255=(184,0,0) rgb255=(205,0,0) rgb255=(226,0,0) rgb255=(247,0,0) rgb255=(255,16,0) rgb255=(255,37,0) rgb255=(255,58,0) rgb255=(255,79,0) rgb255=(255,102,0) rgb255=(255,123,0) rgb255=(255,144,0) rgb255=(255,165,0) rgb255=(255,189,0) rgb255=(255,210,0) rgb255=(255,231,0) rgb255=(255,252,0) rgb255=(255,255,31) rgb255=(255,255,62) rgb255=(255,255,94) rgb255=(255,255,125) rgb255=(255,255,160) rgb255=(255,255,192) rgb255=(255,255,223) rgb255=(255,255,255)}}
+\definecolor{inkPrim}{HTML}{1B1B1B}
+\definecolor{coral}{HTML}{F0653F}
+\definecolor{pkCyan}{HTML}{2BD9E0}
+
+\begin{document}
+\begin{tikzpicture}[font=\rmfamily]
+% ===================== dynamical SPIN structure factor S^{zz}(q,omega), L=12 =====================
+\begin{axis}[
+  name=main,
+  width=13.8cm, height=8.6cm, enlargelimits=false, axis on top,
+  colormap name=mplhot, point meta min=0, point meta max=13,
+  xmin=0, xmax=2, ymin=0, ymax=2.5,
+  xtick={0,0.5,1,1.5,2}, xticklabels={$0$,$\tfrac12$,$1$,$\tfrac32$,$2$},
+  ytick={0,0.5,1,1.5,2,2.5},
+  minor x tick num=1, minor y tick num=1,
+  xmajorgrids, ymajorgrids, xminorgrids, yminorgrids,
+  major grid style={white, opacity=0.20, line width=0.3pt},
+  minor grid style={white, opacity=0.09, line width=0.2pt},
+  extra y ticks={0.785}, extra y tick labels={\textcolor{coral}{$\mathbf{\tfrac{\pi J}{2}}$}},
+  extra y tick style={grid=none, major tick length=7pt, tick style={coral, line width=1.3pt},
+    tick label style={font=\footnotesize}},
+  extra x ticks={1.0}, extra x tick labels={\textcolor{coral}{$\mathbf{2k_F}$}},
+  extra x tick style={grid=none, major tick length=6pt, tick style={coral, line width=1.2pt},
+    tick label style={font=\footnotesize, yshift=-9pt}},
+  tick align=outside, ytick pos=left,
+  axis line style={inkPrim, line width=0.6pt}, tick style={inkPrim, line width=0.6pt},
+  tick label style={font=\footnotesize},
+  xlabel={momentum transfer \; $q/\pi$}, ylabel={frequency \; $\omega/t$}, label style={font=\small},
+  colorbar, colorbar style={width=0.28cm, ylabel={response intensity \; $S^{zz}(q,\omega)$},
+    ylabel style={font=\small}, yticklabel style={font=\footnotesize}, ytick={0,4,8,12}},
+]
+  \addplot graphics[xmin=0,xmax=2,ymin=0,ymax=2.5]{spinqw_field.png};
+
+  % ---- parameters (spin scale J is ~16x smaller than U -> finer eta) ----
+  \node[white, font=\scriptsize, fill=black, fill opacity=0.5, text opacity=1, inner sep=1.6pt,
+        rounded corners=1pt, anchor=north east] at (axis cs:1.98,2.42) {$U/t=8,\ \eta=0.10\,t$};
+
+  % ---- 2k_F guide (same white dash-dot as k_F in A(k,omega)) ----
+  \draw[white, dash pattern=on 5pt off 2.5pt on 1.5pt off 2.5pt, line width=0.7pt]
+        (axis cs:1.0,0) -- (axis cs:1.0,1.571);
+
+  % ---- title (same style as the continuum title in S(q,omega)) ----
+  \node[white, font=\footnotesize\itshape, fill=black, fill opacity=0.55, text opacity=1, inner sep=2pt,
+        rounded corners=1.5pt, anchor=north west] at (axis cs:0.02,2.44) {spin (2-spinon) band};
+
+  % ---- 2-spinon boundaries: lower = des Cloizeaux--Pearson (pi J/2)|sin q|, upper = pi J |sin(q/2)| ----
+  \addplot[white, densely dotted, line width=0.9pt, forget plot] coordinates {(0.000,0.000) (0.083,0.203) (0.167,0.393) (0.250,0.555) (0.333,0.680) (0.417,0.759) (0.500,0.785) (0.583,0.759) (0.667,0.680) (0.750,0.555) (0.833,0.393) (0.917,0.203) (1.000,0.000) (1.083,0.203) (1.167,0.393) (1.250,0.555) (1.333,0.680) (1.417,0.759) (1.500,0.785) (1.583,0.759) (1.667,0.680) (1.750,0.555) (1.833,0.393) (1.917,0.203) (2.000,0.000)};
+  \addplot[white!65, densely dotted, line width=0.55pt, forget plot] coordinates {(0.000,0.000) (0.083,0.205) (0.167,0.407) (0.250,0.601) (0.333,0.785) (0.417,0.956) (0.500,1.111) (0.583,1.246) (0.667,1.360) (0.750,1.451) (0.833,1.517) (0.917,1.557) (1.000,1.571) (1.083,1.557) (1.167,1.517) (1.250,1.451) (1.333,1.360) (1.417,1.246) (1.500,1.111) (1.583,0.956) (1.667,0.785) (1.750,0.601) (1.833,0.407) (1.917,0.205) (2.000,0.000)};
+  % ---- numerically-extracted peak dispersion (spinqw_edges.dat 'peak' column): tracks the dCP lower edge ----
+  \addplot[only marks, mark=*, mark size=1.5pt, mark options={fill=pkCyan, draw=inkPrim, line width=0.35pt}, forget plot]
+    coordinates {(0.1667,0.381) (0.3333,0.669) (0.5000,0.808) (0.6667,0.747) (0.8333,0.507) (1.0000,0.164) (1.1667,0.507) (1.3333,0.747) (1.5000,0.808) (1.6667,0.669) (1.8333,0.381)};
+  \node[white, font=\scriptsize, fill=black, fill opacity=0.55, text opacity=1, inner sep=1.5pt,
+        rounded corners=1pt, anchor=south east] at (axis cs:1.97,1.02)
+        {\textcolor{pkCyan}{$\bullet$}~extracted peak};
+  % dCP label kept in the DARK band above the continuum (no text on data)
+  \node[white, font=\scriptsize, fill=black, fill opacity=0.6, text opacity=1, inner sep=1.5pt,
+        rounded corners=1pt, anchor=west] at (axis cs:0.22,1.74) {des Cloizeaux--Pearson: \ $\tfrac{\pi J}{2}\sin q$};
+  \draw[white, line width=0.5pt, dotted] (axis cs:0.42,1.66) -- (axis cs:0.46,0.80);
+
+  % ---- 2026-09-18: the bold "GAPLESS ... (cf. Fig. 4)" banner is REMOVED.
+  %      "gapless" is one of the three terms Sec. 8.2 withdraws at this size, the caption of
+  %      this figure denies it explicitly, and "Fig. 4" was a hand-typed cross-reference that
+  %      v3 renumbering made false (the charge response is now Fig. 11).  What is left is the
+  %      pair of scales, both established: pi J/2 = 0.785 t with J = 4t^2/U = 0.5 t, and
+  %      Delta = mu+ - mu- = 4.96876 t from exact diagonalization (data/charge_gap.json).
+  %      No comparison symbol, no claim about the thermodynamic limit, no figure number.
+  \node[white, font=\scriptsize, fill=black, fill opacity=0.6, text opacity=1,
+        inner sep=2pt, rounded corners=1.5pt] at (axis cs:1.0,2.03)
+        {spin scale $\pi J/2=0.79\,t$ \quad charge gap $\Delta=4.97\,t$ (one-particle channel)};
+\end{axis}
+\end{tikzpicture}
+\end{document}

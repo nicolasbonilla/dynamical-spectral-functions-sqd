@@ -1,0 +1,45 @@
+\documentclass[11pt,border=6pt]{standalone}
+\usepackage[T1]{fontenc}\usepackage{lmodern}\usepackage{amsmath}
+\usepackage{tikz}\usetikzlibrary{arrows.meta}
+\usepackage{pgfplots}\pgfplotsset{compat=1.18}\usepgfplotslibrary{fillbetween}
+\definecolor{inkPrim}{HTML}{1B1B1B}\definecolor{inkMute}{HTML}{6E6E6E}
+\definecolor{coral}{HTML}{D1495B}\definecolor{teal}{HTML}{009E73}\definecolor{gridClr}{HTML}{ECEAE5}
+\begin{document}\begin{tikzpicture}[font=\rmfamily]
+\begin{axis}[width=11.2cm,height=7.2cm,
+  xlabel={per-qubit bit-flip rate \; $\varepsilon$},ylabel={spectral rel-$L_1$ error},
+  xmin=0,xmax=0.205,ymin=0,ymax=0.50,
+  xtick={0,0.05,0.10,0.15,0.20},xticklabels={$0$,$5\%$,$10\%$,$15\%$,$20\%$},
+  ymajorgrids,y grid style={gridClr},axis line style={inkPrim,line width=0.6pt},tick style={inkPrim},
+  tick label style={font=\normalsize},label style={font=\normalsize},
+  legend style={font=\normalsize,draw=none,fill=white,fill opacity=0.75,text opacity=1,
+    at={(0.03,0.97)},anchor=north west},legend cell align=left]
+  \addplot[name path=nlo,draw=none,forget plot] table[x=eps,y=na_lo]{paper/figs/noise.dat};
+  \addplot[name path=nhi,draw=none,forget plot] table[x=eps,y=na_hi]{paper/figs/noise.dat};
+  \addplot[coral,opacity=0.15,forget plot] fill between[of=nlo and nhi];
+  \addplot[name path=slo,draw=none,forget plot] table[x=eps,y=sc_lo]{paper/figs/noise.dat};
+  \addplot[name path=shi,draw=none,forget plot] table[x=eps,y=sc_hi]{paper/figs/noise.dat};
+  \addplot[teal,opacity=0.15,forget plot] fill between[of=slo and shi];
+  \addplot[coral,line width=1.5pt,mark=square*,mark size=2pt,mark options={fill=coral,draw=white}]
+     table[x=eps,y=na]{paper/figs/noise.dat}; \addlegendentry{naive post-selection}
+  \addplot[teal,line width=1.5pt,mark=*,mark size=2pt,mark options={fill=teal,draw=white}]
+     table[x=eps,y=sc]{paper/figs/noise.dat}; \addlegendentry{S-CoRe configuration recovery}
+  % COLLISION FIX 2026-09-18 (Fig. 15).  The eps=16% marker was drawn full height,
+  % 0 -> 0.47, and both annotations sit across x=0.16: the dashed rule cut through
+  % "post-selection"/"degrades" on the right and through the "1" subscript of
+  % rel-$L_1$ on the left.  Two changes, no data touched:
+  %   (i)  the marker now stops at 0.235, below the right-hand annotation, which is
+  %        all it has to do -- it marks an abscissa, and the label above it names it;
+  %   (ii) the left annotation is set in \footnotesize (matching the right one) and
+  %        anchored at (0.062,0.137).  Measured: the block is 0.090 eps-units wide
+  %        and 0.054 error-units tall, so it occupies x = 0.062..0.152 and
+  %        y = 0.110..0.164.  Against paper/figs/noise.dat that clears the coral
+  %        band (na_lo = 0.177 at eps = 0.062) by 5.0 pt, the y = 0.1 grid rule by
+  %        4.1 pt and the marker at x = 0.16 by 12.4 pt.  Two earlier placements are
+  %        recorded so they are not retried: 0.070/0.150 ended AT x = 0.16, and
+  %        0.055/0.122 straddled the y = 0.1 grid rule.
+  \draw[inkMute,dashed,line width=0.6pt] (axis cs:0.16,0) -- (axis cs:0.16,0.235);
+  \node[inkPrim,font=\footnotesize,anchor=west,align=left] at (axis cs:0.062,0.137)
+     {recovery holds rel-$L_1\!\approx\!0.05$\\ up to $\varepsilon\approx16\%$};
+  \node[inkPrim,font=\footnotesize,anchor=south east,align=right] at (axis cs:0.204,0.255)
+     {naive post-selection\\ degrades with noise};
+\end{axis}\end{tikzpicture}\end{document}

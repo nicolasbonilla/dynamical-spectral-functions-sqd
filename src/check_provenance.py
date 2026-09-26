@@ -398,8 +398,14 @@ def main(argv=None):
     # when it was added: it moves nothing today -- no data/*.json and no paper/figs
     # artefact is named by any frontier script -- so the tiers below are unchanged and
     # the counts quoted in FILE_INDEX.md still hold.
+    # src/recovered/ (2026-09-26) holds the two figure generators recovered from the author's
+    # scratch directory, build_n3.py and make_fig_gapscaling.py.  Unlike src/frontier/ it DOES
+    # move the tiers: build_n3.py names the ten n3_*.dat tables, so seven leave tier 3 and two
+    # leave tier 1.  The counts quoted in docs/FIGURE_PROVENANCE.md and FILE_INDEX.md were
+    # re-measured with it in place.
     code = load(["src/" + n for n in rel_files("src", {".py"})]
                 + ["src/frontier/" + n for n in rel_files("src/frontier", {".py"})]
+                + ["src/recovered/" + n for n in rel_files("src/recovered", {".py"})]
                 + ["Makefile", ".github/workflows/ci.yml",
                    "notebooks/00_Reproduce_Everything.ipynb",
                    "notebooks/Spectral_Heron.ipynb",

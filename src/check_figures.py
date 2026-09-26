@@ -19,8 +19,17 @@ removed on exit, so running it can neither fix nor break paper/figs/.
 Deliberately NOT run here: src/make_scaling_fig.py.  It emits a different, two-panel
 figure and would destroy panel (c) of the committed fig_scaling2_native.tex.  See
 docs/KNOWN_DISCREPANCIES.md.
+
+Added 2026-09-26: the two generators recovered into src/recovered/ (see its README.md) --
+make_fig_gapscaling.py (Fig. 6) and build_n3.py (the ten n3_*.dat tables of Fig. S5).  Their
+eleven artefacts are NOT seeded into the scratch tree before the run, so a generator that
+fails to write one is reported MISSING instead of passing on the committed copy.  One
+comment line is normalised before comparing, and the run prints it when it does: line 5 of
+fig_gapscaling_native.tex records the generated_utc of the gap_scaling.json the fragment was
+built from, and the deposited JSON is a later run with identical numbers (NORMALISE below).
 """
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -35,9 +44,13 @@ GENERATORS = [
     "make_noise_recovery_native.py",
     "make_hardware_hero.py",
     "make_table.py",
+    # recovered 2026-09-26 (src/recovered/README.md)
+    "recovered/make_fig_gapscaling.py",
+    "recovered/build_n3.py",
 ]
 
-# What those six generators are expected to (re)write, relative to the repository root.
+# What those generators are expected to (re)write, relative to the repository root (the
+# first six generators write the first eight artefacts; the two recovered ones the rest).
 # make_table.py writes into rebuild/, a scratch directory, and is therefore compared
 # against paper/table_molecules.tex only for its DATA ROWS -- the committed table carries
 # five lines of hand-written caption the generator does not produce (see
@@ -54,7 +67,49 @@ ARTEFACTS = [
     "paper/figs/fig_noise_recovery_native.tex",
     "paper/figs/fig_hardware_hero_frag.tex",
     "paper/figs/heron_hot.dat",
+    # Added 2026-09-26: written by the two recovered generators.
+    "paper/figs/fig_gapscaling_native.tex",
+    "paper/figs/n3_pub_frac_hi.dat",
+    "paper/figs/n3_pub_frac_lo.dat",
+    "paper/figs/n3_pub_eta_hi.dat",
+    "paper/figs/n3_pub_eta_lo.dat",
+    "paper/figs/n3_thmB_frac.dat",
+    "paper/figs/n3_thmB_eta.dat",
+    "paper/figs/n3_inf_frac.dat",
+    "paper/figs/n3_inf_eta.dat",
+    "paper/figs/n3_fig5_frac.dat",
+    "paper/figs/n3_fig5_eta.dat",
 ]
+
+# Artefacts that are compared but NOT copied into the scratch tree first: the generator must
+# write them, or they are MISSING.  (The eight older ones are seeded, as they always were.)
+NOT_SEEDED = {a for a in ARTEFACTS
+              if a.endswith("/fig_gapscaling_native.tex") or a.startswith("paper/figs/n3_")}
+
+# Read by a generator, never written or compared: build_n3.py checks the legend counts of the
+# committed Fig. S5 fragment against the tables it has just written.
+INPUTS = [
+    "paper/figs/fig_thm1iii_violation_native.tex",
+]
+
+# Lines normalised on BOTH sides before comparing, per artefact.  Keep this list short and
+# every entry a comment line: it is an exemption from a byte-for-byte guard.
+NORMALISE = {
+    "paper/figs/fig_gapscaling_native.tex": [
+        (re.compile(br"^(%   gap_scaling\.json   \(gap_scaling\.py, )"
+                    br"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ(\))$", re.M),
+         br"\g<1><generated_utc>\g<2>"),
+    ],
+}
+
+
+def _normalise(rel, data):
+    data = data.replace(b"\r\n", b"\n")
+    n = 0
+    for rx, rep in NORMALISE.get(rel, ()):
+        data, k = rx.subn(rep, data)
+        n += k
+    return data, n
 
 
 def main(argv=None):
@@ -66,7 +121,7 @@ def main(argv=None):
         shutil.copytree(os.path.join(ROOT, "src"), os.path.join(tmp, "src"))
         shutil.copytree(os.path.join(ROOT, "data"), os.path.join(tmp, "data"))
         os.makedirs(os.path.join(tmp, "paper", "figs"))
-        for rel in ARTEFACTS:
+        for rel in [a for a in ARTEFACTS if a not in NOT_SEEDED] + INPUTS:
             src = os.path.join(ROOT, rel.replace("/", os.sep))
             if os.path.exists(src):
                 shutil.copy2(src, os.path.join(tmp, rel.replace("/", os.sep)))
@@ -85,7 +140,7 @@ def main(argv=None):
                   "broken." % len(failed))
             return 1
 
-        differ, missing = [], []
+        differ, missing, normalised = [], [], []
         for rel in ARTEFACTS:
             a = os.path.join(ROOT, rel.replace("/", os.sep))
             b = os.path.join(tmp, rel.replace("/", os.sep))
@@ -96,8 +151,15 @@ def main(argv=None):
             fb = open(b, "rb").read()
             if fa is None:
                 missing.append(rel)
-            elif fa.replace(b"\r\n", b"\n") != fb.replace(b"\r\n", b"\n"):
+                continue
+            na_, ka = _normalise(rel, fa)
+            nb_, kb = _normalise(rel, fb)
+            if na_ != nb_:
                 differ.append(rel)
+            elif ka or kb:
+                normalised.append(rel)
+                print("  [same*] %s  (identical after normalising %d provenance-timestamp "
+                      "comment line(s); see NORMALISE)" % (rel, max(ka, kb)))
             elif verbose:
                 print("  [same ] %s" % rel)
 
@@ -132,7 +194,9 @@ def main(argv=None):
             return 1
 
         print("RESULT: PASS -- all %d regenerated artefacts are byte-identical to the "
-              "committed ones." % len(ARTEFACTS))
+              "committed ones%s." % (len(ARTEFACTS),
+                                     (" (%d of them after normalising one provenance-timestamp "
+                                      "comment line)" % len(normalised)) if normalised else ""))
         return 0
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

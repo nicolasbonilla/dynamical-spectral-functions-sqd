@@ -815,13 +815,17 @@ COVERED_FRAGMENTS = {
 COVERAGE_GAP_V3 = {
     # "tab:moments (Sec. IV)" was declared here until 2026-09-25; it is closed by
     # src/moments_table.py and the assertions in section 9.2 below.
+    # 2026-09-26: build_n3.py and its inputs were recovered and deposited, and
+    # src/check_figures.py now regenerates the ten n3_*.dat tables byte-for-byte.  The entry
+    # stays, because what it names -- a check IN THIS FILE -- has still not been written.
     "fig_thm1iii_violation_native.tex": (
-        "the fragment plots eight n3_*.dat tables (2432 rows) built by build_n3.py from "
-        "data/cert_stress.json, data/cert_akw.json and two JSONs that are NOT in data/. "
-        "build_n3.py itself is not deposited, so this guardian cannot regenerate the "
-        "tables and will not pretend to check them by re-reading what the figure prints. "
-        "To close this: deposit build_n3.py and its two missing inputs, add the fragment "
-        "to src/check_figures.py, and anchor the plotted ratios to the certificate rows."),
+        "the fragment plots eight n3_*.dat tables (2432 rows) built by "
+        "src/recovered/build_n3.py from data/thm1iii_violation/ (recovered and deposited "
+        "2026-09-26; its three certificate scans are an EARLIER run than data/cert_*.json, "
+        "see that folder's README). src/check_figures.py regenerates all ten tables "
+        "byte-for-byte, but no check in this file anchors the plotted ratios to the "
+        "certificate rows, and it will not pretend to by re-reading what the figure prints. "
+        "To close this: write that check here."),
 }
 
 # Minimum number of numeric assertions each section must actually perform.  A guardian

@@ -1,0 +1,74 @@
+\documentclass[11pt,border=6pt]{standalone}
+\usepackage[T1]{fontenc}\usepackage{lmodern}\usepackage{amsmath}
+\usepackage{tikz}\usetikzlibrary{arrows.meta}
+\usepackage{pgfplots}\pgfplotsset{compat=1.18}\usepgfplotslibrary{groupplots}
+\definecolor{inkPrim}{HTML}{1B1B1B}\definecolor{inkMute}{HTML}{6E6E6E}
+\definecolor{cMag}{HTML}{E8543A}  % vibrant vermilion -- one-body magic F1 = 2 N_u (covalent bond-breaking)
+\definecolor{cZ}{HTML}{2E6FE0}    % vibrant blue      -- coherent quasiparticle weight Z
+\definecolor{gridClr}{HTML}{ECEAE5}
+\definecolor{wf0}{rgb}{0.990,0.850,0.620}
+\definecolor{wf1}{rgb}{0.906,0.729,0.549}
+\definecolor{wf2}{rgb}{0.821,0.607,0.477}
+\definecolor{wf3}{rgb}{0.737,0.486,0.406}
+\definecolor{wf4}{rgb}{0.653,0.364,0.334}
+\definecolor{wf5}{rgb}{0.569,0.243,0.263}
+\definecolor{wf6}{rgb}{0.484,0.121,0.191}
+\definecolor{wf7}{rgb}{0.400,0.000,0.120}
+
+\begin{document}
+\begin{tikzpicture}[font=\rmfamily]
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.9cm},
+  width=7.6cm,height=8.6cm,
+  axis line style={inkPrim,line width=0.7pt},tick style={inkPrim,line width=0.7pt},
+  tick label style={font=\normalsize},label style={font=\normalsize},
+  title style={font=\footnotesize,yshift=2pt}]
+% ---- (a) spectral waterfall ----
+\nextgroupplot[xlabel={addition energy \; $\omega-E_0$ \; (Ha)},
+  ylabel={$A(\omega)$ \; (offset by $R$)}, ytick=\empty,
+  title={(a)\quad quasiparticle $\to$ multiplet},
+  xmin=-0.2,xmax=1.62, clip=false, ymin=-1.15, ymax=9.35,
+  xtick={0,0.4,0.8,1.2}]
+  \addplot[wf0,line width=1.1pt] table[x=w,y=A0]{paper/figs/hero_aw.dat};
+  \node[inkPrim,font=\footnotesize,anchor=west] at (axis cs:1.18,0.350) {1.00};
+  \addplot[wf1,line width=1.1pt] table[x=w,y=A1]{paper/figs/hero_aw.dat};
+  \node[inkPrim,font=\footnotesize,anchor=west] at (axis cs:1.18,1.400) {1.10};
+  \addplot[wf2,line width=1.1pt] table[x=w,y=A2]{paper/figs/hero_aw.dat};
+  \node[inkPrim,font=\footnotesize,anchor=west] at (axis cs:1.18,2.450) {1.25};
+  \addplot[wf3,line width=1.1pt] table[x=w,y=A3]{paper/figs/hero_aw.dat};
+  \node[inkPrim,font=\footnotesize,anchor=west] at (axis cs:1.18,3.500) {1.45};
+  \addplot[wf4,line width=1.1pt] table[x=w,y=A4]{paper/figs/hero_aw.dat};
+  \node[inkPrim,font=\footnotesize,anchor=west] at (axis cs:1.18,4.550) {1.70};
+  \addplot[wf5,line width=1.1pt] table[x=w,y=A5]{paper/figs/hero_aw.dat};
+  \node[inkPrim,font=\footnotesize,anchor=west] at (axis cs:1.18,5.600) {2.00};
+  \addplot[wf6,line width=1.1pt] table[x=w,y=A6]{paper/figs/hero_aw.dat};
+  \node[inkPrim,font=\footnotesize,anchor=west] at (axis cs:1.18,6.650) {2.35};
+  \addplot[wf7,line width=1.1pt] table[x=w,y=A7]{paper/figs/hero_aw.dat};
+  \node[inkPrim,font=\footnotesize,anchor=west] at (axis cs:1.18,7.700) {2.75};
+
+  \node[inkPrim,font=\footnotesize,anchor=west] at (axis cs:1.20,8.40) {$R\,(\text{\AA})$};
+  \node[font=\footnotesize\itshape,inkPrim,anchor=west]
+     at (axis cs:-0.08,-0.72) {single quasiparticle (eq)};
+  \node[font=\footnotesize\itshape,inkPrim,anchor=west]
+     at (axis cs:-0.08,8.85) {correlated multiplet (diss.)};
+% ---- (b) two independent axes: magic F1=2N_u rises, coherent weight Z collapses ----
+\nextgroupplot[xlabel={N--N bond length \; $R$ \; (\AA)},
+  ylabel={fraction of maximum}, ylabel style={yshift=-2pt},
+  title={(b)\quad magic $\mathcal F_1\!=\!2N_{\mathrm u}$ rises, weight $1{-}\langle n_p\rangle$ falls},
+  xmin=0.95,xmax=2.80, ymin=0,ymax=1.15, ymajorgrids,y grid style={gridClr},
+  ytick={0,0.2,0.4,0.6,0.8,1.0},
+  legend style={font=\scriptsize,draw=inkMute,line width=0.4pt,fill=white,fill opacity=0.9,text opacity=1,
+    at={(0.97,0.045)},anchor=south east,row sep=1.2pt},legend cell align=left]
+  \draw[inkMute,line width=0.5pt,dashed] (axis cs:0.95,1.0) -- (axis cs:2.80,1.0);
+  \node[inkPrim,font=\footnotesize,anchor=east] at (axis cs:2.80,1.065)
+     {$N_{\mathrm u}\!\to\!6$: two N($^{4}S$) atoms};
+  % magic F1 = 2 N_u (identity) -- rising
+  \addplot[cMag,line width=1.7pt,mark=*,mark size=2.6pt,mark options={fill=cMag,draw=white,line width=0.6pt}]
+     table[x=R,y=magic]{paper/figs/hero_res.dat};
+  \addlegendentry{fermionic magic $\mathcal F_1\!=\!2N_{\mathrm u}$}
+  % coherent quasiparticle weight Z (spectral sum rule) -- collapsing
+  \addplot[cZ,line width=1.7pt,mark=square*,mark size=2.4pt,mark options={fill=cZ,draw=white,line width=0.6pt}]
+     table[x=R,y=z]{paper/figs/hero_res.dat};
+  \addlegendentry{addition weight $1{-}\langle n_p\rangle$}
+\end{groupplot}
+\end{tikzpicture}
+\end{document}
