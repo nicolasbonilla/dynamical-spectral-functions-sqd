@@ -124,6 +124,27 @@
 \bibitem{tdasci2024} A.~Shee, Z.~Huang, M.~Head-Gordon, K.~B.~Whaley, ``Real-time propagation of adaptive sampling selected configuration interaction wave function,'' \href{https://arxiv.org/abs/2411.07615}{arXiv:2411.07615} (2024).
 \bibitem{whitedmrg1992} S.~R.~White, ``Density matrix formulation for quantum renormalization groups,'' Phys.\ Rev.\ Lett.\ \textbf{69}, 2863 (1992); \href{https://doi.org/10.1103/PhysRevLett.69.2863}{DOI 10.1103/PhysRevLett.69.2863}.
 \bibitem{schollwock2011} U.~Schollw\"ock, ``The density-matrix renormalization group in the age of matrix product states,'' Ann.\ Phys.\ \textbf{326}, 96 (2011); \href{https://arxiv.org/abs/1008.3477}{arXiv:1008.3477}.
+% ---------------------------------------------------------------------
+%  The Supplemental Material as a reference (added 2026-09-28).  APS asks
+%  that the main text cite the SM as a reference, "See Supplemental
+%  Material at [URL will be inserted by publisher] for ...", and that the
+%  references cited only in the SM also be in this list, the SM entry
+%  saying which ("which includes Refs. [..-..]").  The second part was
+%  already true: this one list serves main text and SM alike, and the
+%  works cited only in the SM follow the last one the main text cites.
+%  The entry is cited once, in the last paragraph of Sec. X, AFTER the
+%  last first-citation of the main text (schollwock2011, just above), so
+%  it takes the next number in first-citation order and not one of the
+%  main text's references is renumbered; only the SM-only block moves up
+%  by one.  The range is computed by \citenum, not typed: its ends are the
+%  first and the last entry of the SM-only block (valiant2002 and
+%  huang2022); paper/pra_split.py --build checks that the block the range
+%  names is exactly the set of works cited in the SM and not in the main
+%  text.  The same text is printed in the arXiv build and in the PRA
+%  build, so main_pra.pdf stays page-identical to the main part of
+%  main.pdf.
+% ---------------------------------------------------------------------
+\bibitem{supplemental} See Supplemental Material at [URL will be inserted by publisher] for the proofs, the complete tables and figures and the extended discussions cited in the text as Sec.~S$n$, Fig.~S$n$, Table~S$n$ and Eq.~(S$n$), which includes Refs.~[\citenum{valiant2002}--\citenum{huang2022}].
 \bibitem{valiant2002} L.~G.~Valiant, ``Quantum circuits that can be simulated classically in polynomial time,'' SIAM J.\ Comput.\ \textbf{31}, 1229 (2002).
 \bibitem{terhaldivincenzo2002} B.~M.~Terhal, D.~P.~DiVincenzo, ``Classical simulation of noninteracting-fermion quantum circuits,'' Phys.\ Rev.\ A \textbf{65}, 032325 (2002); \href{https://arxiv.org/abs/quant-ph/0108010}{quant-ph/0108010}.
 \bibitem{bravyi2005flo} S.~Bravyi, ``Lagrangian representation for fermionic linear optics,'' Quantum Inf.\ Comput.\ \textbf{5}, 216 (2005); \href{https://arxiv.org/abs/quant-ph/0404180}{quant-ph/0404180}.

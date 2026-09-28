@@ -1,6 +1,6 @@
 # KNOWN DISCREPANCIES — where running a script does *not* reproduce the deposit
 
-*Last audited: **2026-09-26**, against the v3 manuscript as submitted to arXiv on 2026-09-25 (17 figures, 17 tables, 66 pp).*
+*Last audited: **2026-09-26**, against the v3 manuscript as submitted to arXiv on 2026-09-25 (17 figures, 17 tables, 66 pp). Updated 2026-09-28 in §5, §8 item 8, §13, §29 and §30 for the manuscript edits of that day.*
 
 > ### Figure numbers in this file
 >
@@ -216,6 +216,10 @@ them: the hot-coloured rasters `akw_field_v2.png` and `sqw_field.png` are deposi
 step that recoloured `sqw_field.png` is not deposited (§13); no deposited script writes
 `spinqw_field.png`. The figures still enter the manuscript as PDF. The text below is the record of the gap as it stood.*
 
+*2026-09-28: re-measured with `pdftoppm` at 216 dpi and `pdftotext` (the 2026-09-26 measurement used
+PyMuPDF): all six sources compile and match the committed PDFs pixel for pixel and in text. The
+manuscript's data statement now says this and names the three rasters as what stays open (§29).*
+
 *Re-counted 2026-09-19 by `src/check_provenance.py`; the v2 count of "ten of the twenty" is
 superseded, five of those ten having been withdrawn with their figures.*
 
@@ -394,8 +398,9 @@ surprise by a referee.
 8. **`paper/main.pdf` is a dated build and must be rebuilt at the end of every editing pass.**
    *(The v2 wording said "a `\today` of 5 September 2026 ... the current 40-page build"; the
    manuscript then became the 59-page REVTeX v3 of 2026-09-19 and, on 2026-09-25, the 66-page
-   one-column v3 with a 25-page main text and a Supplemental Material, so both numbers are
-   superseded.)* `paper/main.bbl` is
+   one-column v3 with a 26-page main text and a Supplemental Material, so both numbers are
+   superseded. This item said "25-page" until 2026-09-28; the build of 2026-09-25 and that of
+   2026-09-28 both end the main text on p. 26, with the end of Sec. X and the acknowledgments.)* `paper/main.bbl` is
    an empty local build artefact (the bibliography is `\input`-ed from `bibliography.tex`); it is
    untracked and `.gitignore`d, so it is not in the deposit. The same `.gitignore` rule excludes
    `_superseded/v2_paper/main.bbl`, which is therefore on disk but not in version control —
@@ -413,7 +418,7 @@ at the first non-zero exit -- which is what `make` does. Measured 2026-09-18:
 |---|---|
 | `make figures` | **6/6 commands, exit 0**, and every regenerated fragment byte-identical to the committed one |
 | `make check-figures` | **PASS** -- 8 regenerated artefacts byte-identical (re-measured 2026-09-19). Before the §25 repair of the same day one of the eight was compared against a copy of itself; since that repair all 8 are guarded. *Since 2026-09-26: 19 artefacts from 8 generators, one comment line of the Fig. 6 fragment normalised (§29)* |
-| `make verify` | **PASS** -- 872 checks, 0 failures, **5 registered xfail, 0 xpass**, 2 skips, 9 889 numeric assertions (re-measured 2026-09-26 after the hardware bit-order check and three phrase guards were added, +4 checks and +5 assertions; before that 868 / 9 884, re-measured 2026-09-19 after the C3 frontier deposit added section (10b), 2 387 assertions, and registered `ladder_L4.ngrid_eta050` as the fifth open defect; the earlier 807 / 7 454 / 4, 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
+| `make verify` | **PASS** -- 874 checks, 0 failures, **5 registered xfail, 0 xpass**, 2 skips, 9 891 numeric assertions (re-measured 2026-09-28 after the two phrase guards on Sec. S8 of §30 were added, +2 checks and +2 assertions; 872 / 9 889 on 2026-09-26 after the hardware bit-order check and three phrase guards were added, +4 checks and +5 assertions; before that 868 / 9 884, re-measured 2026-09-19 after the C3 frontier deposit added section (10b), 2 387 assertions, and registered `ladder_L4.ngrid_eta050` as the fifth open defect; the earlier 807 / 7 454 / 4, 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
 | `make data` | **exit 0** -- `paper/figs/sqw_edges.dat` and `data/charge_gap.json` regenerated (~256 s, L=4...12 ED) |
 | `make paper` | two `pdflatex` passes; not re-run in this pass |
 | `make reproduce` | **NOT verified** -- it executes `notebooks/00_Reproduce_Everything.ipynb`, which needs `pyscf`; see §13. That notebook is the **v1–v2 pipeline**, kept as a record: it reproduces the v1–v2 figure set, several of which v3 withdrew, and it is not the reproduction path of the v3 manuscript |
@@ -450,6 +455,11 @@ a documented gap; a deleted script is a gap nobody can see.
 deposited in `paper/figs/src/` as the input of the Fig. 4 source (§29). Its own input, the viridis
 raster, and `fig_akw_v2_L12.tex` are still not deposited, so the script still cannot run on a clean
 clone and this row stays open.*
+
+*2026-09-28: `data/gate1_ladder.json` and `data/rigor_floor.json` are still absent. Because one of
+`recolor_akw_v2.py`'s two outputs is now deposited, the manuscript's data statement counts **two**
+computation scripts without deposited output, and covers `recolor_akw_v2.py` under the rasters that
+cannot be regenerated from the deposit (§29).*
 
 ## 14. ARPACK was seeding itself at random -- **REPAIRED 2026-09-18**
 
@@ -877,6 +887,16 @@ before this deposit:** its data statement says the builder of the Fig. S5 tables
 sources of the six PDF figures are not deposited. That was true of the submitted deposit; it is now
 conservative. Changing it is a manuscript edit, left to the next version.
 
+*2026-09-28: that edit is made in `paper/sec_9.tex`. The known-gaps sentence of Sec. IX D now names
+what this file leaves open, each item re-checked in the tree that day: the three rasters of Figs. 4,
+7 and 8 (§5, §13; the six standalone sources were recompiled and are pixel-identical to the
+committed PDFs at 216 dpi, with identical `pdftotext` output); Fig. 5, whose generator emits two
+panels against the committed three (§3; `make_scaling_fig.py --i-know-this-drops-panel-c --out
+<scratch>`); the hand-edited captions of Figs. 3 and 6 (§26, §27); two computation scripts without
+deposited output (§13: `gate1_ladder.py`, `rigor_floor.py`); and `pyscf` / IBM Quantum. It no longer
+lists the Fig. S5 builder, which `check_figures.py` re-runs (19/19), nor six figures without source.
+The `verify.py` coverage gap of Fig. S5 is still stated, in the sentence before.*
+
 ## 30. The L=6 `ibm_fez` run was post-selected in reversed bit order, without configuration recovery -- **FOUND AND DISCLOSED 2026-09-26**
 
 `notebooks/Spectral_Heron.ipynb` (cell 15, the hardware post-processing) turns each measured bitstring into a
@@ -903,6 +923,19 @@ figure. Under the correct reading the noiseless circuits alone already reach the
 counts needed to redo the post-selection are not in the deposit. The notebook is kept as it ran. `verify.py`
 now checks the deposited numbers and refuses the three phrases (`hw.configuration_recovery`, `hw.trex`,
 `hw.proof_of_principle` in `CLAIMS_RETRACTED`).
+
+*2026-09-28: one sentence of Sec. S8 had survived the disclosure. In the very paragraph that
+reports the reversed bit order it still said the run showed "recovery to the correct particle-number
+sector" and that this "is what a proof of principle is". It now says that the steps ran end to end
+(circuits, counts, post-selection to a particle-number and S_z sector, the classical assembly), that
+the post-selection itself was wrong, and that the run establishes nothing about accuracy. Two nearby
+sentences were narrowed the same way: the shot-budget sentence of Sec. S8, which read the recorded
+full coverage as "what the budget predicts" (it now says the prediction is for a correctly read run,
+and that the recorded coverage came from device errors and does not test it), and Sec. IX A, which
+now also says the post-selection was wrong. `verify.py` refuses both phrases in `sm_scope.tex`
+(`hw.sm_scope_proof_of_principle`, `hw.sm_scope_recovery_to_correct`; +2 checks, 874 / 9 891); the
+second is not refused body-wide, because configuration recovery of the `ibm_marrakesh` run does
+restore particle number. `check_trim.py` registers both rewordings in `AUDITADA`.*
 
 The second hardware run (`ibm_marrakesh`, N2) passes the device bit array straight to
 `qiskit_addon_sqd.fermion.diagonalize_fermionic_hamiltonian`, which reads the bits itself; it has no manual

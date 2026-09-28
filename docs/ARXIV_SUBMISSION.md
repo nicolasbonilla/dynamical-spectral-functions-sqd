@@ -14,7 +14,15 @@
 > `build/` is gitignored and the next run of the builder overwrites it, so a copy of the uploaded
 > package and of the filed Comments and abstract is kept outside the repository. The counts in §§2–3
 > below (66 files, 62 pages) are the measurements of 2026-09-19, before the main text was cut to
-> 25 pages and the Supplemental Material split out; they are kept as that record.
+> 26 pages and the Supplemental Material split out; they are kept as that record. *(This note said
+> "25 pages", as does the Comments field filed with v3, until 2026-09-28. Rebuilt from
+> `build/arxiv-v3.tar.gz` on 2026-09-28, the v3 package ends its main text on p. 26 — the end of
+> Sec. X and the acknowledgments — with the references from p. 27. The Comments field quoted below is
+> the filed record and is left as filed.)*
+> Since 2026-09-28 `sm_scope.tex`, `sec_9.tex`, `sec_10.tex` and `bibliography.tex` differ further:
+> the Sec. S8 sentence that still called the `ibm_fez` run a proof of principle, the known-gaps
+> sentence and guardian counts of the data statement, and the Supplemental Material cited as ref.
+> [102] in the APS form (README.md, "`paper/main.pdf` is the v3 manuscript").
 
 > # ⛔ DO NOT UPLOAD `paper/arxiv-submission.tar.gz`
 >

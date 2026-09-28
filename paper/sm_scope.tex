@@ -30,10 +30,13 @@ because the retained subspace spans the whole sector.
 That number is exact \emph{by coverage}, and the distinction is not rhetorical: at
 $|\mathcal S|=\dim$, Rayleigh--Ritz on $\operatorname{span}(\mathcal S)$ \emph{is} diagonalization of
 the full sector, $P_{\mathcal S}HP_{\mathcal S}=H$, and a vanishing error is an identity rather than a
-measurement of device fidelity. The run establishes that the pipeline executes end to end on a
-processor---transpiled circuits, device counts, recovery to the correct particle-number sector, and the
-classical Lehmann assembly of Sec.~\ref{sec:method}---which is what a proof of principle is, and it
-establishes nothing about accuracy at incomplete coverage, the regime the rest of this paper is about.
+measurement of device fidelity. The run establishes only that the steps of the pipeline execute end
+to end on a processor---transpiled circuits, device counts, post-selection to a particle-number and
+$S_z$ sector, and the classical Lehmann assembly of Sec.~\ref{sec:method}. The post-selection itself was
+wrong: it read every bitstring in reversed bit order, so every determinant it kept came from a device
+error, and the run is not evidence that the device sampled the intended distribution. It establishes
+nothing about accuracy, neither at the complete coverage it reached, where agreement is an identity, nor
+at incomplete coverage, the regime the rest of this paper is about.
 The runs are therefore described as \emph{executed on} the named processors, not as demonstrating the method on them, and the coverage qualification applies wherever they are mentioned.
 
 \paragraph{The second run, and a comparison the record cannot decide.} Stretched $\mathrm{N_2}$ ($R=2.0$~\AA,
@@ -82,10 +85,11 @@ at a size where the coverage question is degenerate, and Sec.~\ref{sec:prices} s
 shots: the $3.5\times10^{5}$ spent---seven circuits at $5\times10^{4}$ shots each, pooled into one
 subspace---are $14.4$ times the $(2.43\pm0.34)\times10^{4}$ that Table~\ref{tab:shots} measures for one
 orbital seed and one branch at $L=6$, so complete coverage of a $300$-dimensional sector is what the
-budget predicts rather than a surprise.\footnote{Table~\ref{tab:shots} replicates the repository protocol, $K=18$ with $19$ snapshots,
+budget predicts for a correctly read run, as the noiseless simulation above confirms; the coverage
+this run recorded came from device errors and does not test that prediction.\footnote{Table~\ref{tab:shots} replicates the repository protocol, $K=18$ with $19$ snapshots,
 at $U/t=8$ rather than the $U/t=4$ of the device run; this is a consistency statement between two
 budgets, not an identity.} The first size at which a device run would test the reconstruction rather
-than the pipeline is $L=8$: sector $3\,920$, at $(2.70\pm0.13)\times10^{5}$ shots per orbital seed and
+than only the execution of the pipeline is $L=8$: sector $3\,920$, at $(2.70\pm0.13)\times10^{5}$ shots per orbital seed and
 branch---a factor $1.3$ \emph{below} what was already spent here, so what confined this run to $L=6$
 was not the shot budget. The momentum-resolved observable at that size is a different matter: sixteen
 channels, ${\approx}4\times10^{6}$ shots, an order of magnitude above this job.

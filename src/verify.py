@@ -745,6 +745,23 @@ CLAIMS_RETRACTED = {
         text=r"a proof of principle",
         why="the retained shots of panel (a) are all device errors (reversed bit order); the panel "
             "is an execution record, not a proof of principle of the method."),
+    # 2026-09-28: the same claim stood in Sec. S8, in the paragraph that itself discloses the
+    # reversed bit order: "recovery to the correct particle-number sector ... which is what a
+    # proof of principle is".  The sentence now claims executability only.  Both phrases are
+    # refused in paper/sm_scope.tex; "recovery to the correct" is not refused body-wide,
+    # because configuration recovery of the ibm_marrakesh run does restore particle number.
+    "hw.sm_scope_proof_of_principle": dict(
+        where="paper/sm_scope.tex",
+        text=r"proof of principle",
+        why="Sec. S8 discloses that the L=6 ibm_fez run was post-selected in reversed bit order, so "
+            "every retained determinant is a device error (data/hw_bitorder_check.json); the run "
+            "shows that the steps execute end to end, not a proof of principle of the method."),
+    "hw.sm_scope_recovery_to_correct": dict(
+        where="paper/sm_scope.tex",
+        text=r"recovery to the correct",
+        why="the L=6 ibm_fez run applied no configuration recovery, and its post-selection read the "
+            "bitstrings in reversed bit order (notebooks/Spectral_Heron.ipynb cell 15; "
+            "data/hw_bitorder_check.json: 0 of 350000 noiseless shots kept under that reading)."),
     "fig_scaling2.beyond_classical": dict(
         where="paper/figs/fig_scaling2_native.tex",
         text=r"{beyond-classical}",

@@ -1,0 +1,108 @@
+% =====================================================================================
+%  sm_pra.tex  --  the Supplemental Material as its own PDF, for Physical Review A.
+%  Companion of main_pra.tex; build the two together (see there).
+%
+%  This file carries no text of the paper.  It runs main.tex ITSELF -- the same class and
+%  preamble -- skips everything main.tex sets before the Supplemental Material (the title
+%  block, the abstract, the main-text \input files and bibliography.tex), and from
+%  \input{sm_begin.tex} on runs main.tex's own SM \input list, in its own order.  The SM
+%  therefore opens with the title block of sm_begin.tex, on page 1.
+%
+%  What it adds to main.tex, and nothing else:
+%    * xr-hyper, so that a reference to a main-text item prints as in main.pdf, read from
+%      main_pra.aux (labels only: [nocite]); REVTeX's bookkeeping labels, which both files
+%      define, are dropped from the imported set.
+%    * At sm_begin.tex, the state main.tex carries into its SM is restored from
+%      main_pra.aux: the theorem, proposition and footnote counters, which main.tex does
+%      not reset at the SM ("Proposition 2" stays Proposition 2), and ARSTRUT below.
+%    * A reference list of its own, after a \clearpage as in main.tex: the works the SM
+%      cites and only those, in the order it first cites them.  The order is read from
+%      the \citation records of this file's previous run (sm_pra.aux, which LaTeX writes in
+%      the order the citations are typeset), and every entry is taken, as tokens, from
+%      bibliography.tex at build time.  Nothing is retyped and there is no generated copy.
+%    * Its own PDF title.
+%
+%  ARSTRUT.  revtex4-2 4.2f (revtex4-2.cls, \hline@rule) makes \@arstrut GLOBALLY equal to
+%  \@arstrut@hline -- the taller strut meant for the one row after an \hline -- and the
+%  hook meant to restore it has been emptied by then, so after the first \hline of the
+%  document every later tabular row carries the taller strut.  In main.tex the first
+%  \hline comes in the main text, so every table of the SM is set with it.  A fresh run
+%  would set the SM tables tighter and move every page break after the first of them.
+%  Restoring the state reproduces main.pdf; it does not repair REVTeX.
+% =====================================================================================
+\RequirePackage{xr-hyper}
+\RequirePackage{refcount}
+\makeatletter
+\newif\ifPRA@sm
+\newtoks\PRA@out
+\def\PRA@keys{}
+% the first-citation order, collected while LaTeX reads sm_pra.aux at \begin{document}
+\def\PRA@citation#1{\@for\PRA@k:=#1\do{%
+  \ifcsname PRA@seen@\PRA@k\endcsname\else
+    \global\expandafter\let\csname PRA@seen@\PRA@k\endcsname\@empty
+    \xdef\PRA@keys{\ifx\PRA@keys\@empty\else\PRA@keys,\fi\PRA@k}%
+  \fi}}
+\AddToHook{begindocument/before}{%
+  \externaldocument[][nocite]{main_pra}%
+  \@for\PRA@l:=FirstPage,LastPage,LastBibItem\do{%
+    \global\expandafter\let\csname r@\PRA@l\endcsname\relax}%
+  \let\citation\PRA@citation
+}
+\def\PRA@smbegin{sm_begin.tex}
+\def\PRA@atsm#1{%
+  \global\PRA@smtrue
+  \let\input\PRA@orig@input
+  \setcounterref{theorem}{PRAsplit:theorem}%
+  \setcounterref{proposition}{PRAsplit:proposition}%
+  \setcounterref{footnote}{PRAsplit:footnote}%
+  \ifnum\getrefnumber{PRAsplit:arstrut}=1 \global\let\@arstrut\@arstrut@hline\fi
+  \input{#1}}
+\def\PRA@iinput#1{\def\PRA@tmp{#1}%
+  \ifx\PRA@tmp\PRA@smbegin\expandafter\PRA@atsm\else\expandafter\@gobble\fi{#1}}
+\AddToHook{begindocument/end}{%
+  \let\PRA@orig@input\input
+  \def\input{\@ifnextchar\bgroup\PRA@iinput\@@input}%
+  \let\maketitle\relax
+  \RenewDocumentEnvironment{abstract}{+b}{}{}%
+  \hypersetup{pdftitle={Supplemental Material: Captured weight and boundary leakage bound
+    the error of sample-based spectral functions}}%
+}
+% --- the reference list of the SM ------------------------------------------------------
+% bibliography.tex is read inside a group in which \begin{thebibliography} hands its body
+% to \PRA@grab; each entry is stored, as the tokens that follow its \bibitem{key}, in
+% \PRA@e@<key>.
+\long\def\PRA@grab#1\end{\PRA@split#1\bibitem\PRA@none\end}
+\long\def\PRA@split#1\bibitem#2{%
+  \ifx\PRA@key\@empty\else
+    \expandafter\gdef\csname PRA@e@\PRA@key\endcsname{#1}\fi
+  \def\PRA@key{#2}%
+  \ifx\PRA@key\PRA@nonemark\expandafter\@gobble\else\expandafter\@firstofone\fi
+  {\PRA@split}}
+\def\PRA@nonemark{\PRA@none}
+\def\PRA@smbib{%
+  \ifPRA@sm
+    \begingroup
+      \def\PRA@key{}%
+      \def\thebibliography##1{\PRA@grab}%
+      \let\endthebibliography\relax
+      \PRA@orig@input{bibliography.tex}%
+    \endgroup
+    \global\PRA@out{}%
+    \@for\PRA@k:=\PRA@keys\do{%
+      \ifcsname PRA@e@\PRA@k\endcsname
+        \global\PRA@out\expandafter{\the\expandafter\PRA@out
+          \expandafter\PRA@item\expandafter{\PRA@k}}%
+      \fi}%
+    \edef\PRA@tmp{\the\PRA@out}%
+    \ifx\PRA@tmp\@empty
+      \@latex@warning@no@line{sm_pra: no citation order yet -- rerun to get the
+        reference list}%
+    \else
+      \clearpage
+      \begin{thebibliography}{99}\the\PRA@out\end{thebibliography}%
+    \fi
+  \fi}
+\def\PRA@item#1{\bibitem{#1}\csname PRA@e@#1\endcsname}
+\AddToHook{enddocument}{\PRA@smbib}
+\makeatother
+\input{main.tex}

@@ -1,11 +1,11 @@
 # Reproducibility Makefile.  Requires: a TeX distribution (pdflatex) + `pip install -r requirements.txt`.
-# Usage:  make verify | make figures | make paper | make all | make clean
+# Usage:  make verify | make figures | make paper | make pra | make all | make clean
 
 PYTHON ?= python
 LATEX  ?= pdflatex
 PAPER  := paper/main
 
-.PHONY: all ci verify check-figures check-coherence figures data paper clean help
+.PHONY: all ci verify check-figures check-coherence figures data paper pra clean help
 
 help:
 	@echo "make verify        - adversarial guardian: recompute the physics, then check every"
@@ -20,6 +20,9 @@ help:
 	@echo "make ci            - what .github/workflows/ci.yml runs: verify + check-figures"
 	@echo "                     + check-coherence"
 	@echo "make paper         - compile paper/main.tex -> paper/main.pdf"
+	@echo "make pra           - the Physical Review A split: paper/main_pra.pdf (main text and"
+	@echo "                     references) and paper/sm_pra.pdf (the SM), built and checked"
+	@echo "                     page by page against paper/main.pdf (run make paper first)"
 	@echo "make all           - figures + paper"
 	@echo "make reproduce     - execute notebooks/00_Reproduce_Everything.ipynb, the v1-v2"
 	@echo "                     narrated pipeline kept as a record (needs pyscf; NOT the v3"
@@ -98,6 +101,18 @@ paper:
 	cd paper && $(LATEX) -interaction=nonstopmode main.tex >/dev/null && \
 	            $(LATEX) -interaction=nonstopmode main.tex >/dev/null
 	@echo "OK: paper/main.pdf built."
+
+# ---- the two files Physical Review A takes, split from the SAME document (added 2026-09-28) ----
+# paper/main_pra.tex and paper/sm_pra.tex run main.tex itself and hold no text of the paper.
+# pra_split.py builds both in a temporary copy of paper/ (it writes only the two PDFs into paper/)
+# and exits non-zero unless: 0 errors, 0 undefined or multiply defined labels and citations, no
+# overfull box or warning the main.tex build does not have, the SM reference list = the SM's
+# citations, the APS reference to the SM names exactly the works cited only in the SM, and every
+# page of paper/main.pdf is in exactly one of the two PDFs.  It compares against the paper/main.pdf
+# that is in the tree, which is why it depends on `paper`.  Needs pdftotext, pdftoppm, Pillow and an
+# xr-hyper of 2023 or later (the [nocite] option).
+pra: paper
+	$(PYTHON) paper/pra_split.py --build
 
 all: figures paper
 

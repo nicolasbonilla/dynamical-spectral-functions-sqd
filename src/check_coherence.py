@@ -274,7 +274,9 @@ def build_checks(txt):
          # every time.  When it fires, do not edit it by hand first -- run
          # scratchpad/propaga_cuentas.py, which re-runs verify.py and rewrites the eight
          # places that quote the total, and then bring this line to match.
-         (r"\$872\$ checks over \$9\\,889\$ numeric assertions", 1),
+         # 2026-09-28: 872 / 9,889 -> 874 / 9,891, two phrase guards added to verify.py
+         # (hw.sm_scope_*, CLAIMS_RETRACTED).
+         (r"\$874\$ checks over \$9\\,891\$ numeric assertions", 1),
          # The forbidden phrase used to be the bare "four known open defects", which was
          # unambiguous while the live sentence read "five".  On 2026-09-21 the live
          # sentence became "four known open defects, and two declared gaps in its own

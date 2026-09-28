@@ -461,6 +461,20 @@ AUDITADA = [
     ("What is guaranteed in advance is narrower and survives intact", "the second does not imply the first"),
     ("Its three largest fractions lie above the support floor", "for the local seed does not apply to it"),
     ("whose column MATH is the one whose absence from Table", "-electron dimension; the"),
+    # 2026-09-28, audited by hand against the committed records:
+    #  - Sec. S8 claimed "recovery to the correct particle-number sector ... which is what a
+    #    proof of principle is" for the L=6 ibm_fez run, in the paragraph that discloses its
+    #    reversed bit order (data/hw_bitorder_check.json: 0 of 350000 noiseless shots kept).
+    #    The sentence was an OVERCLAIM, not a concession; it now claims executability only,
+    #    says the post-selection was wrong, and keeps "establishes nothing about accuracy".
+    #    verify.py refuses both phrases in sm_scope.tex (hw.sm_scope_*).
+    #  - the known-gaps sentence of the data statement listed two gaps that the deposit of
+    #    2026-09-26 closed (the six standalone figure sources, the builder of the Fig. S5
+    #    tables: docs/KNOWN_DISCREPANCIES.md Sec. 5, 29) and "three" scripts without output
+    #    where Sec. 13 now leaves two.  It now names what is still open, which is more, not
+    #    less: the three rasters, the hand-completed Fig. 5 and two hand-edited captions.
+    ("which is what a proof of principle is",  "It establishes nothing about accuracy, neither at the complete coverage it reached"),
+    ("six of the seventeen figures enter as PDF with no standalone", "are deposited as rendered and cannot be regenerated from the deposit"),
 ]
 
 

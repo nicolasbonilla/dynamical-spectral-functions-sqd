@@ -169,9 +169,9 @@ Fig.~\ref{fig:circ}. The post-selection, moreover, read each bitstring in revers
 reflects the chain and exchanges the two spin species: under that reading none of the $3.5\times10^{5}$
 shots of a noiseless simulation of the same seven circuits is retained, against all of them under the
 correct reading, so every one of the $300$ retained determinants arose from a device error
-(\texttt{src/hw\_bitorder\_check.py}). The run therefore establishes that the pipeline executes end to
-end on a processor, not that the device sampled the intended distribution, and nothing about accuracy
-at incomplete coverage. The second, stretched $\mathrm{N_2}$ at $24$ qubits on
+(\texttt{src/hw\_bitorder\_check.py}). The run therefore establishes only that the steps of the pipeline
+execute end to end on a processor, with a post-selection that was itself wrong, not that the device
+sampled the intended distribution, and nothing about accuracy at complete or incomplete coverage. The second, stretched $\mathrm{N_2}$ at $24$ qubits on
 \texttt{ibm\_marrakesh}, reaches $0.59\pm0.14$~mHa of the exact active-space energy after recovery,
 below the $29.5$~mHa of the noiseless simulation of the same circuit (Fig.~\ref{fig:heron}(b)). The
 record does not store the recovered subspace sizes on which that comparison turns, so it cannot say
@@ -252,7 +252,11 @@ that bound (Sec.~\ref{sec:nogo}); and three measured prices---support, resolutio
 %  from job.result().  See docs/DATA_AVAILABILITY.md Part 3, items 1 and 2.
 %
 %  Every sentence was re-checked against the deposit of 2026-09-19:
-%    831 / 9846 / 6   -- CURRENT reading, python src/verify.py on this tree, 2026-09-21:
+%    874 / 9891 / 5   -- CURRENT reading, python src/verify.py on this tree, 2026-09-28:
+%                        pass 874, FAIL 0, xfail 5, xpass 0, skip 2, 9891 numeric assertions
+%                        (+2 over 872 / 9889: the two Sec. S8 phrase guards).  The five are
+%                        four known open defects and one declared coverage gap, as printed.
+%    831 / 9846 / 6   -- SUPERSEDED reading, python src/verify.py on this tree, 2026-09-21:
 %                        pass 831, FAIL 0, xfail 6, xpass 0, skip 2, 9846 numeric assertions.
 %                        The SIX are four known open defects plus two declared coverage gaps;
 %                        the body says exactly that, and names both gaps.  The second gap was
@@ -304,6 +308,34 @@ that bound (Sec.~\ref{sec:nogo}); and three measured prices---support, resolutio
 %                        only figure in this version that plots no deposited data.
 %    six of seventeen -- figs/*.pdf used by the current build: fig_akw_native,
 %                        fig_circuit, fig_hero, fig_noise_score, fig_spinqw, fig_sqw.
+%                        SUPERSEDED 2026-09-28 as a GAP: their six standalone sources are in
+%                        paper/figs/src/ (deposited 2026-09-26, docs/KNOWN_DISCREPANCIES.md
+%                        Sec. 5 and 29).  Re-measured 2026-09-28: all six compile with pdflatex
+%                        and render pixel-identically to the committed PDFs at 216 dpi (pdftoppm),
+%                        with identical pdftotext output.  What stays open is the three rasters
+%                        (akw_field_v2.png, sqw_field.png, spinqw_field.png): deposited as
+%                        rendered, not regenerable -- recolor_akw_v2.py's viridis input is absent,
+%                        the recolouring of sqw_field.png is not deposited (sqw_field.py writes
+%                        viridis), and no script in src/ names spinqw_field.png.
+%    KNOWN GAPS, rewritten 2026-09-28 against docs/KNOWN_DISCREPANCIES.md as it stands,
+%    each item re-checked in the tree that day:
+%      * rasters of fig:lattice, fig:sqw, fig:spin -- see the line above (Sec. 5, 13).
+%      * fig:scaling -- `python src/make_scaling_fig.py --i-know-this-drops-panel-c --out
+%        <scratch>` writes 2 axis environments; the committed fragment has 3 (Sec. 3).
+%      * captions -- fig5_caption.tex (printed) differs from the generator's
+%        fig_akw_sampled_honest_caption.tex in its last sentences (Sec. 26); the caption that
+%        src/recovered/make_fig_gapscaling.py writes to build/ differs from the committed
+%        fig_gapscaling_caption.tex in 22 diff lines (Sec. 27, 29).
+%      * "two deposited computation scripts have no deposited output" -- gate1_ladder.py and
+%        rigor_floor.py (data/gate1_ladder.json, data/rigor_floor.json absent).  The third
+%        script of Sec. 13, recolor_akw_v2.py, now has its hot raster deposited in
+%        paper/figs/src/ and fails only for lack of its input, which the raster clause covers;
+%        the sentence said "three" until 2026-09-28.
+%      * CLOSED and dropped from the sentence: the builder of the Fig. S5 tables.
+%        src/recovered/build_n3.py + data/thm1iii_violation/ regenerate all ten n3_*.dat
+%        byte-for-byte; src/check_figures.py re-runs it on every call (19/19 PASS, 2026-09-28).
+%        verify.py's declared coverage gap for that figure is a different item and is still
+%        stated in the previous paragraph.
 %    Sec. 9.4 not "Fig. 18" -- fig:gflow and fig:amort are withdrawn in this version.
 %  No figure number is hard-coded here: both figures are reached through \ref.
 %
@@ -323,6 +355,9 @@ that bound (Sec.~\ref{sec:nogo}); and three measured prices---support, resolutio
 %      and it is in this statement, in the known-gaps sentence, where it belongs: the ratios
 %      Fig. 17 PLOTS are the deposited n3_*.dat tables.  What is missing is what BUILT them.
 %      That is a regenerability gap, not a deposit gap, and the guardian registers it.
+%      (2026-09-28: no longer true -- the builder and its inputs were deposited on 2026-09-26
+%      and regenerate the tables byte-for-byte, so the clause left the known-gaps sentence;
+%      see KNOWN GAPS above.)
 %
 % ---------------------------------------------------------------------------------
 \subsection{Data availability statement}
@@ -342,7 +377,7 @@ the resource statistics---are additionally \emph{regenerable}: the computation s
 them are deposited in \texttt{src/}, and \texttt{docs/REPRODUCE.md} gives the reproduction commands
 together with a measured table of what a clean clone does and does not reach. An automated guardian
 (\texttt{python src/verify.py}) recomputes the underlying physics by exact diagonalization and checks
-the deposited artefacts against it---$872$ checks over $9\,889$ numeric assertions, exiting non-zero on
+the deposited artefacts against it---$874$ checks over $9\,891$ numeric assertions, exiting non-zero on
 any discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in
 the tables and in the abstract; it is not a proof that every sentence of this manuscript is verified,
 and five items are printed by name on every run: four known open defects, and one declared gap in its own coverage, the source of Fig.~\ref{fig:thm1iii-violation}.
@@ -356,9 +391,13 @@ retrievable, so the classical post-processing of the raw counts cannot be re-run
 files alone. The hardware runs themselves cannot be regenerated in any case---the jobs are closed, and
 a device executed today has a different calibration, so new counts would be new data rather than a
 reproduction. The dequantization control of Sec.~\ref{app:dequant} is regenerated seed by seed by \texttt{src/gflow\_dequant.py}, which needs \texttt{pyscf} and \texttt{torch} and writes \texttt{data/gflow.json}. The $L=14$ ground-state checkpoint ($94$~MB), on which the largest vacuity factor and the $L=14$ support count rest, is deposited in \texttt{ckpt/} with its SHA-256 checksums. Known gaps between the deposited code and the
-deposited artefacts---six of the seventeen figures enter as PDF with no standalone \LaTeX{} source in
-the deposit, the tables plotted in Fig.~\ref{fig:thm1iii-violation} are deposited but the script that
-builds them is not, three deposited computation scripts have no deposited output, and parts of the
-pipeline require \texttt{pyscf} or an IBM~Quantum account---are enumerated in
-\texttt{docs/KNOWN\_DISCREPANCIES.md}.
+deposited artefacts are enumerated in \texttt{docs/KNOWN\_DISCREPANCIES.md}, and those still open are
+these: the standalone \LaTeX{} sources of the six figures that enter as PDF are deposited, but the
+rasters embedded in three of them, Figs.~\ref{fig:lattice}, \ref{fig:sqw} and~\ref{fig:spin}, are
+deposited as rendered and cannot be regenerated from the deposit; the deposited generator of
+Fig.~\ref{fig:scaling} emits a two-panel version of it, the third panel having been added by hand, and
+the captions of Figs.~\ref{fig:akwsampled} and~\ref{fig:gapscaling} were edited by hand after
+generation, so none of these three is reproduced as printed by its generator; two deposited computation
+scripts have no deposited output; and parts of the pipeline require \texttt{pyscf} or an IBM~Quantum
+account.
 

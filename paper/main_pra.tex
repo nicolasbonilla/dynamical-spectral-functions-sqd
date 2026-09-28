@@ -1,0 +1,46 @@
+% =====================================================================================
+%  main_pra.tex  --  the main text and its references as their own PDF, for Physical
+%  Review A, which takes the Supplemental Material as a separate file (sm_pra.tex).
+%
+%  This file carries no text of the paper.  It runs main.tex ITSELF -- the same class,
+%  the same preamble, the same \input files in the same order -- and ends the document at
+%  the point where main.tex opens the Supplemental Material (\input{sm_begin.tex}), that
+%  is, right after \input{bibliography.tex}.  So it cannot drift from main.tex, and the
+%  guardians, which read every paper/*.tex, find no second copy of any sentence here.
+%
+%  What it adds to main.tex, and nothing else:
+%    * xr-hyper, so that a reference to an SM item prints as in main.pdf ("Sec. S3",
+%      "Fig. S2", "Eq. (S12)"), read from sm_pra.aux.  [nocite]: the labels of the SM
+%      are imported, its citations are not (each file numbers its own reference list).
+%      xr-hyper has to be loaded before hyperref, hence before the class here.
+%    * REVTeX's own bookkeeping labels (FirstPage, LastPage, LastBibItem) are defined by
+%      both files; the imported copies are dropped, so no label is multiply defined.
+%    * At the stop, four values are written to main_pra.aux for sm_pra.tex: the theorem,
+%      proposition and footnote counters (main.tex does not reset them at the SM), and
+%      the REVTeX table-strut state (see sm_pra.tex, ARSTRUT).
+%
+%  Build (no BibTeX; the bibliography is hand-written), from paper/:
+%      pdflatex main_pra ; pdflatex sm_pra ; repeat both until neither asks for a rerun
+%  or, with the checks against main.pdf:   python paper/pra_split.py --build
+% =====================================================================================
+\RequirePackage{xr-hyper}
+\makeatletter
+\AddToHook{begindocument/before}{%
+  \externaldocument[][nocite]{sm_pra}%
+  \@for\PRA@l:=FirstPage,LastPage,LastBibItem\do{%
+    \global\expandafter\let\csname r@\PRA@l\endcsname\relax}%
+}
+\def\PRA@smbegin{sm_begin.tex}
+\def\PRA@export#1{%
+  \immediate\write\@auxout{\string\newlabel{PRAsplit:#1}{{\the\value{#1}}{}{}{}{}}}}
+\def\PRA@stop#1{%
+  \PRA@export{theorem}\PRA@export{proposition}\PRA@export{footnote}%
+  \immediate\write\@auxout{\string\newlabel{PRAsplit:arstrut}%
+    {{\ifx\@arstrut\@arstrut@hline 1\else 0\fi}{}{}{}{}}}%
+  \end{document}}
+\def\PRA@iinput#1{\def\PRA@tmp{#1}%
+  \ifx\PRA@tmp\PRA@smbegin\expandafter\PRA@stop\else\expandafter\@iinput\fi{#1}}
+\AddToHook{begindocument/end}{%
+  \def\input{\@ifnextchar\bgroup\PRA@iinput\@@input}}
+\makeatother
+\input{main.tex}

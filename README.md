@@ -133,6 +133,9 @@ noise helps. The `ibm_fez` run says nothing about accuracy at incomplete coverag
 │   ├── figs/                  #   11 native fragments, 6 figure PDFs, 19 plotted .dat tables, captions
 │   │   └── src/               #   the standalone sources of the 6 figure PDFs (deposited 2026-09-26)
 │   ├── main.pdf               #   the compiled preprint (66 pp)
+│   ├── main_pra.tex, sm_pra.tex#  the Physical Review A split: main text + references, and the SM on its own
+│   ├── main_pra.pdf, sm_pra.pdf#  their builds (31 pp and 38 pp), made by pra_split.py
+│   ├── pra_split.py           #   builds the two drivers and checks them page by page against main.pdf
 │   └── arxiv-submission.tar.gz#   the FROZEN arXiv v2 bundle — a record, never a source
 ├── _superseded/               # the v2-era manuscript, the five figures v3 withdrew and the v1 README thumbnails, kept for the trail
 ├── docs/
@@ -146,7 +149,7 @@ noise helps. The `ibm_fez` run says nothing about accuracy at incomplete coverag
 │   └── img/                   #   README thumbnails, rendered from the v3 figures by make_thumbnails.py
 ├── .github/workflows/ci.yml   # CI: `make verify`, `make check-figures` and `make check-coherence` on every push
 ├── requirements.txt           # Python dependencies
-├── Makefile                   # `make verify`, `make check-figures`, `make figures`, `make paper`, `make ci`
+├── Makefile                   # `make verify`, `make check-figures`, `make figures`, `make paper`, `make pra`, `make ci`
 ├── CITATION.cff               # citation metadata
 ├── .zenodo.json               # Zenodo deposit metadata
 └── LICENSE                    # MIT (code) + CC-BY-4.0 (paper text, figures and data)
@@ -182,7 +185,26 @@ python src/make_decoupling_native.py    # -> paper/figs/fig_decoupling_native.te
 
 # 5. build the paper (needs a TeX distribution with REVTeX 4.2 and pgfplots ≥ 1.18)
 make paper                              # -> paper/main.pdf
+
+# 6. the two files Physical Review A takes (after step 5: it checks them against paper/main.pdf)
+python paper/pra_split.py --build       # or: make pra  -> paper/main_pra.pdf, paper/sm_pra.pdf
 ```
+
+**The Physical Review A split.** `paper/main.tex` builds the main text, the references and the
+Supplemental Material as one document — the arXiv form. PRA takes the Supplemental Material as a
+separate file, so two drivers in `paper/` split that same document without copying any of it:
+`main_pra.tex` runs `main.tex` and stops where the SM begins (main text and full reference list,
+31 pp.), and `sm_pra.tex` runs `main.tex`, skips to the SM and ends with a reference list of only the
+works the SM cites (38 pp.: 35 of SM, 3 of references). Cross-references between the two print as in
+`main.pdf` ("Sec. S3", "Fig. 9") through `xr-hyper`, whose `[nocite]` option needs an `xr-hyper` of 2023
+or later. `python paper/pra_split.py --build` builds both in a temporary copy of `paper/` (it writes
+only the two PDFs into `paper/`) and checks them: 0 errors, 0 undefined or multiply defined labels and
+citations, no overfull box or warning that the `main.tex` build does not have, the SM reference list
+against the SM's citations, the APS form of the Supplemental Material reference (ref. [102] of the main
+list, "See Supplemental Material at [URL will be inserted by publisher] …, which includes Refs.
+[103–140]", the works cited only in the SM), and every page of `paper/main.pdf` in exactly one of the
+two PDFs — pixel-identical below the page number for the main text, identical up to citation numbers
+for the SM. Build `paper/main.pdf` first: that is the PDF the pages are compared against.
 
 **How v3 was built and submitted:** see **[`docs/ARXIV_SUBMISSION.md`](docs/ARXIV_SUBMISSION.md)** (v3 was
 submitted on 2026-09-25 from a package built by `src/build_arxiv_bundle.py`, and is scheduled to
@@ -200,7 +222,7 @@ and see [`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md) §7.
 
 | Layer | Reproducible here? | How |
 |---|---|---|
-| **The guardian** | ✅ **PASS** — 872 checks, 0 failures, 9 889 numeric assertions, 5 xfail, 0 xpass, 2 skips *(re-measured 2026-09-26 after the hardware bit-order check was added: 872 pass, 0 fail, 9 889 assertions, 5 xfail, 2 skips, ~30 s)* | `python src/verify.py` (or `make verify`) |
+| **The guardian** | ✅ **PASS** — 874 checks, 0 failures, 9 891 numeric assertions, 5 xfail, 0 xpass, 2 skips *(re-measured 2026-09-28 after two phrase guards on Sec. S8 were added: 874 pass, 0 fail, 9 891 assertions, 5 xfail, 2 skips; 872 / 9 889 on 2026-09-26, after the hardware bit-order check)* | `python src/verify.py` (or `make verify`) |
 | **The documentation** | ✅ **PASS** — derived from `paper/main.tex`: 60 source files, 34 floats, 17 figures, 17 tables *(2026-09-26)* | `python src/check_provenance.py` |
 | **Manuscript coherence** | ✅ **PASS** — 10 cross-section claims, 20 synthetic controls, all 20 fire *(2026-09-19)*. New that day, because the other three guardians were green while seven sections contradicted each other: they compare a printed number against a deposited file, not a claim against a claim | `python src/check_coherence.py` |
 | **The figure generators** | ✅ **PASS on 19 artefacts from 8 generators** *(2026-09-26)* — the six of 2026-09-19 and the two recovered that day into `src/recovered/`; one provenance-timestamp comment line of the Fig. 6 fragment is normalised, and the run says so. Measured with four negative controls in `KNOWN_DISCREPANCIES.md` §29. (Until 2026-09-19 one of the first eight artefacts was compared with a copy of itself; §25.) | `python src/check_figures.py` |
@@ -211,15 +233,25 @@ and see [`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md) §7.
 | **Figures** | ⚠️ **8 of 17 are guarded by regeneration**, two of them only in part: Figs. 2, 3, 9, S2, S3 and S8 byte-for-byte; Fig. 6 byte-for-byte after one provenance-timestamp comment line is normalised; Fig. S5 in its ten `.dat` tables only (the fragment's whisker literals and its ratios are not guarded, `verify.py`'s declared coverage gap). Nine are not guarded: four have no deposited generator (Figs. 1, S1, S4, 5), and five ship as a PDF (Figs. 4, 7, 8, S6, S7). The standalone sources of all six PDF figures (Fig. 1 included) are deposited since 2026-09-26 and recompile pixel-identically, but no script guards them, and none of the three rasters they embed can be regenerated here: the viridis input of `src/recolor_akw_v2.py` (which writes `akw_field_v2.png`) is not deposited, the step that recoloured `sqw_field.png` is not deposited, and no deposited script writes `spinqw_field.png`. *(Until 2026-09-26: 6 of 17, and the generators of Figs. 6 and S5 were not in the tree.)* | inventory in [`docs/FIGURE_PROVENANCE.md`](docs/FIGURE_PROVENANCE.md) |
 | **IBM Heron hardware runs** | ⚠️ needs an IBM Quantum account, and the jobs are closed | `notebooks/` (tokens scrubbed; **no raw counts are deposited**) |
 
-> **`paper/main.pdf` is the v3 manuscript** as recompiled on 2026-09-26: 66 pages, one column, a 25-page
-> main text followed by the Supplemental Material. The build log shows 0 errors, 0 undefined references
-> or citations and 0 overfull `\hbox` (two overfull `\vbox`, of 5.8 pt and 12.1 pt). It differs from the
-> source package submitted to arXiv as v3 in three later edits: the Zenodo DOI in the
-> data-availability statement and in the repository reference (which now carries the current title),
-> the sentence noting that the L=14 checkpoint is deposited, and the disclosure of 2026-09-26 that the
-> L=6 `ibm_fez` run was post-selected in reversed bit order, without configuration recovery or
-> readout-error mitigation (Secs. IX A and S8, Table I, the caption of Fig. 9;
-> `docs/KNOWN_DISCREPANCIES.md` §30). Run `make paper` after any further source edit.
+> **`paper/main.pdf` is the v3 manuscript** as recompiled on 2026-09-28: 66 pages, one column, a 26-page
+> main text (p. 26 holds the end of Sec. X and the acknowledgments), the reference list on pp. 27–31,
+> then the Supplemental Material from p. 32. *(This file said "a 25-page main text" until 2026-09-28, and
+> so does the Comments field filed with arXiv v3, which is kept as that record; the v3 package itself,
+> rebuilt from `build/arxiv-v3.tar.gz`, also ends its main text on p. 26.)* The build log shows 0 errors,
+> 0 undefined references or citations and 0 overfull `\hbox` (two overfull `\vbox`, of 5.8 pt and
+> 12.1 pt). It differs from the source package submitted to arXiv as v3 in these later edits: the
+> Zenodo DOI in the data-availability statement and in the repository reference (which now carries the
+> current title), the sentence noting that the L=14 checkpoint is deposited, and the disclosure of
+> 2026-09-26 that the L=6 `ibm_fez` run was post-selected in reversed bit order, without configuration
+> recovery or readout-error mitigation (Secs. IX A and S8, Table I, the caption of Fig. 9;
+> `docs/KNOWN_DISCREPANCIES.md` §30); and, on 2026-09-28, the sentence of Sec. S8 that still called
+> that run a proof of principle with "recovery to the correct particle-number sector" (it now claims
+> only that the steps executed, with a post-selection that was itself wrong), the known-gaps sentence of
+> the data-availability statement (it now names what is still open, `KNOWN_DISCREPANCIES.md` §5, §13,
+> §29), the guardian counts it quotes (874 / 9 891), and the Supplemental Material cited as a reference
+> in the APS form (ref. [102], cited at the end of Sec. X; it takes the next number after the main
+> text's last reference, so no main-text reference was renumbered, and the 38 works cited only in the SM
+> moved from [102–139] to [103–140]). Run `make paper` after any further source edit, then `make pra`.
 >
 > **CI.** `.github/workflows/ci.yml` runs `make verify` and `make check-figures` on every push, and has
 > done so since 2026-09-19 (see the Actions tab). `make check-coherence` was added as a third job on
