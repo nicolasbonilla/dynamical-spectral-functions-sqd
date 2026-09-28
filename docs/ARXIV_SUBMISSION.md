@@ -1,6 +1,6 @@
 # arXiv submission — the **v3** source package
 
-**Status (2026-09-26): v3 was submitted on 2026-09-25 from `build/arxiv-v3.tar.gz` (sha256 be20bc64a52d5eb0c535c882e50c9ef71f54655693ecdc4d311b5f333f00de66), 66 pages; it is queued and is scheduled to announce on 2026-09-28. The steps below are the record of how it was built.**
+**Status (2026-09-26): v3 was submitted on 2026-09-25 from `build/arxiv-v3.tar.gz` (sha256 be20bc64a52d5eb0c535c882e50c9ef71f54655693ecdc4d311b5f333f00de66), 66 pages; it was announced on 2026-09-28 (arxiv.org/abs/2608.16436 lists v1, v2 and v3 under the new title, checked 02:19 UTC). The steps below are the record of how it was built.**
 
 > *What was uploaded, measured 2026-09-26 from that tarball:* **76 files** — 60 `.tex`, 10 `.dat`,
 > 6 `.pdf` — 2 556 509 bytes uncompressed, 2 066 193 gzipped, built at the tree of commit `12a4324`
@@ -287,8 +287,9 @@ The Comments field as filed for v3 on 2026-09-25 (397 characters, from `build/ar
    build of 2026-09-19 this list was written for), and the last main-text page must read
    `X. CONCLUSION` with no stray build note above it.
 6. Update the abstract and the Comments field; keep CC BY 4.0.
-7. After announcement, update the badge and `CITATION.cff` with the v3 date. — **pending, 2026-09-28**
-   (v3 is queued; until the announcement arxiv.org/abs/2608.16436 still shows v2 under the old title).
+7. After announcement, update the badge and `CITATION.cff` with the v3 date. — **2026-09-28: announced.** The
+   arXiv badge links to the version-free abs page and needs no change; `CITATION.cff` (`version`,
+   `date-released`) describes the software release and is bumped with the next tagged release.
 
 ---
 

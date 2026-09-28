@@ -207,8 +207,8 @@ two PDFs — pixel-identical below the page number for the main text, identical 
 for the SM. Build `paper/main.pdf` first: that is the PDF the pages are compared against.
 
 **How v3 was built and submitted:** see **[`docs/ARXIV_SUBMISSION.md`](docs/ARXIV_SUBMISSION.md)** (v3 was
-submitted on 2026-09-25 from a package built by `src/build_arxiv_bundle.py`, and is scheduled to
-announce on 2026-09-28). **`paper/arxiv-submission.tar.gz` is the frozen snapshot of what was posted as
+submitted on 2026-09-25 from a package built by `src/build_arxiv_bundle.py`, and was announced on
+2026-09-28). **`paper/arxiv-submission.tar.gz` is the frozen snapshot of what was posted as
 v2 and must never be re-uploaded**: 17 files in `paper/` have since moved ahead of it, 21 of its files
 no longer exist in `paper/`, and the bundle still contains the two fabricated rows of `figs/sqw_edges.dat` and the
 seven v2 body files the v3 sections replace. Run `python src/check_tarball.py` for the live comparison,
