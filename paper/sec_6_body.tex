@@ -1,5 +1,9 @@
 % =============================================================================
 %  Sec. 6 -- No shortcut to the boundary: the obstruction and its witness
+%  2026-09-30 (reader-value reframe): the section states its three results after the question;
+%  Sec. 6.2 opens with the geminal symmetry that obstructs the operative quantities and keeps the
+%  raw-support continuity argument as the paragraph that precedes the cost side; tau points to
+%  Eq. eq:tau.  No number, limit or attribution removed.
 %  Replaces paper/resource.tex.  Promotes the geminal witness (Thm.~\ref{thm:witness})
 %  and Fig.~\ref{fig:witness} out of Appendix B into the body.
 %
@@ -50,7 +54,11 @@ monotones of fermionic non-Gaussianity, efficiently measurable from two-point fu
 Eq.~\eqref{eq:twobudget}: not for the static determinant support $|\mathcal S|_{\varepsilon_w}$ of the
 ground state that the shots must populate, and not for the leakage $\Lambda_S(\eta)/\eta$ of the
 coordinate subspace the sampler returned. What replaces the predictor is the measured map of
-Sec.~\ref{sec:frontier}.
+Sec.~\ref{sec:frontier}. Three results establish this. On number-conserving states the one-body
+antiflatness is a single invariant of the one-particle density matrix (Eq.~\eqref{eq:collapse}); a
+geminal family carries antiflatness of every order at bond dimension $2$ (Theorem~\ref{thm:witness});
+and on fibers on which every invariant is frozen the subspace-aware certificate still separates, so
+the leakage bound that invariants do supply is vacuous there (Proposition~\ref{prop:leakinv}).
 
 \subsection{The collapse: one-body magic is a single 1-RDM invariant}
 \label{sec:nogo:collapse}
@@ -67,8 +75,9 @@ with $\Gamma$ the $4n_{\rm o}\times4n_{\rm o}$ Majorana covariance matrix, $\{\l
 moduli of its eigenvalue pairs $\pm i\lambda_j$, and $2n_{\rm o}$ the number of spin-orbital \emph{modes}
 (twice the spatial-orbital count), distinct from the electron number of the $(N\pm1)$ sectors. Each
 $\mathcal F_k$ vanishes if and only if the state is Gaussian and is invariant under Gaussian
-(free-fermion) unitaries by construction~\cite{sierant2026}; the index $k$ is a hierarchy of correlator
-orders, efficiently measurable from two-point functions~\cite{sierant2026,bittel2025,tarabunga2026}.
+(free-fermion) unitaries by construction~\cite{sierant2026}; the index $k$ is the replica (moment) order
+of $\mathrm{tr}[(\Gamma^{\top}\Gamma)^k]$, and every $\mathcal F_k$ is efficiently measurable from
+two-point functions~\cite{sierant2026,bittel2025,tarabunga2026}.
 
 On the number-conserving states of electronic structure the anomalous correlators $\langle c_ic_j\rangle$
 vanish, so $\Gamma$ is fixed by the one-particle reduced density matrix $\gamma$ and its singular values
@@ -84,22 +93,19 @@ reduces to a single 1-RDM invariant,
 exact on any number-conserving state and verified state by state to $10^{-13}$ on the $38$ molecular
 ground states of this work. For spin-restricted natural orbitals it equals $2N_{\mathrm u}$, the
 effectively-unpaired-electron index~\cite{takatsuka1978,staroverov2000}, and
-$\mathrm{tr}[\gamma(1-\gamma)]$ is the one-body-entanglement linear entropy~\cite{gigena2020}. The
+$\mathrm{tr}[\gamma(1-\gamma)]$ is one quarter of the one-body quadratic (linear)
+entropy~\cite{gigena2015}, a trace-form one-body entanglement entropy~\cite{gigena2020}. The
 algebra is an immediate number-conserving specialization of the antiflatness of
-Ref.~\cite{sierant2026}, noted independently for interacting-integrable eigenstates~\cite{swietek2026};
-what we carry forward is its consequence. Being a function of the occupation spectrum alone,
+Ref.~\cite{sierant2026}, noted independently for fixed-particle-number states in a study of
+interacting integrable models~\cite{swietek2026}. Being a function of the occupation spectrum alone,
 $\mathcal F_1$ is invariant under orbital rotations (the spin-polarized cases and the dictionary are in
 Sec.~\ref{sm:nogo}).
 
 \subsection{The geminal witness, and what an invariant cannot certify}
 \label{sec:nogo:witness}
 
-The obstruction is not a continuity artifact. For the \emph{raw} determinant support---the unthresholded
-Slater rank---no continuous functional of a fixed set of reduced density matrices can lower-bound the
-count at all, rank being coefficient-insensitive and not lower-semicontinuous, like the CP tensor
-rank~\cite{desilvalim2008}; that argument (Sec.~\ref{app:theorem}) does \emph{not} transfer to the
-operative, coefficient-\emph{sensitive} $|\mathcal S|_{\varepsilon_w}$, which collapses to $1$ along the same
-path as the functionals. What obstructs the operative quantities is a symmetry, exhibited by a family
+What obstructs the operative quantities---the thresholded support $|\mathcal S|_{\varepsilon_w}$ and
+the leakage---is a symmetry, exhibited by a family
 whose amplitudes are $\Theta(1)$ and therefore threshold-robust: an antisymmetrized product of $K$
 strongly orthogonal singlet geminals (perfect-pairing / generalized-valence-bond),
 \begin{equation}
@@ -120,19 +126,24 @@ At maximal pairing $\theta=\pi/4$ the family \eqref{eq:apsg} satisfies, exactly,
 \end{widetext}
 with $\mathcal F_{1,2}$ the order-$1$ and order-$2$ antiflatness of Eq.~\eqref{eq:faf},
 $|\mathcal S|_{\mathrm{pair}}$ the determinant support in the pairing basis, and $\chi$ the minimal
-matrix-product-state bond dimension. One-body magic, higher-order magic and determinant support therefore
-all diverge with $K$ while, in the localized (pairing) basis, the state remains a bond-dimension-$2$
-tensor network---representable, contractible and Born-samplable in $O(K)$: magic of every order is
-unbounded at fixed $O(1)$ simulation cost.
+matrix-product-state bond dimension in the pairing ordering. In that localized (pairing) basis the state
+is a bond-dimension-$2$ tensor network, representable, contractible and Born-samplable in $O(K)$.
 \end{theorem}
 
-\noindent The proof is four block-diagonal computations (Sec.~\ref{app:witness}), and all four values
-are reproduced by exact diagonalization for $K=1,\dots,4$ (Fig.~\ref{fig:witness}). The orbit is the
+\noindent One-body magic, higher-order magic and determinant support therefore all diverge with $K$:
+magic of every order is unbounded at bond dimension $2$, where the simulation cost grows only linearly, as $O(K)$. The
+proof, four block-diagonal computations, is given in the Supplemental Material
+(Sec.~\ref{app:witness}). The values of $\mathcal F_1$, $\mathcal F_2$ and
+$|\mathcal S|_{\mathrm{pair}}$ are reproduced by exact diagonalization for $K=1,\dots,4$, and so is
+$\chi=2$, the largest Schmidt rank over all cuts of the pairing ordering (Fig.~\ref{fig:witness} and
+Sec.~\ref{app:witness}). The orbit is the
 argument: $\mathcal F_k$ is invariant under number-conserving orbital rotations~\cite{sierant2026}, so
 the whole orbit $\{U\ket{\Psi_K}\}$ carries the same $(\mathcal F_1,\mathcal F_2)=(4K,4K)$ while the
-cost in the fixed computational basis runs from $O(K)$ to exponential. A Gaussian-invariant fermionic
-magic therefore neither lower-bounds the cost nor determines it. The same orbit reaches the second
-budget of Eq.~\eqref{eq:twobudget}, where an invariant upper bound on the leakage exists but is useless:
+cost in the fixed computational basis is $O(K)$ at the pairing point and, at generic rotated points, not
+established here (Born sampling there is plausibly hard, Sec.~\ref{sm:nogo}). A Gaussian-invariant fermionic
+magic therefore does not lower-bound the bond dimension, nor the cost beyond linear order in $K$, and it determines the cost only if the plausibly hard
+rotated points are in fact easy. The same orbit reaches the second
+budget of Eq.~\eqref{eq:twobudget}:
 
 \begin{proposition}[Fibers on which every orbital-rotation invariant gives a vacuous leakage certificate]
 \label{prop:leakinv}
@@ -148,15 +159,15 @@ invariants alone---combining $\Lambda_S\le\lVert P_SHQ_S\rVert\,\lVert\phi_S\rVe
 $\lVert Q_SHP_S\rVert=\lVert Q_S(H-c)P_S\rVert\le\min_c\lVert H-c\rVert$ gives
 $\Lambda_S(\eta)/\eta\le(W/2)\lVert\phi\rVert\sqrt{w_S}/\eta$, $W$ the spectral width of the $(N\pm1)$
 sector---but it is vacuous by a factor of at least $W/2\eta$, which grows extensively with system size.
-That this is the best such bound can be seen at fixed invariants: any
+That no invariant bound can be useful on these fibers is seen at fixed invariants: any
 $B(\text{invariants},|\mathcal S|,w_S)$ valid for $\Lambda_S(\eta)/\eta$ is constant on a fiber of fixed
 arguments and must therefore exceed the fiber maximum. In the geminal family $\mathrm{APSG}(\pi/4)$ on
 $2K$ orbitals with $H=\varepsilon\hat N-g\sum_iA^{\dagger}_iA_i+\delta h$ we exhibit fibers
 ($K=2,3,4$; $\delta=0.01$; $\eta=0.10$; $|\mathcal S|=2^{K-1}$; spectrum, Lehmann weights and all
 $\mathcal F_k$ matched to $10^{-14}$, $w_S$ to $2.2\times10^{-16}$) whose endpoints carry
 $\widehat\Lambda_S(\eta)/\eta=0.237$ and $2.326$, $0.323$ and $2.336$, $0.391$ and $2.346$. Since the
-larger value exceeds $\tau(w_S)=(1+w_S)/(1+\sqrt{w_S})-\sqrt{1-w_S}=0.795$, the resolution above which
-the leakage branch of Theorem~\ref{thm:leakage} no longer improves on the trivial bound
+larger value exceeds $\tau(w_S)=0.795$ of Eq.~\eqref{eq:tau}, above which the leakage branch of
+Theorem~\ref{thm:leakage} no longer improves on the trivial bound
 $\lVert\phi\rVert^{2}(1+w_S)$, every valid invariant bound is vacuous on these fibers---while the
 subspace-aware certificate is non-vacuous at the aligned endpoint ($0.856$ against a trivial $1.962$).
 The statement is one of non-determination and non-vacuity, not of non-existence: invariants do not fail
@@ -169,10 +180,22 @@ bound that shrinks from $2.29$ to $1.69$ between $K=2$ and $K=4$, a small-leakag
 only by the stabilizer of the state, and sector dimensions of at most $3920$---are in
 Sec.~\ref{sm:nogo}.
 
+The \emph{raw} determinant support---the unthresholded Slater rank---is obstructed separately, by
+continuity: no continuous functional of a fixed set of reduced density matrices can upper-bound the
+count more tightly than the sector dimension near a single determinant, states arbitrarily close to one
+in every such functional carrying any support up to the whole sector, rank being coefficient-insensitive and
+not upper-semicontinuous (though, unlike the CP tensor rank, whose sets of rank at most $r$ are not
+closed~\cite{desilvalim2008}, it is lower-semicontinuous); and
+at half filling the invariant $\mathcal F_1$ cannot lower-bound the count beyond $2$, the two-determinant
+cat having maximal $\mathcal F_1$. That continuity argument (Sec.~\ref{app:theorem}) does \emph{not}
+transfer to the operative, coefficient-\emph{sensitive} $|\mathcal S|_{\varepsilon_w}$, which collapses to $1$ along the same
+path as the functionals; the symmetry above does.
+
 \paragraph{The cost side: a bilateral obstruction whose sign is not stable.} Unlike $\mathcal F_1$, the
 determinant support is basis dependent, and both directions of the decoupling are realized
 (Fig.~\ref{fig:decoupling}): a free-fermion ground state has $\mathcal F_1=0$ and a site-basis support
-of $35$, $336$, $3496$ and $37361$ at $L=4$--$10$; along a Hubbard chain raising $U$ raises
+$|\mathcal S|_{\varepsilon_w}$ (open chain, $\varepsilon_w=2.5\times10^{-3}$) of $35$, $336$, $3496$ and
+$37361$ at $L=4$--$10$; along a Hubbard chain raising $U$ raises
 $\mathcal F_1$ while lowering $|\mathcal S|_{\varepsilon_w}$; across the nineteen molecules the two rise
 together. Within each of the six $(L,N)$ strata of the Hubbard sweep the rank correlation of
 $\mathcal F_1$ with $|\mathcal S|_{\varepsilon_w}$ is exactly $-1$ (stratified Kendall $\tau=-1.000$,
@@ -182,8 +205,13 @@ ladder families and $+0.86$ across the molecules: an excellent rank predictor wh
 between families, as an orbital invariant compared with a basis-dependent count must. The bond
 dimension $\chi$, a rigorous floor on the raw support, tracks the thresholded one better (mean
 within-stratum $\rho=0.948$), but it is itself basis dependent, measured rather than predicted, and
-blind to the leakage. The division between Gaussian-invariant and basis-dependent quantities is due to
-Tarabunga \emph{et al.}~\cite{tarabunga2026} and to Leone and Bittel~\cite{leonebittel2026}; what the
+blind to the leakage. Computable Gaussian-invariant measures of non-Gaussianity include the
+antiflatness used here~\cite{sierant2026} and the two families of Tarabunga \emph{et al.}~\cite{tarabunga2026},
+whose natural-orbital participation entropies, themselves Gaussian invariant, also upper-bound the
+classical simulation cost in an orthonormal Gaussian basis; their quadratic occupation entropy, which
+equals $\mathcal F_1$, is a strong pure-state monotone, proved by Tarabunga \emph{et al.} and,
+independently, by Leone and Bittel~\cite{leonebittel2026}. The contrast
+between an orbital invariant and a basis-dependent count is our observation, and what the
 construction adds is a family on which every order of the invariant is maximal at $O(K)$ cost, and
 fibers on which the invariants are frozen while the certificate of Theorem~\ref{thm:leakage} still
 separates. The stratified statistics, the molecular set, which does not discriminate, and the two

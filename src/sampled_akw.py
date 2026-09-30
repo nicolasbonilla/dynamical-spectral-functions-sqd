@@ -2,11 +2,14 @@
 r"""Sampled-vs-exact momentum-resolved spectral function A(k,omega) (fig:akwsampled, Fig. 5).
 
 Demonstrates that A(k,omega) is genuinely reconstructed FROM bitstring-sampled subspaces, not just shown
-as an exact target. For the L=8, U/t=8 half-filled Hubbard chain (eta=0.18t): at each momentum k the seed
+as an exact target. For the L=8, U/t=8 half-filled Hubbard ring, PBC (eta=0.18t): at each momentum k the seed
 c^dag_{k,up}|GS> (and c_{k,up}|GS>) is time-evolution-sampled in the (N+-1) sector, the top-weight
 configurations (85% of the sector) are diagonalized, and the reconstructed A^+(k,w)+A^-(k,w) is compared to
-the exact Haydock target. Writes sampled_akw_L8.json (per-momentum rel-L1 + overlay curves at k=0,pi/2,pi).
-Result: mean per-momentum rel-L1 = 0.0022, max 0.0033 -- faithful across the Brillouin zone.
+the exact target (dense diagonalization of each sector and a Lehmann sum, not a Haydock continued
+fraction). The top-weight configurations are ranked on the EXACT time-averaged Born weight, so this is
+the infinite-shot limit of the protocol and no shots are drawn. Writes sampled_akw_L8.json (per-momentum rel-L1 + overlay curves at k=0,pi/2,pi).
+Result: mean per-momentum rel-L1 = 0.0024, max 0.0033 on omega-E0 in [-9t, 17t] -- faithful across
+the Brillouin zone.  (On the former window [-9t, 9t], which omitted the k=0 addition branch: 0.0022 / 0.0033.)
 
 Run:  python sampled_akw.py      (uses the sector engine of akw_lanczos.py; ~5 min, exact)
 """
@@ -85,7 +88,20 @@ nup = nd = L // 2
 
 Hexpl, Du, Dd = AK.build_H_explicit(L, U, nup, nd, t)
 E0, V0 = eigsh(Hexpl, k=1, which='SA', v0=_v0(Hexpl.shape[0])); E0 = float(E0[0]); Psi = V0[:, 0].reshape(Du, Dd)
-wg = np.linspace(-9, 9, 600)
+# --- FREQUENCY WINDOW (corrected 2026-09-28) --------------------------------
+# The grid was np.linspace(-9, 9, 600).  omega is measured from E0 with no
+# chemical-potential shift, so the addition poles sit at E^{N+1}_m - E0 = 6.59t ... 14.9t
+# (mu = U/2 = 4t; removal poles at -6.9t ... +1.41t; thresholds from data/charge_gap.json, pole
+# ranges above weight 1e-4 from a dense Lehmann sum).  [-9t, 9t] therefore dropped most of
+# the k=0 addition branch (20.7% of that momentum's weight) and 10.7-12.0% at k=pi/4,
+# pi/2, 3pi/4, while panel (b) was captioned "addition and removal branch summed" and
+# Theorem 1 (H2) takes the L1 norm over the whole line.  The window is now [-9t, 17t],
+# symmetric about mu, which leaves less than 3e-4 of any momentum's weight outside it; the
+# grid spacing is kept (26/865 = 0.03006t against 18/599 = 0.03005t).
+# The per-channel whole-line errors in data/cert_akw.json ('rows', relL1_true) never
+# used this grid and are unchanged.
+wg = np.linspace(-9, 17, 866)
+WINDOW = (-9.0, 17.0)
 
 
 def spec(poles, wts):
@@ -112,7 +128,7 @@ def channel(seed, Hsec, sgn):
     return A_ex, spec(sgn * (Es - E0), np.abs(a) ** 2), kk, nS
 
 
-res = {'L': L, 'U': U, 'eta': eta, 'frac': FR, 'wg': wg.tolist(), 'per_k': {}, 'overlay': {}}
+res = {'L': L, 'U': U, 'eta': eta, 'frac': FR, 'window': list(WINDOW), 'wg': wg.tolist(), 'per_k': {}, 'overlay': {}}
 ov = {0: '0.0', L // 4: '0.5', L // 2: '1.0'}
 Hadd, _, _ = AK.build_H_explicit(L, U, nup + 1, nd, t)
 Hrem, _, _ = AK.build_H_explicit(L, U, nup - 1, nd, t)

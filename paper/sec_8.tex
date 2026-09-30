@@ -47,21 +47,20 @@
 %      tridiagonal recursion, which are independent of eta; a broadened-lineshape
 %      panel would forfeit that defence entirely. ***
 %
-%  GREP NOTE for the mechanical audit: the three withdrawn terms are named
-%  exactly ONCE each in this file, inside quotation marks, in the retraction
-%  sentence of Sec. 8.2. A retraction cannot be written without naming what it
-%  retracts. Nowhere else in this file is any of them used assertively.
+%  GREP NOTE for the mechanical audit: the three terms that presuppose a resolved dense spectrum
+%  are named exactly ONCE each in this file, inside quotation marks, in the scope sentence of
+%  Sec. 8.2 that says none of them is used. Nowhere else in this file is any of them used assertively.
 % =====================================================================
 
 \section{Physical validation: the two gaps scale in opposite directions}\label{sec:physics}
 
-The two collective channels of the half-filled Hubbard chain are the strongest physical check
-available to this method, because their answer is known exactly and independently of it. This section
-reports that check as a scaling statement across $L=6,8,10,12$ rather than as a picture at a single
-size, does not use three words that a single size cannot support, and
-separates what is a validation of the method from what is a result. On the same lattice and from the
-same primitive, the charge scale converges to a finite thermodynamic value while the spin scale closes
-as $\approx2/L$, with an independent effective-Heisenberg control (Table~\ref{tab:gaps}).
+Across $L=6$--$12$ the exact full-sector references against which the sampled reconstructions are
+scored reproduce the opposite finite-size scaling of the two collective scales of the half-filled
+Hubbard ring. On the same lattice, the charge gap decreases monotonically to within $6.2\%$ of its
+Lieb--Wu thermodynamic value, while the spin gap closes as $\approx2/L$, with an independent
+effective-Heisenberg control (Table~\ref{tab:gaps}). The answer is known exactly and independently
+of this work, so the scaling, reported across four sizes rather than as a picture at a single size,
+is a check of the references and not a result (Sec.~\ref{sec:physics:known}).
 
 \subsection{Charge converges to a finite value, spin closes as \texorpdfstring{$1/L$}{1/L}}\label{sec:gaps}
 
@@ -76,8 +75,8 @@ exact representation, the two agreeing to $10^{-13}$. Spin: the lowest pole of
 $S^{zz}(q=\pi,\omega)$, a pole position of the tridiagonal recursion and therefore independent of the
 broadening used to display it. Right-hand block: the same quantity in the pure Heisenberg ring at the
 effective exchange $J=4t^{2}/U=0.5\,t$, a model with no charge degree of freedom at all. The residual
-column is quoted to four decimals so that it is the difference of the two columns to its left; at five
-it would not be.}\label{tab:gaps}
+column is quoted to four decimals so that it equals the $\Delta/t$ column minus $\Delta_\infty/t=4.67952$;
+at five it would not be.}\label{tab:gaps}
 \begin{tabular}{lcccccc}
 \toprule
  & \multicolumn{2}{c}{charge} & \multicolumn{2}{c}{spin (Hubbard)} & \multicolumn{2}{c}{spin (Heisenberg, $J=0.5\,t$)}\\
@@ -95,7 +94,9 @@ $12$ & $4.96876$ & $0.2892$ & $0.16635$ & $1.996$ & $0.17792$ & $2.135$\\
 \paragraph{Charge.} $\Delta(L)$ decreases monotonically and stays above the Lieb--Wu value
 $4.67952\,t$ at every size, the residual falling from $0.679\,t$ at $L=6$ to $0.289\,t$ at $L=12$,
 $6.2\%$ of the thermodynamic value; $\Delta(L=12)=4.96876\,t$ is the Hubbard-band separation of
-Fig.~\ref{fig:lattice}. No extrapolation exponent is fitted: a straight line in $1/L$ undershoots
+Fig.~\ref{fig:lattice}, and every pole of $S(q,\omega)$ at $L=12$ carrying at least $1\%$ of the
+largest weight at its momentum---$97.5\%$ or more of the weight at each $q$---lies above it
+(Fig.~\ref{fig:sqw}); weaker poles are not resolved and are not bounded by this statement. No extrapolation exponent is fitted: a straight line in $1/L$ undershoots
 Lieb--Wu by $0.12\,t$, which is evidence that the form is not $1/L$, not evidence about the limit.
 
 \paragraph{Spin.} The lowest pole of $S^{zz}(q=\pi,\omega)$ gives $L\,\Delta_{s}=2.091$, $1.917$,
@@ -114,16 +115,17 @@ The two channels therefore behave \emph{qualitatively oppositely} under a change
 converging to a finite thermodynamic value, the other extrapolating to zero as $1/L$---with a factor
 $29.9$ between them at $L=12$, and with $1/L$ intercepts that separate. That
 opposition, measured at four sizes with an independent control on the smaller scale, is the physical
-statement this work makes. It is a statement about pole positions, not about lineshapes, so it does
+check this section makes. It is a statement about pole positions, not about lineshapes, so it does
 not depend on the broadening at which either response is plotted.
 
-\subsection{What a single size at \texorpdfstring{$\eta=0.10\,t$}{eta = 0.10 t} could not support}
+\subsection{Resolution: why the statement rests on pole positions}
 
 A spin--charge statement cannot be read off a lineshape at a single size, for a reason of resolution. At $L=12$ the spin scale is $0.16635\,t$ against the $\eta=0.10\,t$ used for
 Fig.~\ref{fig:spin}: the gap is $1.66\,\eta$, i.e.\ $0.83$ of the Lorentzian full width at half
 maximum. At that resolution a spin response with a $0.17\,t$ gap and one with none are not
-distinguishable by eye in a single-size plot. The figure could \emph{illustrate} the physics; it could
-not establish it. Three terms---``continuum'', ``gapless'' and ``edge of the continuum''---are therefore not licensed by it, and none is used for any channel of this work at this size.
+distinguishable by eye in a single-size plot. Terms that presuppose a resolved dense
+spectrum---``continuum'', ``gapless'' and ``edge of the continuum''---would need that distinction,
+and none is used for any channel of this work at this size.
 
 What establishes the physics instead is the four-size scaling of Table~\ref{tab:gaps}, plotted in
 Fig.~\ref{fig:gapscaling}, and a pole census (Table~\ref{tab:poles}): between $L=6$ and $L=12$ the
@@ -134,7 +136,8 @@ one forming. The census, the sum rule as measured, and the size convention of th
 exact-diagonalization literature together with the dynamical-DMRG resolution
 criterion~\cite{jeckelmann2002} this work does not meet at $L=12$, are in Sec.~\ref{sm:physics}.
 
-\subsection{Spin--charge separation is a check of the method, not a result}
+\subsection{Relation to the known spin--charge physics}
+\label{sec:physics:known}
 
 That the spin and charge responses of the one-dimensional Hubbard model live on separate energy scales
 has been known exactly since Lieb and Wu~\cite{liebwu1968}, is textbook~\cite{essler2005}, was seen in
@@ -142,12 +145,13 @@ angle-resolved photoemission thirty years ago~\cite{kim1996,damascelli2003}, is 
 spectral weight of twelve-site clusters embedded by cluster perturbation theory~\cite{senechal2000},
 and has been computed by dynamical DMRG since 2007~\cite{benthien2007} in all three of the
 momentum-resolved channels reported here---in that reference's notation the charge factor
-$N(q,\omega)$ at $L=120$, the spin factor $S(q,\omega)$ at $L=100$ and the one-particle function
+$N(q,\omega)$ at $L=60$ (at $q\approx\pi$ up to $L=120$), the spin factor $S(q,\omega)$ at $L=100$ and the one-particle function
 $A(q,\omega)$ at $L=90$, which are respectively our $S(q,\omega)$, our $S^{zz}(q,\omega)$ and our
 $A(k,\omega)$, for the extended Hubbard model of which ours is the $V=0$ line; the same literature treats the Hubbard chain at $L=48$ with $\eta=0.1\,t$ by
-correction-vector DMRG, and reaches $L=64$ in the Heisenberg chain~\cite{nocera2016}. We present it here as what it is: a check of the exact full-sector references, against which the sampled reconstructions are scored, against a known answer, with the des Cloizeaux--Pearson lower
+correction-vector DMRG, and computes the full Heisenberg-chain $S(k,\omega)$ at $L=64$, with the $k=\pi$ cut to $L=128$~\cite{nocera2016}. Here it serves as a check, against a known answer, of the exact full-sector references against which the sampled reconstructions are scored, with the des Cloizeaux--Pearson lower
 boundary~\cite{descloizeaux1962} and the M\"uller upper bound~\cite{mueller1981} recovered as
-thermodynamic-limit references rather than as findings. No part of it is offered as new physics.
+thermodynamic-limit references rather than as findings. At $L=12$ the spin peaks follow that lower
+boundary for $q\le\pi/2$ and lie above it toward $q=\pi$ (Fig.~\ref{fig:spin}).
 
 % =====================================================================
 %  DROP-IN CAPTION REPLACEMENT for panel (a) of \ref{fig:method}

@@ -1,10 +1,11 @@
 % carried from the v2 tree (results.tex); the exactness wording was corrected in v3 to match Sec. 8.
 \begin{figure*}[tp]\centering\includegraphics[width=0.92\linewidth]{figs/fig_spinqw.pdf}
 \caption{\textbf{Spin structure factor: the low-frequency companion of the charge response.} The dynamical
-spin structure factor $S^{zz}(q,\omega)$ of the same half-filled Hubbard chain ($U/t=8$, $L=12$; here
+spin structure factor $S^{zz}(q,\omega)$ of the same half-filled periodic Hubbard ring ($U/t=8$, $L=12$; here
 $\eta=0.10\,t$, finer because the spin scale is small), computed by a Haydock continued fraction of
-depth $n_\ell=150$ from a spin seed $S^z_q\lvert\psi_0\rangle$ in the $N$-particle sector; at this
-$\eta$ that depth moves the reference by $3.0\%$ between $n_\ell=100$ and $200$, so the lineshape is
+depth $n_\ell=200$ from a spin seed $S^z_q\lvert\psi_0\rangle$ in the $N$-particle sector; at this
+$\eta$ a reference of that kind is not converged in general (the single-particle one moves by $3.0\%$
+between $n_\ell=100$ and $200$, Sec.~\ref{sm:prices}), so the lineshape is
 quoted with its depth and not as exact (Sec.~\ref{sm:physics}). \emph{Contrast Fig.~\ref{fig:sqw}}:
 the charge scale stays at the Mott gap $\Delta\approx5\,t$ at every size measured, while the spin scale
 is $0.16635\,t$ at $L=12$ and closes as ${\approx}2/L$ (Table~\ref{tab:gaps}). At this size the spin
@@ -15,6 +16,10 @@ spin--charge separation in the collective (two-particle) channel: charge and spi
 separate worlds, the spin set by the superexchange $J=4t^2/U=0.5\,t$, some $16\times$ smaller than $U$.
 The spectral weight piles up on the des Cloizeaux--Pearson~\cite{descloizeaux1962} lower boundary $\tfrac{\pi J}{2}\lvert\sin q\rvert$
 (dotted), bounded above by $\pi J\lvert\sin\tfrac q2\rvert$~\cite{mueller1981}; the numerically-extracted
-peak dispersion (cyan markers) tracks this lower boundary to $\sim\!3\%$; the antiferromagnetic soft mode at $q=\pi$
+peak dispersion (cyan markers: the maximum of each broadened line on the $0.006\,t$ frequency grid)
+tracks this lower boundary to within about $3\%$ for $q\le\pi/2$ (and $q\ge3\pi/2$); toward $q=\pi$ it
+lies above it, by $10\%$ at $q=2\pi/3$ and $29\%$ at $q=5\pi/6$, and at
+$q=\pi$, where the boundary vanishes, it sits at the finite-size spin gap; the antiferromagnetic soft mode at $q=\pi$
 carries the dominant weight. The reflection $S^{zz}(q)=S^{zz}(2\pi{-}q)$ holds to double-precision round-off and
-$S^{zz}(q{\to}0)\to0$ (total-$S^z$ conservation). The same bitstring-sampled primitive that targets $A(k,\omega)$ and $S(q,\omega)$ targets this collective response as well.}\label{fig:spin}\end{figure*}
+$S^{zz}(q{\to}0)\to0$ (total-$S^z$ conservation). The same bitstring-sampled primitive that targets $A(k,\omega)$ and $S(q,\omega)$ targets this collective response as well. This channel carries no shot budget: it is a full-sector reference
+(Table~\ref{tab:provenance}).}\label{fig:spin}\end{figure*}

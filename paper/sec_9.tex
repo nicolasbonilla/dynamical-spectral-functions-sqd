@@ -151,89 +151,94 @@
 %       author, not to a trim.
 % =====================================================================
 
-\section{Hardware, scope, and the region where the method has no advantage}
+\section{Hardware runs, classical reach, and scope}
 \label{sec:scope}\label{sec:honest}
 
 \subsection{The two hardware runs, and what ``exact by coverage'' means}
 \label{sec:scope:hw}
 
-Both device runs are preserved in full and are the entirety of the quantum hardware used in this work.
-The first, on the IBM~Heron processor \texttt{ibm\_fez}, sampled the $L=6$ Hubbard chain at $U/t=4$
-with $12$ qubits and $3.5\times10^{5}$ shots, and post-selection on particle number and $S_z$ retained all
+Two device runs were made, and they are the only quantum hardware used in this work. The first, on the IBM~Heron processor \texttt{ibm\_fez}, sampled the $L=6$ periodic Hubbard ring at $U/t=4$
+with $12$ qubits and $3.5\times10^{5}$ shots, and post-selection on particle number and $S_z$, with no
+configuration recovery, retained all
 $300$ determinants of the $(N{+}1)$ sector, so the reconstructed $A_{\rm hw}$ equals the exact $A$ \emph{by coverage}:
 Rayleigh--Ritz on the whole sector is its diagonalization, and the vanishing error is an identity rather
 than a measurement of device fidelity (Fig.~\ref{fig:heron}(a)). The circuits prepared a
 computational-basis $(N{+}1)$ determinant rather than $\hat c^{\dagger}_p\lvert\Psi_0\rangle$ and applied
 $R_{xx}R_{yy}$ hopping without Jordan--Wigner strings, so they are not the primitive of
 Fig.~\ref{fig:circ}. The post-selection, moreover, read each bitstring in reversed qubit order, which
-reflects the chain and exchanges the two spin species: under that reading none of the $3.5\times10^{5}$
+reflects the ring and exchanges the two spin species: under that reading none of the $3.5\times10^{5}$
 shots of a noiseless simulation of the same seven circuits is retained, against all of them under the
 correct reading, so every one of the $300$ retained determinants arose from a device error
-(\texttt{src/hw\_bitorder\_check.py}). The run therefore establishes only that the steps of the pipeline
-execute end to end on a processor, with a post-selection that was itself wrong, not that the device
-sampled the intended distribution, and nothing about accuracy at complete or incomplete coverage. The second, stretched $\mathrm{N_2}$ at $24$ qubits on
+(\texttt{src/hw\_bitorder\_check.py}). The run is therefore an execution record: the steps of the pipeline execute end to end on a
+processor, but the run does not show that the device sampled the intended distribution, and it
+establishes nothing about accuracy at complete or incomplete coverage. The second, stretched $\mathrm{N_2}$ at $24$ qubits on
 \texttt{ibm\_marrakesh}, reaches $0.59\pm0.14$~mHa of the exact active-space energy after recovery,
 below the $29.5$~mHa of the noiseless simulation of the same circuit (Fig.~\ref{fig:heron}(b)). The
 record does not store the recovered subspace sizes on which that comparison turns, so it cannot say
-whether device noise helps, although the mechanism is established elsewhere~\cite{vaquero2026}. What is
+whether device noise helps, although a study under a simple noise model reports the mechanism~\cite{vaquero2026}.
+That study also finds that recovery from randomly generated configurations alone builds accurate CI
+spaces, and no such control was run here. What is
 controlled is recovery against no recovery on the same corrupted bitstrings, and there the gain grows
-with the noise (Figs.~\ref{fig:noiserec} and~\ref{fig:noise}). These runs are smaller than the
-spectral records of Refs.~\cite{vilchez2025,granet2026akw,quantinuum_dsf2026} and are not offered as a
-scale result; the full account, the job identifiers and the shot arithmetic are in
+with the noise (Figs.~\ref{fig:noise} and~\ref{fig:noiserec}). Neither run is a spectral record in the sense of
+Refs.~\cite{vilchez2025,granet2026akw,quantinuum_dsf2026}, whose spectra are determined by device
+data; the full account, the job identifiers and the shot arithmetic are in
 Sec.~\ref{sm:scope}.
 
 \input{carried/fig_heron.tex}
 
 
 
-\paragraph{The molecular suite.} The nineteen-molecule suite and the dimensions of its sectors are in Sec.~\ref{sec:scope:mol}. Twelve of the nineteen reconstructions are exact by construction, because their sampled subspaces, of at most twelve determinants, already contain the probe's Krylov space, so the suite cannot show that the reconstruction is efficient across chemistry. On the seven Hamiltonians with sectors of dimension $20$ to $300$ the same primitive reproduces the orbital-projected $A(\omega)$ to a relative $L_1$ between $2.2\times10^{-6}$ and $1.0\times10^{-4}$ from $21\%$ to $50\%$ of the sector: a consistency check of the primitive outside the Hubbard family, not a scaling statement.
+\paragraph{The molecular suite.} On the seven Hamiltonians of the nineteen-molecule suite (Sec.~\ref{sec:scope:mol}, Table~\ref{tab:molscope}) whose sectors have dimension $20$ to $300$, the same primitive reproduces the orbital-projected $A(\omega)$ to a relative $L_1$ between $2.2\times10^{-6}$ and $1.0\times10^{-4}$ from $21\%$ to $50\%$ of the sector, a consistency check of the primitive outside the Hubbard family and not a scaling statement. The other twelve reconstructions are exact by construction, because their sampled subspaces, of at most twelve determinants, already contain the probe's Krylov space, so the suite cannot show that the reconstruction is efficient across chemistry.
 
-\subsection{A region of no advantage, derived from our own resource statement}
+\subsection{What the cost tracker implies for classical simulation}
 \label{sec:scope:boomerang}
 
-The cost tracker this paper puts forward, the bond dimension $\chi$ (Sec.~\ref{sec:nogo}), is by
-definition the cost parameter of a matrix-product representation of the same state: wherever it says
-the determinant support is small, a matrix-product state is small too. The instance is in the
-literature: the $7\,260$ trajectories of a $120$-qubit Fermi--Hubbard dynamics
-experiment~\cite{qctrlfh2026} were reproduced by tensor contraction at bond dimension
-$32$~\cite{ouyang2026}, the pattern in which tensor-network, Pauli-propagation and matchgate methods
-have overtaken earlier hardware
-demonstrations~\cite{kim2023,tindall2024,begusic2024,kemper2026,belagali2026,extraferm}; on the
-ground-state energy the strong classical selectors already win on
-cost~\cite{reinholdt2025,zhangotten2026,gaberle2026}; and in one dimension dynamical DMRG computed all
-three momentum-resolved channels reported here nineteen years ago~\cite{benthien2007}. Within the region
-this work measures---Hubbard rings at $L\le14$, nineteen active spaces, and a largest minimal bond
-dimension of $42$ over the $74$ deposited exact ground states---there is no computation performed here
-that a classical method cannot perform, and we make no advantage claim at any size reached. Where that region
-would end is at a target whose minimal bond dimension is large in every ordering while the
-sampled support stays compact, a property of geometry and orbital connectivity that two-dimensional
-lattices and molecular orbital graphs would test and that nothing here measures (Sec.~\ref{sm:scope}).
+The cost tracker of Sec.~\ref{sec:nogo}, the bond dimension $\chi$, is by definition the cost
+parameter of a matrix-product representation of the same state: wherever it says the determinant
+support is small, a matrix-product state is small too. A sampler can therefore be needed only for a
+target whose minimal bond dimension is large in every ordering while the sampled support stays
+compact, a property of geometry and orbital connectivity that two-dimensional lattices and molecular
+orbital graphs would test and that nothing here measures (Sec.~\ref{sm:scope}). Every target measured
+here---Hubbard rings at $L\le14$, nineteen active spaces, and a largest minimal bond dimension of $42$
+over the $74$ deposited exact ground states---lies on the other side: there is no computation
+performed here that a classical method cannot perform, and we make no advantage claim at any size
+reached. The literature shows the same pattern. The $7\,260$ trajectories of a $120$-qubit
+Fermi--Hubbard dynamics experiment~\cite{qctrlfh2026} were reproduced by tensor contraction at bond
+dimension $32$~\cite{ouyang2026}, the pattern in which tensor-network and Pauli-propagation methods
+have overtaken earlier hardware demonstrations~\cite{kim2023,tindall2024,begusic2024}, with Pauli
+propagation since extended to real-time correlators~\cite{kemper2026};
+% 2026-09-30 (citation re-verification, belagali2026): the source reproduces the largest experiment
+% OF Sci. Adv. 11, eadu9991 (2025) (77 qubits, 10,570 gates) and itself cites later, larger LUCJ
+% hardware runs (94 qubits) it does not simulate, so "the largest such hardware experiment" was
+% wider than the source; the sentence now names the experiment it reproduces.  Same fix in
+% sm_scope.tex.
+the energy of any single-layer unitary cluster-Jastrow circuit, the largest ($77$-qubit) experiment of
+Ref.~\cite{robledomoreno2025} included, is now computed classically in polynomial
+time~\cite{belagali2026}, and an extended matchgate simulator evaluates, to additive approximation,
+the Born-rule probabilities of hardware-sampled cluster-Jastrow bitstrings at a cost exponential only in
+the magnitudes of the controlled-phase angles~\cite{extraferm}; on the ground-state energy the strong classical selectors already win on
+cost~\cite{reinholdt2025,zhangotten2026}, and even optimally ordered SQD subspaces need a number of
+configurations that grows exponentially with lattice size for Heisenberg and Hubbard ground
+states~\cite{gaberle2026}.
 
-\paragraph{A dequantization test.} On an under-sampled device head for $\mathrm{N_2}$ ($1\,000$ shots, ten paired seeds), a classical Epstein--Nesbet prior~\cite{cipsi1973} applied to the same histogram cuts the energy error by $36\%$, from $38.22$ to $24.38$~mHa (paired $t_9=12.37$, all ten seeds), while a generative flow network~\cite{bengio2021} fused onto that prior moves it a further $1.80$~mHa, a difference ten paired seeds do not resolve ($t_9=1.19$) and whose sign reverses between two five-seed halves; at $500$ shots the fused generator is worse than the classical control (Sec.~\ref{app:dequant}). On this instance the dominant determinants are supplied by the device sampling and completed by a classical prior rather than manufactured by a learned generator, and the largest improvement available to an under-sampled head costs no quantum resources at all.
+\paragraph{A dequantization test.} On an emulated, under-sampled head for $\mathrm{N_2}$ ($R=2.5$~\AA; $1\,000$ shots drawn from the exact FCI marginal and corrupted by a synthetic Heron-class noise model, ten paired seeds; no device data), a classical Epstein--Nesbet prior~\cite{cipsi1973} applied to the same histogram cuts the energy error by $36\%$, from $38.22$ to $24.38$~mHa (paired $t_9=12.37$, all ten seeds), while a generative flow network~\cite{bengio2021} fused onto that prior moves it a further $1.80$~mHa, a difference ten paired seeds do not resolve ($t_9=1.19$) and whose sign reverses between two five-seed halves; at $500$ shots the fused generator is worse than the classical control (Sec.~\ref{app:dequant}). On this instance the dominant determinants are supplied by the sampled histogram (emulated, so the test does not measure whether a device state would supply them) and completed by a classical prior rather than manufactured by a learned generator, and the largest improvement available to an under-sampled head costs no quantum resources at all.
 
-\subsection{Scope, declared}
+\subsection{Scope}
 \label{sec:scope:declared}
+
+What the work establishes is four things, each with its measurement attached: one sampling primitive that targets four frequency-resolved channels, of which the single-particle ones are reconstructed here from ranked or sampled subspaces and the two neutral ones are full-sector references (Table~\ref{tab:provenance}); a
+two-sided bound on the error of the reconstruction, whose leakage term is a posteriori, with its non-vacuity threshold
+measured at five sizes up to a sector of dimension $10\,306\,296$ and its crossing calibrated to a true
+relative error of ${\approx}3\times10^{-3}$ within a factor of three (Sec.~\ref{sec:frontier}); an
+obstruction showing that no orbital-rotation invariant supplies an a priori predictor of that bound
+useful on every state (Sec.~\ref{sec:nogo}); and three prices---support, resolution and shots---each measured here (Sec.~\ref{sec:prices}).
 
 The momentum-resolved spectra are one-dimensional Hubbard rings at $L\le12$ with $\eta=0.10$--$0.18\,t$ (the support, certificate and shot measurements reach $L=14$), which is the
 exact-diagonalization convention for this observable---Xu, Lu, Tohyama and Shao compute it at $L=12$
 and $\eta=0.2\,t$ at half filling, and at $L=16$ at quarter filling, in the extended
-Peierls--Hubbard chain~\cite{xu2024}---but the resolution
-criterion the dynamical-DMRG literature applies at those
-sizes is not met here, and Sec.~\ref{sec:physics} quotes that criterion in its original words and uses none of the three terms it would not license, rather than enlarge $\eta$. The published subspace curves are the infinite-shot limit of the
-declared ranking protocol, and finite-shot fractions are reported only where
-Table~\ref{tab:finiteshot} attaches a measured budget and a seed count. The certificate of
-Theorem~\ref{thm:leakage} is vacuous at every operating fraction of the resource scan (Fig.~\ref{fig:akwsampled}, at $85\%$, is the certified exception), by factors of $1.66$ to
-$8.61$ at the five sizes measured, so the reconstructions at those fractions are at present uncertified and
-the non-vacuity threshold is given as a bracket rather than as a number (Sec.~\ref{sec:frontier}). The device record is the two runs of Sec.~\ref{sec:scope:hw}, at $12$ and
-$24$ qubits, the first exact by coverage; the chemistry record is Table~\ref{tab:molscope}. No result
-in this work is offered as evidence of an advantage over a classical method, at any size reached here.
-
-What the work does claim is four things, each with its measurement attached: one sampling primitive that targets four frequency-resolved channels, of which the single-particle ones are reconstructed here from ranked or sampled subspaces and the two neutral ones are full-sector references (Table~\ref{tab:provenance}); a
-two-sided a posteriori bound on the error of the reconstruction, with its non-vacuity threshold
-measured at five sizes up to a sector of dimension $10\,306\,296$ and its crossing calibrated to a true
-relative error of ${\approx}3\times10^{-3}$ within a factor of three (Sec.~\ref{sec:frontier}); an
-obstruction theorem showing that no orbital-rotation invariant supplies a cheaper a priori predictor of
-that bound (Sec.~\ref{sec:nogo}); and three measured prices---support, resolution and shots---of which the third is measured here (Sec.~\ref{sec:prices}).
+Peierls--Hubbard chain~\cite{xu2024}---but the resolution criterion the dynamical-DMRG literature
+applies at those sizes is not met here, so Sec.~\ref{sec:physics} rests its spin--charge statement on
+pole positions at four sizes rather than enlarge $\eta$.
 
 
 % ---------------------------------------------------------------------------------
@@ -252,8 +257,26 @@ that bound (Sec.~\ref{sec:nogo}); and three measured prices---support, resolutio
 %  from job.result().  See docs/DATA_AVAILABILITY.md Part 3, items 1 and 2.
 %
 %  Every sentence was re-checked against the deposit of 2026-09-19:
-%    874 / 9891 / 5   -- CURRENT reading, python src/verify.py on this tree, 2026-09-28:
-%                        pass 874, FAIL 0, xfail 5, xpass 0, skip 2, 9891 numeric assertions
+%    1280 / 14563 / 4  -- CURRENT reading, python src/verify.py on this tree, 2026-09-30 (final
+%                        review): pass 1280, FAIL 0, xfail 4, xpass 0, skip 2, 14563 numeric
+%                        assertions (+66 / +66: sections 9.6b (Fig. 3 caption panel (b), window,
+%                        thresholds), 9.9b (printed noise values) and 9.9c (restated certificate
+%                        numbers))
+%    1214 / 14497 / 4  -- 2026-09-30 (earlier): pass 1214,
+%                        FAIL 0, xfail 4, xpass 0, skip 2, 14497 numeric assertions (+2 / +2 over
+%                        1212 / 14495: section 9.3 checks every printed exact permutation p, Sec. I,
+%                        Sec. VI and the Fig. 6 caption, against exact_perm_p_one_sided_F1 at 1e-15)
+%    1212 / 14495 / 4  -- 2026-09-28 (late,
+%                        closing the review): pass 1212, FAIL 0, xfail 4, xpass 0, skip 2, 14495
+%                        numeric assertions (+278 checks / +2821 over 934 / 11674: section 9.6c (the free-fermion supports, the spin-peak deviations and the Fig. S5 pool re-classified from the deposited certificate rows), the chi_max of the witness, the LF hash of the Fig. 3 generator and the L=14 re-ranking record;
+%                        the Fig. S5 coverage gap is closed, so xfail 5 -> 4)
+%    934 / 11674 / 5  -- 2026-09-28 (late): pass 934, FAIL 0, xfail 5, xpass 0, skip 2, 11674
+%                        numeric assertions (+60 checks / +187 over 874 / 11487: the Fig. 3
+%                        finite-shot paragraph recomputed from data/fig3_finite_shot_T*.json,
+%                        section 9.6b)
+%    874 / 11487 / 5  -- earlier the same day:
+%                        (+1596 over 9891: the Fig. 3 grid widened to [-9t,17t], 266 more
+%                        plotted points on each of its six curves)
 %                        (+2 over 872 / 9889: the two Sec. S8 phrase guards).  The five are
 %                        four known open defects and one declared coverage gap, as printed.
 %    831 / 9846 / 6   -- SUPERSEDED reading, python src/verify.py on this tree, 2026-09-21:
@@ -367,7 +390,7 @@ The data that underlie the figures and the quoted numbers of this work are openl
 reproduction repository~\cite{p2repo} at
 \url{https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd}, archived on Zenodo under
 \href{https://doi.org/10.5281/zenodo.22967220}{DOI 10.5281/zenodo.22967220},
-the code under the MIT licence and the manuscript, the deposited datasets and the reproduction
+the code under the MIT license and the manuscript, the deposited datasets and the reproduction
 documentation under CC~BY~4.0. Every figure's plotted values are deposited---as a JSON table in
 \texttt{data/} or as a plain-text table in \texttt{paper/figs/}---and
 \texttt{docs/FIGURE\_PROVENANCE.md} names the file that is authoritative for each; the one exception
@@ -377,27 +400,25 @@ the resource statistics---are additionally \emph{regenerable}: the computation s
 them are deposited in \texttt{src/}, and \texttt{docs/REPRODUCE.md} gives the reproduction commands
 together with a measured table of what a clean clone does and does not reach. An automated guardian
 (\texttt{python src/verify.py}) recomputes the underlying physics by exact diagonalization and checks
-the deposited artefacts against it---$874$ checks over $9\,891$ numeric assertions, exiting non-zero on
+the deposited artifacts against it---$1280$ checks over $14\,563$ numeric assertions, exiting non-zero on
 any discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in
 the tables and in the abstract; it is not a proof that every sentence of this manuscript is verified,
-and five items are printed by name on every run: four known open defects, and one declared gap in its own coverage, the source of Fig.~\ref{fig:thm1iii-violation}.
+and four items are printed by name on every run, the known open defects; the ratios plotted in Fig.~\ref{fig:thm1iii-violation} are re-derived by it from the deposited certificate rows.
 
 The quantum-hardware results are deposited as the arrays that enter the figures, together with the
 backend name, the shot count and the IBM~Quantum job identifier for each of the two runs
 (\texttt{data/heron\_spectral.json}, \texttt{data/hw\_lucj\_n2\_result.json}). \emph{The raw measured
-bitstrings are not part of the deposit}: the notebooks in \texttt{notebooks/} retrieve the counts from
-the IBM~Quantum service by job identifier, which requires an account and a job that is still
-retrievable, so the classical post-processing of the raw counts cannot be re-run from the deposited
+bitstrings are not part of the deposit}: the counts can be obtained only from the IBM~Quantum
+service, by retrieving the recorded job identifier (\texttt{service.job(...)}) in place of the
+submission cell of the notebooks in \texttt{notebooks/}, which requires an account and a job whose
+results are still retained, so the classical post-processing of the raw counts cannot be re-run from the deposited
 files alone. The hardware runs themselves cannot be regenerated in any case---the jobs are closed, and
 a device executed today has a different calibration, so new counts would be new data rather than a
 reproduction. The dequantization control of Sec.~\ref{app:dequant} is regenerated seed by seed by \texttt{src/gflow\_dequant.py}, which needs \texttt{pyscf} and \texttt{torch} and writes \texttt{data/gflow.json}. The $L=14$ ground-state checkpoint ($94$~MB), on which the largest vacuity factor and the $L=14$ support count rest, is deposited in \texttt{ckpt/} with its SHA-256 checksums. Known gaps between the deposited code and the
-deposited artefacts are enumerated in \texttt{docs/KNOWN\_DISCREPANCIES.md}, and those still open are
-these: the standalone \LaTeX{} sources of the six figures that enter as PDF are deposited, but the
-rasters embedded in three of them, Figs.~\ref{fig:lattice}, \ref{fig:sqw} and~\ref{fig:spin}, are
-deposited as rendered and cannot be regenerated from the deposit; the deposited generator of
-Fig.~\ref{fig:scaling} emits a two-panel version of it, the third panel having been added by hand, and
-the captions of Figs.~\ref{fig:akwsampled} and~\ref{fig:gapscaling} were edited by hand after
-generation, so none of these three is reproduced as printed by its generator; two deposited computation
-scripts have no deposited output; and parts of the pipeline require \texttt{pyscf} or an IBM~Quantum
-account.
+deposited artifacts are enumerated in \texttt{docs/KNOWN\_DISCREPANCIES.md}; those still open are the
+rasters embedded in Figs.~\ref{fig:lattice}, \ref{fig:sqw} and~\ref{fig:spin}, which are deposited as
+rendered and cannot be regenerated from the deposit; the third panel of Fig.~\ref{fig:scaling} and
+the captions of Figs.~\ref{fig:akwsampled} and~\ref{fig:gapscaling}, edited by hand after generation;
+two computation scripts without deposited output; and the parts of the pipeline that require
+\texttt{pyscf} or an IBM~Quantum account.
 

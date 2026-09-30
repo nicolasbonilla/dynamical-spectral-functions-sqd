@@ -14,7 +14,7 @@
 \caption{\textbf{Reproducibility data for the nineteen-molecule suite} (cc-pVDZ, valence bond-breaking
 active spaces). $R_{\rm eq},R_{\rm diss}$ in \AA{}; for the polyatomics ($\mathrm{BeH_2},\mathrm{H_2O},
 \mathrm{NH_3},\mathrm{H_4},\mathrm{H_6}$) the representative varied bond length is shown and full
-Cartesians are in the ancillary data. $D$: dimension of the $N$-electron (neutral, ground-state) sector,
+Cartesians are in \texttt{src/n19\_suite.py} of the deposit. $D$: dimension of the $N$-electron (neutral, ground-state) sector,
 in which the tabulated $|\mathcal S|$ lives; $|\mathcal S|$: ground-state determinant support ($\ge99\%$
 FCI weight); $\chi$: minimal MPS bond dimension across the central spin-orbital cut. The $|\mathcal S|/D$
 of Table~\ref{tab:molecules} is a distinct ratio, taken in the $(N{\pm}1)$ spectral sector.}
@@ -54,8 +54,9 @@ $\mathcal F_1$--$\log_2|\mathcal S|$ $r=0.80$). The $|\mathcal S|/D$ reported in
 Table~\ref{tab:molecules} is a \emph{distinct} quantity---the fraction of the $(N{+}1)$ sector used in
 the spectral \emph{reconstruction}, not the ground-state support tabulated here. Every active-space FCI
 energy is converged to better than $10^{-12}$~Ha (the largest residual across all $38$ points is
-$1.1\times10^{-13}$~Ha); the ground-state
-energies, full Cartesian geometries, and orbital active-space indices are provided as ancillary files.
+$1.1\times10^{-13}$~Ha); the full Cartesian geometries and the active-space definitions (frozen core,
+$n_e$, $n_{\rm o}$) are given in \texttt{src/n19\_suite.py} of the deposit, and the absolute ground-state
+energies are not deposited, only these FCI residuals (\texttt{data/n19\_suite.json}).
 
 \subsection{The molecular suite, and the size of its sectors}
 \label{sec:scope:mol}
@@ -65,7 +66,8 @@ energies, full Cartesian geometries, and orbital active-space indices are provid
 
 The nineteen-molecule suite reconstructs the orbital-projected addition spectral function $A(\omega)$
 at dissociation in a valence bond-breaking active space, against a subspace grown by multinomial
-sampling of the time-evolved probe: $8\,000$ draws at each of $27$ evolution times,
+sampling of the time-evolved probe, seeded with the probe's largest-amplitude determinant, which is
+inserted rather than drawn: $8\,000$ draws at each of $27$ evolution times,
 $2.16\times10^{5}$ per molecule, at $\eta=0.10$~Ha, from a single fixed random seed and with no spread
 reported across seeds. What decides the reach of that test is not the shot budget but the sector it is
 poured into, and Table~\ref{tab:molscope} gives it.

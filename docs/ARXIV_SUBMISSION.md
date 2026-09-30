@@ -1,5 +1,53 @@
 # arXiv submission — the **v3** source package
 
+> ## A v4 replacement: instructions, 2026-09-30 (nothing built; the decision is the author's)
+>
+> The sources now differ from v3 throughout (the review pass of 2026-09-28 and the passes of
+> 2026-09-30: README.md, "`paper/main.pdf` is the manuscript for Physical Review A";
+> `KNOWN_DISCREPANCIES.md` §31–§34). Whether arXiv v3 is replaced by this text, and when (before or
+> after the journal submission), is the author's decision. *(Late on 2026-09-30, after the final pass of
+> §34, items 1 and 3 were run locally and nothing was uploaded. `build/arxiv-v4.tar.gz` holds 77
+> members, 1.98 MB, sha256 `52febdb2…a0b15e022`. Its clean-room compile ran 3 passes to 68 pp. with
+> 0 errors, 0 undefined references or citations, 0 missing files and a sealed `.fls` cross-check, and its
+> text flow is identical to the full tree and to the committed `paper/main.pdf`: `RESULT: PASS -- the
+> package is complete, clean and self-contained`, with the one open item "submission processor must be
+> pdflatex". `build/abstract_arxiv.txt` was rewritten from the final sources: 1 916 characters. If any
+> source changes, rebuild both.)*
+>
+> 1. **Build with the documented script, into a new file.** The builder's default output is
+>    `build/arxiv-v3.tar.gz`, which is the record of the v3 upload, so name the output:
+>    `python src/build_arxiv_bundle.py --passes 3 --out build/arxiv-v4.tar.gz`, and require
+>    **`RESULT: PASS`** (audit, clean-room compile, PDF equivalence with `paper/main.pdf`). Rebuild
+>    `paper/main.pdf` first (`make paper`) if any source changed after 2026-09-30.
+> 2. **What arXiv's PDF must show** (measured on `paper/main.pdf` of 2026-09-30): 68 pages, 17 figures,
+>    17 tables; main text pp. 1–28, p. 28 holding the end of Sec. X, the acknowledgments and Appendix A;
+>    references pp. 29–33 (142 entries); the Supplemental Material from p. 34.
+> 3. **Abstract.** Measured on the sources of 2026-09-30 with `src/abs_paste.py` in a scratch copy:
+>    **1 916 characters with the Greek in Unicode (margin 4) and 1 944 spelled out (over by 24)**,
+>    305 words, one paragraph. Only the Unicode form fits; the margin is four characters, so paste the
+>    file and do not retype it. `abs_paste.py` always writes `build/abstract_arxiv.txt`. That file no
+>    longer holds the abstract filed for v3 (the copy kept outside the repository does): a run at 16:31
+>    on 2026-09-30 replaced it with an earlier draft of that day (1 912 characters), which is not the
+>    current abstract. Run `python src/abs_paste.py` on the final sources and paste from the file it
+>    then writes. *(2026-09-30, final pass: `abs_paste.py` dropped the braces of Theorem 1's
+>    `\min\{...\}` and wrote `min\1+w,...\`. It now keeps them, with a dated comment, so the file reads
+>    `min{1+w,(1+sqrt(w))(sqrt(1-w)+Λ(η)/η)}`. The count is unchanged at 1 916, with 0 backslashes and
+>    0 `$`. The file was rewritten from the final sources.)*
+> 4. **Comments** (arXiv limit 400 characters). A draft of 392 characters, counted, not filed:
+>    `68 pages, 17 figures, 17 tables (28-page main text, then supplement). v4: revised for Phys. Rev. A;
+>    exact-probe hypothesis stated, proof in Appendix A, device runs described as executed, citations
+>    corrected. v3: Theorem 1(iii) of v1-v2 does not hold - a counterexample forces its constant to the
+>    trivial value. Code and data: https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd`
+>    (one line when pasted). `build/arxiv_comments.txt` holds the v3 field as filed, and
+>    `src/check_trim.py` reads it: three of its proofs are the phrase "Theorem 1(iii) of v1-v2 does not
+>    hold", which the draft keeps. If the file is replaced by the v4 text, that phrase must stay in it
+>    or `check_trim.py` fails.
+> 5. **Before uploading**, the deposit the manuscript cites must hold the same code and data: commit,
+>    push and a new tagged release on Zenodo (the concept DOI resolves to the latest version, which
+>    today is v3.3.0 and predates this revision).
+> 6. Then follow §5 below with `build/arxiv-v4.tar.gz` in place of `build/arxiv-v3.tar.gz` (Replace,
+>    LaTeX with PDFLaTeX, CC BY 4.0), and check arXiv's PDF against item 2.
+
 **Status (2026-09-26): v3 was submitted on 2026-09-25 from `build/arxiv-v3.tar.gz` (sha256 be20bc64a52d5eb0c535c882e50c9ef71f54655693ecdc4d311b5f333f00de66), 66 pages; it was announced on 2026-09-28 (arxiv.org/abs/2608.16436 lists v1, v2 and v3 under the new title, checked 02:19 UTC). The steps below are the record of how it was built.**
 
 > *What was uploaded, measured 2026-09-26 from that tarball:* **76 files** — 60 `.tex`, 10 `.dat`,
@@ -22,7 +70,11 @@
 > Since 2026-09-28 `sm_scope.tex`, `sec_9.tex`, `sec_10.tex` and `bibliography.tex` differ further:
 > the Sec. S8 sentence that still called the `ibm_fez` run a proof of principle, the known-gaps
 > sentence and guardian counts of the data statement, and the Supplemental Material cited as ref.
-> [102] in the APS form (README.md, "`paper/main.pdf` is the v3 manuscript").
+> [102] in the APS form (ref. [12] since the review pass below; ref. [19] since the reordering of 2026-09-30) (README.md, "`paper/main.pdf` is the v3 manuscript").
+> Since the review pass of 2026-09-28 for Physical Review A the sources differ from v3 throughout: the
+> abstract, most sections and captions, a new `app_proof.tex` (Appendix A, the proof of Theorem 1) and
+> the Supplemental Material now cited first in Sec. I. What changed, and every corrected number, is in
+> README.md (same paragraph) and `KNOWN_DISCREPANCIES.md` §31-§32.
 
 > # ⛔ DO NOT UPLOAD `paper/arxiv-submission.tar.gz`
 >
@@ -252,7 +304,7 @@ This is a **replacement (v3)** of an existing entry, not a new submission.
 | **Cross-list** | `cond-mat.str-el` |
 | **Title** | Captured weight and boundary leakage bound the error of sample-based spectral functions |
 | **Authors** | Nicolás Bonilla Vargas |
-| **Abstract** | copy the `abstract` environment from `paper/main.tex` (**it changed in v3**). **Type the ten Greek letters as Unicode characters (η, ρ, γ, Λ) and keep the exponents and subscripts (`10^-3`, `L_1`): so typed it is 1910 characters against arXiv's limit of 1920. Spelled out as `eta`, `rho`, ... it is 1940 and arXiv rejects it.** The margin depends on the convention, so do not retype it: **run `python src/abs_paste.py` and paste from `build/abstract_arxiv.txt`**, which is written UTF-8 without BOM and is the string this table describes. Measured by that script on the sources of 2026-09-21: **1908 with the Greek in Unicode (margin 12), 1925 spelled out (over by 5)**, 308 words, one paragraph, no raw LaTeX left in it (0 backslashes, 0 `$`, 0 braces). *(2026-09-26: those counts are stale. The abstract was shortened before submission: `abs_paste.py` on the v3 sources gives 1 749 characters with the Greek in Unicode and 1 775 spelled out, 275 words. The abstract filed for v3 on 2026-09-25, kept with the uploaded package outside the repository, is a different rendering of the same text: 1 871 characters, all ASCII, with the mathematics left in LaTeX (`$A(\omega)$`, `$\eta$`, ...). Note that `abs_paste.py` always writes `build/abstract_arxiv.txt`, with or without `--write`, so running it replaces the copy of the filed abstract in `build/`.)* *(Until 2026-09-21 this row pointed at `scratchpad/cierre/abs_paste.py`, which lived in a session scratchpad and no longer exists — a submission instruction that points at a deleted script is not an instruction, so the script now lives in the deposit.)* Note that `mide_resumen.py` deletes `^` and `_` before counting and therefore reads 8 characters short; `abs_paste.py` counts the string it writes, unmodified. |
+| **Abstract** | copy the `abstract` environment from `paper/main.tex` (**it changed in v3**). **Type the ten Greek letters as Unicode characters (η, ρ, γ, Λ) and keep the exponents and subscripts (`10^-3`, `L_1`): so typed it is 1910 characters against arXiv's limit of 1920. Spelled out as `eta`, `rho`, ... it is 1940 and arXiv rejects it.** The margin depends on the convention, so do not retype it: **run `python src/abs_paste.py` and paste from `build/abstract_arxiv.txt`**, which is written UTF-8 without BOM and is the string this table describes. Measured by that script on the sources of 2026-09-21: **1908 with the Greek in Unicode (margin 12), 1925 spelled out (over by 5)**, 308 words, one paragraph, no raw LaTeX left in it (0 backslashes, 0 `$`, 0 braces). *(2026-09-26: those counts are stale. The abstract was shortened before submission: `abs_paste.py` on the v3 sources gives 1 749 characters with the Greek in Unicode and 1 775 spelled out, 275 words. The abstract filed for v3 on 2026-09-25, kept with the uploaded package outside the repository, is a different rendering of the same text: 1 871 characters, all ASCII, with the mathematics left in LaTeX (`$A(\omega)$`, `$\eta$`, ...). Note that `abs_paste.py` always writes `build/abstract_arxiv.txt`, with or without `--write`, so running it replaces the copy of the filed abstract in `build/`.)* *(2026-09-28, after the review pass for Physical Review A rewrote the abstract: `abs_paste.py` on the current sources gives **1 897 characters with the Greek in Unicode (margin 23) and 1 923 spelled out (over by 3)**, 298 words, one paragraph. Only the Unicode form fits, so for a future replacement paste from `build/abstract_arxiv.txt` and do not spell the Greek out. Measured in a scratch copy, so the filed v3 abstract in `build/` was not overwritten.)* *(Until 2026-09-21 this row pointed at `scratchpad/cierre/abs_paste.py`, which lived in a session scratchpad and no longer exists — a submission instruction that points at a deleted script is not an instruction, so the script now lives in the deposit.)* Note that `mide_resumen.py` deletes `^` and `_` before counting and therefore reads 8 characters short; `abs_paste.py` counts the string it writes, unmodified. |
 | **License** | CC BY 4.0 |
 | **Comments** | *** arXiv ENFORCES A 400-CHARACTER LIMIT ON THIS FIELD. *** The block this table used to carry was about 800 and the form rejects it outright -- discovered on 2026-09-23 with the submission already open, because this row had been written without checking the limit. The 397-character replacement is in `build/arxiv_comments.txt`, generated and counted rather than retyped (filed on 2026-09-25; it begins *"66 pages, 17 figures, 17 tables (25-page main text, then supplement)"*, and is quoted in full below the superseded block); it keeps the counts, the retraction with its cause, the vacuity range and the repository URL, and drops the detail of the rank correlations, which lives in `docs/KNOWN_DISCREPANCIES.md` where that line points. Superseded block, kept for the record: paste the block below verbatim (measured 2026-09-19: 62 pages, 17 figures, 17 tables). arXiv asks that a replacement merge the old comments with the new ones, and that the reason for the replacement appear in this field. |
 

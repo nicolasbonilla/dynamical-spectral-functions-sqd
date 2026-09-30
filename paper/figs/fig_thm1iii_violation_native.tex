@@ -15,10 +15,11 @@
 %                                 while release/src/sampled_akw.py seeds with c^dag_{k,up}|GS>.
 %                                 Kept in the cloud, never highlighted.
 %   cert_stress.json   162 rows  \
-%   cert_akw.json      112 rows   > independent re-implementation (certificate.py, 2026-09-18).
-%                                 Its 64 L=8 rows ARE the paper's Fig. 5 setting (momentum seeds,
+%   cert_akw.json      112 rows   > independent re-implementation (leakage_certificate_suite.py),
+%                                 read since 2026-09-28 from the deposited data/cert_*.json.
+%                                 Its 64 L=8 rows ARE the paper's Fig. 3 setting (momentum seeds,
 %                                 eta=0.18t, FR=0.50/0.70/0.85/0.95) and reproduce the deposited
-%                                 sampled_akw_L8.json to 2.1e-8 absolute; they are the highlighted series.
+%                                 sampled_akw_L8.json to 3.1e-8 absolute; they are the highlighted series.
 %   cert_teqsci.json   104 rows  /
 % 621 pooled; 15 are exact to machine noise (relative L1 <= 1e-10) and carry no defined ratio.
 % The plotted published bound is the weight term 2||phi||^2(1-w_S). On 195 of the 239 rows of the
@@ -73,16 +74,16 @@
 \draw[vlInk,line width=0.5pt] (axis cs:0.5,16.1609) -- (axis cs:0.5,21.0661);
 \draw[vlInk,line width=0.5pt] (axis cs:0.485,16.1609) -- (axis cs:0.515,16.1609);
 \draw[vlInk,line width=0.5pt] (axis cs:0.485,21.0661) -- (axis cs:0.515,21.0661);
-\draw[vlInk,line width=0.5pt] (axis cs:0.7,17.8042) -- (axis cs:0.7,29.9511);
+\draw[vlInk,line width=0.5pt] (axis cs:0.7,17.8042) -- (axis cs:0.7,29.951);
 \draw[vlInk,line width=0.5pt] (axis cs:0.679,17.8042) -- (axis cs:0.721,17.8042);
-\draw[vlInk,line width=0.5pt] (axis cs:0.679,29.9511) -- (axis cs:0.721,29.9511);
-\draw[vlInk,line width=0.5pt] (axis cs:0.85,15.0552) -- (axis cs:0.85,33.7282);
-\draw[vlInk,line width=0.5pt] (axis cs:0.8245,15.0552) -- (axis cs:0.8755,15.0552);
-\draw[vlInk,line width=0.5pt] (axis cs:0.8245,33.7282) -- (axis cs:0.8755,33.7282);
-\draw[vlInk,line width=0.5pt] (axis cs:0.95,22.3768) -- (axis cs:0.95,57.2787);
-\draw[vlInk,line width=0.5pt] (axis cs:0.9215,22.3768) -- (axis cs:0.9785,22.3768);
-\draw[vlInk,line width=0.5pt] (axis cs:0.9215,57.2787) -- (axis cs:0.9785,57.2787);
-\addplot[forget plot,only marks,mark=diamond,mark size=3.0pt,draw=vlInk,line width=0.6pt,mark options={fill=white,fill opacity=1}] coordinates {(0.5,18.5343) (0.7,23.621) (0.85,26.4518) (0.95,29.8719)};
+\draw[vlInk,line width=0.5pt] (axis cs:0.679,29.951) -- (axis cs:0.721,29.951);
+\draw[vlInk,line width=0.5pt] (axis cs:0.85,15.0551) -- (axis cs:0.85,33.7281);
+\draw[vlInk,line width=0.5pt] (axis cs:0.8245,15.0551) -- (axis cs:0.8755,15.0551);
+\draw[vlInk,line width=0.5pt] (axis cs:0.8245,33.7281) -- (axis cs:0.8755,33.7281);
+\draw[vlInk,line width=0.5pt] (axis cs:0.95,22.3766) -- (axis cs:0.95,57.2786);
+\draw[vlInk,line width=0.5pt] (axis cs:0.9215,22.3766) -- (axis cs:0.9785,22.3766);
+\draw[vlInk,line width=0.5pt] (axis cs:0.9215,57.2786) -- (axis cs:0.9785,57.2786);
+\addplot[forget plot,only marks,mark=diamond,mark size=3.0pt,draw=vlInk,line width=0.6pt,mark options={fill=white,fill opacity=1}] coordinates {(0.5,18.5343) (0.7,23.621) (0.85,26.4519) (0.95,29.8723)};
 \addplot[forget plot,vlInk,line width=0.9pt,densely dashed,domain=0:1.03,samples=2] {1};
 \addplot[forget plot,vlRule,line width=0.4pt,dotted,domain=0:1.03,samples=2] {8e6};
 % --- legend proxies ---
@@ -124,9 +125,9 @@
 % the orange w_S>=0.99 series.  As 64 separate diamonds they fused into solid blobs that
 % resolved no marker and hid the orange points underneath (reviewer defect D3).
 % Caps are drawn at +-6% of the abscissa; that is layout, the y values are the data.
-\draw[vlInk,line width=0.5pt] (axis cs:0.18,15.0552) -- (axis cs:0.18,57.2787);
-\draw[vlInk,line width=0.5pt] (axis cs:0.1692,15.0552) -- (axis cs:0.1908,15.0552);
-\draw[vlInk,line width=0.5pt] (axis cs:0.1692,57.2787) -- (axis cs:0.1908,57.2787);
+\draw[vlInk,line width=0.5pt] (axis cs:0.18,15.0551) -- (axis cs:0.18,57.2786);
+\draw[vlInk,line width=0.5pt] (axis cs:0.1692,15.0551) -- (axis cs:0.1908,15.0551);
+\draw[vlInk,line width=0.5pt] (axis cs:0.1692,57.2786) -- (axis cs:0.1908,57.2786);
 \addplot[forget plot,only marks,mark=diamond,mark size=3.0pt,draw=vlInk,line width=0.6pt,mark options={fill=white,fill opacity=1}] coordinates {(0.18,22.9909)};
 \addplot[vlInk,line width=0.9pt,densely dashed,domain=0.021:1.35,samples=2] {1};
 \addplot[vlRule,line width=0.4pt,dotted,domain=0.021:1.35,samples=2] {8e6};

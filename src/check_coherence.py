@@ -153,10 +153,13 @@ def build_checks(txt):
 
     return [
         ("the vacuity range is the deposited one, everywhere it is stated",
-         (rng, 5),
+         # 2026-09-30: floor 5 -> 4 DOWNWARD, reframe (skeptic V1): Sec. IX C no longer
+         # restates the range; its home is Sec. V B (Table published), and the abstract,
+         # Sec. I and Sec. X still state it.  The range itself is unchanged.
+         (rng, 4),
          [r"\$2\.8\$\s*(?:--|to)\s*\$4\.9\$", r"2\.8 to 4\.9"],
          "vacuous by factors of $2.8$ to $4.9$",
-         "the abstract, Sec. I, Sec. V, Sec. IX and Sec. X each state the range over "
+         "the abstract, Sec. I, Sec. V and Sec. X each state the range over "
          "which the certificate is vacuous. It is %s-%s over the twenty cells of the "
          "deposited published-fraction grid, and the superseded 2.8-4.9 must appear "
          "nowhere." % (lo_s, hi_s)),
@@ -164,7 +167,9 @@ def build_checks(txt):
         ("the number of published sizes agrees with the deposited grid",
          (r"at all %s sizes|at each of the %s sizes evaluated|at the %s sizes measured"
           r"|%s sizes up to a sector|at %s system sizes|all five sizes and all four"
-          % (word, word, word, word, word), 6),
+          % (word, word, word, word, word), 5),
+         # 2026-09-30: floor 6 -> 5 DOWNWARD, reframe (skeptic V1): the Sec. IX C sentence
+         # 'at the five sizes measured' went with the restated vacuity range (see above).
          # 2026-09-25: floor 8 -> 6, DOWNWARD: the rewritten introduction and conclusion state
          # the five sizes fewer times; no section counts four (the forbidden forms below).
          [r"at all four sizes", r"at each of the four sizes evaluated",
@@ -248,7 +253,8 @@ def build_checks(txt):
          # 2026-09-25: floor 27 -> 24. DOWNWARD, final referee pass: three 'published fraction' claims of vacuity also covered Fig. akwsampled (published at 85% and certified); they now say 'operating fraction(s)' or 'those fractions'.
          # 2026-09-25: floor 24 -> 23. intro rewrite: the new introduction names the operating fraction once.
          # 2026-09-25: floor 23 -> 21. conclusion rewrite: operating fraction named once more.
-         (r"published fraction|operating fractions? of the resource scan", 21),
+         # 2026-09-30: floor 21 -> 20. DOWNWARD, reframe (skeptic V1): Sec. IX C no longer restates the vacuity at 'every operating fraction of the resource scan'; Sec. V B, the abstract, Sec. I and Sec. X still do.
+         (r"published fraction|operating fractions? of the resource scan", 20),
          [r"sampled fraction"],
          "at every sampled fraction",
          "Sec. VII states in the printed text that describing the T->infinity curve as "
@@ -276,7 +282,23 @@ def build_checks(txt):
          # places that quote the total, and then bring this line to match.
          # 2026-09-28: 872 / 9,889 -> 874 / 9,891, two phrase guards added to verify.py
          # (hw.sm_scope_*, CLAIMS_RETRACTED).
-         (r"\$874\$ checks over \$9\\,891\$ numeric assertions", 1),
+         # 2026-09-28: 874 / 9,891 -> 874 / 11,487, the Fig. 3 frequency grid widened from
+         # [-9t, 9t] (600 points) to [-9t, 17t] (866 points): verify.py checks every plotted
+         # point of the six curves, +266 each (KNOWN_DISCREPANCIES.md section 31).
+         # 2026-09-28 (late): 874 / 11,487 -> 934 / 11,674, verify.py section 9.6b recomputes
+         # the finite-shot paragraph of the Fig. 3 caption (and its echoes in Secs. II, VII,
+         # S1, S8) from data/fig3_finite_shot_T*.json, the outputs of the deposited
+         # src/fig3_finite_shot.py (KNOWN_DISCREPANCIES.md section 31).
+         # 2026-09-28 (late, closing the review): 934 / 11,674 -> 1212 / 14,495, verify.py
+         # section 9.6c (the free-fermion supports, the spin-peak deviations and the Fig. S5 pool re-classified from the deposited certificate rows), the chi_max of the witness, the LF hash of the Fig. 3 generator and the L=14 re-ranking record
+         # (KNOWN_DISCREPANCIES.md section 33); its Fig. S5 coverage gap is closed (xfail 5 -> 4).
+         # 2026-09-30: 1212 / 14,495 -> 1214 / 14,497, verify.py section 9.3 now checks every
+         # printed exact permutation p (Sec. I, Sec. VI, Fig. 6 caption: three occurrences,
+         # each against exact_perm_p_one_sided_F1 at 1e-15) instead of the first one at 5e-15.
+         # 2026-09-30 (final review): 1214 / 14,497 -> 1280 / 14,563, verify.py sections 9.6b
+         # (Fig. 3 caption panel (b), window and branch thresholds), 9.9b (the printed noise
+         # values) and 9.9c (every restated Fig. 3 certificate number).
+         (r"\$1280\$ checks over \$14\\,563\$ numeric assertions", 1),
          # The forbidden phrase used to be the bare "four known open defects", which was
          # unambiguous while the live sentence read "five".  On 2026-09-21 the live
          # sentence became "four known open defects, and two declared gaps in its own
@@ -354,6 +376,62 @@ def selftest(txt, checks):
     return fired == total
 
 
+# ---------------------------------------------------------------------------
+#  2026-09-30 (final numeric review NR-8).  Three pooled floors above were lowered that day
+#  (5 -> 4, 6 -> 5, 21 -> 20) when Sec. IX C stopped restating the vacuity.  A pooled floor
+#  lets one place go silently while another gains a copy, so each statement is now also
+#  required IN EACH PLACE that carries it, per source file (the abstract is cut out of
+#  main.tex).  The per-file floors are the counts measured on the tree of 2026-09-30.  Each
+#  check has its own control: deleting its occurrences in that one file must make it fire.
+# ---------------------------------------------------------------------------
+def part(where):
+    if where == "abstract":
+        m = re.search(r"\\begin\{abstract\}(.*?)\\end\{abstract\}", flat(body("main.tex")))
+        return m.group(1) if m else ""
+    return flat(body(where))
+
+
+def located_checks(rng, word):
+    sizes = (r"at all %s sizes|at each of the %s sizes evaluated|at the %s sizes measured"
+             r"|%s sizes up to a sector|at %s system sizes|all five sizes and all four"
+             % (word, word, word, word, word))
+    opf = r"published fraction|operating fractions? of the resource scan"
+    out = []
+    for where in ("abstract", "sec_1.tex", "sec_5_body.tex", "sec_10.tex"):
+        out.append(("the vacuity range is stated in %s" % where, where, rng, 1))
+    for where in ("abstract", "sec_1.tex", "sec_5_body.tex", "sec_9.tex", "sec_10.tex"):
+        out.append(("the number of published sizes is stated in %s" % where, where, sizes, 1))
+    for where, n in (("abstract", 1), ("sec_1.tex", 1), ("sec_5_body.tex", 5), ("sec_7.tex", 1),
+                     ("sec_10.tex", 2), ("sm_frontier.tex", 8), ("sm_prices.tex", 1)):
+        out.append(("the operating/published fraction is named in %s" % where, where, opf, n))
+    return out
+
+
+def run_located(checks, parts, verbose=True):
+    bad = []
+    for name, where, pat, floor in checks:
+        n = len(re.findall(pat, parts[where]))
+        if n < floor:
+            bad.append(name)
+            if verbose:
+                print("  FAIL  %s: %d time(s), the tree of 2026-09-30 had %d" % (name, n, floor))
+        elif verbose:
+            print("  ok    %-62s %3d" % (name, n))
+    return bad
+
+
+def selftest_located(checks, parts):
+    for c in checks:
+        name, where, pat, floor = c
+        cut = dict(parts)
+        cut[where] = re.sub(pat, "@@", parts[where])
+        if not run_located([c], cut, verbose=False):
+            print("  CONTROL FAILED: deleting %r from %s does not make it fire." % (pat[:40], where))
+            return False
+    print("  %d of %d per-place controls fired." % (len(checks), len(checks)))
+    return True
+
+
 def main():
     print("check_coherence.py -- does the manuscript still agree with itself?")
     print("repository root: %s" % ROOT)
@@ -374,6 +452,16 @@ def main():
     print()
     print("CHECKS (%d)" % len(checks))
     bad = run(txt, checks)
+    print()
+    word = {4: "four", 5: "five", 6: "six"}[nsizes]
+    rng = re.escape("$%s$" % lo) + r".{0,40}" + re.escape("$%s$" % hi)
+    loc = located_checks(rng, word)
+    parts = dict((w, part(w)) for w in set(c[1] for c in loc))
+    print("PER-PLACE CHECKS (%d)" % len(loc))
+    if not selftest_located(loc, parts):
+        print("RESULT: ABORT -- a per-place control did not fire; this file certifies nothing.")
+        return 2
+    bad += [(n, [], "") for n in run_located(loc, parts)]
     print()
     if bad:
         print("RESULT: FAIL -- %d cross-section claim(s) of the manuscript contradict "

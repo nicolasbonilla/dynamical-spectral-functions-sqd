@@ -67,6 +67,7 @@ the defect -- which slot, which system, which value was found and which was due.
 
 import argparse
 import ast
+import hashlib
 import json
 import math
 import os
@@ -851,15 +852,13 @@ COVERAGE_GAP_V3 = {
     # src/moments_table.py and the assertions in section 9.2 below.
     # 2026-09-26: build_n3.py and its inputs were recovered and deposited, and
     # src/check_figures.py now regenerates the ten n3_*.dat tables byte-for-byte.  The entry
-    # stays, because what it names -- a check IN THIS FILE -- has still not been written.
-    "fig_thm1iii_violation_native.tex": (
-        "the fragment plots eight n3_*.dat tables (2432 rows) built by "
-        "src/recovered/build_n3.py from data/thm1iii_violation/ (recovered and deposited "
-        "2026-09-26; its three certificate scans are an EARLIER run than data/cert_*.json, "
-        "see that folder's README). src/check_figures.py regenerates all ten tables "
-        "byte-for-byte, but no check in this file anchors the plotted ratios to the "
-        "certificate rows, and it will not pretend to by re-reading what the figure prints. "
-        "To close this: write that check here."),
+    # stayed, because what it named -- a check IN THIS FILE -- had not been written.
+    # 2026-09-28 (late): "fig_thm1iii_violation_native.tex" is closed by section 9.6c below.
+    # build_n3.py now reads the DEPOSITED data/cert_{stress,akw,teqsci}.json (until that day
+    # it read an earlier run of the same scans, kept in data/thm1iii_violation/cert_earlier_run/),
+    # and 9.6c re-classifies the pool from the five JSON sources with code that shares nothing
+    # with build_n3.py, then checks the eight plotted tables, the whisker summary and every
+    # count the caption, Sec. III D, Sec. S2 and Sec. S9 print against that classification.
 }
 
 # Minimum number of numeric assertions each section must actually perform.  A guardian
@@ -872,13 +871,17 @@ COVERAGE_GAP_V3 = {
 # cry wolf; it is far too small to hide a deleted artefact, which costs tens to hundreds.
 SECTION_FLOORS = [
     ("(2) RECOMPUTED", 32),
-    ("(3) WITNESS ARTEFACTS", 85),
+    ("(3) WITNESS ARTEFACTS", 98),      # 2026-09-28 (late): 100 measured, chi_max checks added
     ("(4) OPEN CHAIN", 62),
     ("(5) DERIVED QUANTITIES", 440),
     ("(6) STATISTICS", 23),
     ("(7) MOLECULAR SUITE", 263),
     ("(8) SPECTRAL ARTEFACTS", 69),
-    ("(9) THE FILES", 3855),
+    ("(9) THE FILES", 10850),           # 2026-09-30 (final review): 11071 measured, less 2 %,
+                                        # after sections 9.6b (caption panel (b)), 9.9b and 9.9c;
+                                        # 2026-09-28 (late): 11003 measured, less 2 %; sections
+                                        # 9.6b/9.6c (Fig. 3 finite shots, the free-fermion
+                                        # supports, the spin peaks, the Fig. S5 pool) added
     ("(10b) C3 FRONTIER", 2387),
     ("(10) RETRACTED CLAIMS", 7),   # the header was renamed when the registry was inverted;
                                    # the floor of 7 is unchanged and is met by the seven
@@ -1299,24 +1302,35 @@ def section9(rep, root, ctx):
         _st.setdefault((_r["L"], _r["N"]), []).append(_r)
     _within = [spearmanr([r["FAF"] for r in rs], [r["S"] for r in rs]).correlation
                for _, rs in sorted(_st.items())]
-    rep.truth("abstract: 'exactly -1' within each of six strata",
+    # 2026-09-30 (reader-value reframe): the stratified statistics left the abstract; their
+    # home is Sec. I (sec_1.tex) and Sec. VI (sec_6_body.tex), with the Fig. 6 caption
+    # (figs/captions.tex).  The two checks below were named for the abstract but searched
+    # the whole body, so they kept passing on the Sec. I wording; they are now named for
+    # where the statement lives, the regex admits every printed form ('exact $p=', 'exact
+    # permutation $p=', 'exact one-sided permutation $p='), at least TWO places must print
+    # the value (Sec. I and Sec. VI), and every printed value must be the 3.35 rounding of
+    # exact_perm_p_one_sided_F1 = (1/120)^6 = 3.349e-13: tolerance 5e-15 -> 1e-15, so the
+    # 3.3e-13 rounding that Sec. I and the Fig. 6 caption carried until today fails.
+    rep.truth("Sec. I: 'exactly -1' within each of six strata",
               re.search(r"exactly \$-1\$", mt) is not None
               and len(_within) == 6 and all(abs(v + 1.0) < 1e-12 for v in _within),
               "six strata, every one at rho = -1.000000",
-              "the abstract claims an exact -1 within every stratum; recomputation gives %s"
+              "Sec. I claims an exact -1 within every stratum; recomputation gives %s"
               % [round(v, 6) for v in _within], n=6)
     _sr = read_json(root, "data/stats_resource.json")["hubbard_stratified"]
-    _m = re.search(r"exact \$p=([\d.]+)" + RBS + r"times10\^\{-(\d+)\}\$", mt)
-    if _m is None:
-        rep.missing("abstract exact permutation p",
-                    "the abstract no longer states the exact permutation p-value that "
-                    "replaced the withdrawn pooled coefficients")
+    _ms = list(re.finditer(r"exact(?:\s+one-sided)?(?:\s+permutation)?\s+\$p=([\d.]+)"
+                           + RBS + r"times10\^\{-(\d+)\}\$", mt))
+    if len(_ms) < 2:
+        rep.missing("Secs. I/VI exact permutation p",
+                    "fewer than two places (Sec. I and Sec. VI) state the exact permutation "
+                    "p-value that replaced the withdrawn pooled coefficients (%d found)" % len(_ms))
     else:
-        _pp = float(_m.group(1)) * 10 ** (-int(_m.group(2)))
-        rep.eq("abstract exact permutation p", _pp,
-               float(_sr["exact_perm_p_one_sided_F1"]), 5e-15,
-               "the abstract prints an exact permutation p that is not "
-               "exact_perm_p_one_sided_F1 of data/stats_resource.json")
+        for _i, _m in enumerate(_ms):
+            _pp = float(_m.group(1)) * 10 ** (-int(_m.group(2)))
+            rep.eq("Secs. I/VI exact permutation p (occurrence %d of %d)" % (_i + 1, len(_ms)),
+                   _pp, float(_sr["exact_perm_p_one_sided_F1"]), 1e-15,
+                   "a printed exact permutation p is not the 3.35e-13 rounding of "
+                   "exact_perm_p_one_sided_F1 of data/stats_resource.json")
     # v3, 2026-09-19.  The manuscript no longer announces a withdrawal anywhere; it
     # states positively what the two pooled coefficients ARE -- Simpson reversals of the
     # six (L,N) strata -- and that neither is used.  The old check here asserted the
@@ -1515,6 +1529,731 @@ def section9(rep, root, ctx):
                    "the figure header advertises an accuracy that is not the deposited one "
                    "(%.6g)" % value)
 
+    # ---------------------------------------------------------------- 9.6b Fig. 3 finite shots
+    # Added 2026-09-28.  The finite-shot paragraph of the Fig. 3 caption (and its echoes in
+    # Sec. II, Sec. VII, Sec. S1 and Sec. S8) had no deposited generator until
+    # src/fig3_finite_shot.py was recovered and deposited; its two outputs are
+    # data/fig3_finite_shot_T2.6e6.json and _T5.2e6.json.  Every printed number is recomputed
+    # HERE from the 32 per-(channel, seed) rows, not read from the file's own summary, and the
+    # summary is checked against the rows too.  The two files must also be scored on the SAME
+    # window as Fig. 3(a,b) (data/sampled_akw_L8.json), and each must carry an exact
+    # reproduction of the 2026-09-19 output on the former window.
+    import statistics as _st
+    fs = {}
+    for _T, _tag in ((2600000, "2.6e6"), (5200000, "5.2e6")):
+        _rel = "data/fig3_finite_shot_T%s.json" % _tag
+        if not os.path.exists(os.path.join(root, _rel)):
+            rep.missing("Fig. 3 finite-shot data %s" % _rel,
+                        "the file behind the finite-shot paragraph of the Fig. 3 caption is gone")
+            continue
+        d_ = read_json(root, _rel)
+        c_ = d_["config"]
+        rows_ = d_["rows"]
+        rel_ = [r["relL1"] for r in rows_]
+        fa_ = [r["frac_add"] for r in rows_]
+        fr_ = [r["frac_rem"] for r in rows_]
+        rep.eq_int("%s: T" % _rel, c_["T"], _T, "the file is not at the budget its name states")
+        rep.truth("%s: configuration of Fig. 3(a,b)" % _rel,
+                  (c_["L"], c_["U"], c_["eta"], c_["K"], c_["dt"]) == (sk["L"], sk["U"], sk["eta"], 16, 0.5)
+                  and c_["NL"] == 260 and c_["seeds"] == [7001, 7002, 7003, 7004],
+                  "L=8, U=8, eta=0.18, K=16, dt=0.5, NL=260, seeds 7001-7004",
+                  "the finite-shot run is not at the configuration of Fig. 3(a,b): %r" % c_)
+        rep.truth("%s: scored on the window of Fig. 3(a,b)" % _rel,
+                  c_["window"] == sk["window"] and c_["npts"] == len(sk["wg"]),
+                  "%s x %d" % (c_["window"], c_["npts"]),
+                  "the finite-shot errors are scored on %s x %d while Fig. 3(a,b) uses %s x %d; "
+                  "their ratio would compare two different integrals"
+                  % (c_["window"], c_["npts"], sk["window"], len(sk["wg"])))
+        rep.eq_int("%s: 32 (channel, seed) rows" % _rel, len(rows_), 32,
+                   "8 momenta x 4 seeds, each row both branches summed")
+        rep.eq_int("%s: rows are the 8 momenta x 4 seeds" % _rel,
+                   sorted((round(r["k_over_pi"], 3), r["seed"]) for r in rows_),
+                   sorted((round(2 * n / 8.0, 3), s_) for n in range(8) for s_ in c_["seeds"]),
+                   "a (momentum, seed) pair is missing or duplicated")
+        rep.truth("%s: fractions are |S|/3920" % _rel,
+                  all(abs(r["frac_add"] - r["S_add"] / 3920.0) < 1e-15 and
+                      abs(r["frac_rem"] - r["S_rem"] / 3920.0) < 1e-15 for r in rows_),
+                  "64 fractions", "a stored fraction is not its |S| over the sector dimension",
+                  n=2 * len(rows_))
+        st_ = dict(mean=_st.mean(rel_), sd=_st.stdev(rel_), mx=max(rel_),
+                   fa=_st.mean(fa_), fr=_st.mean(fr_))
+        sm_ = d_["summary"]
+        for k_, key_ in (("mean", "mean_relL1"), ("sd", "sd_relL1_ddof1"), ("mx", "max_relL1"),
+                         ("fa", "mean_frac_add"), ("fr", "mean_frac_rem")):
+            rep.eq("%s: summary.%s recomputed from the rows" % (_rel, key_), sm_[key_], st_[k_],
+                   1e-12 * max(1.0, abs(st_[k_])),
+                   "the stored summary is not the statistic of the stored rows")
+        rep.eq("%s: mean_relL1 (top level) from the rows" % _rel, d_["mean_relL1"], st_["mean"], 1e-15)
+        rep.eq("%s: max_relL1 (top level) from the rows" % _rel, d_["max_relL1"], st_["mx"], 0.0)
+        rc_ = d_.get("reproduction_check") or {}
+        pv_ = rc_.get("printed_vs_reproduced") or {}
+        rep.truth("%s: exact reproduction of the 2026-09-19 output on [-9t, 9t]" % _rel,
+                  rc_.get("exact") is True and rc_.get("n_rows_mismatched") == 0
+                  and rc_.get("n_rows_compared") == (32 if _T == 2600000 else 28)
+                  and rc_.get("window") == [-9.0, 9.0] and rc_.get("npts") == 600
+                  and len(pv_) == 5 and all(a == b for a, b in pv_.values()),
+                  "%s rows and all summary strings identical" % rc_.get("n_rows_compared"),
+                  "the deposited generator does not carry an exact reproduction of the run it "
+                  "replaces: %r" % {k: rc_.get(k) for k in ("exact", "n_rows_compared", "n_rows_mismatched")})
+        fs[_T] = dict(st_, T=c_["T"], n=len(rows_), nseeds=len(c_["seeds"]))
+    if len(fs) == 2:
+        sh_ = read_json(root, "data/sampled_honest.json")
+        pen_ = [m_["penalty_factor_topm"] for r_ in sh_["results"] if r_["L"] == 8
+                for m_ in r_["matched_subspace"] if m_.get("S_matched") == 2180]
+        rep.eq_int("Table S6 transferred factor (L=8, |S|=2180) found once", len(pen_), 1)
+        pen0 = pen_[0] if pen_ else float("nan")
+        ratio_ = fs[2600000]["mean"] / sk["mean_relL1"]
+        under_ = 1.0 - pen0 / ratio_
+        # 2026-09-28 (late): the generator writes the understatement only at T = 2.6e6 (the
+        # budget whose fraction, 0.839, is the one next to the 0.850 of Fig. 3(a,b)); at
+        # T = 5.2e6 the field is null (it used to hold a meaningless -1.24).  Each data file
+        # also carries the sha256 of its generator with line endings normalised to LF; it is
+        # recomputed here from src/fig3_finite_shot.py, so an edit to the algorithm block
+        # cannot leave a stored reproduction check green.
+        with open(os.path.join(root, "src", "fig3_finite_shot.py"), "rb") as _fh:
+            _gen_lf = hashlib.sha256(_fh.read().replace(b"\r\n", b"\n")).hexdigest()
+        for _T, _tag in ((2600000, "2.6e6"), (5200000, "5.2e6")):
+            _d = read_json(root, "data/fig3_finite_shot_T%s.json" % _tag)
+            sm_, pv_ = _d["summary"], _d.get("provenance") or {}
+            rep.eq("fig3_finite_shot_T%s: ratio to Fig. 3(b) mean from the rows" % _tag,
+                   sm_["ratio_mean_to_panel_b"], fs[_T]["mean"] / sk["mean_relL1"], 1e-12)
+            rep.eq("fig3_finite_shot_T%s: ratio to Fig. 3(b) max from the rows" % _tag,
+                   sm_["ratio_max_to_panel_b"], fs[_T]["mx"] / sk["max_relL1"], 1e-12)
+            if _T == 2600000:
+                rep.eq("fig3_finite_shot_T%s: understatement from the rows and Table S6" % _tag,
+                       sm_["understatement_of_transferred_penalty"], under_, 1e-12)
+            else:
+                rep.truth("fig3_finite_shot_T%s: no understatement is written at this budget" % _tag,
+                          sm_.get("understatement_of_transferred_penalty") is None, "null",
+                          "a value is stored for a quantity the generator defines only at T=2.6e6")
+            rep.truth("fig3_finite_shot_T%s: provenance.generator_sha256 is the LF hash of "
+                      "src/fig3_finite_shot.py" % _tag, pv_.get("generator_sha256") == _gen_lf,
+                      _gen_lf[:12], "the deposited data were not written by the deposited generator "
+                      "(stored %s, file %s)" % (str(pv_.get("generator_sha256"))[:12], _gen_lf[:12]))
+            rep.truth("fig3_finite_shot_T%s: provenance.argv carries no absolute path" % _tag,
+                      all(not os.path.isabs(str(a)) for a in pv_.get("argv", [])), "relative",
+                      "a local absolute path is recorded in the deposit")
+        cap = " ".join(read(root, "paper/figs/fig5_caption.tex").split())
+        f5, f26 = fs[5200000], fs[2600000]
+
+        def _num(pat, where, text, name, want, tol, defect):
+            m_ = re.search(pat, text)
+            if not m_:
+                rep.missing(name, "the printed %s is gone from %s (pattern %s)" % (name, where, pat))
+                return
+            rep.eq(name, float(m_.group(1)), want, tol, defect)
+
+        D = "the caption no longer states what data/fig3_finite_shot_T*.json holds"
+        m_ = re.search(r"\$T=([\d.]+)\\times10\^\{6\}\$ shots per channel---\$([\d.]+)\\times10\^\{7\}\$ "
+                       r"over the (\d+) channels", cap)
+        if not m_:
+            rep.missing("Fig. 3 caption: budget sentence",
+                        "'T=... shots per channel---... over the 16 channels' is gone")
+        else:
+            rep.eq("Fig. 3 caption: T per channel (x1e6)", float(m_.group(1)), f5["T"] / 1e6, 0.0, D)
+            rep.eq("Fig. 3 caption: shots over the channels (x1e7)", float(m_.group(2)),
+                   round(int(m_.group(3)) * f5["T"] / 1e7, 1), 1e-12, D)
+            rep.eq_int("Fig. 3 caption: number of channels", int(m_.group(3)), 16, D)
+        _num(r"reaches rel-\$L_1=\(([\d.]+)\\pm[\d.]+\)\\times10\^\{-3\}\$, maximum", "caption", cap,
+             "Fig. 3 caption: T=5.2e6 mean rel-L1 (x1e-3)", round(f5["mean"] * 1e3, 2), 1e-12, D)
+        _num(r"reaches rel-\$L_1=\([\d.]+\\pm([\d.]+)\)\\times10\^\{-3\}\$, maximum", "caption", cap,
+             "Fig. 3 caption: T=5.2e6 s.d. (x1e-3)", round(f5["sd"] * 1e3, 2), 1e-12, D)
+        _num(r"maximum \$([\d.]+)\\times10\^\{-3\}\$: panel", "caption", cap,
+             "Fig. 3 caption: T=5.2e6 max rel-L1 (x1e-3)", round(f5["mx"] * 1e3, 2), 1e-12, D)
+        _num(r"covering \$([\d.]+)\$ of the addition sector", "caption", cap,
+             "Fig. 3 caption: T=5.2e6 addition fraction", round(f5["fa"], 3), 1e-12, D)
+        _num(r"against the \$([\d.]+)\$ of \(a\)--\(b\)", "caption", cap,
+             "Fig. 3 caption: fraction of (a)-(b)", round(sk["frac"], 3), 1e-12, D)
+        # 2026-09-30 (final numeric review NR-1): the widened window moved the panel (b) mean
+        # and maximum of the caption (2.19e-3 -> 2.36e-3, 3.28e-3 -> 3.27e-3) and added the two
+        # branch thresholds and the window itself; until now only the figure header was tied to
+        # data/sampled_akw_L8.json, so restoring the stale caption values left every guardian
+        # green.  Each printed value is now its rounding of the deposited one.
+        DB = "the Fig. 3 caption, panel (b), does not state what data/sampled_akw_L8.json holds"
+        _num(r"removal branch summed over that window: mean \$([\d.]+)\\times10\^\{-3\}\$", "caption", cap,
+             "Fig. 3 caption: panel (b) mean rel-L1 (x1e-3)", round(sk["mean_relL1"] * 1e3, 2), 1e-12, DB)
+        _num(r"removal branch summed over that window: mean \$[\d.]+\\times10\^\{-3\}\$, maximum "
+             r"\$([\d.]+)\\times10\^\{-3\}\$\.", "caption", cap,
+             "Fig. 3 caption: panel (b) max rel-L1 (x1e-3)", round(sk["max_relL1"] * 1e3, 2), 1e-12, DB)
+        m_ = re.search(r"window, \$\\omega-E_0\\in\[(-?[\d.]+)\\,t,(-?[\d.]+)\\,t\]\$, is symmetric", cap)
+        if not m_:
+            rep.missing("Fig. 3 caption: plotted and scored window", "'[-9 t,17 t]' is gone")
+        else:
+            rep.eq("Fig. 3 caption: window lower edge", float(m_.group(1)), float(sk["window"][0]), 0.0, DB)
+            rep.eq("Fig. 3 caption: window upper edge", float(m_.group(2)), float(sk["window"][1]), 0.0, DB)
+        _cg8 = [r_ for r_ in read_json(root, "data/charge_gap.json")["results"] if r_["L"] == sk["L"]]
+        if len(_cg8) != 1:
+            rep.missing("Fig. 3 caption: branch thresholds",
+                        "data/charge_gap.json has no single row at L=%s" % sk["L"])
+        else:
+            DG = "the Fig. 3 caption's branch threshold is not data/charge_gap.json at L=8"
+            _num(r"removal branch lies below \$\\omega-E_0=([\d.]+)\\,t\$", "caption", cap,
+                 "Fig. 3 caption: removal threshold mu_- (t)", round(_cg8[0]["mu_minus"], 2), 1e-12, DG)
+            _num(r"addition branch above \$([\d.]+)\\,t\$", "caption", cap,
+                 "Fig. 3 caption: addition threshold mu_+ (t)", round(_cg8[0]["mu_plus"], 2), 1e-12, DG)
+            rep.truth("Fig. 3 caption: the window holds both branches",
+                      sk["window"][0] < _cg8[0]["mu_minus"] and sk["window"][1] > _cg8[0]["mu_plus"],
+                      "holds", "the scored window cuts a branch the caption says it holds")
+        _num(r"At half the budget, \$T=([\d.]+)\\times10\^\{6\}\$", "caption", cap,
+             "Fig. 3 caption: half budget (x1e6)", f26["T"] / 1e6, 0.0, D)
+        _num(r"subspace covers \$([\d.]+)\$---just under", "caption", cap,
+             "Fig. 3 caption: T=2.6e6 addition fraction", round(f26["fa"], 3), 1e-12, D)
+        _num(r"error is \$\(([\d.]+)\\pm[\d.]+\)\\times10\^\{-3\}\$", "caption", cap,
+             "Fig. 3 caption: T=2.6e6 mean rel-L1 (x1e-3)", round(f26["mean"] * 1e3, 2), 1e-12, D)
+        _num(r"error is \$\([\d.]+\\pm([\d.]+)\)\\times10\^\{-3\}\$", "caption", cap,
+             "Fig. 3 caption: T=2.6e6 s.d. (x1e-3)", round(f26["sd"] * 1e3, 2), 1e-12, D)
+        _num(r"a factor \$([\d.]+)\$ above the mean of \(b\)", "caption", cap,
+             "Fig. 3 caption: ratio to the mean of (b)", round(ratio_, 2), 1e-12, D)
+        _num(r"understated it by \$(\d+)\\%\$", "caption", cap,
+             "Fig. 3 caption: understatement of the transferred factor (%)",
+             round(100 * under_), 1e-12, D)
+        m_ = re.search(r"\(\$1-([\d.]+)/([\d.]+)\$\)", cap)
+        if not m_:
+            rep.missing("Fig. 3 caption: definition of the understatement",
+                        "the explicit '(1-2.05/ratio)' is gone")
+        else:
+            rep.eq("Fig. 3 caption: transferred factor in the definition", float(m_.group(1)),
+                   round(pen0, 2), 1e-12, D)
+            rep.eq("Fig. 3 caption: measured ratio in the definition", float(m_.group(2)),
+                   round(ratio_, 2), 1e-12, D)
+        # 2026-09-28 (late): the caption counts '(momentum, seed) pairs' (8 momenta x 4 seeds,
+        # both branches summed in each), no longer '(channel, seed)', which read as 16 x 4.
+        _num(r"(\d+) seeds, \$\d+\$ \(momentum, seed\) pairs, both branches summed", "caption", cap,
+             "Fig. 3 caption: seed count", f5["nseeds"], 0, D)
+        _num(r"seeds, \$(\d+)\$ \(momentum, seed\) pairs, both branches summed", "caption", cap,
+             "Fig. 3 caption: pair count", f5["n"], 0, D)
+        rep.eq_int("Fig. 3 caption: pairs = momenta x seeds", f5["n"],
+                   len(set(r["k_over_pi"] for r in rows_)) * f5["nseeds"],
+                   "the row count is not 8 momenta x 4 seeds")
+        smm = " ".join(read(root, "paper/sm_method.tex").split())
+        _num(r"penalty is a measured \$([\d.]+)\$ and not", "sm_method.tex", smm,
+             "Sec. S1: measured finite-shot penalty", round(ratio_, 2), 1e-12,
+             "Sec. S1 quotes a penalty that is not T=2.6e6 mean / Fig. 3(b) mean")
+        # 2026-09-28 (late): 5.2e6 is the budget that SUFFICES (the two budgets measured are a
+        # factor two apart), and 2.61 is measured at fraction 0.839, 'just under' 0.850.
+        _num(r"a factor two apart: \$([\d.]+)\\times10\^\{6\}\$ per channel suffice", "sm_method.tex", smm,
+             "Sec. S1: T per channel (x1e6)", f5["T"] / 1e6, 0.0, "Sec. S1 quotes another budget")
+        _num(r"just under the announced one \(\$([\d.]+)\$ against \$[\d.]+\$\), the penalty",
+             "sm_method.tex", smm, "Sec. S1: fraction at which 2.61 is measured",
+             round(f26["fa"], 3), 1e-12, "Sec. S1 states the wrong fraction for the measured penalty")
+        _num(r"just under the announced one \(\$[\d.]+\$ against \$([\d.]+)\$\), the penalty",
+             "sm_method.tex", smm, "Sec. S1: the announced fraction", round(sk["frac"], 3), 1e-12,
+             "Sec. S1 states the wrong announced fraction")
+        _num(r"not the \$([\d.]+)\$ Table~\\ref\{tab:finiteshot\} would transfer", "sm_method.tex", smm,
+             "Sec. S1: transferred factor", round(pen0, 2), 1e-12, "not Table S6's L=8 factor")
+        s2 = " ".join(read(root, "paper/sec_2.tex").split())
+        _num(r"at finite shots \$([\d.]+)\\times10\^\{6\}\$ per channel suffice and \$[\d.]+\\times10\^\{6\}\$ do not",
+             "sec_2.tex", s2, "Table I: T per channel that suffices (x1e6)", f5["T"] / 1e6, 0.0,
+             "Table I quotes a budget that is not the deposited run's")
+        _num(r"at finite shots \$[\d.]+\\times10\^\{6\}\$ per channel suffice and \$([\d.]+)\\times10\^\{6\}\$ do not",
+             "sec_2.tex", s2, "Table I: T per channel that does not (x1e6)", f26["T"] / 1e6, 0.0,
+             "Table I quotes a budget that is not the deposited run's")
+        _num(r"panel~\(b\) at \$([\d.]+)\\times10\^\{6\}\$ shots per channel and not at half that budget",
+             "sec_2.tex", s2, "Sec. II B text: T per channel (x1e6)", f5["T"] / 1e6, 0.0,
+             "Sec. II quotes a budget that is not the deposited run's")
+        for rel__, pat_ in (("paper/sec_7.tex", r"accuracy with \$([\d.]+)\\times10\^\{7\}\$, and not with half as many"),
+                            ("paper/sm_scope.tex", r"channels, \$([\d.]+)\\times10\^\{7\}\$ shots as measured")):
+            _num(pat_, rel__, " ".join(read(root, rel__).split()),
+                 "%s: total shots of the Fig. 3 run (x1e7)" % rel__, round(16 * f5["T"] / 1e7, 1), 1e-12,
+                 "the total shot count is not 16 channels x the deposited T")
+        # 2026-09-28 (late): Sec. S8 quotes the 8.3e7 with the accuracy it bought and says the
+        # cost at the 0.05 threshold was not measured (half the budget gives 6.16e-3).
+        sc_ = " ".join(read(root, "paper/sm_scope.tex").split())
+        _num(r"to reach its relative \$L_1\$ of \$([\d.]+)\\times10\^\{-3\}\$", "sm_scope.tex", sc_,
+             "Sec. S8: accuracy bought by 8.3e7 shots (x1e-3)", round(f5["mean"] * 1e3, 2), 1e-12,
+             "Sec. S8 quotes an accuracy that is not the T=5.2e6 mean")
+        _num(r"half that budget already gives \$([\d.]+)\\times10\^\{-3\}\$", "sm_scope.tex", sc_,
+             "Sec. S8: accuracy at half the budget (x1e-3)", round(f26["mean"] * 1e3, 2), 1e-12,
+             "Sec. S8 quotes an accuracy that is not the T=2.6e6 mean")
+        rep.truth("Sec. S8: the cost at the 0.05 threshold is declared unmeasured",
+                  "which was not measured" in sc_, "stated",
+                  "Sec. S8 presents 8.3e7 as the cost of the observable without its accuracy qualifier")
+        body_ = " ".join(read_body(root).split())
+        for stale_ in (r"narrower window $\omega-E_0\in[-9\,t,9\,t]$",
+                       "have not been recomputed on the window"):
+            rep.truth("no stale finite-shot window disclosure: %s" % stale_[:40], stale_ not in body_,
+                      "absent", "the manuscript still says the finite-shot numbers are on the old "
+                      "window, but data/fig3_finite_shot_T*.json are scored on the window of (a)-(b)")
+
+    # ---------------------------------------------------------------- 9.6c  three generators of 2026-09-28 (late)
+    # (i)   the free-fermion determinant supports 35 / 336 / 3496 / 37361 of Secs. VI and S13,
+    #       hand-typed constants with no producer until src/free_fermion_support.py wrote
+    #       data/free_fermion_support.json.  Recomputed here from the open-chain orbitals with
+    #       code that shares nothing with that script (Cauchy-Binet Slater weights, cumulative
+    #       cut, inclusive tie convention).
+    # (ii)  the spin-peak deviations of the Fig. 8 caption (src/spin_peak_deviation.py ->
+    #       data/spin_peak_deviation.json), recomputed from data/spinqw_L12.json.
+    # (iii) the pooled sweep of Fig. S5, rebuilt by src/recovered/build_n3.py from the DEPOSITED
+    #       data/cert_{stress,akw,teqsci}.json (it read an earlier run of the same scans until
+    #       2026-09-28).  The pool is re-classified here from the five JSON sources, the eight
+    #       plotted n3_*.dat tables and the whisker summary are checked against that
+    #       classification, and so is every count the caption, Sec. III D, Sec. S2 and Sec. S9
+    #       print.  This closes the COVERAGE_GAP_V3 entry of 2026-09-19.
+    def _pnum(pat, where, text, name, want, tol, defect):
+        m_ = re.search(pat, text)
+        if not m_:
+            rep.missing(name, "the printed %s is gone from %s (pattern %s)" % (name, where, pat))
+            return None
+        rep.eq(name, float(m_.group(1)), want, tol, defect)
+        return float(m_.group(1))
+
+    def _tex(rel):
+        """A .tex file as one line, comment lines dropped (captions carry numbers in comments)."""
+        return " ".join(" ".join(ln for ln in read(root, rel).splitlines()
+                                 if not ln.lstrip().startswith("%")).split())
+
+    # ---- (i) free-fermion supports ----------------------------------------------------------
+    try:
+        ffs = read_json(root, "data/free_fermion_support.json")
+    except Exception as exc:                                    # noqa: BLE001
+        rep.missing("data/free_fermion_support.json", "cannot read: %s" % exc)
+        ffs = None
+    if ffs:
+        _eps = float(ffs["eps_w"])
+        rep.eq("free_fermion_support: eps_w is the lattice threshold eps^2 at eps = 0.05", _eps, 0.05 ** 2, 1e-15,
+               "the discarded-weight threshold is not the 2.5e-3 the text prints")
+        _ffrows = {int(r["L"]): r for r in ffs["rows"]}
+        _ffgot = {}
+        for L in (4, 6, 8, 10):
+            jj = np.arange(1, L + 1)[:, None]
+            mm = np.arange(1, L + 1)[None, :]
+            Phi = np.sqrt(2.0 / (L + 1)) * np.sin(np.pi * jj * mm / (L + 1))
+            Phi = Phi[:, np.argsort(-2.0 * np.cos(np.pi * np.arange(1, L + 1) / (L + 1)))][:, :L // 2]
+            w1 = np.array([np.linalg.det(Phi[list(I), :]) ** 2 for I in combinations(range(L), L // 2)])
+            w = np.sort(np.outer(w1, w1).ravel())[::-1]
+            w = w / w.sum()
+            tail = np.concatenate([np.cumsum(w[::-1])[::-1], [0.0]])    # tail[k] = sum_{i>=k} w_i
+            n_in = int(np.argmax(tail <= _eps * (1 + 1e-12)))
+            n_st = int(np.argmax(tail < _eps * (1 - 1e-12)))
+            _ffgot[L] = (n_in, n_st, w, tail)
+            r = _ffrows.get(L)
+            if r is None:
+                rep.missing("free_fermion_support L=%d" % L, "row missing from the deposited file")
+                continue
+            rep.eq("free_fermion_support L=%d: Cauchy-Binet norm of the Slater weights" % L,
+                   float(w1.sum()), 1.0, 1e-12, "the up-spin determinant weights do not sum to one")
+            rep.eq_int("free_fermion_support L=%d: sector dimension" % L, int(r["dim"]), int(w.size),
+                       "the deposited dimension is not C(L,L/2)^2")
+            rep.eq_int("free_fermion_support L=%d: |S|_eps_w, inclusive cut, recomputed" % L,
+                       int(r["support_inclusive"]), n_in,
+                       "the deposited inclusive support is not the smallest set whose discarded weight is <= eps_w")
+            rep.eq_int("free_fermion_support L=%d: |S|_eps_w, strict cut, recomputed" % L,
+                       int(r["support_strict"]), n_st,
+                       "the deposited strict support is not the smallest set whose discarded weight is < eps_w")
+            rep.eq("free_fermion_support L=%d: discarded weight at the inclusive cut" % L,
+                   float(r["discarded_weight_inclusive"]), float(tail[n_in]), 1e-12,
+                   "the recorded discarded weight is not the tail sum at the cut")
+            rep.truth("free_fermion_support L=%d: discarded weight at the cut <= eps_w" % L,
+                      tail[n_in] <= _eps * (1 + 1e-12), "%.3e" % tail[n_in],
+                      "the kept set discards more than eps_w")
+            rep.eq_int("free_fermion_support L=%d: published value == inclusive count" % L,
+                       int(ffs["published"][str(L)]), n_in, "the value the paper prints is not the inclusive count")
+        if all(L in _ffgot for L in (4, 6, 8, 10)):
+            w4 = _ffgot[4][2]
+            rep.truth("free_fermion_support L=4: exactly four weights equal eps_w = 1/400",
+                      bool(np.all(np.abs(w4[-4:] - _eps) < 1e-15) and abs(w4[-5] - _eps) > 1e-6),
+                      "1/400 x 4", "the L=4 tie the text declares is not in the recomputed weights")
+            rep.eq_int("free_fermion_support L=4: the strict cut keeps one more determinant",
+                       _ffgot[4][1], _ffgot[4][0] + 1, "the L=4 tie no longer separates the two conventions")
+            rep.eq_int("free_fermion_support L=4: tie count recorded", int(_ffrows[4]["n_weights_tied_at_boundary"]), 4,
+                       "the deposited tie count at L=4 is not four")
+            for L in (6, 8, 10):
+                rep.eq_int("free_fermion_support L=%d: inclusive and strict cuts agree" % L,
+                           _ffgot[L][0], _ffgot[L][1], "a tie at the cut appeared where the text says there is none")
+        for c_ in ffs.get("ed_crosscheck", []):
+            rep.truth("free_fermion_support L=%s: ED cross-check recorded below 1e-12" % c_.get("L"),
+                      float(c_.get("max_abs_weight_diff", 1.0)) < 1e-12, "%.1e" % float(c_.get("max_abs_weight_diff", 1.0)),
+                      "the determinant weights do not match the U=0 exact diagonalization")
+        rep.truth("free_fermion_support: the definition is the inclusive cumulative cut",
+                  "inclusive" in str(ffs.get("definition", "")), "stated",
+                  "the tie convention is not written into the deposit")
+        smn = _tex("paper/sm_nogo.tex")
+        m_ = re.search(r"\|\\mathcal S\|_\{\\varepsilon_w\}=(\d+),\\,(\d+),\\,(\d+),\\,(\d+)\$ for \$L=4,6,8,10\$ "
+                       r"on the open chain at the lattice threshold \$\\varepsilon_w=([\d.]+)\\times10\^\{-3\}\$", smn)
+        if not m_:
+            rep.missing("Sec. S13: free-fermion supports",
+                        "the sentence '|S|_eps_w = 35, 336, 3496, 37361 for L=4,6,8,10 on the open chain' is gone")
+        else:
+            for i_, L in enumerate((4, 6, 8, 10)):
+                rep.eq_int("Sec. S13: |S|_eps_w at L=%d" % L, int(m_.group(i_ + 1)), _ffgot[L][0],
+                           "Sec. S13 prints a support that is not the recomputed inclusive count")
+            rep.eq("Sec. S13: eps_w", float(m_.group(5)) * 1e-3, _eps, 1e-15, "Sec. S13 prints another threshold")
+        _pnum(r"a strict cut gives \$(\d+)\$", "sm_nogo.tex", smn, "Sec. S13: strict-cut value at L=4",
+              _ffgot[4][1], 0, "the strict-cut value at L=4 is not the recomputed one")
+        rep.truth("Sec. S13: the L=4 tie is declared",
+                  "the four smallest determinant weights equal $\\varepsilon_w$ exactly" in smn, "stated",
+                  "the tie convention behind 35 is no longer stated where the number is printed")
+        rep.truth("Sec. S13: the generator is named", "free\\_fermion\\_support.py" in smn, "named",
+                  "the four supports are printed without their generator")
+        s6_ = _tex("paper/sec_6_body.tex")
+        m_ = re.search(r"\(open chain, \$\\varepsilon_w=([\d.]+)\\times10\^\{-3\}\$\) of \$(\d+)\$, \$(\d+)\$, "
+                       r"\$(\d+)\$ and \$(\d+)\$ at \$L=4\$--\$10\$", s6_)
+        if not m_:
+            rep.missing("Sec. VI: free-fermion supports",
+                        "the sentence '(open chain, eps_w=2.5e-3) of 35, 336, 3496 and 37361 at L=4--10' is gone")
+        else:
+            rep.eq("Sec. VI: eps_w", float(m_.group(1)) * 1e-3, _eps, 1e-15, "Sec. VI prints another threshold")
+            for i_, L in enumerate((4, 6, 8, 10)):
+                rep.eq_int("Sec. VI: |S|_eps_w at L=%d" % L, int(m_.group(i_ + 2)), _ffgot[L][0],
+                           "Sec. VI prints a support that is not the recomputed inclusive count")
+        rep.truth("no 'no generator is deposited' disclaimer remains in the manuscript",
+                  "no generator for these four values" not in " ".join(read_body(root).split()),
+                  "absent", "the manuscript still publishes the four supports as generator-less constants")
+
+    # ---- (ii) spin-peak deviations of the Fig. 8 caption -------------------------------------
+    try:
+        spd = read_json(root, "data/spin_peak_deviation.json")
+        sqz = read_json(root, "data/spinqw_L12.json")
+    except Exception as exc:                                    # noqa: BLE001
+        rep.missing("data/spin_peak_deviation.json", "cannot read: %s" % exc)
+        spd = None
+    if spd:
+        wg_ = np.array(sqz["wg"], dtype=float)
+        J_ = float(sqz["J"])
+        got_ = {}
+        for key_, A_ in sqz["S"].items():
+            q_ = float(key_)
+            pk_ = float(wg_[int(np.argmax(np.array(A_, dtype=float)))])
+            dcp_ = 0.5 * np.pi * J_ * abs(np.sin(np.pi * q_))
+            got_[round(q_, 5)] = (pk_, dcp_, (pk_ - dcp_) / dcp_ if dcp_ > 1e-12 else None)
+        rows_ = {round(float(r["q_over_pi"]), 5): r for r in spd["rows"]}
+        rep.eq_int("spin_peak_deviation: one row per momentum of spinqw_L12.json", len(rows_), len(got_),
+                   "the deposited rows are not the momenta of data/spinqw_L12.json")
+        for q_, (pk_, dcp_, dev_) in sorted(got_.items()):
+            r = rows_.get(q_)
+            if r is None:
+                rep.missing("spin_peak_deviation q/pi=%.5f" % q_, "row missing")
+                continue
+            rep.eq("spin_peak_deviation q/pi=%.5f: grid-argmax peak" % q_, float(r["peak"]), pk_, 1e-12,
+                   "the deposited peak is not the argmax of the broadened line on its own grid")
+            rep.eq("spin_peak_deviation q/pi=%.5f: des Cloizeaux-Pearson boundary" % q_, float(r["dCP_lower"]), dcp_, 1e-12,
+                   "the deposited boundary is not (pi J/2)|sin q|")
+            if dev_ is None:
+                rep.truth("spin_peak_deviation q/pi=%.5f: no deviation where the boundary vanishes" % q_,
+                          r["rel_dev"] is None, "null", "a deviation is stored at q=pi")
+            else:
+                rep.eq("spin_peak_deviation q/pi=%.5f: relative deviation" % q_, float(r["rel_dev"]), dev_, 1e-12,
+                       "the deposited deviation is not (peak - boundary)/boundary")
+        le_ = max(abs(d_) for q_, (_, _, d_) in got_.items() if d_ is not None and (q_ <= 0.5 + 1e-9 or q_ >= 1.5 - 1e-9))
+        d23 = got_[round(2.0 / 3.0, 5)][2]
+        d56 = got_[round(5.0 / 6.0, 5)][2]
+        sp_ = spd["summary"]
+        rep.eq("spin_peak_deviation summary: max |dev| for q <= pi/2", float(sp_["max_abs_rel_dev_q_le_half_pi"]), le_, 1e-12,
+               "the summary maximum is not the maximum over the rows")
+        rep.eq("spin_peak_deviation summary: deviation at 2pi/3", float(sp_["rel_dev_2pi_3"]), d23, 1e-12,
+               "the summary value at 2pi/3 is not the row's")
+        rep.eq("spin_peak_deviation summary: deviation at 5pi/6", float(sp_["rel_dev_5pi_6"]), d56, 1e-12,
+               "the summary value at 5pi/6 is not the row's")
+        rep.eq("spin_peak_deviation summary: grid spacing", float(sp_["grid_spacing"]), float(wg_[1] - wg_[0]), 1e-15,
+               "the recorded grid spacing is not that of spinqw_L12.json")
+        rep.eq("spin_peak_deviation summary: J", float(sp_["J"]), J_, 0.0, "another J")
+        fsp = _tex("paper/carried/fig_spin.tex")
+        v_ = _pnum(r"to within about \$(\d+)\\%\$ for \$q\\le\\pi/2\$", "fig_spin.tex", fsp,
+                   "Fig. 8 caption: bound on |dev| for q <= pi/2 (%)", float(round(100 * le_)), 0.0,
+                   "the caption's 'about N%' is not the rounded maximum deviation for q <= pi/2")
+        if v_ is not None:
+            rep.truth("Fig. 8 caption: 'about %d%%' holds to half a point" % int(v_), 100 * le_ <= v_ + 0.5,
+                      "%.2f%%" % (100 * le_), "the printed percentage understates the measured deviation")
+        _pnum(r"by \$(\d+)\\%\$ at \$q=2\\pi/3\$", "fig_spin.tex", fsp, "Fig. 8 caption: deviation at 2pi/3 (%)",
+              float(round(100 * d23)), 0.0, "the caption's percentage at 2pi/3 is not the recomputed one")
+        _pnum(r"and \$(\d+)\\%\$ at \$q=5\\pi/6\$", "fig_spin.tex", fsp, "Fig. 8 caption: deviation at 5pi/6 (%)",
+              float(round(100 * d56)), 0.0, "the caption's percentage at 5pi/6 is not the recomputed one")
+        _pnum(r"on the \$([\d.]+)\\,t\$ frequency grid", "fig_spin.tex", fsp, "Fig. 8 caption: frequency grid (t)",
+              round(float(wg_[1] - wg_[0]), 3), 1e-12, "the caption's grid spacing is not that of spinqw_L12.json")
+        rep.truth("Fig. 8 caption: the peak is declared as the grid argmax of the broadened line",
+                  "the maximum of each broadened line on the" in fsp, "stated",
+                  "the caption no longer says which peak its percentages refer to")
+
+    # ---- (iii) the pooled sweep of Fig. S5, re-classified from the deposited sources --------
+    try:
+        P_ = []
+        R_ = read_json(root, "data/thm1iii_violation/thm3_results.json")
+        for r in R_:
+            P_.append(dict(src="thm3", kind=r["kind"], rel=r["relL1"], err=r["LHS"], pub=r["RHS_pap"],
+                           B=min(r["RHS_new"], r["RHS_triv"]), wS=r["wS"], frac=r["frac"], eta=r["eta"],
+                           L=None, leak=bool(r["RHS_new"] < r["RHS_triv"])))
+        L8_ = read_json(root, "data/thm1iii_violation/thm3_L8b.json")
+        _l8src = read(root, "src/recovered/thm3_L8b.py")
+        _m8 = re.search(r"^L,U,eta\s*=\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)\s*$", _l8src, re.M)
+        _eta8 = float(_m8.group(3)) if _m8 else float("nan")
+        for r in L8_:
+            n2_ = r["LB"] / (1.0 - r["wS"])
+            triv_ = n2_ * (1.0 + r["wS"])
+            P_.append(dict(src="L8b", kind="topTE", rel=r["relL1"], err=r["LHS"], pub=r["RHS_pap"],
+                           B=min(r["RHS_new"], triv_), wS=r["wS"], frac=r["FR"], eta=_eta8, L=8,
+                           leak=bool(r["RHS_new"] < triv_)))
+        nsrc_ = {"thm3": len(R_), "L8b": len(L8_)}
+        shots_ = None
+        for f_ in ("cert_stress.json", "cert_akw.json", "cert_teqsci.json"):
+            d_ = read_json(root, "data/" + f_)
+            nsrc_[f_] = len(d_["rows"])
+            if f_ == "cert_teqsci.json":
+                shots_ = d_.get("shots")
+            for r in d_["rows"]:
+                P_.append(dict(src=f_, kind="", rel=r["relL1_true"], err=r["L1_true"], pub=2.0 * r["lower"],
+                               B=r["upper"], wS=r["w_S"], frac=r["frac"], eta=r["eta"], L=r.get("L"),
+                               leak=bool(r["bound_nontrivial"])))
+        cak_ = read_json(root, "data/cert_akw.json")
+    except Exception as exc:                                    # noqa: BLE001
+        rep.missing("Fig. S5 pool sources", "cannot read: %s" % exc)
+        P_ = None
+    if P_:
+        NOISE_ = 1e-10
+        live_ = [r for r in P_ if r["rel"] > NOISE_]
+        inf_ = [r for r in live_ if r["pub"] <= 0.0]
+        fin_ = [r for r in live_ if r["pub"] > 0.0]
+        for r in fin_:
+            r["ratio"] = r["err"] / r["pub"]
+        for r in live_:
+            r["ratioB"] = r["err"] / r["B"] if r["B"] > 0 else float("inf")
+        n_pool, n_deg, n_live = len(P_), len(P_) - len(live_), len(live_)
+        n_viol = len(inf_) + sum(1 for r in fin_ if r["ratio"] > 1.0)
+        hi_ = [r for r in live_ if r["wS"] >= 0.99]
+        hi_fin = [r for r in hi_ if r["pub"] > 0.0]
+        hi_inf = [r for r in hi_ if r["pub"] <= 0.0]
+        n_hiv = len(hi_inf) + sum(1 for r in hi_fin if r["ratio"] > 1.0)
+        mild_ = min(r["ratio"] for r in hi_fin)
+        fmax_ = max(r["ratio"] for r in fin_)
+        lo_ = [r for r in live_ if r["wS"] < 0.99]
+        lo_surv = sum(1 for r in lo_ if r["pub"] > 0.0 and r["ratio"] <= 1.0)
+        n_violB = sum(1 for r in live_ if r["ratioB"] > 1.0)
+        Bmax_ = max(r["ratioB"] for r in live_)
+        Bmin_ = min(r["ratioB"] for r in live_)
+        sat_ = [r for r in live_ if abs(r["ratioB"] - 1.0) < 1e-9]
+        leak_n = sum(1 for r in live_ if r["leak"])
+        n_fs = sum(1 for r in live_ if r["src"] == "cert_teqsci.json" or (r["src"] == "thm3" and r["kind"] == "teqsci"))
+        f5_ = [r for r in fin_ if r["src"] == "cert_akw.json" and r["L"] == 8]
+        etas_ = sorted(set(round(r["eta"], 4) for r in live_))
+        print("   Fig. S5 pool: %d pooled, %d exact, %d live, %d zero-bound, %d violations, %d/%d at w_S>=0.99 "
+              "(mildest %.4f), %d/%d survive below, ThmB %d violations, ratios %.3g..%.10f"
+              % (n_pool, n_deg, n_live, len(inf_), n_viol, n_hiv, len(hi_), mild_, lo_surv, len(lo_), n_violB,
+                 Bmin_, Bmax_))
+        rep.eq_int("Fig. S5 pool: five sources present", len(nsrc_), 5, "a source of the pool is missing")
+        rep.eq_int("Fig. S5 pool: Theorem 1 (the deposited bound) violated on none of the live rows", n_violB, 0,
+                   "the deposited certificate is violated on the pooled sweep")
+        rep.truth("Fig. S5 pool: every saturated row has w_S = 0 (A_S == 0, the trivial branch as an identity)",
+                  all(r["wS"] == 0.0 for r in sat_) and len(sat_) > 0, "%d rows" % len(sat_),
+                  "a row attains the bound with w_S > 0")
+        rep.eq_int("Fig. S5 pool: no zero-bound row below w_S = 0.99", sum(1 for r in inf_ if r["wS"] < 0.99), 0,
+                   "the caption's split of the infinite-ratio rows changed")
+        rep.eq_int("Fig. S5 pool: every high-weight live row is a violation", n_hiv, len(hi_),
+                   "the weight-only bound survives on a subspace with w_S >= 0.99")
+
+        def _dat(name):
+            out_ = []
+            for ln in read(root, "paper/figs/" + name).splitlines()[1:]:
+                if ln.strip():
+                    a_, b_ = ln.split()
+                    out_.append((a_, b_))
+            return sorted(out_)
+
+        def _fmt(pairs):
+            return sorted(("%.6g" % x, "%.6g" % y) for x, y in pairs)
+
+        for dat_, want_ in (("n3_pub_frac_hi.dat", [(r["frac"], r["ratio"]) for r in fin_ if r["wS"] >= 0.99]),
+                            ("n3_pub_frac_lo.dat", [(r["frac"], r["ratio"]) for r in fin_ if r["wS"] < 0.99]),
+                            ("n3_pub_eta_hi.dat", [(r["eta"], r["ratio"]) for r in fin_ if r["wS"] >= 0.99]),
+                            ("n3_pub_eta_lo.dat", [(r["eta"], r["ratio"]) for r in fin_ if r["wS"] < 0.99]),
+                            ("n3_thmB_frac.dat", [(r["frac"], r["ratioB"]) for r in live_]),
+                            ("n3_thmB_eta.dat", [(r["eta"], r["ratioB"]) for r in live_]),
+                            ("n3_inf_frac.dat", [(r["frac"], 1.0) for r in inf_]),
+                            ("n3_inf_eta.dat", [(r["eta"], 1.0) for r in inf_]),
+                            ("n3_fig5_frac.dat", [(r["frac"], r["ratio"]) for r in f5_]),
+                            ("n3_fig5_eta.dat", [(r["eta"], r["ratio"]) for r in f5_])):
+            got_d = _dat(dat_)
+            rep.eq_int("Fig. S5 table %s: row count from the certificate rows" % dat_, len(got_d), len(want_),
+                       "the plotted table does not hold one point per classified row", n=1)
+            rep.truth("Fig. S5 table %s: every plotted point is a classified certificate row (6 s.f.)" % dat_,
+                      got_d == _fmt(want_), "%d points" % len(got_d),
+                      "the plotted ratios are not the error-to-bound ratios of the deposited rows", n=len(want_))
+        # the whisker summary of the 64 rows of the Fig. 3 setting
+        try:
+            ws_ = read_json(root, "data/thm1iii_violation/n3_fig5_summary.json")
+        except Exception as exc:                                # noqa: BLE001
+            rep.missing("data/thm1iii_violation/n3_fig5_summary.json", "cannot read: %s" % exc)
+            ws_ = None
+        med_ = {}
+        if ws_:
+            f5d = [(float(a), float(b)) for a, b in _dat("n3_fig5_frac.dat")]
+            rep.eq_int("Fig. S5 whiskers: 64 rows of the Fig. 3 setting", int(ws_["n_rows"]), len(f5d),
+                       "the whisker summary does not describe the 64 plotted rows")
+            for g_ in ws_["frac_groups"]:
+                ys = sorted(y for x, y in f5d if abs(x - g_["x"]) < 1e-9)
+                n_ = len(ys)
+                m_ = 0.5 * (ys[n_ // 2 - 1] + ys[n_ // 2]) if n_ % 2 == 0 else ys[n_ // 2]
+                med_[g_["x"]] = m_
+                rep.eq("Fig. S5 whiskers at fraction %.2f: min" % g_["x"], float(g_["min"]), ys[0], 1e-9,
+                       "the whisker minimum is not that of the plotted rows")
+                rep.eq("Fig. S5 whiskers at fraction %.2f: max" % g_["x"], float(g_["max"]), ys[-1], 1e-9,
+                       "the whisker maximum is not that of the plotted rows")
+                rep.eq("Fig. S5 whiskers at fraction %.2f: median" % g_["x"], float(g_["median"]), m_, 1e-9,
+                       "the whisker median is not that of the plotted rows")
+                rep.eq_int("Fig. S5 whiskers at fraction %.2f: 16 rows" % g_["x"], int(g_["n"]), n_,
+                           "a fraction group does not hold 8 momenta x 2 branches")
+            rep.eq("Fig. S5 whiskers: overall min", float(ws_["overall_min"]), min(y for _, y in f5d), 1e-9,
+                   "the overall minimum is not that of the plotted rows")
+            rep.eq("Fig. S5 whiskers: overall max", float(ws_["overall_max"]), max(y for _, y in f5d), 1e-9,
+                   "the overall maximum is not that of the plotted rows")
+        # the 3.1e-8 control: cert_akw.json's own L=8, FR=0.85 per-momentum errors on the
+        # figure window against the per-k errors of the deposited sampled_akw_L8.json
+        try:
+            mine_ = {kk: vv["0.85"]["relL1_figure_window"] for kk, vv in cak_["per_L"]["8"]["per_k"].items()}
+            dev_ = max(abs(mine_[kk] - sk["per_k"][kk]["relL1"]) for kk in sk["per_k"])
+        except Exception as exc:                                # noqa: BLE001
+            rep.missing("cert_akw.json L=8 control", "cannot recompute: %s" % exc)
+            dev_ = None
+        if dev_ is not None:
+            rep.eq("cert_akw.json: provenance control == max per-k deviation from sampled_akw_L8.json",
+                   float(cak_["provenance"]["controls_reproduced"]["max_abs_dev_per_k"]), dev_, 1e-15,
+                   "the stored control is not the deviation of the stored rows")
+            rep.truth("cert_akw.json: the Fig. 3 setting reproduces the deposited sampled_akw_L8.json below 5e-5",
+                      dev_ < 5e-5, "%.2e" % dev_, "the highlighted rows of Fig. S5 are not the Fig. 3 reconstruction")
+        # ---- the printed numbers: caption, Sec. III D, Sec. S2, Sec. S9 ----
+        capn = _tex("paper/figs/caption_thm1iii_violation.tex")
+        DN = "the Fig. S5 caption prints a count that is not the re-classified pool's"
+        _pnum(r"We pooled \$(\d+)\$ subspaces", "caption", capn, "Fig. S5 caption: pooled", n_pool, 0, DN)
+        m_ = re.search(r"\(\$(\d+)\+(\d+)\$ from the original sweep; \$(\d+)\+(\d+)\+(\d+)\$", capn)
+        if not m_:
+            rep.missing("Fig. S5 caption: source counts", "the '239+4 ... 162+112+104' parenthesis is gone")
+        else:
+            for g_, k_ in zip(m_.groups(), ("thm3", "L8b", "cert_stress.json", "cert_akw.json", "cert_teqsci.json")):
+                rep.eq_int("Fig. S5 caption: rows from %s" % k_, int(g_), nsrc_[k_], DN)
+        _pnum(r"\$(\d+)\$ of them reproduce the target", "caption", capn, "Fig. S5 caption: exact rows", n_deg, 0, DN)
+        _pnum(r"leaving \$(\d+)\$ live subspaces", "caption", capn, "Fig. S5 caption: live rows", n_live, 0, DN)
+        _pnum(r"\$(\d+)\$ are finite-shot realizations", "caption", capn, "Fig. S5 caption: finite-shot rows", n_fs, 0, DN)
+        _pnum(r"finite-shot realizations at \$(\d+)\$ shots per snapshot", "caption", capn,
+              "Fig. S5 caption: shots per snapshot", float(shots_ or -1), 0, DN)
+        _pnum(r"violated on \$(\d+)\$ of the \$\d+\$", "caption", capn, "Fig. S5 caption: violations", n_viol, 0, DN)
+        _pnum(r"violated on \$\d+\$ of the \$(\d+)\$", "caption", capn, "Fig. S5 caption: live rows (again)", n_live, 0, DN)
+        _pnum(r"On \$(\d+)\$ of them it is identically zero", "caption", capn, "Fig. S5 caption: zero-bound rows", len(inf_), 0, DN)
+        _pnum(r"Among the \$(\d+)\$ finite-ratio points", "caption", capn, "Fig. S5 caption: finite high-weight rows", len(hi_fin), 0, DN)
+        _pnum(r"the mildest by a factor \$([\d.]+)\$; with the", "caption", capn, "Fig. S5 caption: mildest factor",
+              round(mild_, 2), 1e-12, DN)
+        _pnum(r"with the \$(\d+)\$ infinite ones that is", "caption", capn, "Fig. S5 caption: infinite high-weight rows",
+              len(hi_inf), 0, DN)
+        _pnum(r"infinite ones that is \$(\d+)\$ of \$\d+\$", "caption", capn, "Fig. S5 caption: high-weight violations", n_hiv, 0, DN)
+        _pnum(r"infinite ones that is \$\d+\$ of \$(\d+)\$", "caption", capn, "Fig. S5 caption: high-weight rows", len(hi_), 0, DN)
+        m_ = re.search(r"the finite factors reach \$([\d.]+)\\times10\^\{(\d+)\}\$", capn)
+        if not m_:
+            rep.missing("Fig. S5 caption: largest finite factor", "'the finite factors reach' is gone")
+        else:
+            rep.eq("Fig. S5 caption: largest finite factor", float(m_.group(1)) * 10 ** int(m_.group(2)), fmax_,
+                   0.005 * 10 ** int(m_.group(2)), DN)
+        _pnum(r"the bound survives on \$(\d+)\$ of \$\d+\$ points", "caption", capn, "Fig. S5 caption: survivors below 0.99",
+              lo_surv, 0, DN)
+        _pnum(r"the bound survives on \$\d+\$ of \$(\d+)\$ points", "caption", capn, "Fig. S5 caption: rows below 0.99",
+              len(lo_), 0, DN)
+        if dev_ is not None:
+            _pnum(r"to \$([\d.]+)\\times10\^\{-8\}\$ per momentum", "caption", capn,
+                  "Fig. S5 caption: control of the plotted Fig. 3 rows (x1e-8)", round(dev_ * 1e8, 1), 1e-9,
+                  "the caption quotes a control that is not the deviation of the rows Fig. S5 plots")
+        if f5_:
+            f5r = [r["ratio"] for r in f5_]
+            f85 = [r["ratio"] for r in f5_ if abs(r["frac"] - 0.85) < 1e-9]
+            m_ = re.search(r"violation factor is \$([\d.]+)\$--\$([\d.]+)\$, of which \$([\d.]+)\$--\$([\d.]+)\$ at the fraction \$0\.85\$", capn)
+            if not m_:
+                rep.missing("Fig. S5 caption: Fig. 3-setting range", "'violation factor is A--B, of which C--D at the fraction 0.85' is gone")
+            else:
+                for g_, w_, nm_ in zip(m_.groups(), (min(f5r), max(f5r), min(f85), max(f85)),
+                                       ("min", "max", "min at 0.85", "max at 0.85")):
+                    rep.eq("Fig. S5 caption: Fig. 3-setting violation factor %s" % nm_, float(g_), round(w_, 1), 1e-12, DN)
+            if med_:
+                m_ = re.search(r"\(medians \$([\d.]+), ([\d.]+), ([\d.]+), ([\d.]+)\$ at fractions \$0\.50, 0\.70, 0\.85, 0\.95\$\)", capn)
+                if not m_:
+                    rep.missing("Fig. S5 caption: medians", "the '(medians ... at fractions 0.50, 0.70, 0.85, 0.95)' parenthesis is gone")
+                else:
+                    for g_, x_ in zip(m_.groups(), (0.5, 0.7, 0.85, 0.95)):
+                        rep.eq("Fig. S5 caption: median at fraction %.2f" % x_, float(g_), round(med_[x_], 1), 1e-12, DN)
+        m_ = re.search(r"is violated on none of the \$(\d+)\$; its ratios span \$([\d.]+)\\times10\^\{-5\}\$ to \$([\d.]+)\$", capn)
+        if not m_:
+            rep.missing("Fig. S5 caption: Theorem 1 ratio range", "'violated on none of the 606; its ratios span' is gone")
+        else:
+            rep.eq_int("Fig. S5 caption: Theorem 1 tested on every live row", int(m_.group(1)), n_live, DN)
+            rep.eq("Fig. S5 caption: smallest Theorem 1 ratio (x1e-5)", float(m_.group(2)), round(Bmin_ * 1e5, 2), 1e-12, DN)
+            rep.eq("Fig. S5 caption: largest Theorem 1 ratio", float(m_.group(3)), round(Bmax_, 10), 1e-12, DN)
+        rep.truth("Fig. S5 caption: the maximum is reached on four subspaces",
+                  "reached on four subspaces" in capn and len(sat_) == 4, "%d" % len(sat_), DN)
+        _pnum(r"is the smaller of the two on only \$(\d+)\$ of the \$\d+\$ rows", "caption", capn,
+              "Fig. S5 caption: rows on which the leakage branch is the smaller", leak_n, 0, DN)
+        m_ = re.search(r"Hubbard-chain rows exist only at \$\\eta/t=([\d.,\\ ]+)\$ and the stress[^$]*\$([\d.,\\ ]+)\$", capn)
+        if m_:
+            e_ = sorted(float(x) for x in (m_.group(1) + "," + m_.group(2)).replace("\\,", "").split(",") if x.strip())
+            rep.truth("Fig. S5 caption: the eta values named are the eta values of the pool", e_ == etas_,
+                      "%s" % etas_, "the caption's list of resolutions is not the pool's")
+        # Sec. III D
+        s31 = _tex("paper/sec_3_1.tex")
+        DN3 = "Sec. III D prints a count that is not the re-classified pool's"
+        _pnum(r"fails on \$(\d+)\$, and on all \$\d+\$ with \$w_S\\ge0\.99\$", "sec_3_1.tex", s31, "Sec. III D: violations", n_viol, 0, DN3)
+        _pnum(r"fails on \$\d+\$, and on all \$(\d+)\$ with \$w_S\\ge0\.99\$", "sec_3_1.tex", s31, "Sec. III D: high-weight rows", len(hi_), 0, DN3)
+        _pnum(r"with \$w_S\\ge0\.99\$, the mildest by a factor \$([\d.]+)\$", "sec_3_1.tex", s31, "Sec. III D: mildest factor",
+              round(mild_, 2), 1e-12, DN3)
+        if med_:
+            _pnum(r"median violation factor rises from \$([\d.]+)\$ to \$[\d.]+\$ between sector fractions \$0\.50\$ and \$0\.95\$",
+                  "sec_3_1.tex", s31, "Sec. III D: median at 0.50", round(med_[0.5], 1), 1e-12, DN3)
+            _pnum(r"median violation factor rises from \$[\d.]+\$ to \$([\d.]+)\$ between sector fractions \$0\.50\$ and \$0\.95\$",
+                  "sec_3_1.tex", s31, "Sec. III D: median at 0.95", round(med_[0.95], 1), 1e-12, DN3)
+        rep.truth("Sec. III D prints one value per count (no 'on the deposited certificate files' aside)",
+                  "on the deposited certificate files" not in s31 and "$468$" not in s31 and "$2.10$" not in s31,
+                  "one set", "Sec. III D still carries the earlier-run values beside the regenerated ones")
+        # Sec. S9 (sec_3_app)
+        s3a = _tex("paper/sec_3_app.tex")
+        DN9 = "Sec. S9 prints a count that is not the re-classified pool's"
+        m_ = re.search(r"contribute \$(\d+)\$ subspaces: \$(\d+)\$ from the original sweep, and \$(\d+)\+(\d+)\+(\d+)\$", s3a)
+        if not m_:
+            rep.missing("Sec. S9: source counts", "'contribute 621 subspaces: 243 from the original sweep, and 162+112+104' is gone")
+        else:
+            rep.eq_int("Sec. S9: pooled", int(m_.group(1)), n_pool, DN9)
+            rep.eq_int("Sec. S9: original sweep rows", int(m_.group(2)), nsrc_["thm3"] + nsrc_["L8b"], DN9)
+            for g_, k_ in zip(m_.groups()[2:], ("cert_stress.json", "cert_akw.json", "cert_teqsci.json")):
+                rep.eq_int("Sec. S9: rows from %s" % k_, int(g_), nsrc_[k_], DN9)
+        _pnum(r"leaving \$(\d+)\$ live", "sec_3_app.tex", s3a, "Sec. S9: live rows", n_live, 0, DN9)
+        _pnum(r"of which \$(\d+)\$ are finite-shot realizations at \$\d+\$ shots", "sec_3_app.tex", s3a, "Sec. S9: finite-shot rows", n_fs, 0, DN9)
+        _pnum(r"the weight-only bound fails on \$(\d+)\$; among the", "sec_3_app.tex", s3a, "Sec. S9: violations", n_viol, 0, DN9)
+        _pnum(r"among the \$(\d+)\$ with \$w_S\\ge0\.99\$", "sec_3_app.tex", s3a, "Sec. S9: high-weight rows", len(hi_), 0, DN9)
+        _pnum(r"it fails on all \$(\d+)\$, the mildest by a factor", "sec_3_app.tex", s3a, "Sec. S9: high-weight violations", n_hiv, 0, DN9)
+        _pnum(r"it fails on all \$\d+\$, the mildest by a factor \$([\d.]+)\$, with \$\d+\$ of them", "sec_3_app.tex", s3a,
+              "Sec. S9: mildest factor", round(mild_, 2), 1e-12, DN9)
+        _pnum(r"the mildest by a factor \$[\d.]+\$, with \$(\d+)\$ of them carrying \$w_S=1\$", "sec_3_app.tex", s3a,
+              "Sec. S9: zero-bound rows", len(inf_), 0, DN9)
+        _pnum(r"it survives on \$(\d+)\$ of \$\d+\$, in every case", "sec_3_app.tex", s3a, "Sec. S9: survivors below 0.99", lo_surv, 0, DN9)
+        _pnum(r"it survives on \$\d+\$ of \$(\d+)\$, in every case", "sec_3_app.tex", s3a, "Sec. S9: rows below 0.99", len(lo_), 0, DN9)
+        _pnum(r"the largest ratio of error to bound is \$([\d.]+)\$", "sec_3_app.tex", s3a, "Sec. S9: largest Theorem 1 ratio",
+              round(Bmax_, 10), 1e-12, DN9)
+        _pnum(r"is the smaller of the two on only \$(\d+)\$ of the \$\d+\$", "sec_3_app.tex", s3a,
+              "Sec. S9: rows on which the leakage branch is the smaller", leak_n, 0, DN9)
+        rep.truth("Sec. S9 no longer explains the plotted pool as an earlier run",
+                  "earlier run" not in s3a, "absent", "Sec. S9 still says the plotted pool was read from an earlier run")
+        # Sec. S2 (sm_leakage)
+        sml = _tex("paper/sm_leakage.tex")
+        DN2 = "Sec. S2 prints a count that is not the re-classified pool's"
+        _pnum(r"contributes \$(\d+)\$ subspaces from five Hamiltonian families", "sm_leakage.tex", sml, "Sec. S2: pooled", n_pool, 0, DN2)
+        _pnum(r"implementations; \$(\d+)\$ reproduce their target", "sm_leakage.tex", sml, "Sec. S2: exact rows", n_deg, 0, DN2)
+        _pnum(r"On the \$(\d+)\$ that remain the weight-only bound fails on \$\d+\$", "sm_leakage.tex", sml, "Sec. S2: live rows", n_live, 0, DN2)
+        _pnum(r"On the \$\d+\$ that remain the weight-only bound fails on \$(\d+)\$", "sm_leakage.tex", sml, "Sec. S2: violations", n_viol, 0, DN2)
+        _pnum(r"it fails on \$(\d+)\$ of \$\d+\$, the mildest by a factor", "sm_leakage.tex", sml, "Sec. S2: high-weight violations", n_hiv, 0, DN2)
+        _pnum(r"it fails on \$\d+\$ of \$(\d+)\$, the mildest by a factor", "sm_leakage.tex", sml, "Sec. S2: high-weight rows", len(hi_), 0, DN2)
+        _pnum(r"of \$\d+\$, the mildest by a factor \$([\d.]+)\$ \(Sec", "sm_leakage.tex", sml, "Sec. S2: mildest factor",
+              round(mild_, 2), 1e-12, DN2)
+        if med_ and f5_:
+            m_ = re.search(r"is \$([\d.]+)\$, \$([\d.]+)\$, \$([\d.]+)\$, \$([\d.]+)\$, the \$(\d+)\$ rows spanning \$([\d.]+)\$ to \$([\d.]+)\$ "
+                           r"overall and \$([\d.]+)\$ to \$([\d.]+)\$ at the fraction \$0\.85\$", sml)
+            if not m_:
+                rep.missing("Sec. S2: the medians and ranges of the Fig. 3 setting", "the sentence is gone or reworded")
+            else:
+                for g_, x_ in zip(m_.groups()[:4], (0.5, 0.7, 0.85, 0.95)):
+                    rep.eq("Sec. S2: median at fraction %.2f" % x_, float(g_), round(med_[x_], 1), 1e-12, DN2)
+                rep.eq_int("Sec. S2: rows of the Fig. 3 setting", int(m_.group(5)), len(f5_), DN2)
+                f5r = [r["ratio"] for r in f5_]
+                f85 = [r["ratio"] for r in f5_ if abs(r["frac"] - 0.85) < 1e-9]
+                for g_, w_, nm_ in zip(m_.groups()[5:], (min(f5r), max(f5r), min(f85), max(f85)),
+                                       ("min", "max", "min at 0.85", "max at 0.85")):
+                    rep.eq("Sec. S2: Fig. 3-setting violation factor %s" % nm_, float(g_), round(w_, 1), 1e-12, DN2)
+            _pnum(r"rise\} monotonically, by a factor \$([\d.]+)\$", "sm_leakage.tex", sml, "Sec. S2: rise of the medians",
+                  round(med_[0.95] / med_[0.5], 1), 1e-12, DN2)
+        rep.truth("no manuscript sentence quotes the earlier-run counts 468 / 2.10 / 138",
+                  all(x_ not in " ".join(read_body(root).split()) for x_ in ("on $468$", "$468$ of", "factor $2.10$", "on $138$ of")),
+                  "absent", "an earlier-run value of the Fig. S5 pool is still printed")
+
     # ---------------------------------------------------------------- 9.7  fig_method
     mm = ctx["mm"]
     mtx = read(root, "paper/figs/fig_method_native_frag.tex")
@@ -1667,6 +2406,175 @@ def section9(rep, root, ctx):
                       "wider than six deposited standard deviations, at indices %s -- a "
                       "band drawn independently of its own data can be drawn anywhere"
                       % (mol, bad), n=max(len(Lo), 1))
+
+    # ---------------------------------------------------------------- 9.9b printed noise numbers
+    # 2026-09-30 (final numeric review NR-2).  The captions of Figs. noise and noiserec, Sec. S8
+    # and Sec. VIII print values of data/noise_spectral.json, data/molecular_noise_sweep.json and
+    # data/pole_structure.json (generators src/noise_spectral.py, src/molecular_noise_sweep.py,
+    # src/pole_structure.py) that no check read: a one-digit change in any of them left every
+    # guardian green.  Each printed value is now its rounding of the deposited one, and the two
+    # qualitative claims they carry are recomputed: 'beyond the seed bands' (mean+s.d. at the
+    # quoted eps below mean-s.d. at eps=0) and 'near 0.05 for 4% <= eps <= 16%'.
+    try:
+        ns_ = read_json(root, "data/noise_spectral.json")
+    except Exception as exc:                                    # noqa: BLE001
+        rep.missing("data/noise_spectral.json", "cannot read: %s" % exc)
+        ns_ = None
+    fn_ = _tex("paper/carried/fig_noise.tex")
+    fr_ = _tex("paper/carried/fig_noiserec.tex")
+    ss_ = _tex("paper/sm_scope.tex")
+    s8_ = _tex("paper/sec_8.tex")
+    DN = "the printed noise value is not its rounding of the deposited sweep"
+    if ns_:
+        eps_ = [float(e) for e in ns_["eps"]]
+        i0_, i13_ = eps_.index(0.0), eps_.index(0.13)
+        rep.eq("noise_spectral.json: the two arms coincide at eps=0", ns_["score"][i0_], ns_["naive"][i0_],
+               0.0, "recovery and naive post-selection differ on noiseless bitstrings")
+        for rel_, txt_, pat_ in (
+                ("carried/fig_noise.tex", fn_, r"the two arms coincide at \$([\d.]+)\$"),
+                ("sm_scope.tex", ss_, r"from \$([\d.]+)\$ at \$\\varepsilon=0\$ to \$[\d.]+\$ at \$13\\%\$")):
+            _pnum(pat_, rel_, txt_, "%s: spectral rel-L1 at eps=0" % rel_,
+                  round(ns_["score"][i0_], 3), 1e-12, DN)
+        _pnum(r"at \$\\varepsilon=0\$ to \$([\d.]+)\$ at \$13\\%\$", "sm_scope.tex", ss_,
+              "sm_scope.tex: spectral rel-L1 at eps=13%", round(ns_["score"][i13_], 3), 1e-12, DN)
+        rep.truth("noise_spectral.json: eps=13% lies below eps=0 beyond the seed bands",
+                  ns_["score"][i13_] + ns_["score_std"][i13_] < ns_["score"][i0_] - ns_["score_std"][i0_],
+                  "beyond", "Sec. S8 reports the eps=13% value 'beyond the seed bands' and it is not")
+        m_ = re.search(r"keeps the error near \$([\d.]+)\$ for \$(\d+)\\%\\le\\varepsilon\\le(\d+)\\%\$", fn_)
+        if not m_:
+            rep.missing("carried/fig_noise.tex: 'near 0.05 for 4% <= eps <= 16%'", "the range is gone")
+        else:
+            c_, a_, b_ = float(m_.group(1)), float(m_.group(2)) / 100, float(m_.group(3)) / 100
+            inr_ = [s for e, s in zip(eps_, ns_["score"]) if a_ - 1e-12 <= e <= b_ + 1e-12]
+            rep.truth("carried/fig_noise.tex: every recovered score in [%g, %g] is within 0.01 of %g"
+                      % (a_, b_, c_), len(inr_) >= 2 and all(abs(s - c_) <= 0.01 for s in inr_),
+                      "%d scores" % len(inr_), "a recovered score in the quoted range is not near %g" % c_)
+    try:
+        ms_ = dict((m_["mol"], m_["rows"]) for m_ in read_json(root, "data/molecular_noise_sweep.json")["mols"])
+    except Exception as exc:                                    # noqa: BLE001
+        rep.missing("data/molecular_noise_sweep.json (9.9b)", "cannot read: %s" % exc)
+        ms_ = {}
+    for mol_, tex_, eps_q, nd_ in (("NH3", r"\\mathrm\{NH_3\}\$", 0.10, 2), ("CO", "CO", 0.20, 2),
+                                  ("C2", r"\\mathrm\{C_2\}\$", 0.30, 3)):
+        rows_m = ms_.get(mol_)
+        if not rows_m:
+            rep.missing("molecular_noise_sweep.json %s" % mol_, "molecule gone")
+            continue
+        r0_ = [r for r in rows_m if r["eps"] == 0.0][0]
+        rq_ = [r for r in rows_m if abs(r["eps"] - eps_q) < 1e-12][0]
+        rep.truth("molecular_noise_sweep.json: %s at eps=%g lies below eps=0 beyond the seed bands"
+                  % (mol_, eps_q), rq_["score"] + rq_["score_std"] < r0_["score"] - r0_["score_std"],
+                  "beyond", "the SM and the caption report %s 'beyond the seed bands' and it is not" % mol_)
+        pat_ = (r"%s from \$([\d.]+)\$ to \$([\d.]+)\$~mHa at \$?(?:\\varepsilon=)?(\d+)\\%%" % tex_)
+        m_ = re.search(pat_, ss_)
+        if not m_:
+            rep.missing("sm_scope.tex: %s noise pair" % mol_, "pattern %s gone" % pat_)
+        else:
+            rep.eq("sm_scope.tex: %s error at eps=0 (mHa)" % mol_, float(m_.group(1)),
+                   round(r0_["score"], nd_), 1e-12, DN)
+            rep.eq("sm_scope.tex: %s error at eps=%g (mHa)" % (mol_, eps_q), float(m_.group(2)),
+                   round(rq_["score"], nd_), 1e-12, DN)
+            rep.eq("sm_scope.tex: %s quoted eps (%%)" % mol_, float(m_.group(3)), round(100 * eps_q), 0.0, DN)
+    if "NH3" in ms_:
+        r0_ = [r for r in ms_["NH3"] if r["eps"] == 0.0][0]
+        rq_ = [r for r in ms_["NH3"] if abs(r["eps"] - 0.10) < 1e-12][0]
+        m_ = re.search(r"\\mathrm\{NH_3\}\$ \$([\d.]+)\\to([\d.]+)\$~mHa at \$\\varepsilon=(\d+)\\%\$", fr_)
+        if not m_:
+            rep.missing("carried/fig_noiserec.tex: NH3 pair", "'NH3 2.53 -> 1.24 mHa at eps=10%' is gone")
+        else:
+            rep.eq("carried/fig_noiserec.tex: NH3 at eps=0 (mHa)", float(m_.group(1)), round(r0_["score"], 2), 1e-12, DN)
+            rep.eq("carried/fig_noiserec.tex: NH3 at eps=10% (mHa)", float(m_.group(2)), round(rq_["score"], 2), 1e-12, DN)
+            rep.eq("carried/fig_noiserec.tex: NH3 eps (%)", float(m_.group(3)), 10.0, 0.0, DN)
+    try:
+        ps_ = read_json(root, "data/pole_structure.json")
+        cg12_ = [r for r in read_json(root, "data/charge_gap.json")["results"] if r["L"] == 12][0]
+    except Exception as exc:                                    # noqa: BLE001
+        rep.missing("data/pole_structure.json / charge_gap.json L=12 (9.9b)", "cannot read: %s" % exc)
+        ps_ = None
+    if ps_:
+        ch_ = [r for r in ps_["table"] if r["channel"] == "charge" and r["L"] == 12]
+        wmin_ = min(r["w_retained_frac"] for r in ch_)
+        _pnum(r"---\$([\d.]+)\\%\$ or more of the weight at each \$q\$---lies above it", "sec_8.tex", s8_,
+              "Sec. VIII: retained charge weight at every q (%)", math.floor(1000 * wmin_) / 10, 1e-12,
+              "Sec. VIII: the printed floor is not floor(100 x min w_retained_frac, 1 d.p.)")
+        rep.eq_int("pole_structure.json: charge momenta at L=12", len(ch_), 6,
+                   "the charge channel no longer carries the six nonzero momenta of L=12")
+        rep.truth("Sec. VIII: every retained charge pole at L=12 lies above Delta(12)",
+                  min(r["lowest_retained_pole"] for r in ch_) > cg12_["Delta"],
+                  "%.3f > %.3f" % (min(r["lowest_retained_pole"] for r in ch_), cg12_["Delta"]),
+                  "a retained charge pole lies below the charge gap Sec. VIII says it lies above")
+
+    # ---------------------------------------------------------------- 9.9c restated certificate numbers
+    # 2026-09-30 (final numeric review NR-3).  The Fig. 3 certificate (relative bound 0.77-1.75,
+    # 350-900 times the true error), the momentum-block need (455-483 of 490 at L=8), the spread
+    # of the crossing (5.9) and the 0.98 of the sector at L=8 are printed in the abstract and in
+    # Secs. I, V, X and S3, and no check read any copy.  Every copy is now its rounding of the
+    # deposited record, and each is required where the text carries it.
+    DC = "a restated certificate number is not its rounding of the deposited record"
+    try:
+        ca_ = [r for r in read_json(root, "data/cert_akw.json")["rows"]
+               if r["L"] == 8 and abs(r["FR"] - 0.85) < 1e-9]
+        kb_ = read_json(root, "data/c3_frontier/adversarial/z_kblock_L8.json")["rows"]
+        co_ = read_json(root, "data/c3_frontier/null/CALIB_OOS.json")
+        zf_ = read(root, "data/c3_frontier/adversarial/z_fine_L8.txt")
+    except Exception as exc:                                    # noqa: BLE001
+        rep.missing("certificate records (9.9c)", "cannot read: %s" % exc)
+        ca_ = None
+    if ca_:
+        rep.eq_int("cert_akw.json: L=8, FR=0.85 channels", len(ca_), 16,
+                   "the Fig. 3 certificate no longer has its sixteen channels")
+        rep.truth("cert_akw.json: every L=8, FR=0.85 channel is non-vacuous",
+                  all(r["bound_nontrivial"] for r in ca_), "16 of 16",
+                  "a Fig. 3 channel is vacuous, and the text says all sixteen are bounded")
+        lo_u, hi_u = min(r["rel_upper"] for r in ca_), max(r["rel_upper"] for r in ca_)
+        lo_s, hi_s = min(r["slack"] for r in ca_), max(r["slack"] for r in ca_)
+
+        def _sf2(x):
+            return float("%.2g" % x)
+        kb_lo, kb_hi = min(r["first_nonvacuous"] for r in kb_), max(r["first_nonvacuous"] for r in kb_)
+        kb_blk = set(r["block_size"] for r in kb_)
+        spread_ = max(r["relL1"] for r in co_) / min(r["relL1"] for r in co_)
+        fine_ = [(int(m_.group(1)), float(m_.group(2))) for m_ in
+                 re.finditer(r"\|S\|=(\d+) FR=[\d.]+ eta=0\.18 \| .*?relR5=([\d.e+-]+)", zf_)]
+        above_ = [s for s, v in fine_ if v >= 0.05]
+        below_ = [s for s, v in fine_ if v < 0.05]
+        frac_ = round(min(below_) / 3920.0, 2) if below_ else float("nan")
+        A_ = ("sec_1.tex", "sec_5_body.tex", "sec_10.tex", "sm_frontier.tex")
+        checks_ = (   # (pattern, deposited value at its printed rounding, label, files that must carry it)
+            (r"\$([\d.]+)\$--\$[\d.]+\$ against the trivial \$2\$", round(lo_u, 2), "relative bound, low", A_),
+            (r"\$[\d.]+\$--\$([\d.]+)\$ against the trivial \$2\$", round(hi_u, 2), "relative bound, high", A_),
+            (r"\$(\d+)\$--\$\d+\$ times (?:its|the) true error", _sf2(lo_s), "slack, low (2 s.f.)",
+             ("main.tex",) + A_),
+            (r"\$\d+\$--\$(\d+)\$ times (?:its|the) true error", _sf2(hi_s), "slack, high (2 s.f.)",
+             ("main.tex",) + A_),
+            (r"\$(\d+)\$--\$\d+\$ of (?:its )?\$490\$", kb_lo, "momentum block, first non-vacuous low",
+             ("sec_5_body.tex", "sec_10.tex", "sm_frontier.tex")),
+            (r"\$\d+\$--\$(\d+)\$ of (?:its )?\$490\$", kb_hi, "momentum block, first non-vacuous high",
+             ("sec_5_body.tex", "sec_10.tex", "sm_frontier.tex")),
+            (r"a spread of \$([\d.]+)\$", round(spread_, 1), "calibration spread",
+             ("sec_1.tex", "sec_5_body.tex", "sm_frontier.tex")),
+            (r"(?:from|at least) \$([\d.]+)\$ of the sector at \$L=8\$", frac_,
+             "fraction at which the certificate reaches 0.05 at L=8", A_),
+        )
+        for pat_, want_, lab_, need_files in checks_:
+            for rel_ in ("main.tex", "sec_1.tex", "sec_5_body.tex", "sec_10.tex", "sm_frontier.tex"):
+                txt_ = _tex("paper/" + rel_)
+                if rel_ == "main.tex":
+                    m0_ = re.search(r"\\begin\{abstract\}(.*?)\\end\{abstract\}", txt_)
+                    txt_ = m0_.group(1) if m0_ else ""
+                hits_ = [float(m_.group(1)) for m_ in re.finditer(pat_, txt_)]
+                if not hits_:
+                    if rel_ in need_files:
+                        rep.missing("%s: %s" % (rel_, lab_), "the restated value is gone (pattern %s)" % pat_)
+                    continue
+                for h_ in hits_:
+                    rep.eq("%s: %s" % (rel_, lab_), h_, want_, 1e-12, DC)
+        rep.truth("z_fine_L8.txt: the 0.05 crossing is bracketed at integer sizes",
+                  bool(above_) and bool(below_) and max(above_) < min(below_),
+                  "%d < |S| <= %d" % (max(above_ or [0]), min(below_ or [0])),
+                  "the fine scan no longer brackets the crossing the text places at 0.98")
+        rep.truth("z_kblock_L8.json: the momentum blocks hold 490 determinants", kb_blk == {490},
+                  "490", "the block size printed as 490 is not the deposited one (%s)" % sorted(kb_blk))
 
     # ---------------------------------------------------------------- 9.10 amortized
     am = read(root, "paper/figs/fig_amort_native.tex")
@@ -2297,6 +3205,71 @@ def section_c3(rep, root):
               "than the three deposited ones: %s vs %s" % (sorted({r["L"] for r in vf}),
                                                            sorted(lad)), n=len(lad))
 
+    # -----------------------------------------------------------------------
+    # (h) the L=14 ranking, re-run (2026-09-28, late).  The L=14 certificate point takes
+    #     its subspace from the stored ranking ckpt/L14_order.npy; until this date the
+    #     K=18 protocol had been re-run only at L=10.  src/frontier/rerank_L14.py re-runs
+    #     it at L=14 from the stored ground state and compares the top-k selections as
+    #     sets; the record is data/c3_frontier/published_fraction/L14_rerank.json.  This
+    #     guardian cannot repeat the 49-minute ranking; it checks that the record is the
+    #     one the text describes (set overlap 1 with nothing unshared at the published
+    #     |S| and at every other cut, the same captured weight, an unambiguous cut at the
+    #     published fraction, the deposited checkpoints by SHA-256) and that Sec. S3 says so.
+    # -----------------------------------------------------------------------
+    try:
+        rr = read_json(root, "data/c3_frontier/published_fraction/L14_rerank.json")
+    except Exception as exc:                                    # noqa: BLE001
+        rep.missing("data/c3_frontier/published_fraction/L14_rerank.json", "cannot read: %s" % exc)
+        rr = None
+    if rr:
+        rep.eq_int("L14_rerank.json: L", int(rr["L"]), 14, "not the L=14 record")
+        rep.eq_int("L14_rerank.json: sector dimension", int(rr["D"]), 10306296,
+                   "not the (N+1) sector of L=14, U/t=8, half filling")
+        for k_, v_ in (("K", 18), ("dt", 0.5), ("sub", 16), ("m", 6)):
+            rep.eq("L14_rerank.json: protocol %s" % k_, float(rr["protocol"][k_]), float(v_), 0.0,
+                   "the ranking was re-run with a protocol other than the repository's K=18 one")
+        rows_ = rr["rows"]
+        rep.truth("L14_rerank.json: the published |S| = 824504 is one of the cuts",
+                  any(int(r["k"]) == 824504 for r in rows_), "present",
+                  "the re-run does not compare the selection at the published L=14 count")
+        rep.truth("L14_rerank.json: at least four cuts compared", len(rows_) >= 4, "%d" % len(rows_),
+                  "fewer cuts than the text reports")
+        for r in rows_:
+            rep.eq("L14_rerank.json k=%d: set overlap with the stored ranking" % int(r["k"]),
+                   float(r["set_overlap"]), 1.0, 0.0,
+                   "the re-run ranking does not reproduce the stored selection as a set")
+            rep.eq_int("L14_rerank.json k=%d: determinants not shared" % int(r["k"]), int(r["n_only_stored"]), 0,
+                       "the two selections differ")
+            rep.eq_int("L14_rerank.json k=%d: n_common == k" % int(r["k"]), int(r["n_common"]), int(r["k"]),
+                       "the overlap is not the whole selection")
+            rep.eq("L14_rerank.json k=%d: captured weight, stored vs re-run" % int(r["k"]),
+                   float(r["w_S_rerun"]), float(r["w_S_stored"]), 1e-12,
+                   "the two selections carry different captured weight")
+            if int(r["k"]) == 824504:
+                rep.truth("L14_rerank.json k=824504: the cut is unambiguous", not r["cut_ambiguous"],
+                          "%d/%d tied at the cut, all inside" % (r["tied_at_cut_inside"], r["tied_at_cut_total"]),
+                          "a determinant tied at the cut weight lies outside the published selection")
+                rep.eq("L14_rerank.json k=824504: captured weight is the L14_FR008 one",
+                       float(r["w_S_stored"]), 0.998387504078, 1e-11,
+                       "the stored captured weight at the published count moved")
+        ck_ = read(root, "ckpt/README.txt")
+        for key_, nm_ in (("L14_gs_sha256", "L14_gs.npz"), ("L14_order_sha256", "L14_order.npy")):
+            rep.truth("L14_rerank.json: %s hashed as ckpt/README.txt records" % nm_,
+                      str(rr["provenance"].get(key_, "")) in ck_ and len(str(rr["provenance"].get(key_, ""))) == 64,
+                      str(rr["provenance"].get(key_, ""))[:12],
+                      "the re-run did not read the deposited checkpoint (its SHA-256 is not the recorded one)")
+        smf_ = " ".join(read(root, "paper/sm_frontier.tex").split())
+        rep.truth("Sec. S3 reports the L=14 re-run and its set overlap",
+                  "reproduces the stored selection as a set to $1.000000$" in smf_
+                  and "$\\lvert S\\rvert=824\\,504$ and at the fractions $0.04$, $0.16$ and $0.32$" in smf_,
+                  "stated", "Sec. S3 no longer reports the re-run ranking at L=14")
+        for rel_, bad_ in (("paper/sm_frontier.tex", "was \\emph{not} re-run at that size"),
+                           ("paper/sec_5_body.tex", "was not re-run"),
+                           ("paper/sec_1.tex", "not re-ranked"), ("paper/sec_10.tex", "not re-ranked")):
+            rep.truth("%s: the superseded 'not re-run' caveat is gone" % rel_,
+                      bad_ not in " ".join(read(root, rel_).split()), "absent",
+                      "the text still says the L=14 ranking was not re-run")
+
 
 def coverage_floor(rep):
     """A guardian that only checks what it finds cannot see a deleted artefact."""
@@ -2422,6 +3395,13 @@ def main(argv=None):
                    "actually takes (position 2K)")
         rep.eq_int("apsg_witness.json K=%d M" % K, r["M"], w["M"], "mode count changed")
         rep.eq_int("apsg_witness.json K=%d Ne" % K, r["Ne"], w["Ne"], "electron count changed")
+        # 2026-09-28 (late): apsg_witness.py now records chi_max, the largest Schmidt rank over
+        # all M-1 cuts of the pairing ordering -- the chi = 2 the theorem and Fig. S1 print --
+        # so that number is generated by the deposited diagonalization and not declared.
+        rep.eq_int("apsg_witness.json K=%d chi_max (largest Schmidt rank over all cuts)" % K,
+                   int(r.get("chi_max", -1)), w["chi_max"],
+                   "the deposited maximum over cuts is absent or disagrees with recomputation: the "
+                   "printed chi = 2 would be declared, not generated")
     sweep_rows = {r["theta"]: r for r in aw if r.get("K") == 3 and r.get("theta") != "pi/4"}
     for t in TH:
         key = "%gpi" % t
@@ -2440,6 +3420,24 @@ def main(argv=None):
         rep.eq_int("apsg_witness.json theta=%s chi" % key,
                    chi_of(r, "apsg_witness.json theta=%s" % key)[0], w["chi_central"],
                    "deposited theta-sweep central-cut rank disagrees with recomputation")
+        rep.eq_int("apsg_witness.json theta=%s chi_max (largest Schmidt rank over all cuts)" % key,
+                   int(r.get("chi_max", -1)), w["chi_max"],
+                   "the deposited maximum over cuts is absent or disagrees with recomputation "
+                   "(2 at every interior angle, 1 at theta = pi/2)")
+    # the two sentences that print the central-cut sequence beside the maximum (2026-09-28 (late))
+    _cc = [str(W[K]["chi_central"]) for K in (1, 2, 3, 4)]
+    for _rel, _pat in (("paper/sm_nogo.tex", r"at the central cut alone it is \$(\d)\$, \$(\d)\$, \$(\d)\$, \$(\d)\$ for \$K=1,\\dots,4\$"),
+                       ("paper/sec_6_app.tex", r"central spin-orbital cut alone is \$(\d)\$, \$(\d)\$, \$(\d)\$, \$(\d)\$ for \$K=1,\\dots,4\$")):
+        _t = " ".join(read(root, _rel).split())
+        _m = re.search(_pat, _t)
+        if not _m:
+            rep.missing("%s: central-cut sequence" % _rel, "the sentence giving the central-cut ranks is gone")
+        else:
+            rep.truth("%s: central-cut ranks 2, 1, 2, 1 are the recomputed ones" % _rel, list(_m.groups()) == _cc,
+                      ", ".join(_cc), "the printed central-cut sequence is not the recomputed one")
+        rep.truth("%s: chi = 2 is named as the largest Schmidt rank over all cuts" % _rel,
+                  "largest Schmidt rank over all cuts" in _t, "stated",
+                  "the text no longer says which quantity the printed chi = 2 is")
 
     # --- the theorem display in paper/theorem_b2.tex ---
     try:

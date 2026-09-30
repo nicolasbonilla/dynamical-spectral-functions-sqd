@@ -14,7 +14,8 @@ Four independent blocks, all built on src/leakage_certificate.py:
   akw       the FR fractions of sampled_akw.py at L=6 and L=8 (U/t=8, eta=0.18), FR in
             {0.50,0.70,0.85,0.95}, all L momenta, both (N+1) and (N-1) branches.
             CONTROL: at L=8, FR=0.85 the per-k combined rel-L1 must reproduce
-            data/sampled_akw_L8.json (mean 0.0021858473952153625, max 0.0032826276455945177).
+            data/sampled_akw_L8.json (mean 0.0023611027831700092, max 0.0032674832662237534, on the
+            [-9t, 17t] window; 0.0021858473952153625 / 0.0032826276455945177 on the former [-9t, 9t]).
 
   frontier  the UTILITY FRONTIER: Lambda_S(eta)/eta as a function of the retained sector fraction,
             on the exact ranking protocol of scaling_lanczos.py (seed c^dag_{0,up}|GS>, Born weight
@@ -274,7 +275,11 @@ def run_akw(outdir=".", Ls=(6, 8), U=8.0, eta=0.18, K=16, dt=0.5,
         E0v, V0 = eigsh(Hexpl, k=1, which='SA', v0=arpack_v0(Hexpl.shape[0]),
                         ncv=min(Hexpl.shape[0], 40), tol=1e-11, maxiter=100000)
         E0 = float(E0v[0]); Psi = V0[:, 0].reshape(Du, Dd)
-        wg = np.linspace(-9, 9, 600)                     # the figure's own window
+        # The figure's own window (sampled_akw.py).  It was np.linspace(-9, 9, 600), which
+        # omitted the k=0 addition branch (poles up to 14.9t above E0, no mu shift); widened
+        # 2026-09-28 to [-9t, 17t], symmetric about mu = U/2.  Only relL1_figure_window reads
+        # this grid: the per-channel rows (bounds, relL1_true, slack) are whole-line.
+        wg = np.linspace(-9, 17, 866)
 
         cdU = AK.cdag_map(L, nup); cUr = AK.cdag_map(L, nup - 1)
         Hadd, _, _ = AK.build_H_explicit(L, U, nup + 1, nd)

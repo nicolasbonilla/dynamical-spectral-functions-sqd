@@ -1,49 +1,21 @@
 % =====================================================================================
-% Sec. 4 -- WHAT THE STRUCTURE DOES CERTIFY: MOMENT EXACTNESS
+% Sec. 4 -- MOMENT EXACTNESS ON A KRYLOV-ADEQUATE SUBSPACE  ([BODY] block; the appendix
+% block, app:moments and its subsections, is sec_4_app.tex).
 %
-% Replaces, in paper/theorem_b2.tex: the statement of Theorem 1 parts (i) and (ii)
-% (lines 18-50, up to the start of part (iii)), the proof sketch of (i) and (ii)
-% (lines 52-60), and the composition paragraph (lines 68-76).
-% Part (iii) is retracted in sec_3_1.tex and does not appear here.
-%
-% This file contains TWO blocks, separated by the marked rule below:
-%   [BODY]     -> main body, after Sec. 3 (the two budgets / Theorem B).
-%   [APPENDIX] -> after \appendix, replacing the first appendix of theorem_b2.tex.
-%
-% External labels used here (owned by other sections -- reconcile at integration):
-%   sec:leakage    = Sec. 3, the two-budget decomposition   [label spelling taken from sec_6.tex]
-%   thm:leakage    = Theorem B, the leakage bound           [Sec. 3, agreed across sections]
-%   sec:retraction = Sec. 3.1, retraction of Thm 1(iii)     [defined in sec_3_1.tex]
-%   sec:frontier   = Sec. 5, where the certificate is non-vacuous  [Sec. 5, not yet written]
-%   sec:prices     = Sec. 7, the three prices               [defined in sec_7.tex]
-%   eq:supportexp  = |S| ~ e^{1.05 L}                       [defined in sec_7.tex]
-%   sec:method     = Sec. 2                                 [label already exists in method.tex]
+% External labels used here: sec:leakage, thm:leakage, sec:retraction, sec:frontier,
+%   sec:prices, sec:method, sm:moments, app:moments, app:moments:sharp, app:moments:shots.
 % This file defines: sec:moments, sec:moments:exact/notbuy/shots, thm:moments, conj:geom,
-%   prop:shots, tab:moments, eq:momex, eq:rrsplit, eq:shots, app:moments(+:exact/sharp/conj/shots).
+%   prop:shots, tab:moments, eq:momex, eq:rrsplit, eq:shots.
 %
-% PROVENANCE.  Table~\ref{tab:moments}: rows K=0,1 from p2_texto/final_out.txt (six independent
-%   implementations), row K=2 from p2_texto/bc2_out.txt (the corrected run; see app:moments:sharp
-%   for why the earlier one is discarded).  Negative control: p2_texto/control_out.txt, 300 draws,
-%   seed 20260918.  Two-level toy series of app:moments:conj: p2_texto/toy_out.txt.  The rho ~ 1.7
-%   paragraph of sec:moments:notbuy: release/data/method_max.json (shots=4000, NSEEDS=8, dt=0.4)
-%   and release/src/spectral_validation_max.py:225.
-% *** DEPOSIT GAP, corrected and escalated 2026-09-21.  This note used to read "the four .txt
-%   artifacts above live in the author's working tree, NOT in release/".  That was too kind and
-%   is now false: the four .txt files AND the four scripts that produced them (verify_final.py,
-%   verify_bc2.py, verify_control.py, verify_toy.py) exist NOWHERE -- searched across release/
-%   and the whole working tree on 2026-09-21.  Table~\ref{tab:moments} and the negative control
-%   are therefore not regenerable from the deposit.
-%
-%   That fact is no longer left to this comment, because arXiv publishes the LaTeX source and a
-%   limitation a reader can only find by downloading the .tex is a limitation that was hidden.
-%   It is now declared where this project declares gaps: COVERAGE_GAP_V3 in src/verify.py, which
-%   prints it by name on every run, and docs/DATA_AVAILABILITY.md.
-%
-%   It is also cheap to close, and closing it is the real fix: the table is L = 6, sector
-%   dimension 300, exact diagonalization of the (N+1, Sz=+1) sector (see sec_4_app.tex:53).
-%   Rewrite the four scripts against that construction, deposit them with their outputs, and
-%   assert the three rows in verify.py.  release/data/method_max.json, which the rho ~ 1.7
-%   paragraph uses, IS deposited and is unaffected. ***
+% PROVENANCE.  Table tab:moments (three rows), the negative control (300 uniform draws of
+%   size 200) and the two-level series of app:moments:conj are regenerated from nothing but
+%   src/moments_table.py -> data/moments_table.json, and the printed rows, the negative
+%   control and the order-(2K+2) discrepancies are asserted in src/verify.py, section 9.2.
+%   The table quotes the largest roundoff residue over six implementations of the same
+%   identity; the deposited single implementation reproduces those residues to the same
+%   order and every other entry to the precision printed (see the generator's docstring).
+%   The Fig. method panel read against Conjecture conj:geom (Sec. sm:moments):
+%   release/data/method_max.json and release/src/spectral_validation_max.py.
 % =====================================================================================
 
 % `conjecture' environment, declared defensively so this file can be dropped in whether
@@ -54,15 +26,19 @@
 
 % ======================================= [BODY] ======================================
 
-\section{What the structure does certify: moment exactness}
+\section{Moment exactness on a Krylov-adequate subspace}
 \label{sec:moments}
 
-Section~\ref{sec:retraction} rules out an error bound indexed on the captured weight. It rules out nothing about the construction itself. One structural guarantee does hold, and
-it is the one that says what a Krylov-adequate subspace actually buys: a finite list of spectral
-moments, exactly. We state it with the proof the code realizes, measure its exact reach, and separate
-it from two claims that attach themselves to it and do not follow from it.
+A subspace that contains the order-$K$ Krylov space of the probe reproduces its spectral moments exactly
+through order $2K+1$ (Theorem~\ref{thm:moments}); the statement is classical, and what is measured here
+is its exact reach on the coordinate subspaces this work builds. That reach is sharp: on the construction
+of Table~\ref{tab:moments} the moments part company at order $2K+2$, while coordinate subspaces of the
+same size drawn at random fail already at the zeroth moment. The guarantee is structural: it depends on
+which determinants the subspace holds, not on how many, and it is decidable from the subspace and the probe,
+without the exact spectral function. It is not an error bound, and it does not imply convergence in $K$
+(Sec.~\ref{sec:moments:notbuy}).
 
-\subsection{The statement that survives, and the proof it actually has}
+\subsection{Statement, proof and measured reach}
 \label{sec:moments:exact}
 
 Write $\mathcal K_K=\operatorname{span}\{\phi,H\phi,\dots,H^{K}\phi\}$ for the order-$K$ Krylov space
@@ -99,43 +75,44 @@ and every $j\le 2K+1$ is such an $a+b$. Both measures are shifted by the same $E
 survives term by term in the binomial expansion of $(H-E_0)^{j}$.
 \end{proof}
 
-\noindent The proof is three lines of Rayleigh--Ritz. It does not identify $A_{\mathcal S}$ with a
+\noindent The proof is three lines of Rayleigh--Ritz, and the statement is the moment-matching property
+of Krylov projections that underlies Lanczos--Gauss quadrature~\cite{golub2010}. The proof does not identify $A_{\mathcal S}$ with a
 Gaussian-quadrature rule, which is not the object built here: every reconstruction diagonalizes
 $P_{\mathcal S}HP_{\mathcal S}$ on a coordinate subspace, so $d\mu_{\mathcal S}$ carries
 $|\mathcal S|$ nodes, not $K+1$ (Sec.~\ref{sm:moments}).
 
 Table~\ref{tab:moments} measures Eq.~\eqref{eq:momex} on the construction this work uses---the union of
 the determinant supports of $\{\phi,H\phi,\dots,H^{K}\phi\}$---for the open Hubbard chain at $L=6$,
-$U/t=8$, in the $(N{+}1,S_z{=}{+}1)$ sector of dimension $D=300$. Through order $2K+1$ the moments
+$U/t=8$, in the $(N{+}1,S_z{=}{+}\tfrac12)$ sector of dimension $D=300$. Through order $2K+1$ the moments
 agree to a relative $10^{-14}$; at order $2K{+}2$ they part company by eleven orders of magnitude at
 $K=0$ and seven at $K=1$. The order $2K+1$ is the exact reach of the construction, not merely a
-sufficient claim, and the two rows that exhibit that reach are the two on which the ladder has not yet
-filled the sector.
+sufficient claim.
 
 \begin{table*}[tp]\centering\small
 \caption{\textbf{Moment exactness and its exact reach.} Open Hubbard chain, $L=6$, $U/t=8$; seed
-$\ket{\phi}=\hat c^{\dagger}_{0\uparrow}\ket{0}$; $(N{+}1,S_z{=}{+}1)$ sector of dimension $D=300$;
+$\ket{\phi}=\hat c^{\dagger}_{0\uparrow}\ket{0}$; $(N{+}1,S_z{=}{+}\tfrac12)$ sector of dimension $D=300$;
 $\mathcal S=\bigcup_{a\le K}\operatorname{supp}(H^{a}\phi)$. The largest Krylov order inside
 $\operatorname{span}(\mathcal S)$, $K_{\mathcal S}$, and the captured Born weight $w_{\mathcal S}$ are
 measured, not assumed. $\epsilon_j$ is the \emph{relative} discrepancy of the $j$-th moment, quoted as
-the largest value over six equivalent implementations of the same identity; the absolute discrepancy at
-order $2K{+}2$ follows in parentheses. Only relative residues are quoted below that order, because
+the largest value over six equivalent implementations of the same identity (the deposited generator,
+\texttt{src/moments\_table.py}, regenerates the roundoff residues to the same order and every other entry
+to the precision printed); the absolute discrepancy at order $2K{+}2$ follows in parentheses. Only relative residues are quoted below that order, because
 $\mu_j$ spans five decades between $j=0$ and $j=6$ and the absolute roundoff residue is
 route-dependent (Sec.~\ref{app:moments:sharp}). At $K=2$ the ladder has filled the sector, so
 $\operatorname{span}(\mathcal S)$ carries every eigenvector of nonzero Lehmann weight,
 $A_{\mathcal S}=A$ identically, and there is no order-$2K{+}2$ failure to exhibit; that row is kept to
 mark where the ladder terminates, and its single entry is the roundoff level of the moments.}
 \label{tab:moments}
-\begin{tabular}{cccccc}\hline\hline
+\begin{tabular}{cccccc}\toprule
 $K$ & $|\mathcal S|$ & $|\mathcal S|/D$ & $w_{\mathcal S}$ & $K_{\mathcal S}$ &
-$\max_{j\le 2K+1}\epsilon_j\ \longrightarrow\ \epsilon_{2K+2}$ (absolute) \\ \hline
+$\max_{j\le 2K+1}\epsilon_j\ \longrightarrow\ \epsilon_{2K+2}$ (absolute) \\ \midrule
 $0$ & $200$ & $0.667$ & $1$ & $0$ &
 $1.8\times10^{-15}\ \longrightarrow\ 9.5\times10^{-4}$\ \ $(3.10\times10^{-2})$ \\
 $1$ & $280$ & $0.933$ & $1$ & $1$ &
 $3.2\times10^{-15}\ \longrightarrow\ 6.0\times10^{-8}$\ \ $(1.34\times10^{-4})$ \\
 $2$ & $300$ & $1.000$ & $1$ & full sector &
 $7.5\times10^{-15}\ \longrightarrow\ $ no failure: $A_{\mathcal S}=A$ \\
-\hline\hline\end{tabular}
+\bottomrule\end{tabular}
 \end{table*}
 
 A negative control fixes what the table is about. Over $300$ coordinate subspaces of the \emph{same}
@@ -143,21 +120,20 @@ size $|\mathcal S|=200$---two thirds of the sector---drawn uniformly from it, ev
 already at the zeroth moment, against $4\times10^{-16}$ for the Krylov-support subspace of identical
 size (Sec.~\ref{app:moments:sharp}). What
 Theorem~\ref{thm:moments} certifies is \emph{which} determinants the subspace holds, not \emph{how
-many}---a structural property, decidable from the subspace alone, before any exact reference exists.
+many}.
 
-One caveat of scale belongs with the table. The ladder terminates once the subspace contains the cyclic
-subspace generated by $\phi$, and there the reconstruction is exact: at $L=6$ that is $K=2$ on the open
-chain, and already $K=1$ on the periodic rings of Sec.~\ref{sec:prices}, where it stalls at $296$ of
-$300$ determinants with $A_{\mathcal S}=A$ to $10^{-14}$ (Sec.~\ref{app:moments:sharp}). Three rows is
-all this validation system has, and we claim nothing about the large-$K$ behaviour of
-$\lVert A-A_{\mathcal K_K}\rVert_1$. Within the reach it covers, the identity is exact and sharp at the
-next order.
+The ladder terminates once the subspace contains the cyclic subspace generated by $\phi$, and there the
+reconstruction is exact: at $L=6$ that is $K=2$ on the open chain, and already $K=1$ on the periodic
+rings of Sec.~\ref{sec:prices}, where it stalls at $296$ of $300$ determinants with $A_{\mathcal S}=A$
+to $10^{-14}$ (Sec.~\ref{app:moments:sharp}). These three rows are the whole validation, and they say
+nothing about the large-$K$ behavior of $\lVert A-A_{\mathcal K_K}\rVert_1$, which is the open question
+of Conjecture~\ref{conj:geom}.
 
 \subsection{What moment exactness does not buy}
 \label{sec:moments:notbuy}
 Moment exactness is a list of $2K+2$ linear identities, and the $L_1$ distance between two
 Lorentzian-broadened measures is not a finite linear functional of them, so geometric convergence in the
-Krylov order does not follow from it. We state that claim as what it is.
+Krylov order does not follow from it.
 
 \begin{conjecture}[Geometric convergence in the Krylov order]
 \label{conj:geom}
@@ -167,38 +143,52 @@ studied here, such that $\lVert A-A_{\mathcal K_K}\rVert_{1}\le C(\eta)\,\rho(\e
 $K$?
 \end{conjecture}
 
-\noindent The two-level family of Sec.~\ref{sec:retraction} already forces $C(\eta)\ge2\lVert\phi\rVert^{2}$
-at $K=0$, so any content the conjecture has must be carried by $\rho(\eta)^{-K}$ alone. Nor is
+\noindent If the class contains the two-level family of Sec.~\ref{sec:retraction}, that family already forces
+$C(\eta)\ge2\lVert\phi\rVert^{2}$ at $K=0$, so any content the conjecture has must be carried by
+$\rho(\eta)^{-K}$ alone; and the chain family of the same subsection, on which
+$\operatorname{span}(S)=\mathcal K_K$, forces $C(\eta)\rho(\eta)^{-K}\ge2\lVert\phi\rVert^{2}$ at every
+$K$ as $g/\eta\to\infty$, so the class must bound the couplings relative to $\eta$. Nor is
 Eq.~\eqref{eq:momex} an error bound: for a coordinate subspace, containing $\mathcal K_K$ forces
 $w_{\mathcal S}=1$, and at unit captured weight the error is $O(1)$---$0.28$ on the open chain of
 Table~\ref{tab:moments} at $\eta=0.18\,t$, and up to $0.43$ on the periodic rings
-(Sec.~\ref{sec:leakage}). The panel of Fig.~\ref{fig:method} read against the conjecture, and the full
+(Sec.~\ref{sec:retraction}). The panel of Fig.~\ref{fig:method} read against the conjecture, and the full
 discussion, are in Sec.~\ref{sm:moments}.
 
 \subsection{The shot count}
 \label{sec:moments:shots}
 
-Proposition~\ref{prop:shots} counts the shots that populate such a subspace. Bitstrings are
-drawn from the time-averaged Born mixture
-$p(x)=\tfrac{1}{K+1}\sum_{k=0}^{K}\lvert\braket{x|e^{-iHt_k}\phi}\rvert^{2}/\lVert\phi\rVert^{2}$, and
-the target is to capture every configuration with $p(x)\ge\varepsilon$ at confidence $1-\delta$. The natural answer, $T=O(\varepsilon^{-1}\log(|\mathcal S|/\delta))$, is circular:
-$|\mathcal S|$ is the random output of the very $T$ draws the bound is meant to fix.
+Proposition~\ref{prop:shots} counts the shots that populate such a subspace.
 
-A non-circular form costs nothing. With $\mathcal N_\varepsilon=\{x:p(x)\ge\varepsilon\}$, each member contributing at
-least $\varepsilon$ to a probability distribution, $|\mathcal N_\varepsilon|\le1/\varepsilon$
-\emph{deterministically}; a union bound over $\mathcal N_\varepsilon$ of the event ``$x$ never drawn in
-$T$ trials'' then gives
-$\Pr[\mathcal N_\varepsilon\not\subseteq\mathcal S]\le\varepsilon^{-1}e^{-\varepsilon T}$, so
+\begin{proposition}[Sampling capture]
+\label{prop:shots}
+Let $p(x)=\tfrac{1}{K+1}\sum_{k=0}^{K}p_k(x)$ with
+$p_k(x)=\lvert\braket{x|e^{-iHt_k}\phi}\rvert^{2}/\lVert\phi\rVert^{2}$, draw $T$ bitstrings
+independently from $p$, or, for $T$ a multiple of $K{+}1$, $T/(K{+}1)$ independently from each $p_k$ as in the protocol of
+Sec.~\ref{sec:method}, and let $\mathcal S$ be the set of distinct outcomes. For
+$\varepsilon,\delta\in(0,1)$, if
 \begin{equation}
 T\;\ge\;\varepsilon^{-1}\log\!\bigl(1/(\varepsilon\delta)\bigr)
 \label{eq:shots}
 \end{equation}
-suffices (Prop.~\ref{prop:shots}). This is non-circular, and wherever the sampler returns more than
-$\varepsilon^{-1}$ distinct configurations its logarithm is the smaller of the two as well.
+then with probability at least $1-\delta$ the set $\mathcal S$ contains every configuration $x$ with
+$p(x)\ge\varepsilon$.
+\end{proposition}
 
-The parameter $\varepsilon$ thresholds a Born probability, not a spectral accuracy: even at
-$w_{\mathcal S}=1$ the error is $O(1)$, so capturing the high-probability configurations is a statement
-about the sampler, not about the spectrum; what the resulting subspace costs is priced in
+The count is written in $\varepsilon$ and not in $|\mathcal S|$ because the form
+$T=O(\varepsilon^{-1}\log(|\mathcal S|/\delta))$ is circular: $|\mathcal S|$ is the random output of
+the very $T$ draws the bound is meant to fix. With $\mathcal N_\varepsilon=\{x:p(x)\ge\varepsilon\}$,
+each member contributing at least $\varepsilon$ to a probability distribution,
+$|\mathcal N_\varepsilon|\le1/\varepsilon$ \emph{deterministically}; a union bound over
+$\mathcal N_\varepsilon$ of the event ``$x$ never drawn in $T$ trials'' gives
+$\Pr[\mathcal N_\varepsilon\not\subseteq\mathcal S]\le\varepsilon^{-1}e^{-\varepsilon T}$, hence
+Eq.~\eqref{eq:shots}. For the stratified draws, $\Pr[x\notin\mathcal S]=\prod_k(1-p_k(x))^{T/(K+1)}\le
+e^{-Tp(x)}$, so the same count holds verbatim; and wherever the sampler returns more than
+$\varepsilon^{-1}$ distinct configurations this logarithm is the smaller of the two as well
+(Sec.~\ref{app:moments:shots}).
+
+The parameter $\varepsilon$ thresholds a Born probability, not a spectral accuracy: capturing the
+high-probability configurations is a statement about the sampler, not about the spectrum
+(Sec.~\ref{sec:moments:notbuy}); what the resulting subspace costs is priced in
 Sec.~\ref{sec:prices} (Sec.~\ref{sm:moments} gives the two compositions of the bound this work does not
 make).
 

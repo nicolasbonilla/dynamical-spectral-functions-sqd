@@ -28,8 +28,16 @@ Measured on 2026-09-26, in a scratch copy of the repository and again through `s
   **earlier run** of the three certificate scans (`data/thm1iii_violation/cert_earlier_run/`). With the
   deposited `data/cert_*.json` in their place it gives **469** and **2.005** instead, and survival on
   137 of 243 below `w_S = 0.99` — the discrepancy the paper states in Sec. S9.
+  *2026-09-28 (late): `build_n3.py` now reads the deposited `data/cert_*.json` (a one-line change of
+  its `CERT` path, recorded in its docstring), Fig. S5 and every count quoted from it were regenerated
+  (621 / 606 / 469 / 363 of 363 / 2.005 / 137 of 243), the paper prints one set of numbers, and
+  `cert_earlier_run/` stays deposited as a record and is no longer read. The whiskers of the 64 Fig.-3
+  rows are written by the new `n3_fig5_whiskers.py`, run after `build_n3.py`; `check_figures.py` runs
+  both and compares the ten tables, the fragment and `n3_fig5_summary.json`.*
 - `python src/recovered/make_fig_gapscaling.py` exits 0, all of its internal guards pass, and the
   fragment differs from the committed one in line 5 only.
 
 Still open, and not closed by this deposit: no check in `src/verify.py` anchors the plotted ratios of
 Fig. S5 to the certificate rows. `verify.py` keeps printing that as its declared coverage gap.
+*Closed 2026-09-28 (late): `verify.py` section 9.6c re-classifies the pool from the five JSON sources
+independently of `build_n3.py` and requires every plotted point to be the ratio of a classified row.*

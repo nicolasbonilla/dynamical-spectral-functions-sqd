@@ -52,7 +52,7 @@ than competing.
 \subsection{Sharpness, control, and the limits of the validation system}
 \label{app:moments:sharp}
 
-Table~\ref{tab:moments} is computed by exact diagonalization of the $(N{+}1,S_z{=}{+}1)$ sector of the
+Table~\ref{tab:moments} is computed by exact diagonalization of the $(N{+}1,S_z{=}{+}\tfrac12)$ sector of the
 open $L=6$, $U/t=8$ Hubbard chain ($D=300$, $\lVert\phi\rVert^{2}=1/2$), with
 $\mathcal S=\bigcup_{a\le K}\operatorname{supp}(H^{a}\phi)$. Four measurements support it.
 
@@ -91,7 +91,7 @@ $5.0\times10^{-16}$. The discriminating variable is the identity of the determin
 
 \emph{Scale.} The Krylov ladder at $L=6$ occupies $0.667$, $0.933$ and $1.000$ of the sector at
 $K=0,1,2$, so it exhausts the sector at $K=2$ and the table has exactly three rows. This system can
-verify Eq.~\eqref{eq:momex} and locate its exact reach; it cannot exhibit the behaviour of
+verify Eq.~\eqref{eq:momex} and locate its exact reach; it cannot exhibit the behavior of
 $\lVert A-A_{\mathcal K_K}\rVert_1$ at large $K$, which is the regime Conjecture~\ref{conj:geom}
 concerns, and we make no claim there.
 
@@ -105,7 +105,7 @@ The ring therefore offers a single row in which the reach of Eq.~\eqref{eq:momex
 ($K=0$: relative discrepancy $4.4\times10^{-16}$ through order $1$, $4.6\times10^{-3}$ at order $2$);
 the open chain offers two, and is the system on which the method validation of Sec.~\ref{sec:method} is
 performed. Within the reach they cover, both agree: the identity is exact, sharp at the next order, and
-decidable from the subspace alone.
+decidable from the subspace and the probe alone.
 
 \subsection{The geometric-convergence claim, and why it is left open}
 \label{app:moments:conj}
@@ -142,20 +142,18 @@ deposit can reproduce.
 \subsection{The sample-complexity bound}
 \label{app:moments:shots}
 
-\begin{proposition}[Sampling capture]
-\label{prop:shots}
-Let $p(x)=\tfrac{1}{K+1}\sum_{k=0}^{K}\lvert\braket{x|e^{-iHt_k}\phi}\rvert^{2}/
-\lVert\phi\rVert^{2}$, draw $T$ bitstrings independently from $p$, and let $\mathcal S$ be the
-set of distinct outcomes. For $\varepsilon,\delta\in(0,1)$, if
-$T\ge\varepsilon^{-1}\log\bigl(1/(\varepsilon\delta)\bigr)$ then with probability at least $1-\delta$
-the set $\mathcal S$ contains every configuration $x$ with $p(x)\ge\varepsilon$.
-\end{proposition}
+Proposition~\ref{prop:shots} is stated in Sec.~\ref{sec:moments:shots}; this is its proof.
 
-\begin{proof}
+\begin{proof}[Proof of Proposition~\ref{prop:shots}]
 Let $\mathcal N_\varepsilon=\{x:p(x)\ge\varepsilon\}$. Since $\sum_x p(x)=1$ and each member
 contributes at least $\varepsilon$, $|\mathcal N_\varepsilon|\le1/\varepsilon$. For fixed
 $x\in\mathcal N_\varepsilon$, $\Pr[x\notin\mathcal S]=(1-p(x))^{T}\le(1-\varepsilon)^{T}\le
-e^{-\varepsilon T}$. A union bound gives
+e^{-\varepsilon T}$ for independent draws from $p$; for $T/(K{+}1)$ draws from each $p_k$,
+\begin{equation*}
+\Pr[x\notin\mathcal S]=\prod_{k=0}^{K}\bigl(1-p_k(x)\bigr)^{T/(K+1)}
+\le\exp\Bigl(-\frac{T}{K+1}\sum_{k=0}^{K}p_k(x)\Bigr)=e^{-Tp(x)}\le e^{-\varepsilon T}
+\end{equation*}
+as well. A union bound gives
 $\Pr[\mathcal N_\varepsilon\not\subseteq\mathcal S]\le\varepsilon^{-1}e^{-\varepsilon T}$, which is at
 most $\delta$ for the stated $T$.
 \end{proof}

@@ -40,16 +40,21 @@ floor is $0.002$, which the classical step reaches. \texttt{src/gflow\_dequant.p
 to \texttt{data/gflow\_runs/}, and \texttt{data/gflow.json} holds the paired statistics quoted here.
 
 What the test establishes is the statement we keep. On this instance the dominant determinants are
-supplied by the device sampling and completed by a classical prior, not manufactured by a learned
-generator: the largest improvement available to an under-sampled head costs no quantum resources at
+supplied by the sampled histogram (here an emulated one, drawn from the exact ground state and then
+noise-corrupted, so the test does not measure whether a device state would supply them) and completed
+by a classical prior, not manufactured by a learned generator: the largest improvement available to an under-sampled head costs no quantum resources at
 all and should be the default post-processing step, since a demonstration that omits it is measured
 against a baseline that is too weak, and a learned generator adds nothing on top of it that ten
-seeds resolve. The class of learned constructions that select or generate the determinants
+seeds resolve.
+
+The class of learned constructions that select or generate the determinants
 themselves is by now several---neural quantum states built on selected configurations,
 autoregressive and dual-channel samplers for selected configuration interaction, and neural-network
 classifiers~\cite{nqssc2026,arnnsci2026,hinqs2026,zeni2026}---and the defensible role for a learned
 model is the one that consumes the device histogram, as physics-informed generative recovery of
-hardware samples does~\cite{pigensqd}, or schedules device work, as generative models for
+hardware samples does~\cite{pigensqd}.
+
+A learned model can also schedule device work, as generative models for
 measurement grouping do~\cite{vargashernandez2024,vargashernandez2025}, alongside the non-learned
 error-mitigation and validation protocols that already sit at that
 interface~\cite{qesem2025,algorithmiq2026} and learners that process device output coherently in

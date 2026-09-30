@@ -418,7 +418,7 @@ at the first non-zero exit -- which is what `make` does. Measured 2026-09-18:
 |---|---|
 | `make figures` | **6/6 commands, exit 0**, and every regenerated fragment byte-identical to the committed one |
 | `make check-figures` | **PASS** -- 8 regenerated artefacts byte-identical (re-measured 2026-09-19). Before the §25 repair of the same day one of the eight was compared against a copy of itself; since that repair all 8 are guarded. *Since 2026-09-26: 19 artefacts from 8 generators, one comment line of the Fig. 6 fragment normalised (§29)* |
-| `make verify` | **PASS** -- 874 checks, 0 failures, **5 registered xfail, 0 xpass**, 2 skips, 9 891 numeric assertions (re-measured 2026-09-28 after the two phrase guards on Sec. S8 of §30 were added, +2 checks and +2 assertions; 872 / 9 889 on 2026-09-26 after the hardware bit-order check and three phrase guards were added, +4 checks and +5 assertions; before that 868 / 9 884, re-measured 2026-09-19 after the C3 frontier deposit added section (10b), 2 387 assertions, and registered `ladder_L4.ngrid_eta050` as the fifth open defect; the earlier 807 / 7 454 / 4, 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
+| `make verify` | **PASS** -- 1280 checks, 0 failures, **4 registered xfail, 0 xpass**, 2 skips, 14 563 numeric assertions (re-measured 2026-09-30, final review: +66 checks and +66 assertions, verify.py checks the Fig. 3 caption's panel (b) mean and maximum, window and branch thresholds (section 9.6b), the printed noise values of Figs. S7-S8, Sec. S8 and Sec. VIII (section 9.9b) and every restated Fig. 3 certificate number in the abstract and Secs. I, V, X and S3 (section 9.9c); 1214 / 14 497 earlier on 2026-09-30: +2 checks and +2 assertions, verify.py section 9.3 checks every printed exact permutation p (Sec. I, Sec. VI, Fig. 6 caption) against `exact_perm_p_one_sided_F1` at 1e-15, unified on the 3.35e-13 rounding; re-measured 2026-09-28, late, closing the review, §33: +278 checks and +2 821 assertions for section 9.6c (the free-fermion supports, the spin-peak deviations and the Fig. S5 pool re-classified from the deposited certificate rows), the chi_max of the witness, the LF hash of the Fig. 3 generator and the L=14 re-ranking record, and the Fig. S5 coverage gap closed, so 5 xfail became 4; 934 / 11 674 after the Fig. 3 finite-shot run was deposited, §31: +60 checks and +187 assertions recompute the caption's finite-shot numbers from `data/fig3_finite_shot_T*.json`; 874 / 11 487 after the Fig. 3 frequency grid was widened to [-9t, 17t], §31: +1 596 assertions, the 266 extra plotted points of each of its six curves; 874 / 9 891 after the two phrase guards on Sec. S8 of §30 were added, +2 checks and +2 assertions; 872 / 9 889 on 2026-09-26 after the hardware bit-order check and three phrase guards were added, +4 checks and +5 assertions; before that 868 / 9 884, re-measured 2026-09-19 after the C3 frontier deposit added section (10b), 2 387 assertions, and registered `ladder_L4.ngrid_eta050` as the fifth open defect; the earlier 807 / 7 454 / 4, 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
 | `make data` | **exit 0** -- `paper/figs/sqw_edges.dat` and `data/charge_gap.json` regenerated (~256 s, L=4...12 ED) |
 | `make paper` | two `pdflatex` passes; not re-run in this pass |
 | `make reproduce` | **NOT verified** -- it executes `notebooks/00_Reproduce_Everything.ipynb`, which needs `pyscf`; see §13. That notebook is the **v1–v2 pipeline**, kept as a record: it reproduces the v1–v2 figure set, several of which v3 withdrew, and it is not the reproduction path of the v3 manuscript |
@@ -940,3 +940,281 @@ restore particle number. `check_trim.py` registers both rewordings in `AUDITADA`
 The second hardware run (`ibm_marrakesh`, N2) passes the device bit array straight to
 `qiskit_addon_sqd.fermion.diagonalize_fermionic_hamiltonian`, which reads the bits itself; it has no manual
 bit reversal.
+
+## 31. Fig. 3 was drawn and scored on a window that omitted the k=0 addition branch; the Fig. S8 bands were floored -- **CORRECTED 2026-09-28**
+
+**Fig. 3 (`fig:akwsampled`).** `src/sampled_akw.py` built A(k,w) on `np.linspace(-9, 9, 600)`, with w measured
+from E0 and no chemical-potential shift. The addition branch starts at mu+ = 6.593t (`data/charge_gap.json`),
+so the window dropped 20.7% of the k=0 weight (almost all of its addition branch, poles at 9.4t-10.9t) and
+10.7-12.0% at k = pi/4, pi/2, 3pi/4 (dense Lehmann sums on the `akw_lanczos` sector engine). Panel (a)
+showed k=0 without its addition peaks, and panel (b), captioned "addition and removal branch summed",
+scored only the part inside the window. The same grid is the "figure window" of
+`leakage_certificate_suite.py` (`relL1_figure_window` in `data/cert_akw.json`).
+
+Correction: both scripts now use `np.linspace(-9, 17, 866)` (same spacing, symmetric about mu = U/2 = 4t;
+less than 3e-4 of any momentum's weight has its poles outside it), `data/sampled_akw_L8.json` and
+`data/cert_akw.json` were regenerated, and `make_akw_sampled_honest_fig.py` takes the x range of panel (a)
+from the deposited grid instead of a typed `xmin=-9,xmax=9` (its layout self-check baselines moved from
+0.7711 / 1.5416 to 0.7707 / 1.5408 because the new grid samples the tallest peak at a slightly different
+point). Changed numbers:
+
+| quantity | was ([-9t, 9t]) | now ([-9t, 17t]) | source |
+|---|---|---|---|
+| panel (b) mean per-k rel-L1 | 2.19e-3 (0.0021858473952153625) | 2.36e-3 (0.0023611027831700092) | `sampled_akw_L8.json` `mean_relL1` |
+| panel (b) max per-k rel-L1 | 3.28e-3 (0.0032826276455945177) | 3.27e-3 (0.0032674832662237534) | `sampled_akw_L8.json` `max_relL1` |
+| per-k rel-L1 at k/pi = 0, 1/4, 1/2, 3/4, 1 | 8.55e-4, 2.257e-3, 3.283e-3, 2.222e-3, 1.110e-3 | 1.123e-3, 2.527e-3, 3.267e-3, 2.527e-3, 1.123e-3 | `sampled_akw_L8.json` `per_k` |
+| guardian total | 874 / 9 891 | 874 / 11 487 | `verify.py` checks every plotted point, 866 instead of 600 on each of six curves |
+| `cert_akw.json` control, max per-k deviation from `sampled_akw_L8.json` | 1.48e-8 (2.1e-8 in `thm1iii_violation/cert_earlier_run/`) | 3.13e-8 | `cert_akw.json` `provenance.controls_reproduced.max_abs_dev_per_k`; printed in the Fig. S5 caption as 3.1e-8 |
+| `cert_akw.json` `relL1_figure_window`, L=8, FR=0.85 | = the old panel (b) values | = the new panel (b) values (to 3.1e-8) | all 112 `rows` are bit-identical to the previous file |
+
+On a 120 001-point grid over [-60t, 60t] the same reconstruction gives mean 2.364e-3 and maximum 3.262e-3,
+so the new window agrees with the whole line to 0.2% (scratch measurement, not deposited).
+
+**What did not change.** The certificate numbers quoted in Secs. V B, X and S3 -- the relative bound
+0.77-1.75 and "350-900 times the true error" -- are the per-channel `rel_upper` and `slack` of the rows of
+`cert_akw.json`, whose `L1_true` is integrated over the whole line (`LineQuad`), not on the figure window.
+They are unchanged, and the text now says "the true error of the channel integrated over the whole
+frequency line". The Fig. S5 whiskers read `data/thm1iii_violation/cert_earlier_run/`, also unchanged.
+*(Later on 2026-09-28 Fig. S5, its whiskers and every count quoted from it were rebuilt from the deposited
+`data/cert_*.json`; §33.)*
+
+**Finite-shot run of the Fig. 3 configuration -- RESOLVED 2026-09-28: generator recovered, deposited, re-run on
+the new window.** The finite-shot paragraph of the Fig. 3 caption (5.2e6 shots per channel, (2.11 +- 0.26)e-3,
+maximum 2.57e-3, the 0.882 and 0.839 fractions, (6.12 +- 0.50)e-3, the factor 2.80 and the 27%) had no deposited
+script or output, so it could not be re-scored when the window changed; for part of 2026-09-28 the caption and
+Sec. S1 said the numbers were taken on the old window. That disclosure is withdrawn because the numbers are
+now regenerated, not because it was wrong.
+
+- *Recovery.* The generator was written on 2026-09-19 as `fig5_literal.py` (T = 2.6e6) and `fig5_literal_T52.py`
+  (T = 5.2e6, a two-line sed of it), run in a session scratch folder that was later purged. It was recovered
+  byte for byte from the session transcript (subagent `agent-a07c2e0927cf28823`, workflow `wf_bb98610c-331`,
+  lines 240/241 = the heredoc, 625/626 = the sed, 959/960 = the post-processing step; sha256 of the recovered
+  file `e2b3793a...73b5`, 3515 bytes). It is deposited as `src/fig3_finite_shot.py` with T and the frequency
+  window as options, repository paths, a provenance block and the post-processing folded in; every
+  algorithmic line (seeds 7001-7004 with `default_rng(seed*1000+n)`, eta = 0.18, K = 16, dt = 0.5, T//17 shots
+  per slice, Haydock depth 260, the Lorentzian reference) is the recovered one.
+- *Reproduction check.* Run on the original window [-9t, 9t] (600 points), the deposited generator reproduces
+  the 2026-09-19 output exactly: all 32 per-channel lines at T = 2.6e6 and the 28 still visible at T = 5.2e6
+  (rel-L1 to the printed 4 digits and both |S|), the MEAN/MAX/frac lines (6.1219e-3 / 7.6383e-3 / 0.8391 and
+  2.1134e-3 / 2.5691e-3 / 0.8822), the ddof=1 s.d. 5.05e-4 and 2.58e-4, frac_rem 0.8394 and 0.8833, and the
+  ratio 2.80 against the panel-(b) mean of that window (2.1858e-3). The comparison is recorded in each data
+  file under `reproduction_check` (`exact: true`).
+- *Re-run on the window of Fig. 3(a,b)*, omega-E0 in [-9t, 17t] on 866 points (`data/fig3_finite_shot_T2.6e6.json`,
+  `data/fig3_finite_shot_T5.2e6.json`). The observed subspaces do not depend on the window (same draws, same
+  |S|), so the fractions 0.839 / 0.882 are unchanged; the errors are:
+
+| quantity | was ([-9t, 9t]) | now ([-9t, 17t]) | source |
+|---|---|---|---|
+| T = 5.2e6: mean rel-L1 +- s.d. (ddof=1) | (2.11 +- 0.26)e-3 | (2.16 +- 0.23)e-3 | `fig3_finite_shot_T5.2e6.json` `summary` |
+| T = 5.2e6: max rel-L1 | 2.57e-3 | 2.46e-3 | same |
+| T = 2.6e6: mean rel-L1 +- s.d. (ddof=1) | (6.12 +- 0.50)e-3 | (6.16 +- 0.42)e-3 | `fig3_finite_shot_T2.6e6.json` `summary` |
+| ratio of the T = 2.6e6 mean to the panel-(b) mean | 2.80 (against 2.19e-3) | 2.61 (against 2.36e-3) | `summary.ratio_mean_to_panel_b` |
+| understatement of the transferred 2.05 | 27% | 21% | `summary.understatement_of_transferred_penalty` |
+
+  The understatement is now defined in the generator and printed by it: 1 - (Table S6 L=8 factor at |S| = 2180,
+  `penalty_factor_topm` in `data/sampled_honest.json`, 2.0521) / (measured ratio) = 1 - 2.0521/2.6084 = 0.213.
+  No 2026-09-19 script printed the 27%; it was 1 - 2.05/2.80 computed by hand (a first draft had said 37%,
+  i.e. 2.80/2.05 - 1). The qualitative statements stand on the new window: 5.2e6 shots per channel reach
+  panel (b)'s accuracy (2.16e-3 against 2.36e-3) on a larger subspace (0.882 against 0.850), and at the
+  announced fraction (0.839 at 2.6e6) the penalty is a measured 2.61, not the transferred 2.05.
+  `python src/fig3_finite_shot.py --summary` prints every number of the caption paragraph from the two
+  files, and `verify.py` recomputes them from the rows and checks the caption and Sec. S1 against them.
+- The fresh-seed reproduction mentioned in the earlier version of this note (not deposited, not quoted) is
+  superseded by the recovered generator and is not used.
+
+**Fig. S8 (`fig:noiserec`).** `make_noise_recovery_native.py` floored the lower edge of each +-1 s.d. band at
+45% of the mean, which truncated 7 of the 35 plotted points (N2 at eps = 0, 2, 10, 15, 20%; NH3 and C2 at
+30%; e.g. N2 at 10%: mean 0.659, s.d. 0.657, drawn down to 0.297 mHa instead of the axis floor) while the
+caption said "+-1 s.d.". The only floor left is the axis floor, 3e-3 mHa; the caption says where the band
+runs to the bottom of the panel, and the legend box of panel (a) is no longer filled, so it hides no band.
+No printed number changed.
+
+**Fig. 3 legend.** The regenerated fragment's legend read "exact (Haydock)", but `src/sampled_akw.py` builds the
+reference by dense diagonalization of each sector and a Lehmann sum, not by a Haydock continued fraction.
+`make_akw_sampled_honest_fig.py` now writes "exact", the fragment was regenerated from the same JSON (no
+number moved), and the printed caption says "Exact A(k,w)" (review items VM-V3, R3-m6).
+
+**Fig. S7 in-plot label.** `fig_noise_score.pdf` carried the annotation "recovery holds rel-L1 ~ 0.05 up to
+eps ~ 16%", while at eps = 0 both arms sit at 0.105 (`data/noise_spectral.json`) and recovery reaches ~0.05
+only from eps = 4% on, as the corrected caption says. The annotation now reads "recovery: rel-L1 ~ 0.05 for
+4% <= eps <= 16%" in `paper/figs/src/fig_noise_score_STANDALONE.tex` and in `src/make_noise_fig.py`, and
+`fig_noise_score.pdf` was recompiled from the standalone source (before the edit that source recompiled the
+committed PDF pixel-identically; the edit changes only that one node, same anchor). No plotted value moved
+(review item VS-V2).
+
+**Fig. 9(b) in-plot label.** The solid curve was labelled "noisy hardware", crediting the device with the
+0.59 mHa although no random-bitstring control was run (review item R2-03; the caption already says so).
+`src/make_hardware_hero.py` now writes "device counts", and `paper/figs/fig_hardware_hero_frag.tex` was
+regenerated from `data/hw_lucj_n2_result.json`; only that label changed, and `check_figures.py` still
+reproduces the fragment byte for byte.
+
+## 32. Printed numbers corrected in the review pass of 2026-09-28 -- **CORRECTED 2026-09-28**
+
+Besides §31, the review of 2026-09-28 corrected the printed numbers below. Each was wrong against a committed
+record; none required a new computation, and no deposited data file changed for them.
+
+| where | was | now | source |
+|---|---|---|---|
+| Sec. VII, the rise of the required shots over the first three sizes | factor 4.4 | factor 3.5 | 4.4 is 154/35, the rise over all five sizes. `data/sampled_honest.json` `results[L=4].min_T.T_mean` = 779.0 / 22 = 35.4 and `results[L=8]` = 269 902.1 / 2180 = 123.8; 123.8 / 35.4 = 3.50 |
+| Sec. VII, the last two sizes | "flat within the seed spread" | "not rising over the last step, 161 to 154" | `data/honest_sampling.json` `per_L`: L=10 3 088 618 (s.d. 37 632) / 19 183 = 161.0 +- 2.0; L=12 19 136 905 (s.d. 116 943) / 124 407 = 153.8 +- 0.9, several s.d. apart; 161 and 154 are already in Table IV |
+| SM, `app_stats.tex`, strata with rho(chi, \|S\|) below unity | four of the six | five of the six | `data/stats_resource.json` `hubbard_strata[*].rho_chi_S` = 1.000, 0.894, 0.949, 0.975, 0.975, 0.894 |
+| SM, `sm_moments.tex`, abscissa of the two-level value 1.998 | g/eta = 6.7e3 | g/eta = 2e3 | `data/moments_table.json` `two_level`: g = 300 gives 1.99835, at eta = 0.15 that is g/eta = 2000; the value 1.998 is unchanged |
+| Sec. IV A and Table II (`sec_4_body.tex`, `sec_4_app.tex`), the Fig. 5 caption, Sec. S8 (`sm_scope.tex`) | S_z = +1 (Fig. 5: the malformed "S_z+1"); Sec. S8: S_z = -1 | S_z = +1/2; Sec. S8: S_z = -1/2 | the sector is (N_up, N_dn) = (4, 3), dimension C(6,4) C(6,3) = 300 (`src/moments_table.py`); the paper never defined S_z as N_up - N_dn, so the physical convention is used everywhere |
+| Table I, the snapshots of the Fig. 3 run | "over K=16 snapshots" | "over 17 snapshots (K=16)" | `src/sampled_akw.py`: K = 16 with `range(K+1)` |
+| Sec. III D | "126 of 126" | deleted | an earlier state of the same pooled sweep (`src/leakage_certificate.py`, lines 40-45); the fact is the 468 / 363-of-363 sentence that stays (registered in `check_trim.py`, `AUDITADO_NUM`) |
+| Fig. 7 (`fig:sqw`) and Fig. 8 (`fig:spin`) captions, continued-fraction depth | n_l = 150 | n_l = 200, as Table I and Sec. S1 already said | `src/sqw_lanczos.py` (`run(..., nl=200)`) and `src/spin_lanczos.py` (`nl=200`), unchanged since the data were made (98887b2); recomputing on the generators' own code path (L = 12, same ARPACK start vector) at depths 100/150/200/250 against the committed arrays: `spinqw_L12.json` agrees with depth 200 to 5e-14 (q = pi/6) and 6e-13 (q = pi/2) and differs from depth 150 by 2e-9 and 1e-9; `sqw_L12.json` is closest to depth 200 at q = pi/6 and pi (max deviation 3.8e-6 and 8.0e-6, against 2.6e-5 and 2.4e-4 at depth 150) and equally close to 200 and 250 at q = pi/2 (5.9e-5, against 1.5e-4 at 150). Scratch measurement, not deposited; no printed value rests on it. The 150 was the depth of Fig. 4 (`akw_lanczos.py`), copied into these two captions. The Fig. 8 caption also attributed to its own reference the 3.0% depth drift (n_l = 100 -> 200) that Sec. S6 measures for the single-particle reference; it now says whose it is |
+
+**Closing the same review, late on 2026-09-28** (the round that regenerated Fig. 3; §33 lists the generators
+deposited with it). Each row is a printed statement corrected against a committed record:
+
+| where | was | now | source |
+|---|---|---|---|
+| Fig. S5 caption, Secs. III D, S2 and S9: the pooled sweep | 468 violations of 606, mildest factor 2.10, survival on 138 of 243 below w_S = 0.99, the plotted Fig.-3 rows "reproducing `sampled_akw_L8.json` to 2.1e-8" (3.1e-8 in the caption since the morning, although the figure still plotted the earlier run); Sec. III D printed both sets, "468 ... 2.10 (469 and 2.00 on the deposited certificate files)" | 469, 2.00, 137 of 243, 3.1e-8 — one set of numbers everywhere, and Sec. S9 no longer explains the plot as an earlier run | `src/recovered/build_n3.py` on the deposited `data/cert_{stress,akw,teqsci}.json` (until then the earlier run of the same scans in `data/thm1iii_violation/cert_earlier_run/`, kept as a record); `verify.py` section 9.6c re-classifies the pool from the five JSON sources and recomputes the 3.1e-8 from `cert_akw.json` against `sampled_akw_L8.json` (3.131e-8) |
+| Fig. 8 caption, the peak dispersion against the des Cloizeaux–Pearson boundary | "within 3% for q ≤ π/2" | "to within about 3%", and the peak is named: the maximum of each broadened line on the 0.006 t grid | `data/spin_peak_deviation.json` (`src/spin_peak_deviation.py`): −3.03% at π/6, −1.6% at π/3, +2.8% at π/2; 9.9% at 2π/3 and 29.1% at 5π/6 print as 10% and 29%, unchanged. The unbroadened poles of `pole_structure.json` would give −3.3%, +9.4% and +29.5% |
+| Sec. S1, the measured finite-shot penalty | "at the announced fraction the penalty is a measured 2.61" | "at a fraction just under the announced one (0.839 against 0.850)" | `fig3_finite_shot_T2.6e6.json` `summary.mean_frac_add` = 0.83905 |
+| Table I, Sec. II B, Sec. VII, Sec. S8: the 5.2e6-per-channel budget | "takes" / "took" 5.2e6 per channel (8.3e7 in all), and Sec. S8 quoted 8.3e7 as the cost of the observable | 5.2e6 "suffice and 2.6e6 do not"; "reached ... with 8.3e7, and not with half as many"; Sec. S8 quotes the accuracy it bought (2.16e-3) and says the cost at the 0.05 threshold was not measured (half the budget gives 6.16e-3) | only two budgets a factor two apart were run: ratio 2.61 at 2.6e6, 0.92 at 5.2e6 (`fig3_finite_shot_T*.json`) |
+| Fig. 3 caption, the finite-shot rows | "32 (channel, seed) pairs" (16 channels × 4 seeds would be 64) | "32 (momentum, seed) pairs, both branches summed" | the rows are keyed (k, seed), 8 × 4 |
+| Sec. VII, the overhead per determinant | "rising by a factor 3.5 over the first three sizes, to 161 at L=10" | "... over the first three sizes (35 to 124), then to 161 at L=10" | 124/35 = 3.54; 161/35 would be 4.6 |
+| Sec. VIII, Δ(L=12) against S(q,ω) | "bounds the density response from below: every resolved pole ... lies above it" | "every pole carrying at least 1% of the largest weight at its momentum (97.5% or more of the weight at each q) lies above it; weaker poles are not resolved and are not bounded by this statement" | `data/pole_structure.json`, charge channel: lowest retained pole 5.749 t > 4.969 t; `weight_threshold_rel_to_max` = 0.01, `w_retained_frac` 0.976–0.986 |
+| Sec. V B and Sec. S3, the inputs of the normalised tracker Λ̂_S/η | "computed from H, S, the retained probe φ_S and η" | "... the retained probe φ_S, the probe norm ‖φ‖ and η" | Λ̂_S = Λ_S/‖φ‖ needs the full probe norm, which is not part of φ_S, as Sec. III B already said |
+| Sec. VI and App. B, semicontinuity of the raw support | "the opposite failure to that of the CP tensor rank" | the CP tensor rank fails upper semicontinuity in the same way and, unlike the count, is not even lower-semicontinuous | de Silva–Lim (2008); a generic perturbation of a rank-1 tensor has the generic rank, so CP rank fails both |
+| App. B, the two-determinant cat | "at half filling the cat has γ = ½·1, hence F₁ = 2n_o (maximal)" | "with n_o ≥ 2" | at n_o = 1 the cat (|10⟩+|01⟩)/√2 is a single-particle state with F₁ = 0 |
+| Secs. I and X, the geminal orbit | "classical cost ... runs from O(K) ... to exponential (Theorem 3)" | the orbit contains a point of classical cost O(K) in the fixed computational basis (the pairing basis: 2^K determinants, bond dimension 2) and points at which Born sampling is plausibly hard, a hardness not established here | Theorem 3 proves the O(K) endpoint only; Sec. S13 calls the rotated points "plausibly classically hard" |
+| Secs. I and X, moment exactness | counted as the third "result" | the classical moment-matching property of Krylov projections, whose exact reach is measured here on coordinate subspaces | Sec. IV C: "we claim no novelty for it" |
+| Sec. S6, the depth self-consistency window | "it is below that margin, at η = 0.10 t, that Fig. 8 is drawn" (read as: at the same depth, n_l = 150) | Fig. 8 is a different channel drawn at n_l = 200, below that margin, which is why its caption quotes the lineshape with its depth | `src/spin_lanczos.py` (`nl=200`) |
+| Secs. I, X, V (text and Table III caption) and S3, the L=14 certificate point | "resting on the stored ground-state checkpoint, not re-ranked" (added to Secs. I and X that morning); "the ranking was not re-run"; "two caveats" | the ranking was re-run at L=14 and reproduces the stored selection as a set (Sec. V, Table III, Sec. S3); Secs. I and X carry no caveat; one caveat remains, the depth indicator | `data/c3_frontier/published_fraction/L14_rerank.json`, §33 |
+| Sec. IX D, what the guardian prints by name | five items: four known open defects and one declared coverage gap (the source of Fig. S5) | four items, the known open defects; the plotted ratios of Fig. S5 are re-derived from the certificate rows | `verify.py` section 9.6c; `COVERAGE_GAP_V3` is empty, with a dated comment |
+| Fig. S1 caption, Sec. S13, Sec. VI (`app:witness`): what the deposited diagonalization records for χ | "the analytic value ... not a diagonalization output"; the JSON held the central-cut rank only (2, 1, 2, 1) | χ = 2 is the largest Schmidt rank over all cuts of the pairing ordering, recorded by the deposited diagonalization for K = 1–4 and at every interior angle (1 at θ = π/2); the central-cut sequence is still stated beside it | `data/apsg_witness.json` `chi_max` (`src/apsg_witness.py`, `chi_max_cuts`); `verify.py` recomputes it |
+
+Numbering, not data: the proposition on sampling capture (`prop:shots`) moved into Sec. IV C and is now
+Proposition 1, so the former Proposition 1 (`prop:leakinv`) is Proposition 2; the proof of Theorem 1 moved
+from Sec. S2 into Appendix A of the main text, so its split equation prints as (A1); and the Supplemental
+Material is now first cited where it is first mentioned, at the end of Sec. I (APS practice), which moved
+its entry to first-citation position there and renumbered the main-text references cited after Sec. I by one.
+
+Three further items of the same review, none of them a number:
+- **Fig. 2(a) panel title.** It read "from 5.2x10^4 shots"; those shots are classical Born draws from the exact
+  evolved state (`src/spectral_validation_max.py`). `src/make_method_fig_max.py` now writes "simulated shots"
+  and `paper/figs/fig_method_native_frag.tex` was regenerated from `data/method_max.json` (a one-line diff;
+  `aw_method.dat` byte-identical; `check_figures.py` reproduces both).
+- **`data/heron_spectral.json` provenance string** ("the recovered subspace spans the full |S|=300 (N+/-1)
+  sector"). The subspace was retained by post-selection, not recovered (no configuration recovery was applied,
+  §30), and the sector is the (N+1) addition sector, (N_up, N_dn) = (4, 3). The string is kept as written and
+  a dated field `provenance_correction_2026-09-28` states the correction; no number or array changed (all
+  other keys compare equal), and no hash, manifest or guardian pins the file's bytes.
+- **Overfull vbox on the Fig. S1 page** (10.85 pt, p. 43). Measured in scratch builds: its size does not
+  move when the Fig. S1 caption is shortened or the float is placed [p], [tbp] or earlier in the source,
+  and it disappears when the three-line footnote on 2N_u in the first paragraph of Sec. S5 is removed
+  (an unsplittable insert on a page that also carries the float and the section head). That footnote
+  is now part of its paragraph, word for word ("the reason given in the footnote" became "the reason
+  given above"); the caption is unchanged. The other overfull vbox of the SM (12.77 pt, p. 48) is
+  untouched and remains. *(2026-09-30: it is 24.27 pt in the build of that day, after the rewording of
+  Sec. S5 (`sm_nogo.tex`); a second one, 4.97 pt on p. 55, came with the rewording of Sec. S8; §34.
+  Both were removed by the layout pass of 2026-09-30, with no text change; §34.)*
+
+## 33. Generators deposited when the review of 2026-09-28 was closed -- **DEPOSITED 2026-09-28 (late)**
+
+The closing round of the review (the one that regenerated Fig. 3, §31) found four published numbers, or
+families of numbers, that were still declared rather than generated, and one figure built from a run other
+than the deposited one. Each is now produced by a deposited script, checked by `verify.py` against a
+recomputation that shares no code with the script, and, where a printed value moved, the move is in §32
+("closing the same review").
+
+| what | generator -> output | what `verify.py` does | printed value |
+|---|---|---|---|
+| the four free-fermion site-basis supports of Secs. VI and S13 (open chain, U = 0, half filling, ε_w = 2.5e-3) | `src/free_fermion_support.py` -> `data/free_fermion_support.json` | rebuilds the Slater weights from the open-chain orbitals (Cauchy–Binet norm 1 to 1e-12), applies the inclusive cumulative cut and the strict one, checks both counts, the discarded weight, the exact four-way tie at L = 4 (four weights equal to 1/400 = ε_w), the recorded ED cross-check (< 1e-12 at L = 4, 6) and both sentences | 35, 336, 3496, 37361 (unchanged); the L = 4 value holds under the inclusive convention only, which the text now states (a strict cut gives 36). Until this round the SM said "no generator for these four values is deposited" |
+| the spin-peak deviations of the Fig. 8 caption | `src/spin_peak_deviation.py` -> `data/spin_peak_deviation.json` | recomputes the grid argmax of every broadened line of `spinqw_L12.json`, the des Cloizeaux–Pearson boundary and every deviation; checks the caption's three percentages and its grid spacing | about 3% (−3.03% at π/6; the caption said "within 3%"), 10%, 29% |
+| the bond dimension χ = 2 of the geminal witness (Theorem 3, Fig. S1) | `src/apsg_witness.py` gains `chi_max_cuts`; `data/apsg_witness.json` gains `chi_max` in every row | recomputes the largest Schmidt rank over all cuts of the pairing ordering for K = 1–4 and the five sweep angles and checks the deposited field; checks the two sentences that print the central-cut sequence 2, 1, 2, 1 beside it | χ = 2 (1 at θ = π/2), unchanged; it used to be "the analytic value", the JSON holding the central cut only |
+| Fig. S5 (`fig:thm1iii-violation`) and every count quoted from it | `src/recovered/build_n3.py` now reads the deposited `data/cert_{stress,akw,teqsci}.json` (one line, its `CERT` path; the earlier run in `data/thm1iii_violation/cert_earlier_run/` stays as a record and is read by nothing); `src/recovered/n3_fig5_whiskers.py` writes `n3_fig5_summary.json` and the whisker blocks of the fragment | section 9.6c re-classifies the 621-row pool from the five JSON sources, requires every point of the eight plotted tables to be the ratio of a classified row (6 s.f.), checks the whisker summary, recomputes the 3.1e-8 control of the highlighted rows against `sampled_akw_L8.json`, and checks every count of the caption, Sec. III D, Sec. S2 and Sec. S9; this closes the coverage gap declared since 2026-09-19 (`COVERAGE_GAP_V3` is empty; 4 xfail, all known open defects). `check_figures.py` runs both scripts (9 generators, 21 artefacts) | 469 of 606, 363 of 363, mildest 2.00, 137 of 243, 3.1e-8; one set of numbers everywhere (the paper printed 468 / 2.10 from the earlier run, and for part of the day both) |
+| the finite-shot run of Fig. 3 (§31), hardened | `src/fig3_finite_shot.py`: the ratios to Fig. 3(b) are written only when the run is scored on the window and grid of `sampled_akw_L8.json` (null otherwise, with a note); the understatement only at T = 2.6e6 (the T = 5.2e6 file used to store a meaningless −1.24); `provenance.generator_sha256` is the LF-normalised hash of the file; `argv` records basenames, not local paths; the docstring's run times match the deposit | checks the LF hash of the deposited generator against each data file, the null understatement at 5.2e6, the max ratio, and that `argv` carries no absolute path; the caption's "32 (momentum, seed) pairs" and the reworded sentences of Secs. II, VII, S1 and S8 are re-anchored | unchanged (6.16 ± 0.42, 2.16 ± 0.23, 2.46, 0.839, 0.882, 2.61, 21%); both files were regenerated by the hardened script, with the reproduction check on the former window exact again (32 rows at 2.6e6, 28 at 5.2e6) |
+| the L=14 certificate point (Table III, Sec. S3), whose ranking was inherited from the checkpoint and "not re-run at that size" | `src/frontier/rerank_L14.py` -> `data/c3_frontier/published_fraction/L14_rerank.json` (the K=18 protocol re-run at L=14 on the deposited checkpoint, 2 948 s, ≈ 2 GB; `C3_FRONTIER.md` §5) | checks the record: L, D = 10 306 296, the protocol constants, the published |S| = 824 504, set overlap 1.000000 with 0 determinants not shared at all four cuts, identical captured weight, an unambiguous cut at the published fraction, and the SHA-256 of both checkpoint files against `ckpt/README.txt`; checks that Sec. S3 reports the re-run | the vacuity factor 8.61 is unchanged; the caveat "not re-ranked" — which the morning's review had put into Secs. I and X as well as Sec. V — is repaired and gone from all three, and the L=14 row keeps one caveat, its depth indicator |
+
+Every one of these was a "declare instead of regenerate" the author's rule forbids; none changed a
+physics number beyond the Fig. S5 counts of §32.
+
+## 34. The final review of 2026-09-30 -- **CORRECTED AND GUARDED 2026-09-30**
+
+Three final reviews (mathematics, citations, numbers) were run over the whole diff against `9edad6f`.
+No theorem, proposition or equation was broken, and no physics number moved. What they found, and what
+was done:
+
+| item | what the text said | what it says now | guard |
+|---|---|---|---|
+| (H1) vs (H4), Sec. III | a shot-based pipeline breaks (H1) "and (H4) with it", and the arctan term then restores the bound | the arctan term restores it when only `E_0` is estimated and the probe is kept exact; with an approximate probe nothing the pipeline computes bounds the error (as Sec. S11 and Sec. X say) | -- |
+| geminal orbit, Sec. S5 (Fig. S1 caption and four sentences) | the classical cost along the orbit "runs from O(K) to exponential" | O(K) at the pairing point; at generic rotated points not established (Born sampling there plausibly hard), as in the main text; Sec. VI: F_k determines the cost only if those points are in fact easy | `check_trim.py` AUDITADA (dated) |
+| moment exactness, Secs. IV and S10 | "decidable from the subspace alone, before any exact reference exists" | decidable from the subspace and the probe, without the exact spectral function | `check_trim.py` proof strings updated (dated) |
+| Proposition 1 | `T/(K+1)` draws per snapshot for any `T` | for `T` a multiple of `K+1` | -- |
+| priority, Secs. I and VI | Gaussian-invariant quantifiers credited to Tarabunga et al. and Leone--Bittel | the antiflatness used here is Sierant et al.'s; Tarabunga et al. separate the two families (two occupation-entropy members, orders 1 and 2, are strong monotones that lower-bound the gate count; the quadratic one equals F_1, arXiv:2607.02242v2 of 28 Jul 2026); Leone and Bittel independently prove the same quadratic quantity, M_f = F_1, a strong pure-state monotone (its convex roof for mixed states; their Note added credits v2 with an independent proof). *(Corrected in the final pass of 2026-09-30: until then this row, and Secs. I, VI, X and S5, said "one member" and gave the quadratic monotone to Leone and Bittel alone. That wording followed the arXiv listing abstract, which still carries v1's text; v2 of 28 Jul 2026 proves both orders. The bibitem now cites v2.)* | `check_trim.py` proof string updated (dated, twice) |
+| ExtraFerm, Secs. IX and S8 | Born probabilities at a cost exponential only in the controlled-phase angles | to additive approximation, exponential only in the magnitudes of those angles | -- |
+| Nocera and Alvarez, Secs. I and VIII | "fixed-momentum cuts to L=128" | "the k = π cut to L=128" | -- |
+| abstract and Sec. I | "No orbital-rotation invariant bounds the leakage usefully in advance" (unscoped) | "On pairing-model fibers every orbital-invariant leakage bound is vacuous" (abstract, 1 916 characters with Unicode Greek, 305 words); Sec. I scopes it to every state, and since the final pass of 2026-09-30 so do Secs. III A, IX and X ("usefully on every state", "useful on every state"), which had kept the unscoped form | `verify.py` 9.9c reads the abstract; `check_trim.py` AUDITADA (dated) for the Sec. IX claim list |
+| Sec. V opening sentence | the L=14 evaluation attached to the L=6--12 calibration | the two statements are separate | -- |
+| meta-commentary in the SM | "a referee would ...", "rather than concedes", "honestly", "rather than wait to have it put to us" | the facts only | `check_trim.py` AUDITADA (dated) |
+| Sec. S7 cross-reference | "the list of what this work does not claim" (Sec. IX C no longer has one) | the restriction Sec. IX C records: pole positions at four sizes | `check_trim.py` AUDITADA (dated) |
+| reference order | the six classical-toolbox keys moved into Sec. I and `sierant2026` newly cited there, with the list left in the old order (`pra_split.py --build` would have refused it) | reordered to first-citation order, 142 keys unchanged: the SM reference is [19], the SM-only works [104--142] (39), the SM list 92 entries | `pra_split.py --build` |
+
+Guards added (the numbers were right; nothing checked them): `verify.py` section 9.6b now checks the
+Fig. 3 caption's panel (b) mean 2.36e-3 and maximum 3.27e-3, the window [-9 t, 17 t] and the branch
+thresholds 1.41 t and 6.59 t (`data/charge_gap.json`, L=8); section 9.9b the printed noise values
+(0.105, 0.045 at 13%, "near 0.05 for 4% <= eps <= 16%", NH3 2.53 -> 1.24, CO 1.73 -> 0.63, C2
+0.184 -> 0.026, each "beyond the seed bands" recomputed) and the 97.5% of Sec. VIII (with every retained
+charge pole above Delta(12)); section 9.9c every restated Fig. 3 certificate number (0.77--1.75,
+350--900, 455--483 of 490, the spread 5.9, the 0.98 of the sector at L=8, bracketed by
+`z_fine_L8.txt`) in the abstract and Secs. I, V, X and S3. Each was mutation-tested in a scratch copy:
+22 single-value mutations, 22 caught. `verify.py`: 1280 checks, 0 failures, 4 xfail, 14 563
+assertions; the section (9) coverage floor rises from 10 780 to 10 850. `check_coherence.py` now also
+requires each vacuity statement in each place that carries it (16 per-place checks, each with its own
+control), which offsets the three pooled floors lowered earlier that day.
+
+Build of 2026-09-30: `paper/main.pdf` 68 pp. (main text pp. 1--28, p. 28 with the end of Sec. X, the
+acknowledgments and Appendix A; references pp. 29--33; SM from p. 34), 0 errors, 0 undefined
+references, 0 overfull `\hbox`, 0 overfull `\vbox`, no float-too-large warning. Until the layout pass
+later the same day two overfull `\vbox` stood in the SM, 24.27 pt on p. 48 (12.77 pt before the Sec. S5
+rewording) and 4.97 pt on p. 55 (Sec. S8, a footnote at the foot of a text page; new with the Sec. S8
+rewording), and pdflatex reported the Fig. 3 float 30.16 pt too large for its page (p. 7).
+*Layout pass of 2026-09-30* (no word, number or citation changed; each change carries a dated comment
+in its source file): Fig. 3 is set at 0.92 of its drawn size in `paper/figs/float_f5.tex` (the float
+was figure 413.7 pt + caption against a 672 pt text height; the generated fragment and the caption are
+untouched, and the labels read at 10.1 pt); the two overfull `\vbox` came from revtex4-2's one-column
+`\count\footins=500`, which books a footnote at half its height, so the paragraph that carries the
+footnote of Sec. S5.3 now books it at full height (`paper/sm_nogo.tex`, REVTeX's value restored after
+the paragraph) and the Sec. S8 page ends at the paragraph end before "The region of no advantage"
+(`\pagebreak`, `paper/sm_scope.tex`). Setting the full height for the whole document, or for the
+Sec. S8 footnote, sent ltxgrid into an endless run of empty pages at `\end{document}` in scratch
+builds, so neither is done. `pra_split.py --build` passes (main_pra 33 pp., sm_pra 38 pp.; 20 SM pages
+pixel-identical, 15 differing in citation numbers only; 19 and 16 before the layout pass).
+
+*Final pass of 2026-09-30* (a source check against the full texts of the cited preprints and a last
+mathematics check; no physics number moved, no theorem or proposition changed):
+- **Priority (sources).** arXiv:2607.02242v2 (Tarabunga et al., 28 Jul 2026) proves the order-1 *and*
+  order-2 occupation entropies strong pure-state monotones that lower-bound the non-Gaussian (SWAP) gate
+  count. Its order-2 member is the k=1 antiflatness, which is the F_1 of Sec. VI and the M_f of Leone and
+  Bittel (arXiv:2607.29670, 31 Jul 2026), whose Note added credits v2 with an independent proof of their
+  Theorem 1. Secs. I, VI, X and S5 said "one member" and gave the quadratic monotone to Leone and Bittel
+  alone; they now say two members, state that the quadratic one equals F_1, and call the two proofs
+  independent. The `tarabunga2026` bibitem cites v2. `check_trim.py`'s proof string and its comment are
+  updated, with a date.
+- **Theorem 3's corollary (mathematics).** At the pairing point the Born-sampling cost is O(K) and
+  F_k = 4K, so F_k/4 does lower-bound a linear cost. Sec. VI and Sec. S5 now say that a Gaussian-invariant
+  magic does not lower-bound *the bond dimension, nor the cost beyond linear order in K*, which is what
+  the witness refutes. Sec. VI says "unbounded at bond dimension 2, where the simulation cost grows only
+  linearly". Sec. S5.2 no longer says "not bounded at others": the cost there is "plausibly exponential
+  but not established here".
+- **Conclusion (Sec. X).** With an estimated E_0 the bound holds only after an additive term the
+  certificate does not control (+0.20% at L=8, as in Secs. III and S11). Tarabunga et al.'s cost bound
+  is stated "in an orthonormal Gaussian basis", as in Secs. I and S5.
+- **`src/abs_paste.py`.** The escaped braces of `\min\{...\}` were stripped with the grouping braces,
+  so the paste string printed Theorem 1 as `min\1+w,...\`. This is the same class of defect as the
+  square roots of 2026-09-23. The braces are now kept (dated comment), and the length is unchanged:
+  1 916 characters with Unicode Greek, 0 backslashes.
+- **Layout.** The Sec. S5 rewording moved the SM page breaks, and p. 55 came back 4.97 pt overfull at the
+  `\pagebreak` of `sm_scope.tex` (the footnote on that page is booked at half its height). One SM
+  paragraph ("The second run, and a comparison the record cannot decide", no `\cite`, last line of two
+  words) is now set with `\looseness=-1`: one line shorter, no word changed, the same lines in `main.pdf`
+  and `sm_pra.pdf`. The rebuilt `paper/main.pdf` is again 68 pp. with 0 errors, 0 undefined references,
+  0 overfull or underfull boxes and no float-too-large warning. `pra_split.py --build` passes (main_pra
+  33 pp., pixel-identical; sm_pra 38 pp., 20 SM pages pixel-identical and 15 differing in citation numbers
+  only).
+- **Guardians.** All five pass. `verify.py`: 1280 checks, 0 failures, 4 xfail, 0 xpass, 2 skips,
+  14 563 numeric assertions (unchanged). `check_trim.py`: one AUDITADA entry added, with a date, for the
+  Sec. IX claim list, whose obstruction item is now scoped "useful on every state".

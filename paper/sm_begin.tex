@@ -12,6 +12,10 @@
 \setcounter{figure}{0}
 \setcounter{table}{0}
 \setcounter{equation}{0}
+% REVTeX's \appendix (issued in main.tex before Appendix A) adds equation to the reset list
+% of section, globally; the SM numbers its equations S1, S2, ... through all its sections, so
+% the reset is removed here.  Both drivers pass this line (sm_pra.tex executes it too).
+\makeatletter\@removefromreset{equation}{section}\makeatother
 \renewcommand{\thesection}{S\arabic{section}}
 \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
 \renewcommand{\thefigure}{S\arabic{figure}}

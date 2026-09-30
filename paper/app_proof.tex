@@ -1,0 +1,65 @@
+% =====================================================================================
+%  Appendix A -- the proof of Theorem~\ref{thm:leakage} and of the closed form
+%  Eq.~\eqref{eq:lambda}.  Items (1)-(5) are those of the Supplemental Material section
+%  sm:leakage, moved here verbatim so that the main text carries the proof of its
+%  central theorem; \label{eq:split} lives here, and the SM reaches it through xr-hyper.
+%  main.tex inputs this file after sec_10.tex (which ends with the acknowledgments) and
+%  before bibliography.tex, i.e. before sm_begin.tex, so pra_split.py places it in
+%  main_pra.pdf.  \appendix itself is issued in main.tex, next to the \input.
+% =====================================================================================
+\section{Proof of the leakage certificate and of its closed form}
+\label{app:proof}
+
+This appendix proves Theorem~\ref{thm:leakage} and the second equality of Eq.~\eqref{eq:lambda}.
+
+\begin{proof}
+Write $u=R(z)\phi$ and $u_P=R_P(z)\phi_P$, extended by zero outside $\operatorname{ran}P$.
+
+\emph{(1) The split.} Since $u_P\in\operatorname{ran}P$ and $(z-H_P)u_P=\phi_P$ there,
+$(z-H)u_P=zu_P-PHu_P-QHu_P=\phi_P-QHu_P$; subtracting this from $(z-H)u=\phi$ gives
+\begin{equation}
+u-u_P\;=\;R(z)\bigl[\,\phi_Q\;+\;QH\,R_P(z)\phi_P\,\bigr].
+\label{eq:split}
+\end{equation}
+This is the Feshbach--L\"owdin partition of the resolvent~\cite{feshbach1958,lowdin1962}, written as an
+exact identity rather than as an expansion: the first source term is the part of the probe the subspace
+never held, the second is the part of the Hamiltonian that carries amplitude out of it. Only $P^{2}=P$,
+$P^{\dagger}=P$, $H=H^{\dagger}$ and $\eta>0$ are used; no property of the determinant basis, of the
+ranking, or of the sampler enters anywhere below.
+
+\emph{(2) Pointwise.}
+$A-A_P=(\eta/\pi)(\lVert u\rVert+\lVert u_P\rVert)(\lVert u\rVert-\lVert u_P\rVert)$ and
+$\bigl|\lVert u\rVert-\lVert u_P\rVert\bigr|\le\lVert u-u_P\rVert$, so
+$|A-A_P|\le(\eta/\pi)(\lVert u\rVert+\lVert u_P\rVert)\,\lVert u-u_P\rVert$ at every $\omega$.
+
+\emph{(3) Integration.} By Cauchy--Schwarz in $\omega$,
+\begin{widetext}
+\begin{equation*}
+\lVert A-A_P\rVert_1\;\le\;\frac{\eta}{\pi}
+\Bigl[\int\bigl(\lVert u\rVert+\lVert u_P\rVert\bigr)^{2}d\omega\Bigr]^{1/2}
+\Bigl[\int\lVert u-u_P\rVert^{2}d\omega\Bigr]^{1/2}.
+\end{equation*}
+\end{widetext}
+The first bracket is at most $(\pi/\eta)^{1/2}(\lVert\phi\rVert+\lVert\phi_P\rVert)$, by Minkowski in
+$L^{2}(d\omega)$ and the two sum rules. For the second, apply Minkowski to Eq.~\eqref{eq:split}: its
+first term obeys the sum rule with seed $\phi_Q$, contributing exactly
+$(\pi/\eta)^{1/2}\lVert\phi_Q\rVert$; its second obeys
+$\lVert R(z)v\rVert\le\eta^{-1}\lVert v\rVert$, since $H$ is self-adjoint and $\operatorname{Im}z=\eta$,
+and the definition~\eqref{eq:lambda} then contributes at most $(\pi/\eta)^{1/2}\Lambda_P(\eta)/\eta$.
+Multiplying the three factors gives the leakage branch of~\eqref{eq:twobudget}.
+
+\emph{(4) The other two branches.} $A$ and $A_P$ are nonnegative with known integrals, so
+$\lVert A-A_P\rVert_1\le\int A+\int A_P=\lVert\phi\rVert^{2}(1+w_P)$ under no hypothesis at all; and
+$\bigl|\int A-\int A_P\bigr|\le\lVert A-A_P\rVert_1$ gives the lower bound
+$\lVert\phi\rVert^{2}(1-w_P)$.
+
+\emph{(5) The closed form.} $R_P(z)\phi_P=\sum_m c_m(z-\tilde E_m)^{-1}\ket{\tilde m}$, so
+\begin{equation*}
+\bigl\lVert QHR_P(z)\phi_P\bigr\rVert^{2}\;=\;\sum_{m,m'}
+\frac{c_m\bar c_{m'}\,\braket{g_{m'},g_m}}{(z-\tilde E_m)(\bar z-\tilde E_{m'})}\,.
+\end{equation*}
+With $x=\omega+E_0$ the remaining integral is
+$\int dx\,[(x-\tilde E_m+i\eta)(x-\tilde E_{m'}-i\eta)]^{-1}$, which has one pole in each half
+plane; closing above picks up $2\pi i/[(\tilde E_{m'}-\tilde E_m)+2i\eta]$, and multiplying by
+$\eta/\pi$ gives Eq.~\eqref{eq:lambda}.
+\end{proof}

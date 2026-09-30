@@ -20,7 +20,11 @@ L14_gs.npz     (94,230,224 bytes)
 L14_order.npy  (41,225,312 bytes)
                int32[10306296]  the stored ranking of the (N+1) sector (dimension 10,306,296) used for
                the L = 14 certificate point; it is verified to be a permutation of the sector, and the
-               ranking protocol was not re-run at this size (Sec. S4 of the paper)
+               ranking protocol was not re-run at this size (Sec. S4 of the paper) -- until
+               2026-09-28 (late): src/frontier/rerank_L14.py re-ran it from L14_gs.npz and the
+               top-k selection agrees with this file as a set (overlap 1.000000) at the published
+               |S| = 824504 and at fractions 0.04, 0.16, 0.32; the record, with both sha256 values,
+               is data/c3_frontier/published_fraction/L14_rerank.json
                sha256 0df36e6eb8086cbae06e52f33de34b2bef433556757dc78db97dc37d33e0737c
 
 Use

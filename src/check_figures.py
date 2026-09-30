@@ -27,6 +27,13 @@ fails to write one is reported MISSING instead of passing on the committed copy.
 comment line is normalised before comparing, and the run prints it when it does: line 5 of
 fig_gapscaling_native.tex records the generated_utc of the gap_scaling.json the fragment was
 built from, and the deposited JSON is a later run with identical numbers (NORMALISE below).
+
+Added 2026-09-28 (late): src/recovered/n3_fig5_whiskers.py, run after build_n3.py.  It rewrites
+the two whisker blocks of paper/figs/fig_thm1iii_violation_native.tex from the n3_fig5_*.dat
+tables and writes data/thm1iii_violation/n3_fig5_summary.json; both are compared, the fragment
+byte-for-byte (it is seeded, because the script rewrites it in place and build_n3.py reads its
+legend) and the JSON after being removed from the scratch copy of data/.  Nine generators,
+twenty-one artefacts.
 """
 import os
 import re
@@ -47,6 +54,11 @@ GENERATORS = [
     # recovered 2026-09-26 (src/recovered/README.md)
     "recovered/make_fig_gapscaling.py",
     "recovered/build_n3.py",
+    # added 2026-09-28 (late): the min/median/max whiskers of Fig. S5, rewritten into the
+    # fragment from the two n3_fig5_*.dat build_n3.py has just written (it replaces the
+    # one-shot patcher fix_n3_fig5_series.py, which is kept as the record).  Runs after
+    # build_n3.py, in this order.
+    "recovered/n3_fig5_whiskers.py",
 ]
 
 # What those generators are expected to (re)write, relative to the repository root (the
@@ -79,18 +91,24 @@ ARTEFACTS = [
     "paper/figs/n3_inf_eta.dat",
     "paper/figs/n3_fig5_frac.dat",
     "paper/figs/n3_fig5_eta.dat",
+    # Added 2026-09-28 (late): written by n3_fig5_whiskers.py.  The fragment is seeded (the
+    # script rewrites its two whisker blocks in place and build_n3.py reads its legend), so
+    # it is compared byte-for-byte after the rewrite; the summary JSON is removed from the
+    # scratch copy of data/ before the run, so the script must write it.
+    "paper/figs/fig_thm1iii_violation_native.tex",
+    "data/thm1iii_violation/n3_fig5_summary.json",
 ]
 
 # Artefacts that are compared but NOT copied into the scratch tree first: the generator must
 # write them, or they are MISSING.  (The eight older ones are seeded, as they always were.)
 NOT_SEEDED = {a for a in ARTEFACTS
-              if a.endswith("/fig_gapscaling_native.tex") or a.startswith("paper/figs/n3_")}
+              if a.endswith("/fig_gapscaling_native.tex") or a.startswith("paper/figs/n3_")
+              or a.endswith("/n3_fig5_summary.json")}
 
-# Read by a generator, never written or compared: build_n3.py checks the legend counts of the
-# committed Fig. S5 fragment against the tables it has just written.
-INPUTS = [
-    "paper/figs/fig_thm1iii_violation_native.tex",
-]
+# Read by a generator, never written or compared.  Until 2026-09-28 (late) this held the
+# Fig. S5 fragment, whose legend build_n3.py checks; n3_fig5_whiskers.py now rewrites that
+# fragment, so it is an ARTEFACT above (seeded, then compared).
+INPUTS = []
 
 # Lines normalised on BOTH sides before comparing, per artefact.  Keep this list short and
 # every entry a comment line: it is an exemption from a byte-for-byte guard.
@@ -125,6 +143,10 @@ def main(argv=None):
             src = os.path.join(ROOT, rel.replace("/", os.sep))
             if os.path.exists(src):
                 shutil.copy2(src, os.path.join(tmp, rel.replace("/", os.sep)))
+        for rel in NOT_SEEDED:              # data/ is copied whole: unseed what lives there
+            p = os.path.join(tmp, rel.replace("/", os.sep))
+            if os.path.exists(p):
+                os.remove(p)
 
         print("check-figures: regenerating %d generators in a scratch tree" % len(GENERATORS))
         failed = []

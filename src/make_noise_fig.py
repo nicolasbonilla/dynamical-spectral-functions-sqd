@@ -48,7 +48,7 @@ tex=r"""\documentclass[11pt,border=6pt]{standalone}
      table[x=eps,y=sc]{paper/figs/noise.dat}; \addlegendentry{S-CoRe configuration recovery}
   \draw[inkMute,dashed,line width=0.6pt] (axis cs:0.16,0) -- (axis cs:0.16,0.47);
   \node[inkPrim,font=\normalsize,anchor=west,align=left] at (axis cs:0.085,0.15)
-     {recovery holds rel-$L_1\!\approx\!0.05$\\ up to $\varepsilon\approx16\%$};
+     {recovery: rel-$L_1\!\approx\!0.05$\\ for $4\%\le\varepsilon\le16\%$};
   \node[inkPrim,font=\footnotesize,anchor=south east,align=right] at (axis cs:0.204,0.255)
      {naive post-selection\\ degrades with noise};
 \end{axis}\end{tikzpicture}\end{document}

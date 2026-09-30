@@ -323,6 +323,27 @@ AUDITADO_NUM = {
     "831":   "numeric assertions, exiting non-zero",
     "1.010": "1.0100",
     "1.037": "1.0373",
+    # 2026-09-28 (R3-m13): '126 of 126' was an earlier state of the same pooled sweep (version
+    # history, src/leakage_certificate.py:40-45), deleted from Sec. III D; the fact is the
+    # 468 / 363-of-363 sentence that stays.
+    "126":   "fails on $469$, and on all $363$ with $w_S\ge0.99$",
+    # 2026-09-28 (late): Fig. S5 and the counts quoted from it were REGENERATED from the deposited
+    # data/cert_{stress,akw,teqsci}.json (src/recovered/build_n3.py read an earlier run of the same
+    # scans until then): 468 -> 469 violations, mildest factor 2.10 -> 2.00, survival below
+    # w_S = 0.99 on 138 -> 137 of 243 (verify.py section 9.6c re-classifies the pool and checks
+    # every printed count).  Regenerated values, not deleted facts; the proof is the sentence of
+    # Sec. III D / Sec. S9 that prints the new value.
+    "468":   "fails on $469$, and on all $363$ with $w_S\ge0.99$",
+    "2.10":  "the mildest by a factor $2.00$ (Fig.~\\ref{fig:thm1iii-violation}",
+    "138":   "it survives on $137$ of $243$",
+    # 2026-09-28 (late): the finite-shot penalty of the Fig. 3 configuration was 2.80 on the
+    # former window [-9t, 9t] (6.12e-3 / 2.19e-3).  Its generator was recovered and deposited
+    # (src/fig3_finite_shot.py, reproducing the 2.80 exactly on that window) and re-run on the
+    # window of Fig. 3(a,b): 6.16e-3 / 2.36e-3 = 2.61 (data/fig3_finite_shot_T2.6e6.json;
+    # KNOWN_DISCREPANCIES.md section 31).  A regenerated value, not a deleted fact: the proof is
+    # the Sec. S1 sentence that prints the new factor (the caption, figs/fig5_caption.tex, is
+    # not in this corpus; verify.py section 9.6b checks it against the data).
+    "2.80":  "a measured $2.61$ and not the $2.05$",
 }
 
 AUDITADA = [
@@ -341,19 +362,69 @@ AUDITADA = [
     ("That proof is three lines of Rayleigh--Ritz, and it is not the proof", "and it is not the proof this statement is usually given"),
     # 2026-09-25 (revision final de arbitro): 'published fraction' -> 'operating fraction of the
     # resource scan' donde la afirmacion de vacuidad excluye la Fig. akwsampled (publicada y certificada).
-    ("The reconstructions reported in this paper are therefore", "are therefore, at present, uncertified"),
+    # 2026-09-30 (reframe skeptics): the temporal hedge 'at present' is removed from Sec. V B, Sec. S3
+    # and Sec. VII; the concession itself ('uncertified') is unchanged.  Proof updated to match.
+    ("The reconstructions reported in this paper are therefore", "are therefore uncertified"),
     ("Evaluated, the new certificate is vacuous at every published fraction",
      "the certificate is vacuous at every operating fraction of the resource scan"),
     ("The text already said that the molecular set does not separate", "does not separate the two candidate resources"),
     # 2026-09-25 (introduccion reescrita, ~1.2 pp): cada hecho sigue en el texto; la prueba es su frase actual.
-    ("Leone and Bittel gave a Gaussian monotone", "days before; the priority for it is theirs"),
-    ("The priority for the dichotomy is theirs", "days before; the priority for it is theirs"),
+    # 2026-09-28 (R3-m13): the priority is dated by the cited preprints (both July 2026), not by
+    # this work's first posting, so the proof no longer reads "days before"; the attribution
+    # sentence of Sec. I ("the priority for it is theirs") is intact.
+    # 2026-09-30 (citation audit, C3-2 / LB-1): Tarabunga et al. prove BOTH of their families
+    # Gaussian invariant (arXiv:2607.02242v2, App. B, P.2), so the "invariant/basis-dependent
+    # division" was never theirs to be credited with; Sec. I now credits them with the computable
+    # invariant quantifiers and the covariance-only / full-state separation, and Leone and Bittel
+    # with the strong monotone on the invariant side.  The priority sentence stays, reworded.
+    ("Leone and Bittel gave a Gaussian monotone", "both in July 2026; the priority for those measures is theirs"),
+    ("The priority for the dichotomy is theirs", "both in July 2026; the priority for those measures is theirs"),
     ("It is false---by an analytic two-level counterexample", "forces the constant of any bound indexed on it to its trivial value"),
-    ("It fails wherever it was invoked", "first sweep it failed on $126$ of $126$ such subspaces"),
+    ("It fails wherever it was invoked", "fails on $469$, and on all $363$ with $w_S\\ge0.99$"),
+    # 2026-09-28 (late), review of the Fig. 3 regeneration round: four sentences reworded for
+    # accuracy, each fact still printed; the proof is its current wording.
+    #  - the coefficient-insensitivity statement: the raw support IS lower-semicontinuous (it is
+    #    upper semicontinuity that fails), and the CP tensor rank fails BOTH, so "like the CP
+    #    tensor rank, not lower-semicontinuous" and "the opposite failure" were both wrong;
+    #  - Secs. I and X state only what Theorem thm:witness proves (the O(K) endpoint of the
+    #    orbit); "runs from O(K) to exponential" is not established and is no longer claimed;
+    #  - the raw-support obstruction is on UPPER bounds ("cannot upper-bound the count more
+    #    tightly than the sector dimension"), as the proof shows, not on lower bounds.
+    ("like the CP tensor rank, this count is not lower-semicontinuous",
+     "unlike the count, is not even lower-semicontinuous"),
+    ("Along a geminal orbit every order of it is fixed while the determinant support runs from",
+     "the orbit contains a point of classical cost $O(K)$"),
+    ("can lower-bound the count at all, rank being coefficient-insensitive",
+     "can upper-bound the count more tightly than the sector dimension"),
+    # 2026-09-28 (late): the coverage gap verify.py declared for Fig. S5 is closed by its
+    # section 9.6c (the plotted ratios are re-derived from the certificate rows); Sec. IX D
+    # says so in place of declaring the gap.
+    ("one declared gap in its own coverage", "re-derived by it from the deposited certificate rows"),
+    # 2026-09-28 (late): the K=18 ranking WAS re-run at L=14 (src/frontier/rerank_L14.py ->
+    # data/c3_frontier/published_fraction/L14_rerank.json, set overlap 1.000000 at the published
+    # fraction and three others), so the caveat "not re-run at that size" is repaired, not
+    # deleted; the proof is the sentence that reports the re-run.  The depth-indicator caveat
+    # of the same row stays.
+    ("re-run at that size", "reproduces the stored selection as a set to $1.000000$"),
+    ("Neither caveat is repaired", "It is not repaired, and the row is reported because it makes the"),
+    # 2026-09-28 (R1-01, R3-M2, R3-M3, R3-m10, R1-04): Theorem 1 gains (H4), the exact probe;
+    # the claim that only the leakage term is a posteriori is narrowed (both terms need Psi_0);
+    # the (H1)-(H3) list printed twice (S2 and S11) is kept once, in S11; the momentum block
+    # names the site basis.  Each fact below is still printed; the proof is its current wording.
+    ("the weight term is the half this work cannot compute without", "needs the full norm of the probe as well as its retained part"),
+    ("needs the exact decomposition of the probe norm", "estimated against it is biased in the optimistic direction"),
+    ("Only one of its two terms is a posteriori", "which a user does not have"),
+    ("The two conventions are never interchanged silently in this paper", "the two conventions are never interchanged silently"),
+    ("If the reference is itself a Lanczos reconstruction of finite depth", "measures the reference rather than the reconstruction"),
+    ("the discrepancy acquires an additive", "an additive term verified to"),
+    ("the two sizes we measured, the Krylov support fills", "the certificate becomes non-vacuous only close to the full block"),
     ("We retract it explicitly", "with $0$ violations across the $606$ subspaces"),
     ("At every published fraction, at each of the five sizes evaluated, the leakage branch",
      "is worse than the trivial bound at every operating fraction of the resource scan"),
-    ("The reconstruction itself is untouched", "The reconstructions themselves are not in question"),
+    # 2026-09-30 (reader-value reframe, Sec. I): the defensive hedge "The reconstructions
+    # themselves are not in question" is gone; the fact (an independent implementation recovers
+    # the acceptance fractions of the scan to under 2%) is printed in Secs. I and V.
+    ("The reconstruction itself is untouched", "recovers the acceptance fractions of the scan to under"),
     ("An invariant of the occupation spectrum cannot see a boundary", "An invariant of the occupation spectrum cannot see a boundary"),
     ("The statement is one of non-determination and non-vacuity", "The statement is one of non-determination and non-vacuity, not of non-existence"),
     ("That is not an absence of relation but a deterministic monotone", "a deterministic monotone relation whose sign"),
@@ -365,7 +436,9 @@ AUDITADA = [
     ("The bound itself stands where a weight-only bound cannot", "an analytic counterexample and a counting argument rule out any bound indexed on it"),
     ("And the method is priced on three axes rather than one", "The method is priced in support, resolution and shots"),
     ("The three momentum-resolved responses reported here have been computed classically",
-     "dynamical DMRG computed the same three channels at $90$ to $120$ sites in 2007"),
+     # 2026-09-30 (citation audit, C2-2): Benthien and Jeckelmann resolve N(q,w) in momentum at
+     # L=60 (cond-mat/0606748, Fig. 5), reaching L=120 only at the zone boundary; 90--120 was wrong.
+     "dynamical DMRG computed the same three channels at $60$ to $120$ sites in 2007"),
     ("Moving from the published fraction to the non-vacuous band", "moving from the operating fraction to the non-vacuous band multiplies the shots per snapshot"),
     ("Calling Eq. an error estimate would be refutable", "is therefore an exclusion, not an error estimate"),
     ("The result is negative and we state it first", "Evaluated on the published subspaces themselves"),
@@ -383,7 +456,9 @@ AUDITADA = [
     ("No bound indexed on the captured weight","forces any bound indexed on it to its trivial value"),
     ("ours is worse than the trivial bound",   "the bound is vacuous at every operating fraction of the resource scan"),
     ("What survives is a calibration",         "crossing of the trivial bound"),
-    ("These are the periodic rings",           "the two lattices are never pooled"),
+    # 2026-09-30 (reframe skeptics): Sec. I now says 'a different lattice' instead of the defensive
+    # 'the two lattices are never pooled'; the fact (rings and open chain kept apart) is the same.
+    ("These are the periodic rings",           "on the open chain of Sec.~\\ref{sec:moments}, a different lattice"),
     ("The obstruction is structural: the",     "coordinate support on every symmetry-allowed determinant"),
     ("And the certificate is calibrated",      "crossing of the trivial bound"),
     ("The error of a spectral function",       "no inequality indexed on the captured weight can"),
@@ -396,7 +471,10 @@ AUDITADA = [
     ("of the sector buys nothing by itself",   "containment, not spanning"),
     ("Moment exactness is a list of",          "finite linear functional"),
     ("depth is certified per point",           "what the depth cap does to"),
-    ("Three hypotheses carry the bound",       "Three hypotheses carry the bound"),
+    # 2026-09-28 (R1-01): (H4), the exact probe, is added to the hypotheses of Theorem 1, so
+    # the sentence that counted three now counts four; the fact (the hypotheses are stated and
+    # checked) is the same sentence with the new count.
+    ("Three hypotheses carry the bound",       "Four hypotheses carry the bound"),
     ("the displacement is the looseness",      "the displacement is the looseness"),
     ("The reconstructions themselves are untouched", "with nothing shared"),
     ("The two axes usually priced",            "The third price"),
@@ -428,7 +506,7 @@ AUDITADA = [
     ("An inequality of this form was stated as Theorem 1(iii)", "@comments:Theorem 1(iii) of v1-v2 does not hold"),
     ("strictly the failure is unbounded: in a three-level", "the weight term alone fails without bound: in a three-level family"),
     ("violations across the same",             "subspaces of the pooled sweep"),
-    ("none of the three is checked anywhere in the deposit of versions", "We check all three here"),
+    ("none of the three is checked anywhere in the deposit of versions", "We check all four here"),
     ("Where the previous version of this work asserted a regime", "This section reports the measured regime of validity"),
     ("Two things were wrong with that, and we retract both", "for a reason of resolution"),
     ("stood behind the sentence asserting that the two-spinon", "none is used for any channel of this work at this size"),
@@ -443,7 +521,11 @@ AUDITADA = [
     #  - "Lambda decreases with depth": no es un teorema y sube hasta un 2 % entre las
     #    profundidades 30 y 100 a L=12; lo que la frase necesitaba si se cumple en las
     #    16 series depositadas (a partir de 100, nunca por debajo del valor mas profundo).
-    ("The reconstructions reported in this paper are therefore, at present, uncertified", "The reconstructions at the published fractions are therefore, at present, uncertified"),
+    # 2026-09-30: 'at present' removed (temporal hedge; the concession is unchanged).  The sentence now
+    # reads 'The reconstructions at the fractions this paper publishes---...---are therefore uncertified'
+    # in Sec. S3 and 'at the operating fractions of the resource scan---...---are therefore uncertified'
+    # in Sec. V B; the proof is the clause both share.
+    ("The reconstructions reported in this paper are therefore, at present, uncertified", "are therefore uncertified"),
     ("decreases with depth, the bound at any shallower depth", "it is not monotone in depth in general"),
     ("by direct integration at",               "by adaptive integration over the whole line"),
     # 2026-09-25, from the final adversarial read: a false sentence (w_S and K_S ARE computed,
@@ -474,7 +556,123 @@ AUDITADA = [
     #    where Sec. 13 now leaves two.  It now names what is still open, which is more, not
     #    less: the three rasters, the hand-completed Fig. 5 and two hand-edited captions.
     ("which is what a proof of principle is",  "It establishes nothing about accuracy, neither at the complete coverage it reached"),
+    # 2026-09-28 (R1-03): the coefficient-insensitivity proposition refuted an UPPER bound
+    # (Psi_eps: mu -> mu(D0) while the raw support stays K+1) but was stated as a lower-bound
+    # failure with an inverted CP-rank analogy.  The raw support is lower- but not
+    # upper-semicontinuous; the lower-bound failure holds only for F_1 at half filling (the
+    # cat), and F_1 gives the weak bound |S| >= N/(N-F_1/4).  Both statements are now proved as such.
+    ("cannot lower-bound the raw determinant support", "the opposite failure to that of the CP tensor rank, which is not lower-semicontinuous"),
+    ("can lower-bound the count at all", "not upper-semicontinuous (the opposite failure to that of the CP tensor rank"),
     ("six of the seventeen figures enter as PDF with no standalone", "are deposited as rendered and cannot be regenerated from the deposit"),
+    # 2026-09-28 (R2-02): the ibm_fez run is no longer placed in the class of device spectral
+    # records: its retained subspace is the whole (N+1) sector, all device errors
+    # (data/hw_bitorder_check.json), so its A(w) is the ED result (data/heron_spectral.json).
+    # The class comparison and 'not the smallest such record' give way to the stronger
+    # statement that it is not in that class; 'not offered as a scale result' stays.
+    ("so our device record is smaller than every entry in that class", "the run is not an entry in that class"),
+    ("It is not the smallest such record either", "four-qubit trapped-ion Hubbard-dimer reconstruction"),
+    # 2026-09-30 (citation audit, 39 findings confirmed by 2-3 of 3 skeptics against the sources):
+    # four concession sentences reworded to say what the cited work actually shows.  Each
+    # concession stays; the proof is its current wording.
+    #  - Sec. S5: sierant2026 defines F_k as a MEASURE of fermionic non-Gaussianity (faithful,
+    #    Gaussian invariant, (sub)additive) and leaves monotonicity open; collura2026 never
+    #    defines F_k (it computes qubit stabilizer Renyi entropies of Gaussian states);
+    #  - Sec. S5: Tarabunga et al.'s natural-orbital participation entropies are FGU-invariant
+    #    (App. B), so "basis dependent" was false; the sentence now states their covariance-only
+    #    / full-state separation and where the basis dependence of |S| actually enters;
+    #  - Sec. S2: chen2021slq's Gauss-quadrature W/KS brackets hold for each seeded (weighted)
+    #    measure as well as for the density of states (Cor. 2), so "a global density of states,
+    #    not the seeded local measure" misstated the source; the novelty is now fenced on the
+    #    full-space quadrature versus the leaking determinant-subspace projection.
+    ("It is not a refutation of anyone's claim", "no one proposed it as a predictor of the determinant support"),
+    ("It is our own no-go, about our own cost", "a corollary consistent with---not a competitor to---the two families of"),
+    # 2026-09-30 (final citation review CC3): the sentence was reworded to say what Tarabunga
+    # et al. prove about the occupation-entropy family; the fact is still printed and the proof
+    # is its current wording.
+    # 2026-09-30 (sources verification, SRC-1): CC3 had taken the arXiv listing abstract, which
+    # still carries v1 wording ('one member').  arXiv:2607.02242v2 (28 Jul 2026) proves orders 1
+    # AND 2 strong pure-state monotones that lower-bound the SWAP (non-Gaussian gate) count
+    # (Sec. II, Sec. IV A, Eq. 48, App. A 2), and its order-2 member is the k=1 antiflatness,
+    # i.e. F_1.  Leone-Bittel (arXiv:2607.29670) prove the same quantity M_f = F_1 a strong
+    # monotone and their Note added credits v2 with an independent proof of their Theorem 1.
+    # Wording corrected to 'two members'; the concession (their priority) is still printed.
+    ("set out the same division on general grounds", "occupation entropies depend only on the covariance matrix, two members of which (orders $1$ and $2$) are"),
+    ("Jia and Lv's title is this section's claim word for word", "Jia and Lv's title is this section's claim word for word"),
+    # 2026-09-30 (reader-value reframe, Secs. VII-IX): seven sentences that stated a result as a
+    # concession or as commentary on the writing ('It is easy to price ... It is not.', 'Four
+    # statements are supported ... and a fifth is not', 'the strongest physical check available to
+    # this method', 'We present it here as what it is') now state the result; the fact of each is
+    # still printed, and the proof is its current wording.  Sec. VIII no longer says the gaps come
+    # 'from the same primitive': S(q,w) and S^zz are full-sector references (Table I), not outputs
+    # of the sampler, and the sentence now says what they check.
+    ("It is easy to price the first two", "is a property of the question, not of the model"),
+    ("The support exponent, and what does and does not survive", "The support exponent and its resolution dependence"),
+    ("Four statements are supported by the measured rows", "do not establish that the shot budget grows with a larger exponent than the"),
+    ("Supported: the budget is two orders of magnitude", "two orders of magnitude larger than the support it buys"),
+    ("The two collective channels of the half-filled Hubbard chain are the strongest", "against which the sampled reconstructions are scored"),
+    ("On the same lattice, in the same calculation, from the same primitive", "reproduce the opposite finite-size scaling of the two collective scales"),
+    ("We present it here as what it is", "against which the sampled reconstructions are scored"),
+    # 2026-09-30 (reader-value reframe, Sec. I): the clause "we make no priority claim against it"
+    # was meta-commentary; the priority fact ("independently and concurrently") stays in the
+    # same sentence, which is the proof.
+    ("Patel, Rangi and Tam construct Green's functions from sampled Krylov subspaces", "independently and concurrently, and cite this work"),
+    # 2026-09-30 (reader-value reframe, Secs. II-IV): seven baseline sentences (headings merged
+    # with their first sentence, or meta-commentary such as 'and we never claim that it is',
+    # 'we claim no novelty', 'We state that claim as what it is') now state the result; each
+    # fact is still printed and the proof is its current wording.
+    ("This section states the measurement primitive", "full-sector references computed by continued fraction, not reconstructions"),
+    ("what the shots buy and what they do not", "the first is fixed by the captured weight and vanishes once"),
+    ("The complete bound is therefore not evaluable", "evaluable by a user who does not already have the ground state"),
+    # 2026-09-30 (final math review M3): moment exactness needs the probe (built from the exact
+    # ground state), so 'decidable from the subspace alone' now reads 'decidable from the subspace
+    # and the probe'; the proof string follows the printed wording (Secs. IV and S10).
+    ("What the structure does certify", "decidable from the subspace and the probe"),
+    ("It rules out nothing about the construction itself", "decidable from the subspace and the probe"),
+    ("We state it with the proof the code realizes", "It is not an error bound, and it does not imply convergence in"),
+    ("Three rows is all this validation system has", "These three rows are the whole validation"),
+    # 2026-09-30 (reader-value reframe, Secs. V-VI): the merged heading+sentence of Sec. V D
+    # ('One positive result survives the sweep') is now the heading 'The crossing of the trivial
+    # bound is calibrated'; the merged heading+sentence of Sec. VI B ('The obstruction is not a
+    # continuity artifact') keeps its non-transfer sentence intact in the moved paragraph.
+    ("One positive result survives the sweep", "The crossing of the trivial bound is calibrated"),
+    # 2026-09-30 (reframe skeptics V1, C4).  Two sentences went as meta-commentary or repetition,
+    # each fact kept where it is proven:
+    #  - Sec. IX C restated the vacuity range, 'at the five sizes measured' and 'uncertified';
+    #    the home of all three is Sec. V B (Table published and the sentence that ends
+    #    'are therefore uncertified'), and the abstract, Sec. I and Sec. X state the range;
+    #  - Sec. S2 said 'and we say so before a referee does'; the fact ('Nothing in the proof
+    #    of Appendix A is new as analysis') stays, without the aside.
+    ("The certificate of Theorem is vacuous at every fraction this work publishes",
+     "are therefore uncertified"),
+    ("and we say so before a referee does", "is new as analysis. The split,"),
+    ("The obstruction is not a continuity artifact", "does \\emph{not} transfer to the operative"),
+    # 2026-09-30 (final reviews M2/CC1 and CC4/CC8).  Three sentences reworded, each fact kept:
+    #  - Sec. S5 said F_k does not determine the cost 'being constant on an orbit along which the
+    #    cost varies exponentially'; the exponential cost at rotated points is not established
+    #    in the deposit (the main text says so), so the sentence now says F_k determines the
+    #    cost only if those points are in fact easy.  The hardness half of the concession
+    #    ('does not lower-bound the cost') is unchanged in the same sentence
+    #    [2026-09-30, final math review MA-1: the cost at the pairing point is O(K) while
+    #    F_k = 4K, so F_k/4 does lower-bound a linear cost; the half now reads 'does not
+    #    lower-bound the bond dimension, nor the cost beyond linear order in $K$', which is what
+    #    the witness refutes.  The proof string below is unaffected];
+    #  - Sec. S7 'bound it honestly' lost the adverb (meta-commentary); the two fits stay;
+    #  - Sec. S7 pointed at 'the list of what this work does not claim', a list Sec. IX C no
+    #    longer has; it now names the restriction Sec. IX C records (pole positions at four
+    #    sizes).
+    ("Two conclusions follow, each in the only direction the construction supports",
+     "determines the cost only if the rotated points are in"),
+    ("Two fits make that precise and bound it honestly", "bound it. Fitting $"),
+    # 2026-09-30 (final math review MA-2): Proposition 2 proves vacuity on pairing-model fibers,
+    # i.e. that no orbital-rotation invariant is a useful predictor on EVERY state, not that none
+    # is useful anywhere.  Sec. IX's 'four things' sentence now scopes its obstruction item that
+    # way ('an obstruction ... useful on every state'); the other three items are unchanged and
+    # the sentence falls to 0.56 similarity only through that clause.  The claim list is still
+    # printed; the proof is its current wording.
+    ("What the work does claim is four things",
+     "obstruction showing that no orbital-rotation invariant supplies an a priori predictor of that bound"),
+    ("Section states the same concession in the list of what this work does not claim",
+     "restriction: the spin--charge statement rests on pole positions at four sizes."),
 ]
 
 

@@ -22,6 +22,7 @@ all double-column** — and *failed*, because the preamble census comment of `pa
 read `33 of the 17+16 floats are starred`. *Re-measured 2026-09-26 on the v3 manuscript as
 submitted: 60 source files reached (the Supplemental Material is ten further files), 34 floats (17
 figures + 17 tables), all starred, and it **passes** — the census comment now reads `34 of the 17+17`.*
+*Re-measured 2026-09-28: 61 source files (the new `app_proof.tex`, Appendix A), the same 34 floats; it passes.*
 
 Paths: figure sources live in `paper/figs/` and their float wrappers in `paper/figs/float_*.tex`,
 `paper/figs/captions.tex` and `paper/carried/`; generating scripts in `src/`, data in `data/`.
@@ -45,18 +46,18 @@ A cell that names a file which is not in this deposit says **NOT DEPOSITED** in 
 |---|----------|--------------|-------------|-----------|-----------|--------------------|---------|
 | 1 | fig:circ | `paper/sec_2.tex` | `fig_circuit.pdf` | PDF | hand-drawn quantikz; standalone source `paper/figs/src/fig_circuit_native_FIXED.tex` (deposited 2026-09-26; recompiles pixel-identically, not script-guarded) | — (schematic; plots no data) | no |
 | 2 | fig:method | `paper/carried/fig_method.tex` | `fig_method_native_frag.tex` + `aw_method.dat` | frag | `make_method_fig_max.py` | **`method_max.json`** | **yes** |
-| 3 | fig:akwsampled | `paper/figs/float_f5.tex` | `fig_akw_sampled_honest.tex` + `fig5_caption.tex` | frag | `make_akw_sampled_honest_fig.py` (paths from `__file__` since the §A repair) | **`sampled_akw_L8.json`** (panels a,b); panel (c) from `sampled_honest.json` + `honest_sampling.json` | **yes** |
+| 3 | fig:akwsampled | `paper/figs/float_f5.tex` | `fig_akw_sampled_honest.tex` + `fig5_caption.tex` | frag | `make_akw_sampled_honest_fig.py` (paths from `__file__` since the §A repair); the caption's finite-shot paragraph from `fig3_finite_shot.py` | **`sampled_akw_L8.json`** (panels a,b); panel (c) from `sampled_honest.json` + `honest_sampling.json`; caption finite-shot numbers from `fig3_finite_shot_T2.6e6.json` + `fig3_finite_shot_T5.2e6.json` | **yes** |
 | 4 | fig:lattice | `paper/carried/fig_lattice.tex` | `fig_akw_native.pdf` | PDF | standalone source `paper/figs/src/fig_akw_fixed.tex` with its raster `paper/figs/src/akw_field_v2.png` (deposited 2026-09-26; recompiles pixel-identically). That raster is the output of `recolor_akw_v2.py`, whose own inputs (the viridis raster and `fig_akw_v2_L12.tex`) are **NOT DEPOSITED**, so the recolouring cannot run on a clean clone | **`akw_lanczos_L12.json`** | no |
 | 5 | fig:scaling | `paper/figs/float_f12.tex` | `fig_scaling2_native.tex` + `caption_fig12.tex` | frag | ⚠ **none usable** — `make_scaling_fig.py` emits a DIFFERENT two-panel figure and would destroy panel (c); §3 of `KNOWN_DISCREPANCIES.md` | **`scaling_data.json`** | no |
 | 6 | fig:gapscaling | `paper/figs/float_n2.tex` | `fig_gapscaling_native.tex` + `fig_gapscaling_caption.tex` | frag | `src/recovered/make_fig_gapscaling.py` (recovered 2026-09-26). The fragment regenerates except one provenance-timestamp comment line; the caption was edited by hand after generation and is the authoritative one | **`gap_scaling.json`** (computed by `gap_scaling.py`) | **yes** (fragment; one comment line normalised) |
 | 7 | fig:sqw | `paper/carried/fig_sqw.tex` | `fig_sqw.pdf` | PDF | standalone source `paper/figs/src/fig_sqw_fixed.tex` (deposited 2026-09-26; recompiles pixel-identically). Its raster `sqw_field.png` is deposited as rendered: `sqw_field.py` draws the same field in viridis, and the recolouring to hot is a step that is not deposited | **`sqw_L12.json`** + `sqw_edges.dat` (by `make_sqw_edges.py`) | no |
-| 8 | fig:spin | `paper/carried/fig_spin.tex` | `fig_spinqw.pdf` | PDF | standalone source `paper/figs/src/fig_spinqw_fixed.tex` (deposited 2026-09-26; recompiles pixel-identically); no deposited script writes its raster `paper/figs/src/spinqw_field.png` | **`spinqw_L12.json`** + `spinqw_edges.dat` (by `spin_lanczos.py`) | no |
+| 8 | fig:spin | `paper/carried/fig_spin.tex` | `fig_spinqw.pdf` | PDF | standalone source `paper/figs/src/fig_spinqw_fixed.tex` (deposited 2026-09-26; recompiles pixel-identically); no deposited script writes its raster `paper/figs/src/spinqw_field.png`; the caption's deviations of the plotted peak from the des Cloizeaux–Pearson boundary (about 3 %, 10 %, 29 %) are printed by `src/spin_peak_deviation.py` → `data/spin_peak_deviation.json` (2026-09-28, late) and checked by `verify.py` | **`spinqw_L12.json`** + `spinqw_edges.dat` (by `spin_lanczos.py`) | no |
 | 9 | fig:heron | `paper/carried/fig_heron.tex` | `fig_hardware_hero_frag.tex` + `heron_hot.dat` | frag | `make_hardware_hero.py` | ⭐ **`hw_lucj_n2_result.json` — job `da125f2ein7c73bcsqs0`** (panel b) + **`heron_spectral.json`** (panel a) | **yes** |
-| S1 | fig:witness | `paper/sm_nogo.tex` | `fig_witness_native.tex` | frag | none — hand-maintained against the JSON | **`apsg_witness.json`** | no |
+| S1 | fig:witness | `paper/sm_nogo.tex` | `fig_witness_native.tex` | frag | none — hand-maintained against the JSON (whose `chi_max`, the largest Schmidt rank over all cuts of the pairing ordering, is the χ = 2 the figure and the theorem print; recorded by `apsg_witness.py` since 2026-09-28, late, and recomputed by `verify.py`) | **`apsg_witness.json`** | no |
 | S2 | fig:decoupling | `paper/figs/captions.tex` | `fig_decoupling_native.tex` | frag | `make_decoupling_native.py` | **`cost_vs_ent.json`** + `n19_suite.json` + `resource_master.json` + `stats_resource.json` | **yes** |
 | S3 | fig:master | `paper/figs/captions.tex` | `fig_resource_master_native.tex` | frag | `make_decoupling_native.py` (emits both resource fragments). `make_resource_master_fig.py` writes the same file — **two writers, one artefact**; the guarded one is the first | **`resource_master.json`** + `stats_resource.json` | **yes** |
 | S4 | fig:ladder | `paper/carried/fig_ladder.tex` | `fig_ladder_native.tex` | frag | none — hand-maintained against the JSON | **`ladder_vs_chain.json`** | no |
-| S5 | fig:thm1iii-violation | `paper/figs/float_n3.tex` | `fig_thm1iii_violation_native.tex` + `caption_thm1iii_violation.tex` + eight `n3_*.dat` | frag | `src/recovered/build_n3.py` (recovered 2026-09-26) writes the ten `n3_*.dat`; the two patchers the caption names, `src/recovered/fix_n3_caption.py` and `src/recovered/fix_n3_fig5_series.py`, are deposited as the record and are not run | the three certificate scans of **`data/thm1iii_violation/cert_earlier_run/`** (an earlier run than `data/cert_*.json`) + `data/thm1iii_violation/thm3_results.json` + `data/thm1iii_violation/thm3_L8b.json`; whiskers from `data/thm1iii_violation/n3_fig5_summary.json` | **tables yes**; the fragment's literals and its ratios, no — `verify.py`'s one declared coverage gap, §B |
+| S5 | fig:thm1iii-violation | `paper/figs/float_n3.tex` | `fig_thm1iii_violation_native.tex` + `caption_thm1iii_violation.tex` + eight `n3_*.dat` | frag | `src/recovered/build_n3.py` (recovered 2026-09-26) writes the ten `n3_*.dat`; `src/recovered/n3_fig5_whiskers.py` (2026-09-28, late) then writes `n3_fig5_summary.json` and the two whisker blocks of the fragment; `fix_n3_caption.py` and `fix_n3_fig5_series.py` are deposited as the record and are not run | the deposited **`data/cert_stress.json`, `cert_akw.json`, `cert_teqsci.json`** (since 2026-09-28, late; until then the earlier run of the same scans in `data/thm1iii_violation/cert_earlier_run/`, which stays deposited as a record and is no longer read) + `data/thm1iii_violation/thm3_results.json` + `thm3_L8b.json` | **tables, whiskers and summary yes** (`check_figures.py`); the plotted ratios and every printed count re-derived from the certificate rows by `verify.py` section 9.6c, §B |
 | S6 | fig:hero | `paper/carried/fig_hero.tex` | `fig_hero.pdf` | PDF | `make_hero_fig.py` writes a `fig_hero.tex` into the **cwd** (that file is **NOT DEPOSITED**; measured 2026-09-26, it differs from the source of the committed PDF in one line, the position of the `R (Å)` label, adjusted by hand afterwards); the standalone source of the committed PDF is `paper/figs/src/fig_hero_STANDALONE.tex` (deposited 2026-09-26; recompiles pixel-identically) | **`n2_hero.json`** + `hero_aw.dat` + `hero_res.dat` | no |
 | S7 | fig:noise | `paper/carried/fig_noise.tex` | `fig_noise_score.pdf` | PDF | `make_noise_fig.py` writes a `fig_noise_native.tex` into the **cwd** (that file is **NOT DEPOSITED**; measured 2026-09-26, it differs from the source of the committed PDF in two lines, the length of the ε=16% marker and the size and position of the left annotation, adjusted by hand afterwards with a comment saying why); the standalone source of the committed PDF is `paper/figs/src/fig_noise_score_STANDALONE.tex` (deposited 2026-09-26; recompiles pixel-identically) | **`noise_spectral.json`** + `noise.dat` | no |
 | S8 | fig:noiserec | `paper/carried/fig_noiserec.tex` | `fig_noise_recovery_native.tex` | frag | `make_noise_recovery_native.py` | **`molecular_noise.json`** + `molecular_noise_sweep.json` | **yes** |
@@ -116,9 +117,18 @@ Until those two constants are resolved from `__file__` and `data/`, read the che
 honest status of Fig. S5 (`fig:thm1iii-violation`). *Since 2026-09-26 the builder and its inputs are
 deposited (`src/recovered/build_n3.py`, `data/thm1iii_violation/`) and `check_figures.py`
 regenerates all ten tables byte-for-byte; the coverage gap stays, because the check it names has
-still not been written.* What remains to close it is that check: a test in `verify.py` that anchors
-the plotted ratios to the certificate rows. The fragment itself is not diffed by `check_figures.py`; it is
-read by `build_n3.py`, whose self-check requires its legend counts to match the tables.
+still not been written.* What remained to close it was that check: a test in `verify.py` that anchors
+the plotted ratios to the certificate rows. *Closed 2026-09-28 (late): `verify.py` section 9.6c
+re-classifies the pool from the five deposited JSON sources (`thm3_results.json`, `thm3_L8b.json`,
+`data/cert_stress.json`, `cert_akw.json`, `cert_teqsci.json`) with code that shares nothing with
+`build_n3.py`, requires every point of the eight plotted tables to be the error-to-bound ratio of a
+classified row (to six significant figures), checks the whisker summary against the 64 rows of the
+Fig. 3 setting, recomputes the 3.1e-8 control of those rows against `sampled_akw_L8.json`, and checks
+every count the caption, Sec. III D, Sec. S2 and Sec. S9 print. The entry is removed from
+`COVERAGE_GAP_V3` with a dated comment; the guardian now prints four items by name, the known open
+defects. The fragment is diffed by `check_figures.py` since the same day (its whisker blocks are
+written by `n3_fig5_whiskers.py`), and `build_n3.py`'s self-check still requires its legend counts to
+match the tables.*
 
 ---
 
@@ -186,9 +196,13 @@ without being re-measured, and it had stopped being true.** Panel (c) of `fig_de
 was rebuilt for v3 as "(c) Hubbard: χ runs forwards"; a byte-level grep over every `.tex`, `.dat`
 and `.py` under `paper/` and `src/` finds `37361` in exactly one place, the **prose** of
 `paper/sec_6_body.tex:337`, and `make_decoupling_native.py` no longer contains it. Those four
-numbers are still hand-typed constants with no deposited producer — that limit is real and is
+numbers were still hand-typed constants with no deposited producer — that limit was real and is
 recorded in `KNOWN_DISCREPANCIES.md` — but it is a sentence in Sec. VI, not a figure exception,
-and printing it here would advertise an exception for a panel that no longer exists.
+and printing it here would advertise an exception for a panel that no longer exists. *(2026-09-28,
+late: they have a producer, `src/free_fermion_support.py` → `data/free_fermion_support.json` —
+open chain, half filling, the smallest determinant set carrying all but ε_w = 2.5e-3 of the weight,
+inclusive at the exact four-way tie of L = 4 — and `verify.py` recomputes the four counts
+independently and checks the two sentences, Secs. VI and S13, that print them; §33.)*
 `src/check_provenance.py` did not catch this because it validates the label SET against
 `main.tex`, not the CONTENTS of a cell.*
 
@@ -206,8 +220,9 @@ list:
 
 - *(Left tier 1 on 2026-09-26: `paper/figs/n3_fig5_eta.dat` and `n3_fig5_frac.dat`, the 64 Fig.-3 rows
   that were summarised into the whiskers of Fig. S5. `src/recovered/build_n3.py` now writes them
-  and `src/recovered/fix_n3_fig5_series.py` is the record of the summary; the whisker values are
-  still literals in the fragment.)*
+  and `src/recovered/fix_n3_fig5_series.py` is the record of the summary; the whisker values were
+  still literals in the fragment until 2026-09-28 (late), when `src/recovered/n3_fig5_whiskers.py`
+  took over writing them, guarded by `check_figures.py`.)*
 - `data/cert_frontier_6-8.json`, `data/cert_frontier_10.json` — written by
   `leakage_certificate_suite.py` under a *computed* filename
   (`"cert_frontier_%s.json" % "-".join(...)`), so the literal names appear in no script. Only a
@@ -244,7 +259,7 @@ reader is `src/verify.py`) is printed by the checker and itemised in
   manuscript typesets is `figs/fig5_caption.tex` (`1.50±0.25`, `1.96±0.12`, `2.05±0.07`), and those
   three numbers are exactly the `ratio` row of Table IX. They also still open with *“Declared gap: no
   finite-shot run exists for the configuration of (a)–(b)”*, which stopped being true on 2026-09-19,
-  when that configuration was run at finite shots ($5.2×10⁶$ shots per channel) and both Sec. 2 and
+  when that configuration was run at finite shots ($5.2×10⁶$ shots per channel; generator `src/fig3_finite_shot.py`, deposited 2026-09-28) and both Sec. 2 and
   `fig5_caption.tex` replaced the declaration with the measured budget. **Substituting the
   generator's caption because it is machine-written would reinstate withdrawn numbers and a gap that
   is now closed.** `KNOWN_DISCREPANCIES.md` §26.

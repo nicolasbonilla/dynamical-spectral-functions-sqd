@@ -25,8 +25,8 @@ listed.
 | directory | tracked files |
 |---|---|
 | `paper/` | 101 — 33 at the root, 9 in `carried/`, 49 in `figs/` and 10 in `figs/src/` |
-| `src/` | 98 — **62** at the root, **28 in `src/frontier/`** (the C3 sweep, deposited 2026-09-19) and **8 in `src/recovered/`** (recovered 2026-09-26) |
-| `data/` | 160 — **38** at the root, **95 in `data/c3_frontier/`**, **20 in `data/gflow_runs/`** and **7 in `data/thm1iii_violation/`** |
+| `src/` | 104 — **66** at the root, **29 in `src/frontier/`** (the C3 sweep, deposited 2026-09-19) and **9 in `src/recovered/`** (recovered 2026-09-26) *(2026-09-28, late: `free_fermion_support.py`, `spin_peak_deviation.py`, `frontier/rerank_L14.py`, `recovered/n3_fig5_whiskers.py`)* |
+| `data/` | 166 — **43** at the root, **96 in `data/c3_frontier/`**, **20 in `data/gflow_runs/`** and **7 in `data/thm1iii_violation/`** *(2026-09-28, late: `free_fermion_support.json`, `spin_peak_deviation.json`, `c3_frontier/published_fraction/L14_rerank.json`)* |
 | `docs/` | 16 — 7 Markdown, 8 PNG thumbnails and the script that renders them |
 | `ckpt/` | 3 — the L=14 ground state, its ranking and their README (deposited 2026-09-25) |
 | `_superseded/` | 36 — `v2_paper/` 11, `v2_figs/` 2, `v3_retired/` 11, `v1_readme_img/` 11 (ten PNG and a README), and the folder's own `README.md` |
@@ -38,8 +38,9 @@ listed.
 ## `paper/` — the v3 manuscript (REVTeX 4.2, one column for submission)
 
 `main.tex` is the only hand-written driver. Everything it reaches is listed here, and the list is
-derived: `python src/check_provenance.py` expands `\input` from `main.tex` and reports **60 source
-files reached** and **34 floats — 17 figures and 17 tables, all starred** (re-measured 2026-09-26).
+derived: `python src/check_provenance.py` expands `\input` from `main.tex` and reports **61 source
+files reached** and **34 floats — 17 figures and 17 tables, all starred** (re-measured 2026-09-28; 60 files on 2026-09-26,
+before `app_proof.tex`).
 
 ### Main text
 
@@ -50,14 +51,15 @@ files reached** and **34 floats — 17 figures and 17 tables, all starred** (re-
 | `sec_2.tex` | **II. One sampling primitive, four channels** (`sec:method`) — holds Table I (`tab:provenance`) and Fig. 1 (`fig:circ`); Figs. 2–4 follow it from `main.tex`. |
 | `sec_3_body.tex` | **III. Two budgets: the missed weight and the boundary** (`sec:leakage`) — the central theorem. |
 | `sec_3_1.tex` | **III D. The captured weight is not the controlling magnitude** (`sec:retraction`), `\input` from inside Sec. III. |
-| `sec_4_body.tex` | **IV. What the structure does certify: moment exactness** (`sec:moments`) — Table II. |
-| `sec_5_body.tex` | **V. What the certificate can and cannot assert** (`sec:frontier`) — Table III. |
+| `sec_4_body.tex` | **IV. What the structure does certify: moment exactness** (`sec:moments`) — Table II, and Proposition 1 (`prop:shots`, sampling capture; in the SM until 2026-09-28). |
+| `sec_5_body.tex` | **V. Where the leakage certificate is informative: its non-vacuity threshold, measured** (`sec:frontier`) — Table III. |
 | `sec_6_body.tex` | **VI. No shortcut to the boundary: an obstruction and its witness** (`sec:nogo`). |
 | `sec_7.tex` | **VII. Three prices: support, resolution, and shots** (`sec:prices`) — Table IV; Fig. 5 follows it. |
 | `sec_8.tex` | **VIII. Physical validation: the two gaps scale in opposite directions** (`sec:physics`) — Table V; Figs. 6–8 follow it. |
 | `sec_9.tex` | **IX. Hardware, scope, and the region where the method has no advantage** (`sec:scope`, `sec:honest`) — Fig. 9, and the data availability statement as Sec. IX D. Its header records that `fig:gflow` and `fig:amort` are deliberately absent. |
 | `sec_10.tex` | **X. Conclusion** (`sec:conclusion`), and the acknowledgments. |
-| `bibliography.tex` | Hand-written `thebibliography` — 140 entries, arXiv-safe, no external `.bib`/`.bbl`. In first-citation order: the 101 works the main text cites, then `supplemental` (ref. [102], added 2026-09-28: the Supplemental Material cited as a reference in the APS form, "See Supplemental Material at [URL will be inserted by publisher] for …, which includes Refs. [103–140]", cited at the end of Sec. X), then the 38 works cited only in the SM (the range is computed with `\citenum`, and `pra_split.py --build` checks it). |
+| `app_proof.tex` | **Appendix A. Proof of the leakage certificate and of its closed form** (`app:proof`), added 2026-09-28: items (1)–(5) of the proof of Theorem 1, moved verbatim from `sm_leakage.tex`, with Eq. (A1) (`eq:split`). `main.tex` inputs it after `sec_10.tex` and before the references, inside a group that issues `\appendix` (the one global effect, the per-section equation reset, is undone in `sm_begin.tex`). |
+| `bibliography.tex` | Hand-written `thebibliography` — 142 entries, arXiv-safe, no external `.bib`/`.bbl`. In first-citation order (restored 2026-09-30, when six keys moved into Sec. I and Sec. I began citing `sierant2026`): the 103 references of the main text, among them `supplemental` (ref. [19]; ref. [12] from 2026-09-28 to the reordering: the Supplemental Material cited as a reference in the APS form, "See Supplemental Material at [URL will be inserted by publisher] for …, which includes Refs. [104–142]", first cited where the SM is first mentioned, at the end of Sec. I, and again at the end of Sec. X; it was ref. [102], cited only in Sec. X, until the review pass of 2026-09-28), then the 39 works cited only in the SM (the range is computed with `\citenum`, and `pra_split.py --build` checks it). |
 
 ### Supplemental Material
 
@@ -68,7 +70,7 @@ files reached** and **34 floats — 17 figures and 17 tables, all starred** (re-
 |---|---|
 | `sm_begin.tex` | opens the Supplemental Material; no section of its own. |
 | `sm_method.tex` | **S1.** The primitive: provenance declarations in full. |
-| `sm_leakage.tex` | **S2.** The leakage certificate and the weight-only bound: proof and details. |
+| `sm_leakage.tex` | **S2.** The leakage certificate and the weight-only bound: details (the proof of Theorem 1 moved to Appendix A, `app_proof.tex`, on 2026-09-28; the (H1)–(H3) list it repeated is kept once, in S11). |
 | `sm_moments.tex` | **S3.** Moment exactness: the proof route, the conjecture and the shot bound. |
 | `sm_frontier.tex` | **S4.** The non-vacuity threshold: protocol, tables and limits — Tables S1–S3. |
 | `sm_nogo.tex` | **S5.** One-body magic, the geminal witness and the determinant support — Fig. S1, Table S4, Figs. S2–S3 (via `figs/captions.tex`) and Fig. S4. |
@@ -112,22 +114,22 @@ line-level `\input` expander finds two floats in this manuscript instead of thir
 
 | File | Contents |
 |---|---|
-| `main.pdf` | The compiled v3 manuscript — **66 pp**: main text pp. 1–26 (p. 26 holds the end of Sec. X and the acknowledgments), the reference list pp. 27–31, then the Supplemental Material from p. 32; rebuilt 2026-09-28 after the last source edit with the two `pdflatex` passes of `make paper` (0 errors, 0 undefined references or citations, no rerun request, 0 overfull `\hbox`, two overfull `\vbox`). It is **not** the arXiv v3 PDF: it carries the edits made after submission (README.md, "`paper/main.pdf` is the v3 manuscript"). Rebuild it at the end of any editing pass, then run `make pra`. |
+| `main.pdf` | The compiled v3 manuscript — **68 pp**: main text pp. 1–28 (p. 28 holds the end of Sec. X, the acknowledgments and Appendix A, the proof of Theorem 1), the reference list pp. 29–33, then the Supplemental Material from p. 34; rebuilt on 2026-09-30 after the last source edit with the two `pdflatex` passes of `make paper` (0 errors, 0 undefined references or citations, no rerun request, 0 overfull `\hbox`, 0 overfull `\vbox` and no float-too-large warning after the layout pass of that day, which changed no text (before it, two overfull `\vbox`, 24.3 pt on p. 48 and 5.0 pt on p. 55, and a float-too-large warning of 30.2 pt for Fig. 3); `KNOWN_DISCREPANCIES.md` §34; the build of 2026-09-28, late, had one overfull `\vbox`, 12.8 pt on p. 48). Before the review pass of that day it was 66 pp (main text pp. 1–26, references pp. 27–31, SM from p. 32). It is **not** the arXiv v3 PDF: it carries the edits made after submission (README.md, "`paper/main.pdf` is the v3 manuscript"). Rebuild it at the end of any editing pass, then run `make pra`. |
 | `main_pra.tex` | The **Physical Review A** main-text driver (added 2026-09-28). It holds no text of the paper: it runs `main.tex` itself and ends the document where `main.tex` opens the Supplemental Material (`\input{sm_begin.tex}`), i.e. after the reference list. It adds only `xr-hyper` (SM labels read from `sm_pra.aux`, `[nocite]`), the drop of REVTeX's duplicated bookkeeping labels, and four values written to `main_pra.aux` for `sm_pra.tex`. |
 | `sm_pra.tex` | The **Physical Review A** Supplemental Material driver (added 2026-09-28). It runs `main.tex`, skips everything before `\input{sm_begin.tex}`, runs the SM `\input` list of `main.tex` (so the SM opens on p. 1 with the title block of `sm_begin.tex`), restores the theorem/proposition/footnote counters and REVTeX's table-strut state from `main_pra.aux`, and ends with a reference list of only the works the SM cites, in the order it first cites them, each entry taken as tokens from `bibliography.tex` at build time. |
 | `pra_split.py` | Builds and checks the two drivers: `python paper/pra_split.py --build` (or `make pra`) builds `main.tex`, then `main_pra` and `sm_pra` alternately until neither asks for a rerun, in a temporary copy of `paper/`, and copies only `main_pra.pdf` and `sm_pra.pdf` back. It exits non-zero unless both logs have 0 errors, 0 undefined or multiply defined labels and citations and no overfull box or warning line the `main.tex` build lacks; the SM reference list equals the SM's citations in first-citation order; the APS reference to the SM names exactly the works cited only in the SM; and every page of `paper/main.pdf` is in exactly one of the two PDFs (main text pixel-identical below the page number; SM identical up to citation numbers, line for line). `--compare` runs only the page comparison. Needs `pdflatex`, `pdftotext`, `pdftoppm`, Pillow and an `xr-hyper` of 2023 or later (for `[nocite]`; built with v7.01o). Build `main.pdf` first: it is what the pages are compared against. |
-| `main_pra.pdf`, `sm_pra.pdf` | The two builds of 2026-09-28: `main_pra.pdf` 31 pp. (= `main.pdf` pp. 1–31), `sm_pra.pdf` 38 pp. (35 pp. of SM = `main.pdf` pp. 32–66, then 3 pp. of its own reference list). Regenerate with `make pra`. |
+| `main_pra.pdf`, `sm_pra.pdf` | The two builds of 2026-09-30: `main_pra.pdf` 33 pp. (= `main.pdf` pp. 1–33, pixel-identical below the page number), `sm_pra.pdf` 38 pp. (35 pp. of SM = `main.pdf` pp. 34–68, 20 pixel-identical and 15 differing in citation numbers only (19 and 16 before the layout pass of 2026-09-30), then 3 pp. of its own reference list, 92 entries; 18 / 17 and 90 entries in the builds of 2026-09-28). Regenerate with `make pra`. |
 | `arxiv-submission.tar.gz` | The **frozen arXiv v2** bundle: 49 entries, 47 files. It is kept deliberately as the byte-exact record of what was posted, and must never be re-uploaded — it still carries the seven v2 body files, the withdrawn figures and the two fabricated rows of `figs/sqw_edges.dat`. Live comparison: `python src/check_tarball.py` (measured 2026-09-26: 9 byte-identical, 17 differ, 21 bundle-only). v3 was built separately, by `src/build_arxiv_bundle.py` (`ARXIV_SUBMISSION.md`). |
 
 ---
 
-## `src/` — 62 scripts at the root, run from the repository root as `python src/<name>.py`; 28 more in `src/frontier/` and 8 files in `src/recovered/`
+## `src/` — 66 scripts at the root, run from the repository root as `python src/<name>.py`; 29 more in `src/frontier/` and 9 files in `src/recovered/`
 
 ### The checkers
 
 | File | Purpose |
 |---|---|
-| `verify.py` | **The adversarial guardian** (~15–35 s, numpy/scipy only). Recomputes the half-filled Hubbard ground states for both boundary conditions (open chain 9.6047, periodic ring 9.3851) and the geminal witness from first principles, then checks **874 checks / 9 891 numeric assertions** across `data/*.json`, `data/c3_frontier/*.json`, `paper/*.tex` (the abstract included), `paper/figs/*.tex` and `paper/figs/*.dat` against them. Its section **(10b)** opens the 54 C3 point files and re-derives all 204 grid rows — see [`C3_FRONTIER.md`](C3_FRONTIER.md) §7; seven negative controls for that section fire and name the defect. Exits non-zero and names the defect. `[XFAIL]` lines are registered open defects (`KNOWN_OPEN`), open claims (`CLAIMS_OPEN`) and declared coverage gaps (`COVERAGE_GAP_V3`); they do not set the exit code. `--fast` is for editing loops and **certifies nothing** (it exits 3). |
+| `verify.py` | **The adversarial guardian** (~15–35 s, numpy/scipy only). Recomputes the half-filled Hubbard ground states for both boundary conditions (open chain 9.6047, periodic ring 9.3851) and the geminal witness from first principles, then checks **934 checks / 11 674 numeric assertions** across `data/*.json`, `data/c3_frontier/*.json`, `paper/*.tex` (the abstract included), `paper/figs/*.tex` and `paper/figs/*.dat` against them. Its section **(10b)** opens the 54 C3 point files and re-derives all 204 grid rows — see [`C3_FRONTIER.md`](C3_FRONTIER.md) §7; seven negative controls for that section fire and name the defect. Exits non-zero and names the defect. `[XFAIL]` lines are registered open defects (`KNOWN_OPEN`), open claims (`CLAIMS_OPEN`) and declared coverage gaps (`COVERAGE_GAP_V3`); they do not set the exit code. `--fast` is for editing loops and **certifies nothing** (it exits 3). |
 | `check_figures.py` | Regenerates eight generators into a throw-away tree — the six of 2026-09-19 and the two recovered into `src/recovered/` on 2026-09-26 — and diffs 19 artefacts against the committed ones; one provenance-timestamp comment line of the Fig. 6 fragment is normalised, and the run says so. It writes nothing into the repository (`KNOWN_DISCREPANCIES.md` §25, §29). |
 | `check_provenance.py` | **New, 2026-09-19.** Derives the figure inventory from `paper/main.tex` and fails if `FIGURE_PROVENANCE.md`, the `main.tex` float census or `check_figures.py`'s artefact list no longer describes the manuscript. Prints the orphan inventory (it scans `src/`, `src/frontier/` and, since 2026-09-26, `src/recovered/`). Nine self-tests with negative controls run first; it exits 2 if one does not fire. |
 | `check_coherence.py` | **New, 2026-09-19.** Checks the manuscript against itself: ten cross-section claims (the vacuity range, the published sizes, the largest sector, the hardware shot budget, the guardian counts quoted in the data statement, …) must be stated the same way wherever they are stated; two synthetic controls per check. |
@@ -153,8 +155,10 @@ line-level `\input` expander finds two floats in this manuscript instead of thir
 |---|---|---|
 | `sqw_lanczos.py` | Exact `S(q,ω)` (density response, N sector). **Needs `--eta 0.18`**; it refuses to run at its 0.20 default (§1, §16). | `sqw_L12.json` |
 | `spin_lanczos.py` | Exact `S^zz(q,ω)`, the spin channel (at L=12 a set of discrete poles; v3 calls it neither gapless nor a continuum, Sec. VIII). | `spinqw_L12.json`, `figs/spinqw_edges.dat` |
+| `spin_peak_deviation.py` | Added 2026-09-28 (late): the deviation of the plotted spin peak (the grid argmax of each broadened line of `spinqw_L12.json`) from the des Cloizeaux–Pearson boundary, the percentages the Fig. 8 caption prints (about 3 % for q ≤ π/2, 10 % at 2π/3, 29 % at 5π/6); `verify.py` recomputes every row. | `spin_peak_deviation.json` |
 | `sampled_akw.py` | `A(k,ω)` on the Born-ranked subspace — the **infinite-shot limit** of the protocol, not a finite-shot run. | `sampled_akw_L8.json` |
 | `sampled_honest.py`, `honest_sampling_scaling.py` | The measured **finite-shot** sweeps that Table S6 and Fig. 3(c) report. | `sampled_honest.json`, `honest_sampling.json` |
+| `fig3_finite_shot.py` | The finite-shot run of the literal Fig. 3(a,b) configuration (T = 2.6e6 and 5.2e6 shots per channel, 4 seeds, all 16 channels) and its post-processing: every finite-shot number of the Fig. 3 caption and Sec. S1. Written 2026-09-19, recovered from the session transcript and deposited 2026-09-28 (`KNOWN_DISCREPANCIES.md` §31); `--summary` prints the caption numbers. | `fig3_finite_shot_T2.6e6.json`, `fig3_finite_shot_T5.2e6.json` |
 | `spectral_validation_max.py` | Max-level validation of the sampled `A(ω)` (Hubbard L=6, U/t=8). | `method_max.json` |
 | `charge_gap_ed.py` | μ⁺, μ⁻ and the Mott gap Δ of the half-filled ring, L=6…12, by sector diagonalization. | `charge_gap.json` |
 | `gap_scaling.py` | Finite-size scaling of the **two** gaps (spin and charge) with a Heisenberg control. | `gap_scaling.json` |
@@ -182,6 +186,7 @@ line-level `\input` expander finds two floats in this manuscript instead of thir
 | `n19_spectral.py` | Suite-wide sampled `A(ω)` reconstruction. **Needs `pyscf`.** | `n19_spectral.json` |
 | `n2_hero_data.py` | N₂ dissociation: spectrum and resources together; the `F₁=2Nᵤ` identity. **Needs `pyscf`.** | `n2_hero.json`, `figs/hero_*.dat` |
 | `cost_vs_entanglement.py` | The 30-point Hubbard sweep: the cost is governed by χ, not `F₁`. | `cost_vs_ent.json` |
+| `free_fermion_support.py` | Added 2026-09-28 (late): the four free-fermion (U = 0) site-basis supports of Secs. VI and S13, `\|S\|_{ε_w}` = 35, 336, 3496, 37361 for L = 4, 6, 8, 10 — open chain, half filling, the smallest determinant set carrying all but ε_w = 2.5e-3 of the weight, inclusive at the exact four-way tie of L = 4 (a strict cut gives 36). Until then hand-typed constants with no producer; `verify.py` recomputes the counts independently and checks both sentences. | `free_fermion_support.json` |
 | `ladder_vs_chain.py` | Chain vs two-leg ladder at matched `F₁`. | `ladder_vs_chain.json` |
 | `gate1_ladder.py` | Response-targeted selection on the ladder. **Its output is not deposited** (§13). | — |
 | `stats_resource.py` | Every published correlation, stratified; the exact permutation test. | `stats_resource.json` |
@@ -223,7 +228,7 @@ is deliberately out of `make figures` and out of `check_figures.py` (§3).
 
 ---
 
-### `src/frontier/` — 28 scripts, the C3 certificate-frontier sweep (deposited 2026-09-19; four more on 2026-09-25)
+### `src/frontier/` — 29 scripts, the C3 certificate-frontier sweep (deposited 2026-09-19; four more on 2026-09-25; `rerank_L14.py` on 2026-09-28)
 
 Sec. V used to be the one part of the manuscript a reader could not regenerate. This is what closes
 that. Full reproduction instructions, per-file costs and the declared gaps are in
@@ -237,10 +242,10 @@ renaming them would have meant rewiring the import graph rather than moving path
 | **C — the proof ladder** | `fron_lib.py`, `run_ladder.py`, `verdict.py` | the exact five-rung instrumentation of the Theorem-B proof — no Krylov anywhere — and the verdict on how much of the frontier is Cauchy–Schwarz and how much is physics |
 | **D — adversarial re-runs** | `z_fine.py`, `z_rank.py`, `z_e0.py`, `z_suppK.py` | the four re-runs named in the provenance note of `paper/sec_5_body.tex`: fine-grained frontier, ranking sensitivity, an *estimated* E₀, and the support of the Krylov space |
 | **D′ — the support of the Krylov space, measured (2026-09-25)** | `z_kblock.py`, `z_momseed_support.py`, `z_suppK_power.py`, `z_suppK_sym.py` | the momentum-block route of Sec. V E (the Krylov space of a momentum probe lies in one momentum block, dim/L determinants); the coordinate support of the momentum seeds of Fig. 3 at L=6 and 8; the support of K(H, φ) by powers (a lower bound, for the sizes where the projector cannot be stored); and the corrected estimator, exact in the reflection symmetry. Outputs in `data/c3_frontier/adversarial/` |
-| **E — published fractions** | `pubsum.py`, `run_L14.py` | the four points at the fractions the manuscript actually publishes, and the L=14 point at FR=0.08 |
+| **E — published fractions** | `pubsum.py`, `run_L14.py`, `rerank_L14.py` | the four points at the fractions the manuscript actually publishes, and the L=14 point at FR=0.08; `rerank_L14.py` (2026-09-28, late) re-runs the K=18 ranking protocol at L=14 on the deposited checkpoint and compares the selection with the stored `ckpt/L14_order.npy` as sets (`C3_FRONTIER.md` §5) |
 | **F — post-processing** | `calib_oos.py`, `null_ws4.py`, `null_ws5.py`, `null_ws6.py`, `null_ws7.py` | zero new compute: the out-of-sample test of the calibration, and the null a referee will propose — does `1−w_S` locate the error as well as the certificate? |
 
-### `src/recovered/` — 8 files, recovered 2026-09-26
+### `src/recovered/` — 9 files: 8 recovered 2026-09-26, and `n3_fig5_whiskers.py` added 2026-09-28
 
 Two figure generators and the scripts behind two of their inputs, written on 2026-09-18 in the
 author's session scratch directory and never committed until they were recovered on 2026-09-26. The
@@ -249,14 +254,15 @@ folder's `README.md` gives the detail; `KNOWN_DISCREPANCIES.md` §29 the measure
 | File | Status | Purpose |
 |---|---|---|
 | `make_fig_gapscaling.py` | ported, guarded | Fig. 6 (`fig:gapscaling`) → `paper/figs/fig_gapscaling_native.tex`; caption and facts to `build/` |
-| `build_n3.py` | ported, guarded | the ten `paper/figs/n3_*.dat` of Fig. S5 from `data/thm1iii_violation/` |
+| `build_n3.py` | ported, guarded | the ten `paper/figs/n3_*.dat` of Fig. S5 from `data/thm1iii_violation/` (the two thm3 JSONs) and, since 2026-09-28 (late), the deposited `data/cert_{stress,akw,teqsci}.json` — no longer the earlier run in `cert_earlier_run/` |
+| `n3_fig5_whiskers.py` | added 2026-09-28 (late), guarded | run after `build_n3.py`: the min/median/max whiskers of the 64 Fig.-3 rows, written to `data/thm1iii_violation/n3_fig5_summary.json` and into the two whisker blocks of the Fig. S5 fragment (what `fix_n3_fig5_series.py` did once by hand) |
 | `fix_n3_fig5_series.py`, `fix_n3_caption.py` | record — do not run | the one-shot patchers of the Fig. S5 fragment and caption |
 | `thm3_run.py`, `thm3_core.py`, `thm3_L8b.py` | record (numpy 1.x) | the producers of `thm3_results.json` and `thm3_L8b.json` |
 | `README.md` | — | what was recovered, what was changed, what was measured |
 
 ---
 
-## `data/c3_frontier/` — 95 files, the C3 sweep itself
+## `data/c3_frontier/` — 96 files, the C3 sweep itself (`published_fraction/L14_rerank.json`, the K=18 ranking re-run at L=14, added 2026-09-28, late; `C3_FRONTIER.md` §5)
 
 54 point files, the 204-row grid they aggregate to, three gate outputs, three proof ladders, the
 verdict, and three sub-directories (`published_fraction/`, `adversarial/` — including the Krylov-support
@@ -266,16 +272,19 @@ excluded from the arXiv package, so the deposit costs the submission nothing.
 
 ---
 
-## `data/` — 38 datasets at the root, and three sub-directories
+## `data/` — 43 datasets at the root, and three sub-directories
 
 | file | feeds |
 |---|---|
 | `akw_lanczos_L12.json` | Fig. 4 `fig:lattice` (exact `A(k,ω)`, L=12) |
 | `sampled_akw_L8.json` | Fig. 3(a,b) `fig:akwsampled` |
 | `sampled_honest.json`, `honest_sampling.json` | Fig. 3(c) and Table S6 (the finite-shot sweeps) |
+| `fig3_finite_shot_T2.6e6.json`, `fig3_finite_shot_T5.2e6.json` | the finite-shot paragraph of the Fig. 3 caption and Sec. S1 (the configuration of Fig. 3(a,b) at finite shots; each file carries its reproduction check on the former window) |
 | `method_max.json` | Fig. 2 `fig:method` + `figs/aw_method.dat` |
 | `sqw_L12.json` | Fig. 7 `fig:sqw` + `figs/sqw_edges.dat` |
 | `spinqw_L12.json` | Fig. 8 `fig:spin` + `figs/spinqw_edges.dat` |
+| `spin_peak_deviation.json` | the peak-dispersion percentages of the Fig. 8 caption (2026-09-28, late) |
+| `free_fermion_support.json` | the four free-fermion supports printed in Secs. VI and S13 (2026-09-28, late) |
 | `gap_scaling.json` | Fig. 6 `fig:gapscaling` (and Table V) |
 | `charge_gap.json` | the Δ = 4.97 t of Sec. VIII and Table V |
 | `pole_structure.json` | Table S7 `tab:poles` |
@@ -301,7 +310,7 @@ excluded from the arXiv package, so the deposit costs the submission nothing.
 | `amortized_recovery.json` | **not used by the paper** — no figure, no table and no number in the text |
 | `sqw_edges_provenance.json` | the provenance record of `figs/sqw_edges.dat` |
 | `sampled_akw_figure_numbers.json` | the number→source manifest of Fig. 3 |
-| `thm1iii_violation/` (7 files, 2026-09-26) | the inputs of Fig. S5: `thm3_results.json`, `thm3_L8b.json`, `n3_fig5_summary.json`, the three earlier-run certificate scans in `cert_earlier_run/`, and a `README.md` |
+| `thm1iii_violation/` (7 files, 2026-09-26) | the inputs of Fig. S5: `thm3_results.json`, `thm3_L8b.json`, `n3_fig5_summary.json` (rewritten by `n3_fig5_whiskers.py` since 2026-09-28, late), the three earlier-run certificate scans in `cert_earlier_run/` (a record since that day: the pool is built from the deposited `data/cert_*.json`), and a `README.md` |
 | `c3_frontier/` (95 files) | Sec. V and Tables III, S1–S3 — see above and [`C3_FRONTIER.md`](C3_FRONTIER.md) |
 
 Backups (`*_backup.json`) are not the plotted data and are `.gitignore`d.
@@ -329,15 +338,17 @@ an orphan does not remove it from tier 1.
 *Left tier 1 on 2026-09-26: `paper/figs/n3_fig5_eta.dat` and `n3_fig5_frac.dat`, the 64 Fig.-3 rows
 summarised into the whiskers of Fig. S5 — `src/recovered/build_n3.py` now writes them.*
 
-### Tier 2 — code names it, the manuscript does not use it (46)
+### Tier 2 — code names it, the manuscript does not use it (51)
 
 Mostly datasets whose figure was withdrawn or whose only remaining reader is the guardian:
 `gflow.json`, `amortized_recovery.json`, `headtohead_ms.json`, the six certificate files,
 `eta_sweep.json`, `support_witness.json`, `sampled_akw_figure_numbers.json`,
 `figs/figure_numbers.json`, the seven `.dat` tables read only by standalone sources
 (`hero_aw.dat`, `hero_res.dat`, `heron.dat`, `heron_hw.dat`, `noise.dat`, `spinqw_edges.dat`,
-`sqw_edges.dat`), and, since 2026-09-26, the two `n3_fig5_*.dat` that `src/recovered/build_n3.py`
-writes. **None of these is a defect** — a dataset with a producer and a guardian is doing
+`sqw_edges.dat`), since 2026-09-26 the two `n3_fig5_*.dat` that `src/recovered/build_n3.py`
+writes, and since 2026-09-28 the two `fig3_finite_shot_T*.json` behind the finite-shot paragraph of the Fig. 3
+caption (a caption quotes them; no float reads them; `verify.py` checks every printed value against them), and since late that day `free_fermion_support.json` and `spin_peak_deviation.json`, read by `verify.py` and quoted by two sentences and a caption.
+*(Counted by `python src/check_provenance.py -v` on 2026-09-28, late: 51; 49 earlier that day.)* **None of these is a defect** — a dataset with a producer and a guardian is doing
 its job — but none of them is load-bearing for the v3 manuscript either.
 
 ### Tier 3 — the manuscript typesets it and no deposited code names it (6)

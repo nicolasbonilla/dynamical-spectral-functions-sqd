@@ -1,57 +1,25 @@
 % =====================================================================================
-%  Sec. 2 -- One sampling primitive, four channels: what is reconstructed from shots.
+%  Sec. 2 -- One sampling primitive, four channels: which are reconstructed and which
+%  are references.
 %
-%  REPLACES release/paper/method.tex IN FULL.  It keeps that file's three labels
-%  (sec:method, eq:lehmann, eq:green), which are referenced from results.tex,
-%  hardware.tex, sec_3_1.tex, sec_4.tex and sec_8.tex, and keeps its whole citation
-%  lineage.  It drops the closing sentence of method.tex (lines 82-88) that invoked the
-%  retracted Theorem 1(iii), and installs in its place the drop-in agreed in sec_3_1.tex.
+%  LABELS DEFINED HERE:  sec:method  eq:lehmann  eq:green  sec:method:krylov
+%                        sec:method:rr  sec:method:provenance  eq:ritz  tab:provenance
+%                        fig:circ (the float is declared in this file)
 %
-%  LABELS DEFINED HERE:  sec:method (kept)  eq:lehmann (kept)  eq:green (kept)
-%                        sec:method:krylov  sec:method:rr  sec:method:provenance
-%                        sec:method:budgets  eq:ritz  tab:provenance
-%
-%  EXTERNAL LABELS USED (must exist in the v3 tree):
-%    thm:leakage  eq:twobudget  sec:leakage  sec:retraction        [Sec. 3]
-%    sec:moments  thm:moments   prop:shots                         [Sec. 4, sec_4.tex]
-%    sec:frontier                                                  [Sec. 5]
-%    sec:nogo                                                      [Sec. 6, sec_6.tex]
-%    sec:prices   tab:finiteshot                                   [Sec. 7, sec_7.tex]
-%    sec:honest                                                    [discussion.tex, EXISTS]
-%    fig:circ fig:method fig:hero fig:heron fig:lattice fig:akwsampled
-%    fig:sqw fig:spin fig:scaling  tab:molecules                   [all EXIST in the tree]
-%
-%  FLOAT MOVED, CAPTION UNCHANGED: the fig:circ float is reproduced at the end of this
-%  file exactly as it stands at hardware.tex:19-28, because Sec. 2 is now where it is
-%  first referenced and it must land on the same page spread.
-%  *** DELETE the float from hardware.tex when this file is installed, or \label{fig:circ}
-%      is defined twice. ***
-%
-%  %TODO(results.tex:85): the clause "not the exact target of Fig.~\ref{fig:lattice}, but
-%  the \emph{sampled} output" in the caption of fig:akwsampled is superseded by the
-%  rebuilt caption (p2_figs/fig5_caption.tex) and by Table~\ref{tab:provenance} here.  It
-%  must not survive anywhere in the v3 tree.
-%
-%  %TODO(abstract): the published abstract of v1-v2 reads, verbatim (checked against the
-%  deposited submission tarball), "we reconstruct, from sampled subspaces, the
-%  single-particle spectral function A(omega) and its momentum-resolved form A(k,omega);
-%  the same primitive TARGETS the neutral-sector dynamical structure factors S(q,omega)
-%  and S^zz(q,omega)".  Only the A(k,omega) half of the first clause is wrong, and this
-%  section is its repair; the "targets" clause is already correct and must not be turned
-%  into a confession that was never owed.  See the report.
-%
-%  DEPOSIT, checked 2026-09-18: DISCHARGED.  release/data/sampled_honest.json and
-%  release/data/honest_sampling.json are both present, with sampled_honest.py and
-%  honest_sampling_scaling.py in release/src/.  The shot budgets this table quotes are
-%  regenerable from the deposit.
+%  DEPOSIT: release/data/sampled_honest.json and release/data/honest_sampling.json, with
+%  sampled_honest.py and honest_sampling_scaling.py in release/src/.  The shot budgets
+%  Table tab:provenance quotes are regenerable from the deposit; src/verify.py checks the
+%  Table I and Sec. II D budgets of the Fig. akwsampled configuration against
+%  data/fig3_finite_shot_T*.json.
 % =====================================================================================
 
-\section{One sampling primitive, four channels: what is reconstructed from shots, and what is not}
+\section{One sampling primitive, four channels: which are reconstructed and which are references}
 \label{sec:method}
 
-This section states the measurement primitive, fixes the one definition the rest of the paper turns on,
-and says, channel by channel, which objects here were reconstructed from a finite number of
-measurements and which are full-sector references computed classically.
+The quantum processor is asked for one thing: computational-basis bitstrings of a time-evolved
+response seed. The subspace those bitstrings name, its diagonalization and every spectral function built
+on it are computed classically, and Table~\ref{tab:provenance} states, channel by channel, which objects
+here were reconstructed from measurements and which are full-sector references.
 
 \subsection{Construction}
 For a Hamiltonian $\hat H$ with $N$-electron ground state $\lvert 0\rangle$ of energy $E_0$, the
@@ -88,8 +56,8 @@ whose imaginary part is the Lorentzian-broadened $A_{pq}(\omega)$ at resolution 
 the channel: charged seeds $\hat c^\dagger_q\lvert 0\rangle$ in the $(N{\pm}1)$ sectors give $A(\omega)$
 and, by Fourier transform of $G_{pq}$, $A(k,\omega)$; number-conserving density and spin seeds
 $\hat n_q\lvert 0\rangle,\ \hat S^z_q\lvert 0\rangle$ in the neutral $N$ sector give $S(q,\omega)$ and
-$S^{zz}(q,\omega)$. The processor measures \emph{only} bitstrings. Figure~\ref{fig:circ} schematizes the
-primitive --- what one circuit and one readout can address; Table~\ref{tab:provenance} states separately
+$S^{zz}(q,\omega)$. Figure~\ref{fig:circ} schematizes the
+primitive---what one circuit and one readout can address; Table~\ref{tab:provenance} states separately
 what was actually run for each channel here.
 
 % --- float declaration moved here (placement only): it now follows the
@@ -100,7 +68,7 @@ what was actually run for each channel here.
 % -------------------------------------------------------------------------------------
 \begin{table*}[tp]\centering\small
 \caption{\textbf{Provenance of every dynamical object in this paper: the subspace it was built on, and
-the measurements that built it.} ``Full sector'' means no subspace selection of any kind --- the
+the measurements that built it.} ``Full sector'' means no subspace selection of any kind---the
 continued fraction runs on the whole sector at the stated recursion depth $n_\ell$, so the row is a
 reference against which reconstructions are scored, not a reconstruction. ``Observed bitstrings'' means
 the subspace is the union of the distinct bitstrings actually returned by $T$ draws split evenly over
@@ -117,13 +85,15 @@ are per channel and per stream.}
 \toprule
 \raggedright \textbf{Channel and system} & \raggedright \textbf{Shown in} & \raggedright \textbf{Determinant subspace} & \raggedright \textbf{Shots $T$}\tabularnewline
 \midrule
-\raggedright $A(\omega)$; Hubbard $L{=}6$, $U/t{=}8$, $\eta{=}0.15\,t$; $\dim=300$
+\raggedright $A(\omega)$; open Hubbard chain $L{=}6$, $U/t{=}8$, $\eta{=}0.15\,t$; $\dim=300$
  & \raggedright Fig.~\ref{fig:method}
- & \raggedright observed bitstrings; $|\mathcal S|=245$ of $300$ in panel~(a), $242.5$ on average in panel~(b)
+ & \raggedright observed bitstrings, plus the largest-amplitude determinant of the probe, inserted and not
+   drawn; $|\mathcal S|=245$ of $300$ in panel~(a), $242.5$ on average in panel~(b)
  & \raggedright $5.2\times10^{4}$ per stream ($4\times10^{3}$ at each of $13$ snapshots, $K{=}12$), $8$ streams\tabularnewline
 \raggedright $A(\omega)$, orbital projected; $19$ molecules at dissociation; $\dim=2$--$300$
  & \raggedright Table~\ref{tab:molecules}
- & \raggedright observed bitstrings; the fraction $|\mathcal S|/D$ is the last column of that table
+ & \raggedright observed bitstrings, plus the largest-amplitude determinant of the probe, inserted and not drawn; the
+   fraction $|\mathcal S|/D$ is the last column of that table
  & \raggedright $2.16\times10^{5}$ per molecule ($8\times10^{3}$ at each of $27$ snapshots, $K{=}26$), one stream\tabularnewline
 \raggedright $A(\omega)$; $\mathrm{N_2}$ along dissociation, CAS$(6,6)$
  & \raggedright Fig.~\ref{fig:hero}(a)
@@ -132,8 +102,8 @@ are per channel and per stream.}
 \raggedright $A(\omega)$; hardware, \texttt{ibm\_fez}, $L{=}6$, $U/t{=}4$, $\eta{=}0.15\,t$; $\dim=300$
  & \raggedright Fig.~\ref{fig:heron}(a)
  & \raggedright post-selected from device bitstrings read in reversed bit order, so every retained shot is a
-   device error (Sec.~\ref{sec:scope:hw}); $|\mathcal S|=300$ of $300$, the entire sector, so the agreement
-   with the exact curve is exact by coverage and is not a fidelity measurement
+   device error (Sec.~\ref{sec:scope:hw}); $|\mathcal S|=300$ of $300$, the entire sector, so the reconstruction
+   equals the exact $A(\omega)$ by coverage
  & \raggedright $3.5\times10^{5}$: $5\times10^{4}$ on each of $7$ circuits, $k{=}0$ (the $t{=}0$
    reference) to $k{=}6$\tabularnewline
 \midrule
@@ -143,9 +113,9 @@ are per channel and per stream.}
  & \raggedright none\tabularnewline
 \raggedright $A(k,\omega)$; $L{=}8$, $\eta{=}0.18\,t$; $\dim=3920$
  & \raggedright Fig.~\ref{fig:akwsampled}(a,b)
- & \raggedright Born ranking, $3332$ of $3920$ per channel, over $K{=}16$ snapshots
- & \raggedright none: (a)--(b) are the $T\to\infty$ limit; at finite shots the same configuration
-   takes $5.2\times10^{6}$ per channel (see text)\tabularnewline
+ & \raggedright Born ranking, $3332$ of $3920$ per channel, over $17$ snapshots ($K{=}16$)
+ & \raggedright none: (a)--(b) are the $T\to\infty$ limit; at finite shots $5.2\times10^{6}$ per channel
+   suffice and $2.6\times10^{6}$ do not (see text)\tabularnewline
 \raggedright $A(\omega)$; $L{=}8$, $\eta{=}0.15\,t$; $\dim=3920$
  & \raggedright Fig.~\ref{fig:akwsampled}(c)
  & \raggedright observed bitstrings; sector fraction $0.835\pm0.0025$ at the largest budget
@@ -187,39 +157,45 @@ spectral functions $A(\omega)$ and $A(k,\omega)$ (photoemission/ARPES), while nu
 and spin seeds $\hat n_q|0\rangle,\hat S^z_q|0\rangle$ in the $N$ sector give the dynamical structure
 factors $S(q,\omega)$ and $S^{zz}(q,\omega)$ (neutron~\cite{squires2012} and resonant inelastic
 X-ray~\cite{ament2011} scattering)---all from \emph{one} sampling
-primitive, the seed selecting the sector and hence the subspace. The four channels are realized in Figs.~\ref{fig:method} ($A(\omega)$),
-\ref{fig:lattice} ($A(k,\omega)$), \ref{fig:sqw} ($S(q,\omega)$), and \ref{fig:spin}
-($S^{zz}(q,\omega)$).}\label{fig:circ}\end{figure*}
+primitive, the seed selecting the sector and hence the subspace. Here $A(\omega)$ is reconstructed from sampled bitstrings
+(Fig.~\ref{fig:method}) and $A(k,\omega)$ on a Born-ranked subspace, the infinite-shot limit of the
+protocol (Fig.~\ref{fig:akwsampled}); the $A(k,\omega)$ of Fig.~\ref{fig:lattice}, $S(q,\omega)$ and
+$S^{zz}(q,\omega)$ are full-sector references, not reconstructed here (Table~\ref{tab:provenance}).}\label{fig:circ}\end{figure*}
 
 
 \subsection{Relation to quantum subspace and Krylov methods}\label{sec:method:krylov}
-In exact arithmetic the span of the time-evolved seeds is the order-$K$ polynomial Krylov
-space~\cite{shen2023,kirby2023}, and diagonalizing $\hat H$ inside a subspace containing it is the route
+For equally spaced snapshots the span of the $K{+}1$ time-evolved seeds is the order-$K$ Krylov
+space of the propagator $e^{-i\hat H\Delta t}$~\cite{shen2023}, a real-time counterpart of the
+polynomial Krylov space $\operatorname{span}\{\phi,\hat H\phi,\dots,\hat H^{K}\phi\}$, which block
+encoding builds exactly without time evolution~\cite{kirby2023}; diagonalizing $\hat H$ inside a
+subspace containing such a space is the route
 of quantum subspace expansion~\cite{mcclean2017qse}, filter diagonalization~\cite{parrish2019} and
 real-time quantum Krylov algorithms~\cite{cortesgray2022}, whose error theory is now
 characterized~\cite{epperly2022}. What distinguishes the present method is that these states are used
-not to \emph{estimate matrix elements}~\cite{bauer2016,endo2020,rungger2020,greenediniz2024,bespalova2025,onqse2024}
---- the step requiring Hadamard tests or quantum equation-of-motion measurements on the device --- but
+not to \emph{estimate matrix elements}~\cite{bauer2016,endo2020,rungger2020,greenediniz2024,bespalova2025,onqse2024}---the step requiring Hadamard tests, compute--uncompute overlaps, Hamiltonian-moment or quantum equation-of-motion measurements on the device---but
 as a \emph{sampling distribution} selecting a determinant
 subspace~\cite{robledomoreno2025,kanno2023,skqd2025,teqsci2024,extsqd2025,adaptqsci,shirakawa2025},
 extended since to embedded fragments and to auxiliary-field
 post-processing~\cite{shajan2024,danilov2025}, and here lifted to the $(N{\pm}1)$ manifold and to a
-frequency-resolved observable. That lineage stops at
-energies and, at most, discrete levels: the closest published results are a QSCI quasiparticle band
+frequency-resolved observable. Apart from the concurrent Green's-function extension of Ref.~\cite{patel2026}
+(Sec.~\ref{sec:intro}), that lineage stops at
+energies, static correlators and, at most, discrete levels: the closest published results are a QSCI quasiparticle band
 structure returning discrete poles~\cite{ohgoe2025}, a molecular spectrum built from a neutral-sector
 autocorrelation with classically projected long-time dynamics~\cite{santini2025}, and, from the
 measured-overlap side rather than the sampled one, a dynamical structure factor of a Kitaev spin
 liquid obtained by quantum subspace expansion~\cite{umeano2025}, or a hybrid quantum--classical
 framework for many-fermion response and structure~\cite{du2026}. Closest on lattice models, Nogaki
-\emph{et al.}~\cite{nogaki2025} apply symmetry-adapted SQD to ground-state \emph{energies}, and Wray
+\emph{et al.}~\cite{nogaki2025} apply symmetry-adapted SQD to ground- and excited-state \emph{energies} and a
+\emph{static} superconducting pair correlation of the two-leg Hubbard ladder, and Wray
 \emph{et al.}~\cite{wray2025} measure how SQD converges on a variable-length cuprate chain. The readout
-is that of SQD, the circuits are those of sample-based Krylov
-diagonalization~\cite{skqd2025,yoshioka2025,piccinelli2025}, and all dynamical information is assembled
+is that of SQD, the circuits are the Trotterized Krylov evolutions of Krylov quantum
+diagonalization~\cite{yoshioka2025}, sampled as in sample-based Krylov
+diagonalization~\cite{skqd2025,piccinelli2025}, and all dynamical information is assembled
 classically through Eq.~\eqref{eq:green} by one continued-fraction
 resolvent~\cite{haydock1972,golub2010}.
 
 \subsection{What the subspace reconstruction is: Rayleigh--Ritz, not restriction}\label{sec:method:rr}
-Step~\emph{(3)} is the definition the rest of this paper turns on, and it is stated before it is used.
+Step~\emph{(3)} is the definition the rest of this paper turns on.
 With $P_{\mathcal S}$ the orthogonal projector onto the span of the determinants in $\mathcal S$ and
 $\phi$ the seed,
 \begin{widetext}
@@ -231,13 +207,13 @@ A_{\mathcal S}(\omega)=\frac{\eta}{\pi}\,
 \end{equation}
 \end{widetext}
 the spectral function of the \emph{Rayleigh--Ritz operator} $P_{\mathcal S}\hat HP_{\mathcal S}$, whose
-poles are the Ritz values $\tilde E_m$ of Eq.~\eqref{eq:green} --- not eigenvalues of $\hat H$ --- and
+poles are the Ritz values $\tilde E_m$ of Eq.~\eqref{eq:green}---not eigenvalues of $\hat H$---and
 not the restriction of $A$ to a subset of its own eigenpairs. The reproduction repository computes
 exactly this, at the small sizes by forming and diagonalizing the submatrix $\hat H[\mathcal S,\mathcal
 S]$ and at the large ones by a matrix-free restricted matrix--vector product inside the same continued
 fraction; the consequence is the mechanism of this paper: \emph{spectral weight the subspace retains is
 not kept in place, it is moved in $\omega$}. Truncation does not delete Lehmann poles, it displaces every surviving one, so the
-weight a subspace captures cannot by itself bound how far the reconstruction has moved --- which is why
+weight a subspace captures cannot by itself bound how far the reconstruction has moved---which is why
 no weight-only bound survives contact with Eq.~\eqref{eq:ritz} (Sec.~\ref{sec:retraction}), and why
 Theorem~\ref{thm:leakage} carries a second term indexed on the coupling
 $P_{\mathcal S}\hat HQ_{\mathcal S}$ across the boundary of $\mathcal S$, with $Q_{\mathcal S}$ the
@@ -250,16 +226,12 @@ Sec.~\ref{sec:retraction}.
 Table~\ref{tab:provenance} gives, for every dynamical object in this paper, the subspace it was built on
 and the measurements that built it. The neutral channels $S(q,\omega)$ and $S^{zz}(q,\omega)$, the
 $A(k,\omega)$ of Fig.~\ref{fig:lattice} and the $\mathrm{N_2}$ series of Fig.~\ref{fig:hero} are
-full-sector references computed by continued fraction, not reconstructions: the primitive targets
-those channels, and targeting a channel is not reconstructing it from measurements. The Born ranking of
+full-sector references computed by continued fraction, not reconstructions. The Born ranking of
 Fig.~\ref{fig:akwsampled}(a,b) and of the published curve of Fig.~\ref{fig:scaling} is the infinite-shot
-limit of the declared protocol---neither a clairvoyant oracle nor a finite-shot experiment---and its
-finite-shot replacement is measured with its budget: at $L=8$, $2.60\times10^{6}$ shots over $19$
-snapshots reach sector fraction $0.835\pm0.0025$ at relative $L_1$ error $(4.81\pm0.27)\times10^{-3}$
-(Fig.~\ref{fig:akwsampled}(c)), and the literal configuration of Fig.~\ref{fig:akwsampled}(a,b) takes
-$5.2\times10^{6}$ shots per channel. The branch sum rules are identities of the ground state, not
-measurements of a reconstruction; what is guaranteed in advance is moment exactness
-(Theorem~\ref{thm:moments}) and a shot count for high-probability configurations
-(Prop.~\ref{prop:shots}), and the second does not imply the first. The full declarations are in
-Sec.~\ref{sm:method}.
+limit of the declared protocol, and its finite-shot replacement is measured with its budget: at $L=8$,
+$2.60\times10^{6}$ shots over $19$ snapshots reach sector fraction $0.835\pm0.0025$ at relative $L_1$
+error $(4.81\pm0.27)\times10^{-3}$ (Fig.~\ref{fig:akwsampled}(c)), and the literal configuration of
+Fig.~\ref{fig:akwsampled}(a,b) reaches the accuracy of panel~(b) at $5.2\times10^{6}$ shots per channel
+and not at half that budget. The full declarations, including the branch sum rules and what is guaranteed
+in advance, are in Sec.~\ref{sm:method}.
 

@@ -30,12 +30,23 @@
                     % Three builds of this same source, measured:
                     %   twocolumn  59 pp, 5 overfull   -- the journal look
                     %              (measured 2026-09-19, before the SM restructuring)
-                    %   onecolumn  66 pp, 0 overfull (2026-09-28: main text pp. 1-26, p. 26
-                    %              holding the end of Sec. X and the acknowledgments,
-                    %              references pp. 27-31, SM from p. 32) -- this one
-                    %              (0 overfull \hbox; two overfull \vbox).  This line
+                    %   onecolumn  68 pp, 0 overfull (2026-09-28, after the review pass:
+                    %              main text pp. 1-28, p. 27 holding the end of Sec. X,
+                    %              the acknowledgments and the start of Appendix A,
+                    %              references pp. 29-33, SM from p. 34; it was 66 pp,
+                    %              main text pp. 1-26, before Appendix A) -- this one
+                    %              (0 overfull \hbox; one overfull \vbox in the SM,
+                    %              p. 48, 12.8 pt; until late on 2026-09-28 a second
+                    %              one, 10.9 pt on p. 43, which went when the footnote
+                    %              of Sec. S5 was folded into its paragraph).  This line
                     %              said "25-page main text" until 2026-09-28; the build
                     %              of 2026-09-25 also ended its main text on p. 26.
+                    %              2026-09-30: 0 overfull \hbox or \vbox and no
+                    %              float-too-large warning, after a layout pass that
+                    %              changed no text (docs/KNOWN_DISCREPANCIES.md s.34).
+                    %              Final pass, same day: the Sec. S5 rewording brought
+                    %              back 4.97 pt on p. 55; \looseness=-1 on one SM
+                    %              paragraph (sm_scope.tex, no word changed) removed it.
                     %   preprint  118 pp, 6 overfull   -- 12pt double-spaced, doubles it
                     %              (measured 2026-09-19, before the SM restructuring)
                     % One column costs three pages and removes three overfull boxes,
@@ -52,7 +63,9 @@
                     % stacks the three plainly under the name (AUTHOR BLOCK note below).
                     % Both forms were rendered and compared before choosing -- on
                     % 2026-09-19, when the block still had one affiliation.
-  nofootinbib,      % keep \footnote out of the reference list (3 footnotes in the text)
+  nofootinbib,      % keep \footnote out of the reference list (2 footnotes in the text;
+                    % 2026-09-28: the Sec. S5 footnote on 2N_u was folded into its paragraph, word
+                    % for word, because as an unsplittable insert it overfilled the Fig. S1 page)
   longbibliography, % INERT here: it only affects BibTeX output through apsrev4-2.bst,
                     % and this manuscript ships a hand-written thebibliography.  Kept
                     % so that a later switch to BibTeX needs no option change; delete
@@ -245,26 +258,28 @@ sample-based spectral functions}
 % at all -- verified against the class, not assumed.
 
 \begin{abstract}
-Sample-based quantum diagonalization builds a subspace from a device's measured bitstrings. From
-one protocol -- computational-basis samples of a real-time evolved probe, no Hadamard test -- we
-reconstruct the single-particle $A(\omega)$ and $A(k,\omega)$ of the 1D Hubbard model on that
-subspace. We prove that for Rayleigh--Ritz on any orthogonal projector the relative $L_1$ error
-lies between $1-w$ and $\min\{1+w,(1+\sqrt{w})(\sqrt{1-w}+\widehat\Lambda(\eta)/\eta)\}$, with
-$w$ the captured weight and $\widehat\Lambda$ the boundary coupling at resolution $\eta$,
-assembled from the Ritz pairs without the answer. Weight alone cannot certify: an analytic
+Sample-based quantum diagonalization returns a subspace of measured configurations;
+Rayleigh--Ritz on it yields a spectral function, and we ask what bounds its error. The captured
+Born weight $w$ alone does not: Rayleigh--Ritz displaces the poles it keeps, an analytic
 counterexample forces any bound indexed on it to its trivial value, and on the probe's support,
-where $w=1$ exactly, the error is still $0.35$--$0.43$ at $\eta=0.18\,t$ against a ceiling of
-$2$. A subspace containing the order-$K$ Krylov space reproduces the moments through order
-$2K+1$, and no further. Measured to dimension $10\,306\,296$, the bound is vacuous at every
-operating fraction of the resource scan, at all five sizes, by $1.66$--$8.61$, and informative
-only well above them; it crosses the trivial bound at a true error of $1.2$--$7.3\times10^{-3}$,
-though a two-constant rule in $1-w$ is tighter on 11 of 14 splits. In the determinant basis the
-probe's Krylov space has coordinate support on every symmetry-allowed determinant, so at full
-weight only a subspace holding all of them has zero leakage; for a momentum probe a momentum
-block, $1/L$ of the sector, does. At full weight a second-order certificate follows; below it,
-where every operating fraction lies, one is open. One-body fermionic magic does not predict the
-support in advance: its rank correlation with it is $-1$ in each of six strata (exact
-$p=3.3\times10^{-13}$ against independent orderings) but changes sign between families.
+where $w=1$, the error is still $0.35$--$0.43$ at $\eta=0.18\,t$ against a ceiling of $2$. What bounds it, with the
+missed weight, is the Hamiltonian coupling across the subspace boundary: for Rayleigh--Ritz on any
+orthogonal projector, given the exact ground state, we prove that the relative $L_1$ error lies
+between $1-w$ and $\min\{1+w,(1+\sqrt{w})(\sqrt{1-w}+\widehat\Lambda(\eta)/\eta)\}$, with
+$\widehat\Lambda$ the boundary coupling at resolution $\eta$, from the Ritz pairs and the retained
+probe. For the 1D Hubbard $A(\omega)$, built from classical Born draws, or their infinite-shot
+ranking, of a real-time evolved probe (one device run, an execution record, aside), the bound first
+beats the trivial one at a true error of $1.2$--$7.3\times10^{-3}$ in all sixteen $(L,\eta)$ cells
+over $L=6$--$12$; a two-constant rule in $1-w$, fitted here without guarantee, is tighter on
+11 of 14 splits; the Born-ranked $A(k,\omega)$ at $85\%$ of its sector is bounded at $350$--$900$
+times its true error. Yet at all five sizes up
+to dimension $10\,306\,296$ the bound is vacuous at every operating fraction of the resource scan,
+by $1.66$--$8.61$, and informative only well above them. In the determinant basis the probe's Krylov
+space has, at $L=6$--$14$, coordinate support on every symmetry-allowed determinant, so zero leakage
+at full weight needs all of them; a momentum probe measured in plane-wave orbitals stays in one
+block, $1/L$ of the sector, a gain of $1/L$ against an exponential. On pairing-model fibers every
+orbital-invariant leakage bound is vacuous. At full weight a
+second-order certificate follows; below it, where every operating fraction lies, one is open.
 \end{abstract}
 
 \maketitle
@@ -310,6 +325,16 @@ $p=3.3\times10^{-13}$ against independent orderings) but changes sign between fa
 % \input{carried/fig_gflow.tex}
 
 \input{sec_10.tex}
+
+% Appendix A (the proof of Theorem 1), after the acknowledgments and before the references, as
+% APS orders them.  \appendix is issued inside a group: in aps4-2.rtx it redefines the section
+% heading ("Appendix A: ..."), \thesection and the equation prefix LOCALLY, and those must not
+% reach the Supplemental Material, whose sections print as S1, S2, ...  Its one global effect,
+% equation reset per section, is undone in sm_begin.tex.
+\begingroup
+\appendix
+\input{app_proof.tex}
+\endgroup
 
 \clearpage
 \input{bibliography.tex}

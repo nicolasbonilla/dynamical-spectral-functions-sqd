@@ -32,21 +32,24 @@
 
 \section{Three prices: support, resolution, and shots}\label{sec:prices}
 
-Three axes are priced here: the determinant support the sampler must populate, the resolution
-$\eta$ at which the response is asked for, and the shot budget $T$ that populates it. It is easy to
-price the first two and to quote the second as though it were a property of the model. It is not.
-This section states which of the three exponents belongs to the Hubbard chain and which belongs to
-the question we put to it, and prices the third, which is usually left unpriced.
+On half-filled periodic Hubbard rings at $U/t=8$ ($L=4$--$14$, $8$ to $28$ qubits) the method is
+priced on three axes, each measured here: the determinant support the sampler must populate grows
+as $e^{1.05\,L}$, more slowly than the sector's $e^{1.30\,L}$; the sector fraction, unlike the
+support, is a property of the question put to the model rather than of the model, its exponent
+moving by a factor $2.2$ over a decade of the resolution $\eta$; and the shot budget $T$ that
+populates the support, measured at $L=4$--$12$, lies two orders of magnitude above it and grows as
+$e^{1.12\,L}$ over $L=6$--$12$, its $L=14$ value being a floor of $1.3\times10^{8}$ shots for a
+single seed and branch.
 
-\paragraph{One symbol, three counts.} $|\mathcal S|_\eta$ here is \emph{dynamical}: the number of
+\paragraph{The dynamical support.} $|\mathcal S|_\eta$ here is the number of
 determinants needed for the reconstruction of $A(\omega)$ to reach relative $L_1<\mathrm{thr}$ at
 resolution $\eta$ and recursion depth $n_\ell$, so it depends on all three
 (\texttt{scaling\_lanczos\_mf.py}, \texttt{stage\_frac}: $\mathrm{thr}=0.05$, $\eta=0.15\,t$,
-$n_\ell=150$). It is not the static ground-state support $|\mathcal S|_{\varepsilon_w}$ of
-Sec.~\ref{sec:nogo}, nor the returned set $S$ of Theorem~\ref{thm:leakage}; the three coincide only
-by accident, and no statement here transfers to the other two.
+$n_\ell=150$). It is distinct from the static ground-state support $|\mathcal S|_{\varepsilon_w}$ of
+Sec.~\ref{sec:nogo} and from the returned set $S$ of Theorem~\ref{thm:leakage}: the three coincide only
+by accident, and no statement here transfers to the other two (Sec.~\ref{sec:intro}).
 
-\subsection{The support exponent, and what does and does not survive a change of resolution}
+\subsection{The support exponent and its resolution dependence}
 
 Across $L=4$--$14$ ($8$ to $28$ qubits, half-filled \emph{periodic} rings at $U/t=8$; the three largest
 sizes reached by matrix-free Lanczos/Haydock and validated against dense diagonalization at $L\le8$),
@@ -60,9 +63,8 @@ $n_\ell=150$ grows exponentially,
 \end{equation}
 \end{widetext}
 more slowly than the $(N{+}1)$ sector itself,
-$\dim = 24,\,300,\,3920,\,52920,\,731808,\,10306296\sim e^{1.30\,L}$. Restricting the fit to $L=4$--$12$, the five sizes of the replication grid, gives $1.082$ at
-$R^{2}=0.998$, and the fit range is quoted with the exponent throughout because it matters at the second
-decimal. The fraction is the support divided by the sector dimension, exactly, so the fraction and
+$\dim = 24,\,300,\,3920,\,52920,\,731808,\,10306296\sim e^{1.30\,L}$. Restricted to $L=4$--$12$, the five sizes of the replication grid, the fit gives $1.082$ at
+$R^{2}=0.998$. The fraction is the support divided by the sector dimension, exactly, so the fraction and
 support exponents differ by the constant $b_{\dim}=1.291$ and move together, by $0.148$ over the decade
 $\eta=0.05\to0.50\,t$ (Table~\ref{tab:fracgrid}): a seventh of the support exponent, three quarters of
 the fraction exponent. We therefore report the support, the absolute resource a device has to populate,
@@ -70,11 +72,11 @@ and the fraction as the derived, resolution-dependent quantity that it is.
 
 \subsection{The sector fraction is a property of the question, not of the model}
 
-The headline these numbers offer---that the fraction needed for a fixed spectral accuracy falls from
-$0.92$ at $L=4$ to $0.08$ at $L=14$---is tunable, and no headline of that form is claimed here: over the
-decade of $\eta$ the fraction exponent moves by a factor $2.2$, from $-0.1266$ to $-0.2743$
-(Table~\ref{tab:fracgrid}), and even at fixed $\eta$ the local logarithmic slopes between consecutive
-published points steepen by a factor $6.8$ across five intervals. The reference is itself a
+At $\eta=0.15\,t$ the fraction needed for a fixed spectral accuracy falls from $0.92$ at $L=4$ to
+$0.08$ at $L=14$, but its exponent is set by $\eta$: over the decade of $\eta$ it moves by a factor
+$2.2$, from $-0.1266$ to $-0.2743$ (Table~\ref{tab:fracgrid}), and even at fixed $\eta$ the local
+logarithmic slopes between consecutive published points steepen by a factor $6.8$ across five
+intervals, so the fraction is not a single exponential either. The reference is itself a
 depth-$150$ Lanczos computation whose drift between depths $100$ and $200$ at $L=12$ is $0.93\%$ at
 $\eta=0.15\,t$ and $3.0\%$ at $\eta=0.10\,t$, so the fraction is reported as a declared window,
 $\eta\ge0.15\,t$ at $n_\ell=150$, with the full grid and the finite-depth caveats in
@@ -84,7 +86,7 @@ Sec.~\ref{sm:prices}.
 
 Populating a subspace by measurement is a coupon-collector problem on the Born distribution of the
 time-evolved seed, so the budget exceeds the support it buys. Table~\ref{tab:shots} reports that budget
-\emph{measured}, by multinomial sampling of the declared protocol, at every size but the largest, in
+\emph{measured}, by multinomial sampling of the declared protocol, at $L=4$--$12$, in
 two independent runs that agree where they overlap to $0.2\%$ and $3.2\%$; every budget is for
 \emph{one} orbital seed and \emph{one} branch.
 
@@ -95,7 +97,7 @@ is the budget at which the finite-shot reconstruction itself first reaches relat
 $\pm$ is the sample standard deviation across seeds, not the standard error of the mean. Run~A is
 \texttt{sampled\_honest.json} ($8$ seeds, $L\le8$); run~B is \texttt{honest\_sampling.json} ($4$ seeds,
 $6$ at $L=10$), and the two are separate runs with different seeds and different budget grids, listed
-separately at $L=6$ and $L=8$ so that their agreement can be read rather than asserted. At $L=4$ run~B
+separately at $L=6$ and $L=8$. At $L=4$ run~B
 is censored by its own cap of $10^{8}$ shots per snapshot, the $24$-state sector being degenerate for
 this purpose, and run~A is quoted there. The last column divides $T$ by the \emph{published} support;
 dividing instead by the support each run actually populated gives $95$, $107$, $141$ and $124$ at
@@ -118,25 +120,29 @@ $14$ & $10\,306\,296$ & $824\,503$ & $\gtrsim1.3\times10^{8}$    & $154$ & floor
 \end{tabular}
 \end{table*}
 
-Four statements are supported by the measured rows, and a fifth is not. Supported: the budget is two
-orders of magnitude larger than the support it buys, already at $L=6$; the budget itself grows
-exponentially, $7.8\times10^{2}$ to $1.9\times10^{7}$ over $L=4$--$12$, a log-linear fit over $L=6$--$12$ giving $T\sim e^{1.12\,L}$ at $R^{2}=0.996$; at $L=8$ the full
-momentum-resolved observable costs $16\times2.7\times10^{5}\approx4\times10^{6}$ shots, which is a device
-experiment, while the $L=14$ floor of ${\sim}10^{8}$ for a \emph{single} seed and branch is neither a
-laptop experiment nor, at present readout rates, a device one; and the overhead per determinant is a
-level and not a growth law---$35$, $99$, $124$, $161$, $154$ against the published support across
-$L=4$--$12$, rising by a factor $4.4$ over the first three sizes and flat within the seed spread over
-the last two. Not supported, and not written: an exponent for that overhead. Fitted on $L=6$--$12$ it is $0.08$ per site against the published support ($95\%$ interval $[-0.03,0.19]$) and $0.054$ ($[-0.066,0.174]$) against the support each run populated; both intervals contain zero, so \emph{these data do not establish that the shot budget grows with a larger exponent than the
+The budget is two orders of magnitude larger than the support it buys, already at $L=6$, and it
+grows exponentially, $7.8\times10^{2}$ to $1.9\times10^{7}$ over $L=4$--$12$, a log-linear fit over
+$L=6$--$12$ giving $T\sim e^{1.12\,L}$ at $R^{2}=0.996$. At $L=8$ the sixteen-channel momentum-resolved
+configuration of Fig.~\ref{fig:akwsampled} reached its own resolution and
+accuracy with $8.3\times10^{7}$, and not with half as many; the $16\times2.7\times10^{5}\approx4\times10^{6}$
+shots that sixteen channels at the local-seed budget would cost is a transfer and not a measurement,
+because the momentum seeds have larger support. The $L=14$ floor of $1.3\times10^{8}$ shots for a
+\emph{single} seed and branch (Table~\ref{tab:shots}) exceeds the largest shot budget drawn anywhere
+in this work, the $8.3\times10^{7}$ shots of the sixteen-channel configuration of
+Fig.~\ref{fig:akwsampled}. The overhead per determinant is a level and not a growth law---$35$,
+$99$, $124$, $161$, $154$ against the published support across $L=4$--$12$, rising by a factor $3.5$
+over the first three sizes ($35$ to $124$), then to $161$ at $L=10$, and not rising over the last
+step, $161$ to $154$. Its exponent is not resolved by these data. Fitted on $L=6$--$12$ it is $0.08$ per site against the published support ($95\%$ interval $[-0.03,0.19]$) and $0.054$ ($[-0.066,0.174]$) against the support each run populated; both intervals contain zero, so \emph{these data do not establish that the shot budget grows with a larger exponent than the
 support}, only that it is larger in absolute terms at every size measured.
 
-\paragraph{What the published curve is.} The ranking that produced the published fractions is
-\texttt{argsort} applied to the Born distribution of the time-evolved state accumulated over the $19$
-snapshots of the protocol---the distribution the device would itself measure, in the limit of
-infinitely many shots. It is not a clairvoyant ordering by exact eigenvector amplitudes, and it is not a
-finite-shot reconstruction: the published curve is the $T\to\infty$ limit of the declared protocol. With
+\paragraph{What the published curve is.} The published curve is the $T\to\infty$ limit of the
+declared protocol: the ranking that produced the published fractions is \texttt{argsort} applied to
+the Born distribution of the time-evolved state accumulated over the $19$ snapshots of the
+protocol---the distribution the device would itself measure with infinitely many shots---and not a
+clairvoyant ordering by exact eigenvector amplitudes. With
 finite shots the fraction needed rises, from $0.8200$ to $0.8571\pm0.0135$ at $L=6$ and from $0.5561$ to
 $0.6275\pm0.0031$ at $L=8$ (Table~\ref{tab:finiteshot}), so the published curve is a strict lower bound
-on the finite-shot cost. The penalty is budgetary, not structural: at $L=8$ raising the budget by a
+on the finite-shot cost. At fixed size the penalty is budgetary, not structural: at $L=8$ raising the budget by a
 factor $12.7$ takes the ratio of the finite-shot error to the infinite-shot-ordering error from
 $1.96\pm0.12$ to $1.06\pm0.01$. Finite-shot fractions are therefore reported only with their budget and
 seed count attached.

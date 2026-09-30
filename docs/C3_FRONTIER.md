@@ -110,6 +110,7 @@ Large temporary Krylov memmaps go to `$C3_TMP`, default `build/` (which is `.git
 | `ladder_L8.json` | `PER_ETA=16 python src/frontier/run_ladder.py 8 0.10,0.20,0.30,0.40,0.50,0.56,0.625,0.70,0.80,0.85,0.90,0.95,0.97,0.99` | ≈ 3 min |
 | `verdict_frontier.json` | `python src/frontier/verdict.py 4 6 8` | < 1 s |
 | `published_fraction/PUB_rows.json` | `python src/frontier/pubsum.py` | < 1 s |
+| `published_fraction/L14_rerank.json` | `python src/frontier/rerank_L14.py` | 49 min single-threaded, ≈ 2 GB — **needs the L=14 checkpoint, see §5** (2026-09-28, late) |
 | `published_fraction/L14_FR008.json` | `python src/frontier/run_L14.py` | 37 min — reads the two deposited checkpoints in `ckpt/` (§5) |
 | `adversarial/z_fine_L6.json` | `python src/frontier/z_fine.py 6 255,285,291,294,295,296,297,298,299 0.18,0.15,0.05 check` | 6 s |
 | `adversarial/z_rank_L6.json` | `python src/frontier/z_rank.py 6 0.18` | 5 s |
@@ -201,6 +202,17 @@ state and ranking, are now in the repository (see `ckpt/README.txt`, with SHA-25
 of that run is deposited too (`published_fraction/L14_FR008.json`, with `L14_run.txt`), and the file
 itself records that the **ranking protocol was not re-run at L=14**: it is inherited from the
 checkpoint, verified at L=10 by set overlap.
+
+**Closed 2026-09-28 (late): the ranking protocol was re-run at L=14.** `src/frontier/rerank_L14.py`
+rebuilds the seed c†₀↑|Ψ₀⟩ from `ckpt/L14_gs.npz` exactly as `run_L14.py` does, runs `fcore.ranking()`
+(K=18, dt=0.5, sub=16, m=6 — the code path `fproto.py` uses at L=10) on the (N+1) sector of dimension
+10 306 296, and compares the top-k selection with `ckpt/L14_order.npy` as sets. Result, deposited in
+`published_fraction/L14_rerank.json` with the SHA-256 of both checkpoint files: set overlap
+**1.000000** (0 determinants not shared) at the published |S| = 824 504 and at the cuts 0.04, 0.16 and
+0.32 of the sector, the captured weight identical to ten digits, the cut unambiguous at the published
+fraction (2 tied determinants at the cut weight, both inside). The ranking took 2 948 s single-threaded
+(≈ 2 GB). `verify.py` checks the record; Sec. V, Table III and Sec. S3 now report the re-run, and the
+L=14 row keeps one caveat, its depth indicator.
 
 Not deposited because it is not part of C3, and named so that the absence is not mistaken for an
 oversight: the exploratory scripts of the same working tree (`tab.py`, `tighten.py`, `slackL.py`,

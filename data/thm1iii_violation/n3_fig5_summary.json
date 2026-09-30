@@ -11,45 +11,46 @@
    "x": 0.7,
    "n": 16,
    "min": 17.8042,
-   "max": 29.9511,
+   "max": 29.951,
    "median": 23.621
   },
   {
    "x": 0.85,
    "n": 16,
-   "min": 15.0552,
-   "max": 33.7282,
-   "median": 26.4518
+   "min": 15.0551,
+   "max": 33.7281,
+   "median": 26.45185
   },
   {
    "x": 0.95,
    "n": 16,
-   "min": 22.3768,
-   "max": 57.2787,
-   "median": 29.871850000000002
+   "min": 22.3766,
+   "max": 57.2786,
+   "median": 29.87225
   }
  ],
  "eta_groups": [
   {
    "x": 0.18,
    "n": 64,
-   "min": 15.0552,
-   "max": 57.2787,
-   "median": 22.9909
+   "min": 15.0551,
+   "max": 57.2786,
+   "median": 22.990949999999998
   }
  ],
  "n_rows": 64,
- "overall_min": 15.0552,
- "overall_max": 57.2787,
+ "overall_min": 15.0551,
+ "overall_max": 57.2786,
  "at_published_fraction_0.85": {
   "x": 0.85,
   "n": 16,
-  "min": 15.0552,
-  "max": 33.7282,
-  "median": 26.4518
+  "min": 15.0551,
+  "max": 33.7281,
+  "median": 26.45185
  },
  "source_dat": [
   "n3_fig5_frac.dat",
   "n3_fig5_eta.dat"
- ]
+ ],
+ "written_by": "src/recovered/n3_fig5_whiskers.py (2026-09-28; formerly fix_n3_fig5_series.py)"
 }

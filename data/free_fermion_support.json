@@ -1,0 +1,109 @@
+{
+ "what": "static determinant support |S|_eps_w of the U=0 (free-fermion) ground state, open chain, half filling, site basis; printed in Sec. S13 and Sec. VI",
+ "definition": "smallest n such that the n largest determinant weights sum to >= 1 - eps_w (inclusive), tie tolerance 1e-12 relative on the discarded weight",
+ "eps_w": 0.0025,
+ "hopping": "t=1, open boundary conditions",
+ "rows": [
+  {
+   "L": 4,
+   "N_up": 2,
+   "N_dn": 2,
+   "dim": 36,
+   "total_weight": 1.0000000000000002,
+   "support_inclusive": 35,
+   "support_strict": 36,
+   "discarded_weight_inclusive": 0.0024999999999999957,
+   "boundary_weight": 0.0024999999999999996,
+   "n_weights_tied_at_boundary": 4,
+   "support_bare_float_searchsorted": 36,
+   "smallest_weights": [
+    0.0025000000000000035,
+    0.0024999999999999996,
+    0.0024999999999999996,
+    0.0024999999999999957
+   ]
+  },
+  {
+   "L": 6,
+   "N_up": 3,
+   "N_dn": 3,
+   "dim": 400,
+   "total_weight": 1.0000000000000004,
+   "support_inclusive": 336,
+   "support_strict": 336,
+   "discarded_weight_inclusive": 0.0024343795883937334,
+   "boundary_weight": 8.824171436055877e-05,
+   "n_weights_tied_at_boundary": 16,
+   "support_bare_float_searchsorted": 336,
+   "smallest_weights": [
+    8.654010636054859e-07,
+    8.654010636054805e-07,
+    8.654010636054805e-07,
+    8.654010636054752e-07
+   ]
+  },
+  {
+   "L": 8,
+   "N_up": 4,
+   "N_dn": 4,
+   "dim": 4900,
+   "total_weight": 1.0000000000000013,
+   "support_inclusive": 3496,
+   "support_strict": 3496,
+   "discarded_weight_inclusive": 0.0024984801969375934,
+   "boundary_weight": 5.696743565808874e-06,
+   "n_weights_tied_at_boundary": 96,
+   "support_bare_float_searchsorted": 3496,
+   "smallest_weights": [
+    1.010016698315802e-11,
+    1.0100166983157732e-11,
+    1.0100166983157732e-11,
+    1.0100166983157443e-11
+   ]
+  },
+  {
+   "L": 10,
+   "N_up": 5,
+   "N_dn": 5,
+   "dim": 63504,
+   "total_weight": 1.0,
+   "support_inclusive": 37361,
+   "support_strict": 37361,
+   "discarded_weight_inclusive": 0.002499592230482101,
+   "boundary_weight": 4.6518283408541946e-07,
+   "n_weights_tied_at_boundary": 128,
+   "support_bare_float_searchsorted": 37361,
+   "smallest_weights": [
+    3.938426127277031e-18,
+    3.938426127276374e-18,
+    3.938426127276374e-18,
+    3.938426127275716e-18
+   ]
+  }
+ ],
+ "ed_crosscheck": [
+  {
+   "L": 4,
+   "max_abs_weight_diff": 9.71445146547012e-17,
+   "many_body_gap": 1.2360679774997845
+  },
+  {
+   "L": 6,
+   "max_abs_weight_diff": 1.2836953722228372e-16,
+   "many_body_gap": 0.8900837358252671
+  }
+ ],
+ "published": {
+  "4": 35,
+  "6": 336,
+  "8": 3496,
+  "10": 37361
+ },
+ "provenance": {
+  "script": "src/free_fermion_support.py",
+  "generator_sha256_lf": "7ba8fa1b5579772042df516a0401fe81c26281db0a55724fe36d6ad103402450",
+  "generated_utc": "2026-09-28T19:33:40Z",
+  "python": "3.11.4",
+  "numpy": "1.26.4"
+ }
+}

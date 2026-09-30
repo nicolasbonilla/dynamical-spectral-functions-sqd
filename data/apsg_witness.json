@@ -13,7 +13,8 @@
    "F3": 4.0,
    "Sdet": 2,
    "chi": 2,
-   "Sent": 1.0
+   "Sent": 1.0,
+   "chi_max": 2
   },
   {
    "K": 2,
@@ -27,7 +28,8 @@
    "F3": 8.0,
    "Sdet": 4,
    "chi": 1,
-   "Sent": -0.0
+   "Sent": -0.0,
+   "chi_max": 2
   },
   {
    "K": 3,
@@ -41,7 +43,8 @@
    "F3": 12.0,
    "Sdet": 8,
    "chi": 2,
-   "Sent": 0.9999999999999999
+   "Sent": 1.0,
+   "chi_max": 2
   },
   {
    "K": 4,
@@ -55,7 +58,8 @@
    "F3": 16.0,
    "Sdet": 16,
    "chi": 1,
-   "Sent": -0.0
+   "Sent": -0.0,
+   "chi_max": 2
   },
   {
    "K": 3,
@@ -64,7 +68,8 @@
    "twoNu": 0.1885010332282141,
    "F2": 0.37404101316242055,
    "Sdet": 8,
-   "chi": 2
+   "chi": 2,
+   "chi_max": 2
   },
   {
    "K": 3,
@@ -73,7 +78,8 @@
    "twoNu": 4.145898033750312,
    "F2": 6.859423525312732,
    "Sdet": 8,
-   "chi": 2
+   "chi": 2,
+   "chi_max": 2
   },
   {
    "K": 3,
@@ -82,7 +88,8 @@
    "twoNu": 12.0,
    "F2": 12.0,
    "Sdet": 8,
-   "chi": 2
+   "chi": 2,
+   "chi_max": 2
   },
   {
    "K": 3,
@@ -91,7 +98,8 @@
    "twoNu": 4.145898033750312,
    "F2": 6.859423525312732,
    "Sdet": 8,
-   "chi": 2
+   "chi": 2,
+   "chi_max": 2
   },
   {
    "K": 3,
@@ -100,7 +108,9 @@
    "twoNu": 8.998558695971146e-32,
    "F2": 0.0,
    "Sdet": 1,
-   "chi": 1
+   "chi": 1,
+   "chi_max": 1
   }
- ]
+ ],
+ "chi_max_note": "chi = Schmidt rank at the central cut (cut = 2K spin-orbitals) only; chi_max = the largest Schmidt rank over all M-1 cuts of the pairing ordering (the bond dimension of Theorem thm:witness), added 2026-09-28"
 }

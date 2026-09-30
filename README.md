@@ -110,7 +110,7 @@ noise helps. The `ibm_fez` run says nothing about accuracy at incomplete coverag
 
 ```
 .
-├── src/                       # 63 computation & figure scripts, plus 28 in src/frontier/ (the C3 sweep); run from repo root as `python src/X.py`
+├── src/                       # 66 computation & figure scripts, plus 29 in src/frontier/ (the C3 sweep); run from repo root as `python src/X.py`
 │   ├── verify.py              #   the adversarial guardian: recomputes the physics, then checks the deposit
 │   ├── check_figures.py       #   do the committed generators still produce the committed fragments?
 │   ├── check_provenance.py    #   does the documentation still describe the manuscript? (derives it from main.tex)
@@ -126,15 +126,15 @@ noise helps. The `ibm_fez` run says nothing about accuracy at incomplete coverag
 │   └── Spectral_Heron.ipynb            #   IBM Heron A(ω)        (token SCRUBBED — see below)
 ├── paper/                     # the v3 manuscript: REVTeX 4.2 (aps, pra), one column for submission
 │   ├── main.tex               #   preamble, abstract and the \input list
-│   ├── sec_1.tex … sec_10.tex #   the ten sections of the main text
+│   ├── sec_1.tex … sec_10.tex #   the ten sections of the main text; app_proof.tex is its Appendix A
 │   ├── sm_*.tex               #   nine Supplemental Material files: Secs. S1–S8 (sm_begin.tex opens the SM)
 │   ├── sec_*_app.tex, app_*.tex#  Secs. S9–S16 of the Supplemental Material (the former appendices)
 │   ├── carried/               #   nine one-float wrappers carried verbatim from v2
 │   ├── figs/                  #   11 native fragments, 6 figure PDFs, 19 plotted .dat tables, captions
 │   │   └── src/               #   the standalone sources of the 6 figure PDFs (deposited 2026-09-26)
-│   ├── main.pdf               #   the compiled preprint (66 pp)
+│   ├── main.pdf               #   the compiled preprint (68 pp)
 │   ├── main_pra.tex, sm_pra.tex#  the Physical Review A split: main text + references, and the SM on its own
-│   ├── main_pra.pdf, sm_pra.pdf#  their builds (31 pp and 38 pp), made by pra_split.py
+│   ├── main_pra.pdf, sm_pra.pdf#  their builds (33 pp and 38 pp), made by pra_split.py
 │   ├── pra_split.py           #   builds the two drivers and checks them page by page against main.pdf
 │   └── arxiv-submission.tar.gz#   the FROZEN arXiv v2 bundle — a record, never a source
 ├── _superseded/               # the v2-era manuscript, the five figures v3 withdrew and the v1 README thumbnails, kept for the trail
@@ -194,15 +194,15 @@ python paper/pra_split.py --build       # or: make pra  -> paper/main_pra.pdf, p
 Supplemental Material as one document — the arXiv form. PRA takes the Supplemental Material as a
 separate file, so two drivers in `paper/` split that same document without copying any of it:
 `main_pra.tex` runs `main.tex` and stops where the SM begins (main text and full reference list,
-31 pp.), and `sm_pra.tex` runs `main.tex`, skips to the SM and ends with a reference list of only the
+33 pp.), and `sm_pra.tex` runs `main.tex`, skips to the SM and ends with a reference list of only the
 works the SM cites (38 pp.: 35 of SM, 3 of references). Cross-references between the two print as in
 `main.pdf` ("Sec. S3", "Fig. 9") through `xr-hyper`, whose `[nocite]` option needs an `xr-hyper` of 2023
 or later. `python paper/pra_split.py --build` builds both in a temporary copy of `paper/` (it writes
 only the two PDFs into `paper/`) and checks them: 0 errors, 0 undefined or multiply defined labels and
 citations, no overfull box or warning that the `main.tex` build does not have, the SM reference list
-against the SM's citations, the APS form of the Supplemental Material reference (ref. [102] of the main
-list, "See Supplemental Material at [URL will be inserted by publisher] …, which includes Refs.
-[103–140]", the works cited only in the SM), and every page of `paper/main.pdf` in exactly one of the
+against the SM's citations, the APS form of the Supplemental Material reference (ref. [19] of the main
+list since the reordering of 2026-09-30, "See Supplemental Material at [URL will be inserted by publisher] …, which includes Refs.
+[104–142]", the 39 works cited only in the SM), and every page of `paper/main.pdf` in exactly one of the
 two PDFs — pixel-identical below the page number for the main text, identical up to citation numbers
 for the SM. Build `paper/main.pdf` first: that is the PDF the pages are compared against.
 
@@ -222,24 +222,31 @@ and see [`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md) §7.
 
 | Layer | Reproducible here? | How |
 |---|---|---|
-| **The guardian** | ✅ **PASS** — 874 checks, 0 failures, 9 891 numeric assertions, 5 xfail, 0 xpass, 2 skips *(re-measured 2026-09-28 after two phrase guards on Sec. S8 were added: 874 pass, 0 fail, 9 891 assertions, 5 xfail, 2 skips; 872 / 9 889 on 2026-09-26, after the hardware bit-order check)* | `python src/verify.py` (or `make verify`) |
-| **The documentation** | ✅ **PASS** — derived from `paper/main.tex`: 60 source files, 34 floats, 17 figures, 17 tables *(2026-09-26)* | `python src/check_provenance.py` |
-| **Manuscript coherence** | ✅ **PASS** — 10 cross-section claims, 20 synthetic controls, all 20 fire *(2026-09-19)*. New that day, because the other three guardians were green while seven sections contradicted each other: they compare a printed number against a deposited file, not a claim against a claim | `python src/check_coherence.py` |
-| **The figure generators** | ✅ **PASS on 19 artefacts from 8 generators** *(2026-09-26)* — the six of 2026-09-19 and the two recovered that day into `src/recovered/`; one provenance-timestamp comment line of the Fig. 6 fragment is normalised, and the run says so. Measured with four negative controls in `KNOWN_DISCREPANCIES.md` §29. (Until 2026-09-19 one of the first eight artefacts was compared with a copy of itself; §25.) | `python src/check_figures.py` |
+| **The guardian** | ✅ **PASS** — 1280 checks, 0 failures, 14 563 numeric assertions, 4 xfail, 0 xpass, 2 skips *(re-measured 2026-09-30, final review: +66 checks and +66 assertions, verify.py checks the Fig. 3 caption's panel (b) mean and maximum, window and branch thresholds (section 9.6b), the printed noise values of Figs. S7-S8, Sec. S8 and Sec. VIII (section 9.9b) and every restated Fig. 3 certificate number in the abstract and Secs. I, V, X and S3 (section 9.9c); 1214 / 14 497 earlier on 2026-09-30: +2 checks and +2 assertions, verify.py section 9.3 now checks every printed exact permutation p (Sec. I, Sec. VI, Fig. 6 caption) against `exact_perm_p_one_sided_F1` at 1e-15, unified on the 3.35e-13 rounding; re-measured 2026-09-28, late, closing the review: +278 checks and +2 821 assertions for section 9.6c (the free-fermion supports, the spin-peak deviations and the Fig. S5 pool re-classified from the deposited certificate rows), the chi_max of the witness, the LF hash of the Fig. 3 generator and the L=14 re-ranking record, and the declared Fig. S5 coverage gap closed, xfail 5 → 4, `KNOWN_DISCREPANCIES.md` §33; 934 / 11 674 after the finite-shot numbers of the Fig. 3 caption were deposited with their generator and checked from its two data files: +60 checks, +187 assertions; 874 / 11 487 after the Fig. 3 frequency grid was widened to [-9t, 17t]: 874 pass, 0 fail, 11 487 assertions, 5 xfail, 2 skips; 874 / 9 891 after two phrase guards on Sec. S8 were added the same day; 872 / 9 889 on 2026-09-26, after the hardware bit-order check)* | `python src/verify.py` (or `make verify`) |
+| **The documentation** | ✅ **PASS** — derived from `paper/main.tex`: 61 source files, 34 floats, 17 figures, 17 tables *(2026-09-28; 60 on 2026-09-26, before `app_proof.tex`)* | `python src/check_provenance.py` |
+| **Manuscript coherence** | ✅ **PASS** — 10 cross-section claims, 20 synthetic controls, all 20 fire *(2026-09-19)*; since 2026-09-30 also 16 per-place checks (each vacuity statement in each section that carries it), each with its own control, all 16 fire. New that day, because the other three guardians were green while seven sections contradicted each other: they compare a printed number against a deposited file, not a claim against a claim | `python src/check_coherence.py` |
+| **The figure generators** | ✅ **PASS on 21 artefacts from 9 generators** *(2026-09-28, late: the Fig. S5 whisker script `src/recovered/n3_fig5_whiskers.py`, with the fragment and its summary JSON; 19 from 8 on 2026-09-26)* — the six of 2026-09-19, the two recovered on 2026-09-26 into `src/recovered/`, and the whisker script; one provenance-timestamp comment line of the Fig. 6 fragment is normalised, and the run says so. Measured with four negative controls in `KNOWN_DISCREPANCIES.md` §29. (Until 2026-09-19 one of the first eight artefacts was compared with a copy of itself; §25.) | `python src/check_figures.py` |
 | **Exact diagonalization, numpy/scipy only** (`A(ω)`, `A(k,ω)`, `S(q,ω)`, `S^zz`, the two gaps, the χ–\|S\| resource map, the geminal witness, the scaling) | ✅ **verified locally**, minutes | `python src/<script>.py`; see `docs/REPRODUCE.md` |
 | **The 19-molecule suite** | ⚠️ runs, but needs `pyscf`; **untested in this pass**, so the molecular checks are transcription checks, not recomputations | `python src/n19_suite.py` etc. |
 | **The v1–v2 narrated notebook** | ⚠️ **a record, not the v3 reproduction path** — it reproduces the v1–v2 figure set, several of which v3 withdrew, needs `pyscf` and was **not run**; use `src/verify.py` and `docs/REPRODUCE.md` | `notebooks/00_Reproduce_Everything.ipynb` |
 | **Matrix-free scaling** to 28 qubits | ✅ (RAM-staged, resumable) | `src/scaling_lanczos_mf.py` |
-| **Figures** | ⚠️ **8 of 17 are guarded by regeneration**, two of them only in part: Figs. 2, 3, 9, S2, S3 and S8 byte-for-byte; Fig. 6 byte-for-byte after one provenance-timestamp comment line is normalised; Fig. S5 in its ten `.dat` tables only (the fragment's whisker literals and its ratios are not guarded, `verify.py`'s declared coverage gap). Nine are not guarded: four have no deposited generator (Figs. 1, S1, S4, 5), and five ship as a PDF (Figs. 4, 7, 8, S6, S7). The standalone sources of all six PDF figures (Fig. 1 included) are deposited since 2026-09-26 and recompile pixel-identically, but no script guards them, and none of the three rasters they embed can be regenerated here: the viridis input of `src/recolor_akw_v2.py` (which writes `akw_field_v2.png`) is not deposited, the step that recoloured `sqw_field.png` is not deposited, and no deposited script writes `spinqw_field.png`. *(Until 2026-09-26: 6 of 17, and the generators of Figs. 6 and S5 were not in the tree.)* | inventory in [`docs/FIGURE_PROVENANCE.md`](docs/FIGURE_PROVENANCE.md) |
+| **Figures** | ⚠️ **8 of 17 are guarded by regeneration**, two of them only in part: Figs. 2, 3, 9, S2, S3 and S8 byte-for-byte; Fig. 6 byte-for-byte after one provenance-timestamp comment line is normalised; Fig. S5 in its ten `.dat` tables, its whisker blocks and its summary JSON (since 2026-09-28, late; the legend literals of the fragment are checked by `build_n3.py`'s self-check and every plotted ratio is re-derived from the certificate rows by `verify.py` section 9.6c). Nine are not guarded: four have no deposited generator (Figs. 1, S1, S4, 5), and five ship as a PDF (Figs. 4, 7, 8, S6, S7). The standalone sources of all six PDF figures (Fig. 1 included) are deposited since 2026-09-26 and recompile pixel-identically, but no script guards them, and none of the three rasters they embed can be regenerated here: the viridis input of `src/recolor_akw_v2.py` (which writes `akw_field_v2.png`) is not deposited, the step that recoloured `sqw_field.png` is not deposited, and no deposited script writes `spinqw_field.png`. *(Until 2026-09-26: 6 of 17, and the generators of Figs. 6 and S5 were not in the tree.)* | inventory in [`docs/FIGURE_PROVENANCE.md`](docs/FIGURE_PROVENANCE.md) |
 | **IBM Heron hardware runs** | ⚠️ needs an IBM Quantum account, and the jobs are closed | `notebooks/` (tokens scrubbed; **no raw counts are deposited**) |
 
-> **`paper/main.pdf` is the v3 manuscript** as recompiled on 2026-09-28: 66 pages, one column, a 26-page
-> main text (p. 26 holds the end of Sec. X and the acknowledgments), the reference list on pp. 27–31,
-> then the Supplemental Material from p. 32. *(This file said "a 25-page main text" until 2026-09-28, and
+> **`paper/main.pdf` is the manuscript for Physical Review A**, the v3 text revised in the review pass of
+> 2026-09-28 and in the passes of 2026-09-30 (listed at the end of this note), last recompiled on
+> 2026-09-30 after the final source edit: 68 pages, one column, a 28-page
+> main text (p. 28 holds the end of Sec. X, the acknowledgments and Appendix A, the proof of
+> Theorem 1), the reference list on pp. 29–33, then the Supplemental Material from p. 34. Before that
+> pass it was 66 pages, with a 26-page main text, references on pp. 27–31 and the SM from p. 32. *(This file said "a 25-page main text" until 2026-09-28, and
 > so does the Comments field filed with arXiv v3, which is kept as that record; the v3 package itself,
 > rebuilt from `build/arxiv-v3.tar.gz`, also ends its main text on p. 26.)* The build log shows 0 errors,
-> 0 undefined references or citations and 0 overfull `\hbox` (two overfull `\vbox`, of 5.8 pt and
-> 12.1 pt). It differs from the source package submitted to arXiv as v3 in these later edits: the
+> 0 undefined references or citations, 0 overfull `\hbox` and 0 overfull `\vbox` (the layout pass of
+> 2026-09-30, which changed no text, removed the two overfull `\vbox` of that day's earlier build, 24.3 pt
+> on p. 48 and 5.0 pt on p. 55, and the report of Fig. 3 as 30.2 pt too large for its page,
+> `KNOWN_DISCREPANCIES.md` §34; the p. 55 one came back when the final pass of that day reworded Sec. S5,
+> and went again with a `\looseness=-1` on one SM paragraph, no word changed; before the 2026-09-30 rewording of Sec. S5 the p. 48 one was 12.8 pt; a second one of 10.9 pt on p. 43 went late on 2026-09-28 when the footnote of Sec. S5 was folded
+> into its paragraph; 5.8 pt and 12.1 pt before the review pass). It differs from the source package submitted to arXiv as v3 in these later edits: the
 > Zenodo DOI in the data-availability statement and in the repository reference (which now carries the
 > current title), the sentence noting that the L=14 checkpoint is deposited, and the disclosure of
 > 2026-09-26 that the L=6 `ibm_fez` run was post-selected in reversed bit order, without configuration
@@ -248,10 +255,47 @@ and see [`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md) §7.
 > that run a proof of principle with "recovery to the correct particle-number sector" (it now claims
 > only that the steps executed, with a post-selection that was itself wrong), the known-gaps sentence of
 > the data-availability statement (it now names what is still open, `KNOWN_DISCREPANCIES.md` §5, §13,
-> §29), the guardian counts it quotes (874 / 9 891), and the Supplemental Material cited as a reference
-> in the APS form (ref. [102], cited at the end of Sec. X; it takes the next number after the main
-> text's last reference, so no main-text reference was renumbered, and the 38 works cited only in the SM
-> moved from [102–139] to [103–140]). Run `make paper` after any further source edit, then `make pra`.
+> §29), the guardian counts it quotes (934 / 11 674), and the Supplemental Material cited as a reference
+> in the APS form (the works cited only in the SM were then the 38 of [103–140]; 39, [104–142], since
+> 2026-09-30).
+> **The review pass of 2026-09-28** then revised the text for Physical Review A: the abstract (the
+> reconstructions are classical Born draws or the infinite-shot ranking, bar the device run; on 2026-09-30 the abstract was reworded to "one device run, an execution record, aside", since only the `ibm_fez` run enters a Hubbard spectral function; the bound
+> presupposes the exact ground state), Secs. I and X to match; Theorem 1 gains hypothesis (H4), the exact
+> probe, and its proof moves from Sec. S2 into a new Appendix A (`paper/app_proof.tex`); the proposition
+> on sampling capture moves into Sec. IV C as Proposition 1 (the former Proposition 1 is Proposition 2);
+> the coefficient-insensitivity statement of Sec. VI and Sec. S13 is corrected (the raw support is
+> lower- but not upper-semicontinuous); Fig. 3 is redrawn and rescored on a window that holds both
+> branches, its finite-shot run is deposited (`src/fig3_finite_shot.py`, recovered from the session that
+> made it and checked to reproduce its original output exactly: all 32 rows at T = 2.6e6, the 28 recorded
+> rows and every summary line at T = 5.2e6) and re-run on that window, and the Fig. S8
+> bands are drawn unfloored (`docs/KNOWN_DISCREPANCIES.md` §31); the
+> hardware, scope and noise captions describe the runs as executed (Sec. IX, Sec. S8, Figs. 9 and
+> S6–S8); and the printed values that disagreed with a committed record are corrected (§32). The
+> Supplemental Material is now first cited where it is first mentioned, at the end of Sec. I (ref. [12]
+> then, ref. [19] since the reordering of 2026-09-30), which renumbered the main-text references first
+> cited after Sec. I by one.
+> **Closing that review, late on 2026-09-28** (`docs/KNOWN_DISCREPANCIES.md` §33 and the second table of
+> §32): every number that was still declared rather than generated received a deposited generator and a
+> `verify.py` recomputation — the four free-fermion supports of Secs. VI and S13
+> (`src/free_fermion_support.py`), the spin-peak percentages of the Fig. 8 caption
+> (`src/spin_peak_deviation.py`), the bond dimension of the geminal witness over all cuts
+> (`src/apsg_witness.py`) — Fig. S5 was rebuilt from the deposited certificate scans (469 violations of
+> 606, mildest factor 2.00, one set of numbers everywhere; `src/recovered/n3_fig5_whiskers.py` writes its
+> whiskers, and the coverage gap `verify.py` had declared for it since 2026-09-19 is closed), the K=18
+> ranking was re-run at L=14 and reproduces the stored selection as a set (`src/frontier/rerank_L14.py`),
+> Secs. I and X claim of the geminal orbit only what Theorem 3 proves, and a dozen sentences were made
+> exact against their records. Run `make paper` after any further source edit, then `make pra`.
+> **The passes of 2026-09-30** (`docs/KNOWN_DISCREPANCIES.md` §34): the abstract, Sec. I and Sec. X were
+> rewritten to state results rather than concessions (no result moved); a citation audit corrected what
+> the text attributed to cited works (among them the priority for Gaussian-invariant measures of
+> non-Gaussianity, now Sierant et al. for the antiflatness used here, with Tarabunga et al. and Leone and
+> Bittel for what they prove; Benthien and Jeckelmann's sizes; the k = π cut of Nocera and Alvarez; the
+> additive-approximation scope of ExtraFerm), and the reference list was put back in first-citation
+> order (142 entries, the SM reference at [19], the SM-only works at [104–142]); the classical cost at
+> generic rotated points of the geminal orbit is stated as not established, in the main text and the SM
+> alike; and `verify.py` now also checks the Fig. 3 caption's panel (b) numbers, window and branch
+> thresholds, the printed noise values and every restated Fig. 3 certificate number, while
+> `check_coherence.py` requires each vacuity statement in each place that carries it.
 >
 > **CI.** `.github/workflows/ci.yml` runs `make verify` and `make check-figures` on every push, and has
 > done so since 2026-09-19 (see the Actions tab). `make check-coherence` was added as a third job on

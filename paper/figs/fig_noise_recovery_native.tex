@@ -10,22 +10,22 @@
   title style={at={(0,1)},anchor=south west,font=\bfseries,yshift=1pt}]
 \nextgroupplot[width=0.505\linewidth, ymode=log, xmin=-1, xmax=31, ymin=3e-3, ymax=80,
   xlabel={per-qubit bit-flip rate $\varepsilon$ (\%)}, ylabel={energy error vs FCI (mHa)}, title={(a)},
-  legend style={at={(0.5,0.03)},anchor=south,font=\normalsize,draw=black!20},legend columns=3,legend cell align=left]
+  legend style={at={(0.5,0.03)},anchor=south,font=\normalsize,draw=black!20,fill=none},legend columns=3,legend cell align=left]
 \draw[nrChem,dashed,line width=0.6pt] (axis cs:-1,1.6) -- (axis cs:31,1.6);
 % chemical-accuracy label: emitted after the groupplot, see below.
 \addplot[name path=H6lo,draw=none,forget plot] coordinates {(0,3.2914) (2,3.0066) (5,3.6550) (10,3.7659) (15,5.3712) (20,8.9720) (30,15.6267)};
 \addplot[name path=H6hi,draw=none,forget plot] coordinates {(0,4.5041) (2,4.1385) (5,4.4412) (10,6.5199) (15,9.5780) (20,16.7961) (30,29.8587)};
 \addplot[nrH6,opacity=0.15,forget plot] fill between[of=H6lo and H6hi];
-\addplot[name path=NH3lo,draw=none,forget plot] coordinates {(0,2.1436) (2,1.4495) (5,1.0457) (10,0.7919) (15,1.3563) (20,1.8046) (30,5.7326)};
+\addplot[name path=NH3lo,draw=none,forget plot] coordinates {(0,2.1436) (2,1.4495) (5,1.0457) (10,0.7919) (15,1.3563) (20,1.8046) (30,5.2913)};
 \addplot[name path=NH3hi,draw=none,forget plot] coordinates {(0,2.9078) (2,1.9853) (5,1.6281) (10,1.6847) (15,2.0580) (20,2.8561) (30,20.1868)};
 \addplot[nrNH3,opacity=0.15,forget plot] fill between[of=NH3lo and NH3hi];
-\addplot[name path=N2lo,draw=none,forget plot] coordinates {(0,0.1729) (2,0.1550) (5,0.3169) (10,0.2965) (15,0.6158) (20,1.4642) (30,8.4636)};
+\addplot[name path=N2lo,draw=none,forget plot] coordinates {(0,0.1680) (2,0.0796) (5,0.3169) (10,0.0030) (15,0.4045) (20,1.0050) (30,8.4636)};
 \addplot[name path=N2hi,draw=none,forget plot] coordinates {(0,0.6006) (2,0.6093) (5,0.6846) (10,1.3158) (15,2.3324) (20,5.5026) (30,17.8734)};
 \addplot[nrN2,opacity=0.15,forget plot] fill between[of=N2lo and N2hi];
 \addplot[name path=COlo,draw=none,forget plot] coordinates {(0,1.5510) (2,1.5669) (5,1.0491) (10,0.7344) (15,0.5781) (20,0.4698) (30,0.3702)};
 \addplot[name path=COhi,draw=none,forget plot] coordinates {(0,1.9155) (2,2.0418) (5,1.4264) (10,1.3026) (15,1.0358) (20,0.7942) (30,1.0249)};
 \addplot[nrCO,opacity=0.15,forget plot] fill between[of=COlo and COhi];
-\addplot[name path=C2lo,draw=none,forget plot] coordinates {(0,0.1703) (2,0.1351) (5,0.0827) (10,0.0677) (15,0.0479) (20,0.0385) (30,0.0118)};
+\addplot[name path=C2lo,draw=none,forget plot] coordinates {(0,0.1703) (2,0.1351) (5,0.0827) (10,0.0677) (15,0.0479) (20,0.0385) (30,0.0089)};
 \addplot[name path=C2hi,draw=none,forget plot] coordinates {(0,0.1967) (2,0.1807) (5,0.1240) (10,0.0817) (15,0.0730) (20,0.0627) (30,0.0433)};
 \addplot[nrC2,opacity=0.15,forget plot] fill between[of=C2lo and C2hi];
 \addplot[nrH6,line width=1.4pt,mark=*,mark size=1.3pt,mark options={fill=nrH6,draw=white,line width=0.4pt}] coordinates {(0,3.8978) (2,3.5726) (5,4.0481) (10,5.1429) (15,7.4746) (20,12.8840) (30,22.7427)}; \addlegendentry{H$_6$}

@@ -23,8 +23,13 @@ show=[('H6','#6A4C93'),('NH3','#E8880C'),('N2','#D7263D'),('CO','#12876F'),('C2'
 def coords(m,key):
     return " ".join(f"({r['eps']*100:.0f},{max(r[key],FL):.4f})" for r in sweep[m]['rows'])
 def band(m):
-    # log-scale-friendly +-1sigma band: floor the lower edge at 45% of the mean so it never collapses
-    lo=" ".join(f"({r['eps']*100:.0f},{max(r['score']-r['score_std'],0.45*r['score'],FL):.4f})" for r in sweep[m]['rows'])
+    # +-1 s.d. band across seeds, drawn as it is.  The lower edge used to be floored at
+    # 45% of the mean "so it never collapses" on the log axis; that truncated 7 of the 35
+    # plotted points (N2 at eps=0,2,10,15,20%, NH3 and C2 at 30%) while the caption said
+    # "+-1 s.d.".  The only floor left is FL, the bottom of the log axis (3e-3 mHa): where
+    # mean - s.d. falls below it (N2 at eps=10%: 0.659 - 0.657 = 0.002) the band runs to
+    # the bottom of the panel, as the caption now states.
+    lo=" ".join(f"({r['eps']*100:.0f},{max(r['score']-r['score_std'],FL):.4f})" for r in sweep[m]['rows'])
     hi=" ".join(f"({r['eps']*100:.0f},{max(r['score']+r['score_std'],FL):.4f})" for r in sweep[m]['rows'])
     return lo,hi
 
@@ -66,7 +71,13 @@ lines.append(r"  xlabel={per-qubit bit-flip rate $\varepsilon$ (\%)}, ylabel={en
 # comes below 0.024 mHa for eps in [6,24] while the axis starts at 3e-3, so the bottom
 # centre has ~49pt of clear height for a 2-row box.  The same A/B probe recovers 0 px
 # there.  Panel (b) was probed the same way and already hid nothing.
-lines.append(r"  legend style={at={(0.5,0.03)},anchor=south,font=\normalsize,draw=black!20},legend columns=3,legend cell align=left]")
+# (That probe predates the unfloored bands of 2026-09-28; since then the N2 band reaches the
+# axis floor at eps=10%, which is why the legend box below is no longer filled.)
+# 2026-09-28: the +-1 s.d. band of N2 now reaches the axis floor at eps=10% (mean 0.659,
+# s.d. 0.657), inside the box of this legend; with the white fill of paperaxis (opacity
+# 0.9) the legend would hide the bottom of that band.  The box is left unfilled, so the
+# band shows through and no plotted ink is hidden.
+lines.append(r"  legend style={at={(0.5,0.03)},anchor=south,font=\normalsize,draw=black!20,fill=none},legend columns=3,legend cell align=left]")
 lines.append(rf"\draw[nrChem,dashed,line width=0.6pt] (axis cs:-1,{CHEM}) -- (axis cs:31,{CHEM});")
 # The label used to sit INSIDE the plot area with a white fill at 70% opacity, which
 # washed out the lower edge of the N2 band and the upper edge of the CO band.  Two

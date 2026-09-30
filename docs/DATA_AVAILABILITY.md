@@ -39,11 +39,11 @@ published and this file is the one that is wrong.**
 > are deposited in `src/`, and `docs/REPRODUCE.md` gives the reproduction commands together with a
 > measured table of what a clean clone does and does not reach. An automated guardian
 > (`python src/verify.py`) recomputes the underlying physics by exact diagonalization and checks the
-> deposited artefacts against it — 874 checks over 9 891 numeric assertions, exiting non-zero on any
+> deposited artefacts against it — 1280 checks over 14 563 numeric assertions, exiting non-zero on any
 > discrepancy. It covers the deposited data files and the numbers printed in the figure sources, in the
 > tables and in the abstract; it is not a proof that every sentence of this manuscript is verified, and
-> five items are printed by name on every run: four known open defects, and one declared gap in its own
-> coverage, the source of Fig. S5.
+> four items are printed by name on every run, the known open defects; the ratios plotted in Fig. S5
+> are re-derived by it from the deposited certificate rows.
 >
 > The quantum-hardware results are deposited as the arrays that enter the figures, together with the
 > backend name, the shot count and the IBM Quantum job identifier for each of the two runs
@@ -134,6 +134,9 @@ The v3 manuscript typesets **seventeen** figures; `main.aux` is the authority
   `src/make_decoupling_native.py:34`."* That panel was rebuilt for v3: `fig_decoupling_native.tex` line 34
   now reads `(c) Hubbard: $\chi$ runs forwards`, and **grep finds none of those four numbers in any figure
   source used by the current build**. They survive only as prose, in `paper/sec_6_body.tex:329`
+  *(and, since 2026-09-28 (late), they have a generator: `src/free_fermion_support.py` writes
+  `data/free_fermion_support.json`, and `verify.py` recomputes the four counts and checks both sentences
+  that print them; `KNOWN_DISCREPANCIES.md` §33)*
   (`paper/resource.tex`, where the old text said they were printed, is superseded and not built).
 * **Fig. 17** of the 2026-09-19 build, printed Fig. S5 in v3 (`fig:thm1iii-violation`), is the one that
   needed checking rather than assuming. It plots
@@ -147,7 +150,11 @@ The v3 manuscript typesets **seventeen** figures; `main.aux` is the authority
   it as an open defect and prints it on every run. *(2026-09-26: `build_n3.py` and its inputs are now
   deposited — `src/recovered/`, `data/thm1iii_violation/` — and regenerate all ten tables
   byte-for-byte; the guardian's coverage gap stays, because it names a check that is still not
-  written.)* *(The counts in circulation disagree and all three
+  written.)* *(2026-09-28, late: that check is written — `verify.py` section 9.6c re-classifies the
+  pool from the five deposited JSON sources with code that shares nothing with `build_n3.py`, checks
+  the eight plotted tables and the whisker summary against it, and every count the caption, Sec. III D,
+  Sec. S2 and Sec. S9 print; the coverage gap is closed and the manuscript's sentence says so.
+  `build_n3.py` now reads the deposited `data/cert_*.json`, not the earlier run; §33.)* *(The counts in circulation disagree and all three
   are defensible readings of different questions: `verify.py` says "ten n3_*.dat tables" — every file;
   `FIGURE_PROVENANCE.md` says "eight" — what the fragment reads; a careless grep says six. Part 1
   therefore carries no count at all.)*
@@ -301,7 +308,7 @@ circuit output — `KNOWN_DISCREPANCIES.md` §30. The coverage statement is unch
 | not claimed | why |
 |---|---|
 | that every figure can be **recompiled** from the deposit | **six of the seventeen** ship as PDF with no `.tex` source inside the repository — `fig_akw_native.pdf`, `fig_circuit.pdf`, `fig_hero.pdf`, `fig_noise_score.pdf`, `fig_spinqw.pdf`, `fig_sqw.pdf`; the list was taken from the `\includegraphics` lines of the current build, not from a document. The other eleven are native pgfplots fragments. *(2026-09-26: the six standalone sources are now deposited in `paper/figs/src/` and each recompiles to a pixel-identical rendering of the committed PDF; none of the three rasters they embed can be regenerated here — the viridis input of `src/recolor_akw_v2.py`, which wrote `akw_field_v2.png`, is not deposited, the step that recoloured `sqw_field.png` is not deposited, and no deposited script writes `spinqw_field.png` — so "recompiled" is now true and "regenerated from data" is still not claimed.)* (Until 2026-09-19 `KNOWN_DISCREPANCIES.md` §5 said "ten of the twenty" and cited `fig_molecular_gallery.pdf` and its 19 PyMOL PNGs; it has since been re-counted to six of the seventeen, and that figure is **withdrawn in v3**. Part 4 item 2.) |
-| that Fig. 17 (Fig. S5 as printed) can be **regenerated** | its ten `n3_*.dat` tables are deposited, but `build_n3.py` is not, and two of its four inputs are not in `data/`. The guardian registers this as an open defect and refuses to "check" the figure by re-reading what it prints. *(2026-09-26: `src/recovered/build_n3.py` and all of its inputs are now deposited and regenerate the ten tables byte-for-byte, guarded by `check_figures.py`; the claim is still not made in Part 1 because the manuscript's sentence predates it, and `verify.py` still has no check of its own on the ratios.)* *(2026-09-28: Part 1 no longer lists the builder among the open gaps; it still makes no regenerability claim for the figure, and the `verify.py` coverage gap is still stated there.)* |
+| that Fig. 17 (Fig. S5 as printed) can be **regenerated** | its ten `n3_*.dat` tables are deposited, but `build_n3.py` is not, and two of its four inputs are not in `data/`. The guardian registers this as an open defect and refuses to "check" the figure by re-reading what it prints. *(2026-09-26: `src/recovered/build_n3.py` and all of its inputs are now deposited and regenerate the ten tables byte-for-byte, guarded by `check_figures.py`; the claim is still not made in Part 1 because the manuscript's sentence predates it, and `verify.py` still has no check of its own on the ratios.)* *(2026-09-28: Part 1 no longer lists the builder among the open gaps; it still makes no regenerability claim for the figure, and the `verify.py` coverage gap is still stated there.)* *(2026-09-28, late: the pool is rebuilt from the deposited `data/cert_*.json`, the whiskers are written by `src/recovered/n3_fig5_whiskers.py` and guarded by `check_figures.py` with the fragment, and `verify.py` re-derives every plotted ratio and printed count from the certificate rows; the coverage gap is closed, §33.)* |
 | that **Table II** (`tab:moments`, Sec. IV; Table IV of an earlier build) can be **regenerated** | **yes, since 2026-09-25.** The eight intermediate files the table was first built from were never deposited; `src/moments_table.py` rebuilds the L = 6 open-chain sector from scratch and writes `data/moments_table.json` (the three rows, the negative control of 300 draws at seed 20260918, and the two-level series of App. B), and `src/verify.py` asserts every printed entry against it. |
 | that `make reproduce` runs | it executes a notebook that requires `pyscf`, which is not installed in the verified environment. It was **not** run in this pass and no claim is made for it. |
 | that the GFlowNet comparison is reproducible | **yes, since 2026-09-25.** `src/gflow_dequant.py` — the algorithm of `calculations/validate_realnoise.py` of the companion review (arXiv:2608.05314), unchanged, with every seed written to `data/gflow_runs/` and merged into `data/gflow.json` (`--merge`). Needs `pyscf`, `torch` and `qiskit-ibm-runtime` (FakeTorino readout rates): the Docker image `sqd-nb` plus `pip install qiskit-ibm-runtime`; twenty single-threaded runs (ten seeds at 500 and at 1000 shots, symmetry-pinned gauge, the companion's ladder configuration); run a few at a time, since twenty at once exhausted the memory of a 16-core laptop. The five v2 summary rows were the only record of the original run (no per-seed values were stored anywhere); the paper now prints the regenerated per-seed statistics, and `src/verify.py` checks them against `data/gflow.json`. |

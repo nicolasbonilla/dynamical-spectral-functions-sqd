@@ -8,33 +8,37 @@ promotes it to universality~\cite{hebenstreit2019}, the fermionic counterpart of
 magic~\cite{bravyikitaev2005,leone2022sre}. A ladder of measures quantifies it---Gaussian rank and
 extent~\cite{cudbystrelchuk2023}, non-Gaussian gate counts~\cite{reardonsmith2024,diaskoenig2024},
 including the count that makes a state efficiently learnable~\cite{melehera2025}, covariance-matrix
-monotones~\cite{tarabunga2026,collura2026}, and convolution- and entropy-based measures built on the
-violation of Wick's theorem~\cite{coffman2025}.
+measures and monotones~\cite{sierant2026,tarabunga2026}, and convolution- and entropy-based measures built on the
+violation of Wick's theorem~\cite{coffman2025}; distinct from these is the qubit non-stabilizerness
+that Gaussian states themselves carry~\cite{collura2026}.
 
 \paragraph{The collapse, in detail.} Equation~\eqref{eq:collapse} is exact on any number-conserving state and verified state by state to $10^{-13}$ across the dissociation of
 $\mathrm{N_2}$ and the suite of Table~\ref{tab:molecules}, that is on the $38$ molecular ground states
 of this work. For spin-restricted natural orbitals
 ($g_{a\uparrow}=g_{a\downarrow}=n_a/2$) it equals $2N_{\mathrm u}$, the quadratic
 effectively-unpaired-electron index $N_{\mathrm u}=\sum_a n_a(2-n_a)$ of Takatsuka--Fueno--Yamaguchi and
-of Staroverov--Davidson~\cite{takatsuka1978,staroverov2000}, and $\mathrm{tr}[\gamma(1-\gamma)]$ is the
-Gigena--Rossignoli one-body-entanglement linear entropy~\cite{gigena2020}.\footnote{$2N_{\mathrm u}$ is
+of Staroverov--Davidson~\cite{takatsuka1978,staroverov2000}, and $\mathrm{tr}[\gamma(1-\gamma)]$ is one
+quarter of the Gigena--Rossignoli one-body quadratic (linear) entropy, $S_2=4\,\mathrm{tr}[\gamma(1-\gamma)]$
+on a number-conserving state~\cite{gigena2015}, a trace-form one-body entanglement entropy in the
+sense of Gigena, Di~Tullio and Rossignoli~\cite{gigena2020}. Here $2N_{\mathrm u}$ is
 the quadratic index, distinct from the linear $\sum_a\min(n_a,2-n_a)$ of
 Head-Gordon~\cite{headgordon2003}. A cleanly singly-occupied spin orbital contributes $0$ to
 $\mathcal F_1$ but $2$ to $2N_{\mathrm u}$, so on the five spin-polarized members of
 Table~\ref{tab:molecules} ($\mathrm{O_2},\mathrm{NO},\mathrm{CN},\mathrm{OH},\mathrm{BeH}$) the two differ
 and we report $\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$ directly. Outside number conservation the
 collapse fails: a paired Gaussian state hides fractional occupations in anomalous correlators and keeps
-$\mathcal F_1=0$.}
+$\mathcal F_1=0$.
 
-We claim no novelty for the algebra. Equation~\eqref{eq:collapse} is an immediate number-conserving
+The algebra is not new. Equation~\eqref{eq:collapse} is an immediate number-conserving
 specialization of the antiflatness of Ref.~\cite{sierant2026}; $N_{\mathrm u}$ has been the standard
-diagnostic of unpaired density since 1978~\cite{takatsuka1978}; and the ensemble form was noted
-independently and contemporaneously, for interacting-integrable eigenstates, by \'Swi\k{e}tek \emph{et
-al.}~\cite{swietek2026}. What we add is the exact, state-by-state \emph{dictionary}: three
+diagnostic of unpaired density since 1978~\cite{takatsuka1978}; and the relation was noted
+independently and contemporaneously by \'Swi\k{e}tek \emph{et al.}~\cite{swietek2026}, who state it
+for fixed-particle-number states and write its ensemble-averaged form for random superpositions of
+Gaussian states, their model of interacting-integrable eigenstates. What we add is the exact, state-by-state \emph{dictionary}: three
 literatures---fermionic magic, effectively-unpaired electrons, one-body entanglement---name one quantity.
 The verification is the $38$ molecular states just quoted; the further equality to $2N_{\mathrm u}$ is
 checked on the closed-shell members, the five spin-polarized ones being excluded for the reason given
-in the footnote. The $36$ lattice ground states of this work are number conserving, so
+above. The $36$ lattice ground states of this work are number conserving, so
 Eq.~\eqref{eq:collapse} applies to them by the same algebra, but they were not part of that
 state-by-state check and we do not count them in it. The consequence we carry
 forward is structural and equally exact: being a function of the occupation spectrum alone,
@@ -45,28 +49,37 @@ use.
 \paragraph{The witness and the fibers.} \noindent The proof is four short block-diagonal computations (Sec.~\ref{app:witness}); the step worth
 flagging here is that at $\theta=\pi/4$ a single maximally-paired geminal is the two-determinant cat,
 whose Majorana covariance \emph{vanishes identically}, so \emph{every} order of antiflatness saturates its
-maximum at once. All four values are reproduced by exact diagonalization for $K=1,\dots,4$.
+maximum at once. The values of $\mathcal F_1$, $\mathcal F_2$ and $|\mathcal S|$ are reproduced by
+exact diagonalization for $K=1,\dots,4$, and so is $\chi=2$, the largest Schmidt rank over all cuts of
+the pairing ordering (Sec.~\ref{app:witness}).
 
 \begin{figure*}[tp]\centering\input{figs/fig_witness_native.tex}
 \caption{\textbf{The geminal orbit witness (Theorem~\ref{thm:witness}).} Antisymmetrized products of
 strongly orthogonal geminals in their localized (pairing) basis, where $\chi=2$ and the state is a
 classically tractable tensor network. \textbf{(a)}~As $K$ grows, $\mathcal F_1=2N_{\mathrm u}=4K$,
-$\mathcal F_2=4K$ and $|\mathcal S|=2^{K}$ all diverge while the bond dimension never exceeds $2$.
+$\mathcal F_2=4K$ and $|\mathcal S|=2^{K}$ all diverge while the bond dimension is $2$; the $\chi$
+markers are the largest Schmidt rank over all cuts of the pairing ordering, computed by the deposited
+diagonalization (Theorem~\ref{thm:witness}); at the central cut alone it is $2$, $1$, $2$, $1$ for
+$K=1,\dots,4$, because that cut falls between two geminals when $K$ is even.
 \textbf{(b)}~At $K=3$, sweeping the pairing angle drives both $\mathcal F_1$ and $\mathcal F_2$ to their
 maximum at $\theta=\pi/4$---where the covariance vanishes and all orders saturate---with
-$\mathcal F_2>\mathcal F_1$ off the peak and $\chi=2$ throughout. Because $\mathcal F_k$ is
-orbital-rotation invariant the same values persist on the whole orbit, along which the cost runs from
-$O(K)$ to exponential.}\label{fig:witness}\end{figure*}
+$\mathcal F_2>\mathcal F_1$ off the peak, and $\chi=2$ at every interior angle, dropping to $1$ at
+$\theta=0$ and $\theta=\pi/2$, where the state is a single determinant (the line drawn at $\chi=2$ is
+the analytic interior value). Because $\mathcal F_k$ is
+orbital-rotation invariant the same values persist on the whole orbit, which contains the $O(K)$-cost
+pairing point and rotated points at which Born sampling is plausibly hard (not established here).}\label{fig:witness}\end{figure*}
 
 \paragraph{The orbit is the argument.} The witness is not the trivial ``a product state is easy''
 (Fig.~\ref{fig:witness}). Because $\mathcal F_1$ and $\mathcal F_2$ are invariant under number-conserving
 orbital rotations~\cite{sierant2026}, the whole orbit $\{U\ket{\Psi_K}\}$ carries the \emph{same}
-$(\mathcal F_1,\mathcal F_2)=(4K,4K)$ while the cost in the fixed computational basis---bond dimension and
-Born-sampling time---runs from $O(K)$ at the localized representative up to exponential. Two conclusions
+$(\mathcal F_1,\mathcal F_2)=(4K,4K)$ while the cost in the fixed computational basis---Born-sampling
+time, through the bond dimension---is $O(K)$ at the localized representative and, at generic rotated
+points, not established here. Two conclusions
 follow, each in the only direction the construction supports: a Gaussian-invariant fermionic magic is not
-a sufficient certificate of hardness and does not lower-bound the cost (there $\chi=2$ while
-$\mathcal F_k=4K\to\infty$); and $\mathcal F_k$ does not determine the cost, being constant on an orbit
-along which the cost varies exponentially. In a generic rotated basis the Born sampling of $\ket{\Psi_K}$
+a sufficient certificate of hardness and does not lower-bound the bond dimension, nor the cost beyond linear order in $K$ (there $\chi=2$ while
+$\mathcal F_k=4K\to\infty$); and $\mathcal F_k$ determines the cost only if the rotated points are in
+fact easy, being constant on an orbit that contains an $O(K)$-cost point and points at which sampling is
+plausibly hard. In a generic rotated basis the Born sampling of $\ket{\Psi_K}$
 is plausibly classically hard---the free-fermionic-linear-optics-with-magic-input regime of the Fermion
 Sampling advantage scheme~\cite{fermionsampling2022}---while $\mathcal F_k$ is unchanged: any hardness
 that appears belongs to the sampler's fixed frame. We are silent on whether magic is \emph{necessary} for
@@ -99,7 +112,8 @@ the two endpoints ($w_S$ to $2.2\times10^{-16}$), so the first term of Eq.~\eqre
 and only the second moves. Quantities are relative ($\widehat\Lambda_S=\Lambda_S/\lVert\phi\rVert$) and
 ``certificate'' is $\min\{(1+\sqrt{w_S})(\sqrt{1-w_S}+\widehat\Lambda_S/\eta),\,1+w_S\}$, the relative
 form of Theorem~\ref{thm:leakage}; ``al.''\ and ``rot.''\ label the aligned and rotated endpoints of the
-fiber. A continuous angle sweep is in Sec.~\ref{app:witness}.}
+fiber. Bold marks a non-vacuous certificate, below the trivial bound $1+w_S$. A continuous angle sweep
+is in Sec.~\ref{app:witness}.}
 \label{tab:fiber}
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}lccccc@{}}
@@ -139,14 +153,14 @@ a log-linear one and the last step alone place it between $K=6$ and $K=8$, the d
 themselves decelerating, and three points do not support a number---which is exactly the objection this
 paper makes to its own fraction headline in Sec.~\ref{sec:prices}. A statement of non-vacuity needs one
 fiber and not a magnitude, and the fiber at $K=4$ is still non-vacuous by $69\%$; but ``the effect grows
-with $K$'' is false here, and the trend is the one a referee would find first, so we state it ourselves. \emph{(iii)}~The small-leakage
+with $K$'' is false here. \emph{(iii)}~The small-leakage
 endpoint is realized only by the aligned basis, which is the stabilizer of the state
 ($|\braket{\Psi(0)|\Psi(U_{\rm in})}|=1.000000000000$); at the fiber angle $s=\pi/16$, every generator
 that actually moves the state gives $\widehat\Lambda/\eta\in[2.34,5.61]$. That range is a statement
 about generators at one angle and not about the angle sweep of Sec.~\ref{app:witness}, whose rotated
-endpoint descends to $1.61$ as $s\to0$ because the rotation itself is being switched off. The rhetorical parallel with the $|\mathcal S|$ witness---where
-the state genuinely runs from $O(K)$ to $2^{K}$---is therefore lost, and Sec.~\ref{sec:nogo:asym} states
-that asymmetry in the form a referee would. \emph{(iv)}~The scale is a toy: $2K\le8$ orbitals, sector
+endpoint descends to $1.61$ as $s\to0$ because the rotation itself is being switched off. The rhetorical parallel with the cost witness---where
+the orbit contains an $O(K)$-cost point and points of plausibly exponential cost---is therefore lost; Sec.~\ref{sec:nogo:asym} states
+that asymmetry. \emph{(iv)}~The scale is a toy: $2K\le8$ orbitals, sector
 dimension $\le3920$, no instance at the $L=12$ Hubbard scale of Sec.~\ref{sec:frontier}.
 
 What the exhibit delivers survives all four limits and is measured: on fibers where every invariant is
@@ -181,7 +195,10 @@ change $|\mathcal S|$ at fixed value cannot determine it.
 
 Both directions are realized and neither is a limiting case. A free-fermion ground state at $U=0$---one
 Slater determinant, $\mathcal F_1=0$, the minimum---has site-basis support growing exponentially,
-$|\mathcal S|=35,\,336,\,3496,\,37361$ for $L=4,6,8,10$: minimal invariant, divergent cost. Along a
+$|\mathcal S|_{\varepsilon_w}=35,\,336,\,3496,\,37361$ for $L=4,6,8,10$ on the open chain at the lattice
+threshold $\varepsilon_w=2.5\times10^{-3}$, the discarded weight being at most $\varepsilon_w$
+(\texttt{free\_fermion\_support.py}; at $L=4$ the four smallest determinant weights equal
+$\varepsilon_w$ exactly, and a strict cut gives $36$): minimal invariant, divergent cost. Along a
 Hubbard chain at fixed filling, raising $U$ \emph{raises} $\mathcal F_1$ while \emph{lowering}
 $|\mathcal S|$ as the ground state localizes: rising invariant, falling cost. Across the nineteen
 molecules of Table~\ref{tab:molecules} the two rise \emph{together} (Pearson $r=0.80$ on
@@ -189,17 +206,25 @@ $\log_2|\mathcal S|$), both merely tracking static correlation. The relationship
 is not stable---the signature of comparing an orbital invariant to a basis variant.
 
 We state what this is and what it is not. It is not a refutation of anyone's claim:
-Refs.~\cite{sierant2026,collura2026} propose $\mathcal F_k$ as a magic monotone for matchgate circuits,
-which is what it is, and no one proposed it as a predictor of the determinant support. It is our own
-no-go, about our own cost, and a corollary consistent with---not a competitor to---the
-invariant/basis-dependent dichotomy of Tarabunga \emph{et al.}~\cite{tarabunga2026}, who six weeks before
-this work set out the same division on general grounds: occupation entropies are Gaussian invariants and
-lower-bound the non-Gaussian gate count, while participation entropies in the natural-orbital basis are
-basis dependent and \emph{upper-bound the classical simulation cost}. That is the quantity on the useful
-side of the division, and the priority is theirs. The same acknowledgement is owed to Leone and
-Bittel~\cite{leonebittel2026}, whose fermionic entropy---equal to the squared Frobenius norm of the
-correlation matrix, with an unbiased $O(\varepsilon^{-2})$ estimator---is a Gaussian monotone of the
-same class and appeared seventeen days before this work first appeared.
+Ref.~\cite{sierant2026} proposes $\mathcal F_k$ as a measure of fermionic magic (non-Gaussianity) for
+matchgate circuits---faithful, Gaussian invariant and (sub)additive---which is what it is, and no one
+proposed it as a predictor of the determinant support. It is our own
+no-go, about our own cost, and a corollary consistent with---not a competitor to---the two families of
+Tarabunga \emph{et al.}~\cite{tarabunga2026}, who in July 2026, before this work, showed that
+occupation entropies depend only on the covariance matrix, two members of which (orders $1$ and $2$) are
+strong monotones that lower-bound the non-Gaussian gate count,
+while natural-orbital participation entropies depend on the full state and \emph{upper-bound the
+classical simulation cost} in an orthonormal Gaussian basis. Both of their families are Gaussian
+invariant; the basis dependence at issue here enters only because $|\mathcal S|$ is counted in a fixed
+determinant basis rather than in the state's own natural orbitals. That is the quantity on the useful
+side of the division, and the priority is theirs. On the invariant side the same acknowledgement is owed
+to Leone and Bittel~\cite{leonebittel2026}, who in July 2026, before this work, proved that the
+fermionic entropy $M_f=n\,(1-\|\Gamma\|_2^2/2n)$ on $n$ modes---an affine function of the squared
+Frobenius norm of the correlation matrix---is a strong pure-state Gaussian monotone (its convex roof one for mixed states)---on $n=2n_{\rm o}$ modes
+$M_f$ is $\mathcal F_1$ itself and Tarabunga \emph{et al.}'s quadratic occupation entropy, whose strong
+monotonicity the revised version of Ref.~\cite{tarabunga2026} proves independently---and that its
+fermionic purity $\|\Gamma\|_2^2/2n$ has an unbiased estimator using $O(\varepsilon^{-2})$ two-copy
+measurements.
 % RESOLVED 2026-09-18: the key `leonebittel2026' exists in the bibliography (Leone, Bittel,
 %  arXiv:2607.29670) and the parenthesis is now a \cite.  It is NOT \cite{bittel2025}, which is
 %  Bittel-Mele-Eisert-Leone, arXiv:2409.17953, a different paper; both keys are in the list.
@@ -214,7 +239,7 @@ $10^{-14}$ while the certificate of Theorem~\ref{thm:leakage} still separates.
 The two halves of this section are not one statement wearing two hats. On the cost side the invariance
 is a genuine physical group: the Gaussian orbital
 rotations $\mathrm U(n_{\rm o})$ are free operations, they act on the whole problem, and along one orbit
-the cost sweeps an \emph{extensive} range, $O(K)$ to $2^{K}$, at fixed invariant---a symmetry argument in
+the cost is $O(K)$ at one point and, at others, plausibly exponential but not established here, at fixed invariant---a symmetry argument in
 the ordinary sense. On the precision side it is weaker and of a different kind: $\Lambda_S(\eta)$ reads
 the off-diagonal block $P_SHQ_S$ in the working basis, and an invariant is blind to that
 block---informational blindness, not a gauge. The orbit there does not sweep an extensive range; as
@@ -231,6 +256,14 @@ rings at $\eta=0.18\,t$, and $0.28$ on the open chain (Secs.~\ref{sec:leakage} a
 
 \subsection{What does track the cost: \texorpdfstring{$\chi$}{chi}, and the statistics the right way up}
 \label{sec:nogo:chi}
+% 2026-09-30, layout only: in one-column mode revtex4-2 (ltxgrid, \open@column@one) sets
+% \count\footins to 500, so the page builder books a footnote at half its height and
+% the output routine then overfills the page (24.27 pt on p. 48 with the six-line
+% footnote below).  Booked at full height for this one paragraph only, the page breaks
+% where the footnote fits; REVTeX's value is restored after the paragraph.  Setting it
+% for the whole document (or for the Sec. S8 footnote) sends ltxgrid into an endless
+% run of empty pages at \end{document}, measured, so it is not done.  No text changes.
+\global\count\footins=1000\relax
 
 The computable lower bounds on $|\mathcal S|$ are themselves basis dependent. The orbital-Schmidt rank
 across a bipartition---the tensor-network bond dimension $\chi$~\cite{schollwock2011}---is a rigorous
@@ -254,13 +287,16 @@ $\widehat\Lambda/\eta$ still varies by $2.8$ and the measured error by $8.3$. Th
 leakage is the boundary coupling $\lVert P_SHQ_S\rVert$ of Sec.~\ref{sec:leakage}. What follows is a
 statement about $|\mathcal S|_{\varepsilon_w}$ and about nothing else.
 
+\global\count\footins=500\relax % REVTeX's one-column value, restored (see above)
 \paragraph{The Hubbard sweep, stratified.} The $30$ lattice points are not $30$ independent observations.
 They are six $(L,N)$ strata---$(6,6),(6,4),(8,8),(8,6),(10,10),(10,8)$---each swept over the same five
 values $U=1,2,4,8,16$. Within every stratum the rank correlation of $\mathcal F_1$ with
 $|\mathcal S|_{\varepsilon_w}$ is $-1.0000$, exactly, in all six; the corresponding
 $\rho(\chi,|\mathcal S|_{\varepsilon_w})$ are $1.000$, $0.894$, $0.949$, $0.975$, $0.975$, $0.894$, mean
-$0.948$. The stratified Kendall statistics are $\tau=-1.000$ for $\mathcal F_1$, with $0$ concordant
-pairs out of $60$, and $\tau=+1.000$ for $\chi$, with $50$ concordant, $0$ discordant and $10$ tied.
+$0.948$. The stratified concordance statistics $(n_C-n_D)/(n_C+n_D)$ are $-1.000$ for $\mathcal F_1$,
+with $0$ concordant pairs out of $60$ and no ties, where the statistic is Kendall's $\tau$, and $+1.000$
+for $\chi$, with $50$ concordant, $0$ discordant and $10$ tied, where it is the Goodman--Kruskal
+$\gamma$, which drops the tied pairs; Kendall's $\tau_b$, which charges them, is below $1$.
 Because each $\mathcal F_1$ stratum is a perfect reversal of five points, the exact one-sided
 stratified permutation $p$-value is $(1/120)^{6}=3.35\times10^{-13}$, against $1.93\times10^{-10}$ for
 $\chi$, which has ties. Both take a product across strata and therefore assume the six independent.

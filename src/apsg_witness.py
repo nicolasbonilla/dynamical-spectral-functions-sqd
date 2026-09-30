@@ -91,6 +91,11 @@ def chi_cut(psi, M, cut):
     s=np.linalg.svd(A,compute_uv=False); s=s[s>1e-10]; p=s**2/np.sum(s**2)
     return int(np.sum(p>1e-12)), float(-(p*np.log2(p)).sum())
 
+def chi_max_cuts(psi, M):
+    """Largest Schmidt rank over ALL M-1 cuts of the pairing ordering (added 2026-09-28: the
+    published chi = 2 is this maximum; chi_cut above records the central cut only)."""
+    return max(chi_cut(psi, M, c)[0] for c in range(1, M))
+
 def apsg_state(thetas):
     """Product of K strongly-orthogonal 2e singlet (perfect-pairing) geminals.
     Geminal i on spatial orbitals (2i=bonding, 2i+1=antibonding), spin-orbitals 4i..4i+3:
@@ -115,7 +120,7 @@ if __name__=='__main__':
         S=support(psi); chi,Sent=chi_cut(psi,M,cut=2*K)   # cut down the middle (between geminal blocks)
         ok=abs(F[1]-2*Nu)
         out['rows'].append(dict(K=K,theta='pi/4',M=M,Ne=Ne,FAF1=F[1],twoNu=2*Nu,idcheck=ok,
-                                F2=F[2],F3=F[3],Sdet=S,chi=chi,Sent=Sent))
+                                F2=F[2],F3=F[3],Sdet=S,chi=chi,Sent=Sent,chi_max=chi_max_cuts(psi,M)))
         print(f"{K:>2} {'pi/4':>6} {F[1]:8.4f} {2*Nu:8.4f} {ok:8.1e} {F[2]:8.4f} {S:6d} {chi:9d} {Sent:7.3f}")
     # theta sweep at K=3: FAF_1 scans while the family stays provably simulable
     print("\ntheta sweep at K=3 (family stays APSG=provably simulable throughout):")
@@ -123,7 +128,12 @@ if __name__=='__main__':
     for t in (0.02,0.10,0.25,0.40,0.50):
         th=[t*np.pi]*3; psi,C,Cd,M,Ne=apsg_state(th)
         F=fk_all(psi,C,Cd,M,kmax=2); Nu=n_unpaired(psi,C,Cd,6); S=support(psi); chi,_=chi_cut(psi,M,6)
-        out['rows'].append(dict(K=3,theta=f'{t}pi',FAF1=F[1],twoNu=2*Nu,F2=F[2],Sdet=S,chi=chi))
+        out['rows'].append(dict(K=3,theta=f'{t}pi',FAF1=F[1],twoNu=2*Nu,F2=F[2],Sdet=S,chi=chi,
+                                chi_max=chi_max_cuts(psi,M)))
         print(f"{t:8.2f} {F[1]:8.4f} {2*Nu:8.4f} {F[2]:8.4f} {S:6d} {chi:5d}")
+    out['chi_max_note']=('chi = Schmidt rank at the central cut (cut = 2K spin-orbitals) only; chi_max = the '
+                         'largest Schmidt rank over all M-1 cuts of the pairing ordering (the bond dimension '
+                         'of Theorem thm:witness), added 2026-09-28')
+    print("chi_max over all cuts:", [(r['K'], r['theta'], r['chi_max']) for r in out['rows']])
     json.dump(out,open(_outpath('apsg_witness.json'),'w'),indent=1)
     print("\nWROTE apsg_witness.json")

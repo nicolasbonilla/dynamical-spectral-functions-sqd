@@ -38,8 +38,12 @@
   %        recorded so they are not retried: 0.070/0.150 ended AT x = 0.16, and
   %        0.055/0.122 straddled the y = 0.1 grid rule.
   \draw[inkMute,dashed,line width=0.6pt] (axis cs:0.16,0) -- (axis cs:0.16,0.235);
+  % 2026-09-28 (review item VS-V2): the label read "recovery holds rel-L1~0.05 up to
+  % eps~16%", but at eps=0 both arms sit at 0.105 and recovery reaches ~0.05 only from
+  % eps=4% on (data/noise_spectral.json); the label now states that range.  Same anchor,
+  % a shorter first line and a second line of about the old width.
   \node[inkPrim,font=\footnotesize,anchor=west,align=left] at (axis cs:0.062,0.137)
-     {recovery holds rel-$L_1\!\approx\!0.05$\\ up to $\varepsilon\approx16\%$};
+     {recovery: rel-$L_1\!\approx\!0.05$\\ for $4\%\le\varepsilon\le16\%$};
   \node[inkPrim,font=\footnotesize,anchor=south east,align=right] at (axis cs:0.204,0.255)
      {naive post-selection\\ degrades with noise};
 \end{axis}\end{tikzpicture}\end{document}

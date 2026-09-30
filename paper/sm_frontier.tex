@@ -34,8 +34,10 @@ $\lvert\mathcal S\rvert=\mathrm{round}(\mathrm{frac}\times\dim)$ that Fig.~\ref{
 reports---$246$, $2180$, $19\,183$, $124\,407$ and $824\,504$ determinants at $L=6$, $8$, $10$, $12$
 and $14$---at the same four resolutions and under the same protocol, at depths $n_\ell=245$
 (exhausting the subspace), $900$, $700$, $300$ and $250$, with orthogonality defect at most
-$4.9\times10^{-15}$ and $\lvert w_{\mathcal K}-w_{\mathcal S}\rvert$ at most $6.4\times10^{-15}$. All
-twenty pass the depth test, and all twenty clear the reference-drift rule of Sec.~\ref{app:hyp}, the
+$4.9\times10^{-15}$ and $\lvert w_{\mathcal K}-w_{\mathcal S}\rvert$ at most $6.4\times10^{-15}$. The
+sixteen up to $L=12$ pass the depth test defined below; at $L=14$, where $\Lambda_{\rm out}$ was not
+recorded, only its indicator half can be applied, and it passes at all four resolutions. All twenty
+clear the reference-drift rule of Sec.~\ref{app:hyp}, the
 weakest---$L=14$ at $\eta=0.10\,t$, where the reference itself drifts by $1.9\times10^{-3}$ on
 halving its depth---by a factor $51$. They cost $129$\,s of core time up to $L=12$ and $2238$\,s of
 wall time at $L=14$, and they add the size the sweep never reached.
@@ -47,18 +49,26 @@ $\mathcal K=\mathrm{Krylov}(H_S,\phi_S,n_\ell)$ bounds the error
 of $A_{\mathcal K}$ at that depth and of nothing else, the convenient inequality
 $\Lambda_{\mathcal K}\ge\Lambda_S$ that would extend it to the dense $A_S$ being false ($1169$ of
 $6000$ random triples violate it, minimum ratio $0.5258$), and $A_S$ is never formed. And depth is
-certified per point by the internal indicator $\Lambda_{\rm in}/\Lambda_{\rm out}$ rather than
-assumed~\cite{haydock1972,epperly2022}; Sec.~\ref{app:hyp} bounds what the depth cap does to
+certified per point by the internal indicator $\Lambda_{\rm in}/\Lambda_{\rm out}$, the truncation
+part of $\Lambda$ over its boundary part, rather than assumed from a fixed recursion
+depth~\cite{haydock1972} or from a priori Krylov convergence bounds~\cite{epperly2022}: a point passes the depth test, and is counted converged, when
+that indicator is below $0.05$ and $\Lambda_{\rm out}$ is constant to $10^{-3}$ relative over the last
+three depths of its ladder, and is marginal when the indicator is below $0.30$ otherwise
+(\texttt{fsum.py}); Sec.~\ref{app:hyp} bounds what the depth cap does to
 $\mathrm{FR}^{\ast}$.
 
-Three hypotheses carry the bound, each a statement about the pipeline rather than about the theorem;
-they are stated in full with the theorem in Sec.~\ref{sec:leakage}, and all three are checked against
+Four hypotheses carry the bound, each a statement about the pipeline rather than about the theorem;
+they are stated in full with the theorem in Sec.~\ref{sec:leakage}, and all four are checked against
 this pipeline in Sec.~\ref{app:hyp}, along with the ranking, tie and support declarations of the cut.
 It is (H3), the exactness of the reference, that enforces the rule that no measured error is quoted
 within a factor $20$ of its own reference drift.
-One asymmetry runs through every table: of the two terms of Eq.~\eqref{eq:twobudget} only the leakage
-is a posteriori, while the weight term needs $\Psi_0$, and estimating $w_S$ against an
-already-truncated $\Psi_0$ is biased optimistically (Sec.~\ref{sec:leakage}). What the tables report is
+One asymmetry runs through every table, and it is narrower than it looks: neither term of
+Eq.~\eqref{eq:twobudget} is free of $\Psi_0$. The leakage needs the retained probe $\phi_S$, the
+amplitudes of $\Psi_0$ on the determinants the probe operator maps into $S$, which the reconstruction
+itself uses and which is exact here by (H4); the weight term needs in addition the full norm
+$\lVert\phi\rVert^{2}$, and estimating $w_S$ against an already-truncated $\Psi_0$ is biased
+optimistically, while $\Lambda_S$ evaluated with such a $\Psi_0$ belongs to another probe
+(Sec.~\ref{sec:leakage}). What the tables report is
 accordingly one object and not a family of them: a bound on
 $\lVert A-A_{\mathcal K}\rVert_1/\lVert\phi\rVert^{2}$ for the reorthogonalized Krylov reconstruction
 at a declared depth, against a reference whose drift is declared and enforced.
@@ -68,25 +78,25 @@ itself---$\lvert S\rvert=124\,407$ of $731\,808$ determinants---the captured wei
 $w_S=0.998622$, so Eq.~\eqref{eq:tau} asks for $\widehat\Lambda_S/\eta<\tau(w_S)=0.9625$ and the
 measured value is $4.236$ at $\eta=0.18\,t$, putting the leakage branch at $8.544$ against a trivial
 branch of $1.9986$. That is converged in depth: the depth indicator is
-$\Lambda_{\rm in}/\Lambda_{\rm out}=2.8\times10^{-3}$ and between depths $250$ and $300$ $\Lambda_{\rm out}$ moves by $3.7\times10^{-7}$ relative and the bound by $1.4\times10^{-5}$, while at the neighbouring grid point $\mathrm{FR}=0.18$ the same
+$\Lambda_{\rm in}/\Lambda_{\rm out}=2.8\times10^{-3}$ and between depths $250$ and $300$ $\Lambda_{\rm out}$ moves by $3.7\times10^{-7}$ relative and the bound by $1.4\times10^{-5}$, while at the neighboring grid point $\mathrm{FR}=0.18$ the same
 quantity was checked twice more---$\Lambda_{\rm out}$ changing by $7.5\times10^{-7}$ between depths
 $250$ and $300$, and an independently written re-implementation moving it by $8.6\times10^{-5}$
 between depths $100$ and $300$. In all sixteen deposited depth series $\Lambda$ at every depth from $100$ on lies at or above its deepest value---it is not monotone in depth in general, and rises by up to $2.2\%$ from one depth to the next below depth $100$ at $L=12$---so the bound at any depth from $100$ on, including the depth $150$ at which Fig.~\ref{fig:scaling} is drawn, is no smaller, so the vacuity is not an artifact of Lanczos truncation in either direction.
 Nor is it peculiar to these subspaces: over the $606$
 live subspaces of the pooled sweep of Sec.~\ref{app:counterex}, Fig.~\ref{fig:thm1iii-violation}, the
-leakage branch is the smaller of the two on only $61$. \textbf{The reconstructions at the fractions this paper publishes---Fig.~\ref{fig:scaling} and the operating points of Secs.~\ref{sec:prices} and~\ref{sec:physics}---are therefore, at present, uncertified.} Fig.~\ref{fig:akwsampled}, drawn at $85\%$ of its sector, is the exception: there the certificate of the depth-$500$ Krylov reconstruction is non-vacuous in all sixteen channels, at a relative bound of $0.77$--$1.75$ against the trivial $2$, and loose, $350$--$900$ times the true error (\texttt{cert\_akw.json}).
+leakage branch is the smaller of the two on only $61$. The reconstructions at the fractions this paper publishes---Fig.~\ref{fig:scaling} and the operating points of Secs.~\ref{sec:prices} and~\ref{sec:physics}---are therefore uncertified. Figure~\ref{fig:akwsampled}, drawn at $85\%$ of its sector, is the exception: there the certificate of the depth-$500$ Krylov reconstruction is non-vacuous in all sixteen channels, at a relative bound of $0.77$--$1.75$ against the trivial $2$, and loose, $350$--$900$ times the true error of the channel integrated over the whole frequency line (\texttt{cert\_akw.json}).
 
-One row is quoted with two caveats attached. $L=14$ is the size at which Fig.~\ref{fig:scaling}
+One row is quoted with a caveat attached. $L=14$ is the size at which Fig.~\ref{fig:scaling}
 reports its headline fraction of $0.08$, and the certificate is evaluated there at $\lvert S\rvert=824\,504$ of $10\,306\,296$ determinants---one determinant above the
 $\mathrm{round}(\mathrm{frac}\times\dim)=824\,503$ of the deposited grid---with $w_S=0.998388$ and a
 leakage branch of $17.21$, $11.18$, $9.21$ and $6.50$ against a trivial branch of $1.9984$. Ground
 state, seed and order there are the repository's stored checkpoint---residual $2.7\times10^{-9}$, the
-order verified to be a permutation of the sector---and the $K=18$ ranking protocol was \emph{not}
-re-run at that size; it was re-run at $L=10$, where the two selections agree as sets to
-$1.000000$. And the
-depth indicator $\Lambda_{\rm in}/\Lambda_{\rm out}=0.0453$ at $\eta=0.10\,t$ is the loosest value
+order verified to be a permutation of the sector---and the $K=18$ ranking protocol, re-run at that
+size, reproduces the stored selection as a set to $1.000000$ at
+$\lvert S\rvert=824\,504$ and at the fractions $0.04$, $0.16$ and $0.32$, as it does at $L=10$. The caveat is the
+depth indicator $\Lambda_{\rm in}/\Lambda_{\rm out}=0.0453$ at $\eta=0.10\,t$, the loosest value
 quoted anywhere in this section, comparable to the $4.7\times10^{-2}$ of the last row of
-Table~\ref{tab:certified}. Neither caveat is repaired, and the row is reported because it makes the
+Table~\ref{tab:certified}. It is not repaired, and the row is reported because it makes the
 verdict of this section worse rather than better.
 
 \begin{table*}[tp]\centering\small
@@ -219,8 +229,7 @@ $12$ & $0.25$ & $512\,266/731\,808=0.70$  & $0.218$ & $1.99\times10^{-5}$ & $4.7
 \end{tabular}
 \end{table*}
 
-The concession that belongs with that table is one a referee would make, so we make it first and in
-full. At the acceptance criterion this paper uses everywhere else---relative $L_1<0.05$---the
+One restriction belongs with that table. At the acceptance criterion this paper uses everywhere else---relative $L_1<0.05$---the
 certificate requires at least $0.98$ of the sector at $L=8$, measured at integer subspace size rather
 than interpolated: the certified value is $0.084$ at $3802$ of $3920$ determinants, $0.060$ at $3830$
 and $0.039$ at $3855$, so the crossing lies in $[0.977,0.983]$; on our grid it is not reached at all at
@@ -237,14 +246,14 @@ certified $0.717$ sits a factor $2.8$ below that cap, and at $70\%$ and $\eta=0.
 below it. Those are exclusions of gross failure made from the subspace alone, at a dimension where the
 exact spectrum is expensive and, at the sizes this method is aimed at, unavailable.
 
-\paragraph{The calibration and its limits, in full.} One positive result survives the sweep, and it is the reason we report the sweep. Across all sixteen
+\paragraph{The calibration and its limits, in full.} The calibration is the reason the sweep is reported. Across all sixteen
 $(L,\eta)$ cells the crossing of the trivial bound occurs at a true relative $L_1$ error of
 $1.2\times10^{-3}$ to $7.3\times10^{-3}$, median $2.8\times10^{-3}$: a spread of $5.9$ over a table
 whose true errors span five decades, and in every cell at least $47$ times the drift of our own
 reference. $\widehat\Lambda_S(\eta)/\eta$ is therefore a calibrated a posteriori risk tracker---its
 crossing of the trivial bound locates a true error of ${\approx}3\times10^{-3}$ to within a factor of
-three over $L=6$--$12$ and $\eta=0.10$--$0.25\,t$, and it is computed from $H$, $S$, $\phi$
-and $\eta$ alone, without the answer. That factor of three is a drift and not scatter, and the
+three over $L=6$--$12$ and $\eta=0.10$--$0.25\,t$, and it is computed from $H$, $S$, the retained probe $\phi_S$,
+the probe norm $\lVert\phi\rVert$ and $\eta$, without $A$, given the exact probe (H4). That factor of three is a drift and not scatter, and the
 deposited grid settles it in a few lines: the sixteen crossing errors are ordered without a single
 exception, falling with $L$ at every resolution---$5.65$, $3.50$, $2.52$ and $1.60\times10^{-3}$ at
 $\eta=0.18\,t$ for $L=6$--$12$, a factor $2.8$--$3.7$---and rising with $\eta$ at every size by
@@ -253,7 +262,7 @@ the variable one would extrapolate: the larger the system, the smaller the true 
 certificate first says anything, so reading the crossing as ${\approx}3\times10^{-3}$ beyond the sizes
 measured overstates the error rather than understating it. In $\eta$, which the user chooses and which
 lies inside the measured range, it does not. The objection to anticipate is that this is
-Fig.~\ref{fig:scaling} relabelled. It is not, and the difference is the content: that figure is built
+Fig.~\ref{fig:scaling} relabeled. It is not, and the difference is the content: that figure is built
 knowing the exact spectrum and this quantity is computed without it. That the two track each other to
 within a factor $5.9$ across five decades of error is not a redundancy---it is the calibration, and it
 is what makes the quantity usable where the second curve cannot be drawn.
@@ -263,7 +272,8 @@ level and does not estimate the error away from it: at a \emph{fixed} subspace t
 bound against the measured error is constant to within $\pm17\%$ ($L=6$) and $\pm25\%$ ($L=8$) over a
 decade in $\eta$, but across subspaces it varies by a factor $51$, and at the threshold itself it is
 $3\times10^{2}$ to $2.4\times10^{3}$---the object is a certificate, not an error estimate, and calling
-it the latter would be refutable in one line. Only one of its two terms is a posteriori: the comparison is
+it the latter would be refutable in one line. Neither of its two terms is free of the ground state (Sec.~\ref{sec:leakage}), and the comparison
+needs more than the leakage: it is
 $\widehat\Lambda_S/\eta$ against $\tau(w_S)$, and $\tau$ needs $w_S$, which a user does not have.
 That dependence can be discharged conservatively, and doing so is what makes the decision itself a
 posteriori. Equation~\eqref{eq:tau} is decreasing in $1-w_S$ for $w_S\ge0.066$, with $\tau(1)=1$, and positive for $w_S>0.296$, so any assumed floor on the captured weight above $0.296$ yields a usable threshold: at the $L=12$ published operating point
@@ -272,7 +282,9 @@ willing to assume only that the sampler captured $99.5\%$ of the probe's Born we
 run the comparison as $\widehat\Lambda_S(\eta)/\eta<0.928$ and use no other ground-state
 information, at the cost of at most $7\%$ in the threshold. Where not even that floor can be
 assumed, or where $w_S$ is estimated against an already-truncated $\Psi_0$---an estimate biased
-optimistically---the test is not conservative and the bound is not a posteriori.
+optimistically---the test is not conservative and the bound is not a posteriori. All of this presupposes the exact
+probe of (H4): with a $\Psi_0$ estimated on a sampled subspace, $\widehat\Lambda_S$ itself is evaluated
+for another probe.
 And sixteen cells over four sizes and four resolutions is the whole of the evidence: no exponent is
 fitted to it and no extrapolation to $L=14$ is made, the local log--log slopes of
 $\mathrm{FR}^{\ast}(L)$ already varying by a factor $4.1$ across the four sizes measured.
@@ -280,15 +292,15 @@ $\mathrm{FR}^{\ast}(L)$ already varying by a factor $4.1$ across the four sizes 
 The fourth limit is the one a reader holding the deposited grid will test first, and it is a real
 restriction on what the crossing is worth. A sampler already holds the captured Born weight, so the
 question is whether a stopping rule indexed on $1-w_S$ alone locates the same error level, in which
-case the crossing would be that weight relabelled. It is not: over the sixteen cells, $1-w_S$ at the
+case the crossing would be that weight relabeled. It is not: over the sixteen cells, $1-w_S$ at the
 crossing ranges over a factor $45$ against the true error's $5.9$, and still over $9.4$ against $3.8$
 once the extreme cell at each end is dropped. A rule with constants fitted to the grid, however, comes
 close enough. Take $1-w_S<c\,\eta^{p}$, fit $c$ and $p$ on some of the four sizes
 with its operating point matched to the certificate's, evaluate it on the sizes held out, and repeat
 over all fourteen train/test splits: out of sample it localizes the crossing error about as tightly as
 the parameter-free certificate does, and more tightly on eleven of the fourteen (\texttt{null\_ws7.py}).
-We therefore claim no superiority for the certificate as a tracker of the error against the captured
-weight; out of sample it has none. The difference lies elsewhere. The fitted rule fires at $1-w_S\sim10^{-5}$--$10^{-4}$, one to two orders of magnitude finer than the floor
+Out of sample the certificate has no edge in sharpness over the captured weight as a tracker of the
+error; its edge is provability (Sec.~\ref{sec:frontier:calib}). The difference lies elsewhere. The fitted rule fires at $1-w_S\sim10^{-5}$--$10^{-4}$, one to two orders of magnitude finer than the floor
 $1-w_S\le5\times10^{-3}$ at which the threshold above still works, and it asks that precision of the one
 quantity this section has already said a user does not have and, estimated against an already-truncated
 $\Psi_0$, has optimistically; strip its second parameter and an $\eta$-blind $1-w_S<c$ is the looser of the two on thirteen of the fourteen splits. Theorem~\ref{thm:leakage}, for its part, is an inequality with a proof:
@@ -337,7 +349,7 @@ and the circuit of Sec.~\ref{sec:method} already contains them, so the measureme
 for the momentum-resolved probe of Fig.~\ref{fig:akwsampled} it is a forced one, since $H$ commutes with
 lattice translation and $\phi_k$ is an eigenvector of it, so that $\mathcal K(H,\phi_k)$ lies inside a
 single momentum block---rigorously, at every $L$---and that block is exactly $\dim(N{+}1)/L$
-determinants. At $L=6$ and $L=8$ the Krylov support fills nearly all of the block, and the certificate becomes non-vacuous only close to the full block: at $48$--$50$ of its $50$ determinants at $L=6$ and at $455$--$483$ of its $490$ at $L=8$, over the momenta of the addition branch (\texttt{z\_kblock.py}), a factor $5$--$7$ fewer than the determinant basis requires; on the block itself $\Lambda_S$ vanishes identically and the bound is zero rather than vacuous. The gain, though, is $1/L$ against an exponential: as a fraction of
+plane-wave determinants. At $L=6$ and $L=8$ the Krylov support fills nearly all of the block, and the certificate becomes non-vacuous only close to the full block: at $48$--$50$ of its $50$ determinants at $L=6$ and at $455$--$483$ of its $490$ at $L=8$, over the momenta of the addition branch (\texttt{z\_kblock.py}), a factor $5$--$7$ fewer than the site determinant basis requires; on the block itself $\Lambda_S$ vanishes identically and the bound is zero rather than vacuous. The gain, though, is $1/L$ against an exponential: as a fraction of
 the fraction Fig.~\ref{fig:scaling} publishes the block is $0.20$ at $L=6$ and then $0.22$, $0.28$,
 $0.49$ and $0.89$ at $L=14$, the two crossing just past $L=14$. It is also a laptop Lanczos---$60\,984$
 determinants at $L=12$, $736\,164$ at $L=14$---so the regime it certifies is one that momentum-resolved

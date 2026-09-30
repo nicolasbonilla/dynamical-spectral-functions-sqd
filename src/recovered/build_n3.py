@@ -17,10 +17,16 @@ nothing else:
     fig:akwsampled by reference where they used to hard-code "Theorem~B" and "Fig.~5"; the
     legend was reworded by hand after this script ran.  The check itself (legend count ==
     .dat line count == builder count) is unchanged.
-Run on those inputs it regenerates all ten n3_*.dat byte-identically (src/check_figures.py
-guards this) and prints 621 pooled / 606 live / 468 violations / 363 of 363 at w_S >= 0.99 /
-mildest factor 2.10.  Pointed at the deposited data/cert_*.json instead it gives 469 and 2.005,
-the discrepancy the paper states in Sec. S9.
+Run on those inputs it regenerated all ten n3_*.dat byte-identically and printed 621 pooled /
+606 live / 468 violations / 363 of 363 at w_S >= 0.99 / mildest factor 2.10.
+
+CHANGED 2026-09-28 (one line, the CERT path below): the three certificate scans are now read from
+the deposited data/cert_stress.json, data/cert_akw.json and data/cert_teqsci.json -- the files
+Secs. V and S9 use -- instead of the earlier run in data/thm1iii_violation/cert_earlier_run/.
+Fig. S5 and every count quoted from it were regenerated from that output: 621 pooled / 606 live /
+469 violations / 363 of 363 at w_S >= 0.99 / mildest factor 2.005 / survival on 137 of 243 below
+0.99.  The earlier-run files stay deposited, as a record, and are no longer read.  The ten
+n3_*.dat tables are re-checked byte for byte by src/check_figures.py.
 """
 import json, os, sys, re, numpy as np
 
@@ -62,8 +68,8 @@ for r in L8:
                      thmB=min(r["RHS_new"], triv),
                      leak_wins=bool(r["RHS_new"] < triv)))
 
-# ---------- sources 3-5: today's independent certificate run (certificate.py) ----------
-CERT = os.path.join(SP, "cert_earlier_run")
+# ---------- sources 3-5: the independent certificate run (leakage_certificate_suite.py) ----------
+CERT = os.path.join(REPO, "data")         # 2026-09-28: the deposited scans (was SP/cert_earlier_run)
 cert_counts = {}
 for f, famkey, selkey in [("cert_stress.json", "family", "selection"),
                           ("cert_akw.json", "branch", "FR"),

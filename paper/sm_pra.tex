@@ -25,10 +25,12 @@
 %  ARSTRUT.  revtex4-2 4.2f (revtex4-2.cls, \hline@rule) makes \@arstrut GLOBALLY equal to
 %  \@arstrut@hline -- the taller strut meant for the one row after an \hline -- and the
 %  hook meant to restore it has been emptied by then, so after the first \hline of the
-%  document every later tabular row carries the taller strut.  In main.tex the first
-%  \hline comes in the main text, so every table of the SM is set with it.  A fresh run
-%  would set the SM tables tighter and move every page break after the first of them.
-%  Restoring the state reproduces main.pdf; it does not repair REVTeX.
+%  document every later tabular row carries the taller strut.  Until 2026-09-28 the first
+%  \hline of main.tex came in the main text (Table II), so every table of the SM was set
+%  with it; since Table II was set with booktabs rules that day (review item VM-V21) the
+%  main text has no \hline, main_pra.tex exports the state 0, and the SM tables are set
+%  with the normal strut in both builds.  The mechanism is kept so that either state
+%  reproduces main.pdf; it does not repair REVTeX.
 % =====================================================================================
 \RequirePackage{xr-hyper}
 \RequirePackage{refcount}

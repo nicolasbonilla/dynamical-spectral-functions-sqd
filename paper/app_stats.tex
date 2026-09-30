@@ -25,7 +25,7 @@ $\chi$ and not inversions.
 \caption{\textbf{The six Hubbard strata.} Each is a five-point sweep in $U$ at fixed $(L,N)$. The
 one-sided exact permutation probability of a perfect reversal within one stratum of five distinct
 values is $1/120=0.0083$; ties in $\chi$ raise it. ``distinct $\chi$'' counts how many of the five
-$\chi$ values differ, which is what caps $\rho(\chi,|\mathcal S|)$ below unity in four of the
+$\chi$ values differ, which is what caps $\rho(\chi,|\mathcal S|)$ below unity in five of the
 six.}\label{tab:strata}
 \begin{tabular}{cccccc}
 \toprule
@@ -41,9 +41,11 @@ $10$ & $8$  & $-1.000$ & $+0.894$ & $13,13,13,11,9$ & $3$\\
 \end{tabular}
 \end{table*}
 
-\paragraph{Three tests, and what each assumes.} The stratified Kendall statistics are $\tau=-1.000$ for
-$\mathcal F_1$, with $0$ concordant and $60$ discordant within-stratum pairs and no ties, and
-$\tau=+1.000$ for $\chi$, with $50$ concordant, $0$ discordant and $10$ tied. Because each
+\paragraph{Three tests, and what each assumes.} The stratified concordance statistics
+$(n_C-n_D)/(n_C+n_D)$ are $-1.000$ for $\mathcal F_1$, with $0$ concordant and $60$ discordant
+within-stratum pairs and no ties, so that the statistic is Kendall's $\tau$, and $+1.000$ for $\chi$,
+with $50$ concordant, $0$ discordant and $10$ tied, where it is the Goodman--Kruskal $\gamma$, which
+drops the tied pairs; Kendall's $\tau_b$, which charges them, is below $1$. Because each
 $\mathcal F_1$ stratum is a perfect reversal of five distinct points, the exact one-sided stratified
 permutation probability is the product of the six per-stratum chances,
 $(1/120)^{6}=3.35\times10^{-13}$, over a relabelling space of $2.99\times10^{12}$; the same test

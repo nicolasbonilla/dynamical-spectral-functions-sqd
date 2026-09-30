@@ -3,27 +3,47 @@
 \begin{proposition}[Coefficient-insensitivity obstruction]
 \label{prop:obstruction}
 Let $\mu$ be any functional of a fixed finite set of reduced density matrices, continuous in the
-state. Then $\mu$ cannot lower-bound the \emph{raw} determinant support (the unthresholded Slater rank);
-like the CP tensor rank, this count is not lower-semicontinuous~\cite{desilvalim2008}: for every $c>0$ there exist states with $\mu$ arbitrarily small and rank arbitrarily large.
+state. Then $\mu$ cannot usefully upper-bound the \emph{raw} determinant support (the unthresholded
+Slater rank): for every $\epsilon>0$ there are states with $|\mu-\mu(\ket{D_0})|<\epsilon$ (for
+$\mathcal F_k$, $\mu<\epsilon$) whose raw support is every determinant of the particle-number sector, so
+any bound $|\mathcal S|_{\rm raw}\le f(\mu)$ valid on the sector takes the trivial value, the sector
+dimension, at values of $\mu$ arbitrarily close to $\mu(\ket{D_0})$. The count is lower- but not
+upper-semicontinuous; the CP tensor rank fails upper semicontinuity in the same way and, unlike
+the count, is not even lower-semicontinuous: its sets of rank at most $r$ are not
+closed~\cite{desilvalim2008} (that reference names the two semicontinuities the other way round,
+calling matrix rank upper-semicontinuous). Nor can the invariant $\mathcal F_1$ usefully lower-bound it:
+for $N$ electrons on $2n_{\rm o}$ modes it implies $|\mathcal S|_{\rm raw}\ge N/(N-\mathcal F_1/4)$,
+which never exceeds $2n_{\rm o}/N$, and at half filling ($N=n_{\rm o}$), where that is $2$, any
+increasing $f$ with $|\mathcal S|_{\rm raw}\ge f(\mathcal F_1)$ satisfies $f\le2$.
 \end{proposition}
 \begin{proof}
 Rank is a coefficient-insensitive count. Take
-$\ket{\Psi_\epsilon}=\ket{D_0}+\epsilon\sum_{k=1}^{K}\ket{D_k}$ with the $D_k$ distinct. As
-$\epsilon\to0$ every reduced density matrix converges to that of $\ket{D_0}$, so any continuous
-$\mu\to\mu(\ket{D_0})$ (for $\mathcal F_1$, to $0$), while the rank remains $\Theta(K)$.
+$\ket{\Psi_\epsilon}=\ket{D_0}+\epsilon\sum_{k=1}^{K}\ket{D_k}$ with the $D_k$ distinct determinants of
+the sector of $\ket{D_0}$. As $\epsilon\to0$ every reduced density matrix converges to that of
+$\ket{D_0}$, so any continuous $\mu\to\mu(\ket{D_0})$ (for $\mathcal F_k$, to $0$), while the raw
+support stays $K+1$ for every $K$ up to the sector dimension minus one. For the second part, every
+natural orbital lies in the span of the at most $N|\mathcal S|_{\rm raw}$ orbitals occupied in the
+support, so $\mathrm{rank}\,\gamma\le N|\mathcal S|_{\rm raw}$; with $\mathrm{tr}\,\gamma=N$ and
+$\mathrm{tr}\,\gamma^{2}=N-\mathcal F_1/4$, the Cauchy--Schwarz inequality
+$(\mathrm{tr}\,\gamma)^{2}\le\mathrm{rank}\,\gamma\,\mathrm{tr}\,\gamma^{2}$ gives the bound, and
+$\mathrm{rank}\,\gamma\le2n_{\rm o}$ caps it at $2n_{\rm o}/N$. At half filling with $n_{\rm o}\ge2$ the two-determinant cat
+$(\ket{1\cdots10\cdots0}+\ket{0\cdots01\cdots1})/\sqrt2$, whose determinants differ in $N\ge2$ orbitals,
+has $\gamma=\tfrac12\openone$, hence $\mathcal F_1=2n_{\rm o}$ (maximal) and Slater rank $2$, so
+$f(2n_{\rm o})\le2$; for $n_{\rm o}=1$ every state is a single particle on two modes, of raw support at
+most $2$.
 \end{proof}
 \noindent The obstruction is about the unthresholded rank; the operative, coefficient-\emph{sensitive}
 support $|\mathcal S|_\varepsilon$ of Sec.~\ref{sec:nogo} collapses to $1$ along the same
 $\epsilon\to0$ path, so continuity alone does not obstruct it. What obstructs $|\mathcal S|_\varepsilon$
 itself is the orbital-rotation symmetry---no invariant functional survives it---together with the two
 equal-weight witnesses below, whose amplitudes are $\Theta(1)$ and therefore threshold-robust.
-Two explicit witnesses rule out the natural repairs. The two-determinant cat
-$(\ket{1\cdots10\cdots0}+\ket{0\cdots01\cdots1})/\sqrt2$ has $\gamma=\tfrac12\mathbb 1$, hence
-$\mathcal F_1=2n_{\rm o}$ (maximal) yet Slater rank $2$, so no $\mathcal F_1$-monotone bounds $|\mathcal S|$
-from below; a paired (BCS) Gaussian state has Gaussian rank $1$ yet fractional occupations, so no
-occupation functional bounds it from above. The only computable lower bounds on $|\mathcal S|$ are the
-basis-dependent orbital-Schmidt (matrix-flattening) ranks~\cite{schollwock2011}---the tensor-network
-bond dimension---to which any Gaussian-invariant magic measure is blind. That lower bound is exact:
+Two explicit witnesses rule out the natural repairs. The two-determinant cat of
+Prop.~\ref{prop:obstruction} is maximal in $\mathcal F_1$ yet of Slater rank $2$, so at half filling no
+$\mathcal F_1$-monotone bounds $|\mathcal S|$ from below beyond $2$; a paired (BCS) Gaussian state has
+Gaussian rank $1$ yet fractional occupations, so no occupation functional bounds it from above. The
+computable lower bounds on $|\mathcal S|$ that are not capped in this way are the basis-dependent
+orbital-Schmidt (matrix-flattening) ranks~\cite{schollwock2011}---the tensor-network bond
+dimension---to which any Gaussian-invariant magic measure is blind. That lower bound is exact:
 
 \begin{proposition}[The bond dimension lower-bounds the support]
 \label{prop:chibound}
@@ -35,8 +55,9 @@ $\chi$ across the cut (the minimal matrix-product-state bond dimension there) sa
 where $|\mathcal S|$ is the number of fixed-basis Slater determinants of nonzero amplitude. Hence the
 minimal bond dimension is a rigorous, basis-dependent lower bound on the determinant support. The bound is
 one-sided: the geminal witness of Thm.~\ref{thm:witness} has $\chi=2$ yet $|\mathcal S|_{\mathrm{pair}}=2^{K}$,
-so $|\mathcal S|$ can exceed $\chi$ exponentially in a generic basis (and descends toward $\chi$ in the
-natural-orbital basis), while the orbital-invariant one-body magic $\mathcal F_1$ bounds neither
+so $|\mathcal S|$ can exceed $\chi$ exponentially already in the pairing basis, which for that family is
+a natural-orbital basis, while the orbital-invariant one-body magic $\mathcal F_1$ cannot usefully
+upper-bound $|\mathcal S|$ and at half filling cannot lower-bound it beyond $2$
 (Prop.~\ref{prop:obstruction}).
 \end{proposition}
 \begin{proof}

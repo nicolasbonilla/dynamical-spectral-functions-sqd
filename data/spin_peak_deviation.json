@@ -1,0 +1,84 @@
+{
+ "what": "plotted spin-peak dispersion of Fig. 8 vs the des Cloizeaux-Pearson lower boundary",
+ "source": "data/spinqw_L12.json (argmax on its grid, as the markers of paper/figs/spinqw_edges.dat)",
+ "rows": [
+  {
+   "q_over_pi": 0.16667,
+   "peak": 0.38080133555926543,
+   "dCP_lower": 0.3927062044506391,
+   "rel_dev": -0.03031494984406346
+  },
+  {
+   "q_over_pi": 0.33333,
+   "peak": 0.6692821368948247,
+   "dCP_lower": 0.6801706492153698,
+   "rel_dev": -0.016008500709499683
+  },
+  {
+   "q_over_pi": 0.5,
+   "peak": 0.8075125208681135,
+   "dCP_lower": 0.7853981633974483,
+   "rel_dev": 0.02815687443806048
+  },
+  {
+   "q_over_pi": 0.66667,
+   "peak": 0.7474123539232054,
+   "dCP_lower": 0.68017064921537,
+   "rel_dev": 0.09886005046734078
+  },
+  {
+   "q_over_pi": 0.83333,
+   "peak": 0.5070116861435726,
+   "dCP_lower": 0.3927062044506391,
+   "rel_dev": 0.29107123951055647
+  },
+  {
+   "q_over_pi": 1.0,
+   "peak": 0.16444073455759597,
+   "dCP_lower": 9.618353468608949e-17,
+   "rel_dev": null
+  },
+  {
+   "q_over_pi": 1.16667,
+   "peak": 0.5070116861435726,
+   "dCP_lower": 0.39270620445063925,
+   "rel_dev": 0.2910712395105559
+  },
+  {
+   "q_over_pi": 1.33333,
+   "peak": 0.7474123539232054,
+   "dCP_lower": 0.6801706492153698,
+   "rel_dev": 0.09886005046734096
+  },
+  {
+   "q_over_pi": 1.5,
+   "peak": 0.8075125208681135,
+   "dCP_lower": 0.7853981633974483,
+   "rel_dev": 0.02815687443806048
+  },
+  {
+   "q_over_pi": 1.66667,
+   "peak": 0.6692821368948247,
+   "dCP_lower": 0.68017064921537,
+   "rel_dev": -0.016008500709499843
+  },
+  {
+   "q_over_pi": 1.83333,
+   "peak": 0.38080133555926543,
+   "dCP_lower": 0.3927062044506392,
+   "rel_dev": -0.030314949844063733
+  }
+ ],
+ "summary": {
+  "max_abs_rel_dev_q_le_half_pi": 0.030314949844063733,
+  "rel_dev_2pi_3": 0.09886005046734078,
+  "rel_dev_5pi_6": 0.29107123951055647,
+  "grid_spacing": 0.006010016694490819,
+  "J": 0.5
+ },
+ "provenance": {
+  "script": "src/spin_peak_deviation.py",
+  "generator_sha256_lf": "02d1e643b3aa311b591b747585c725964a6a469ab92601da7eba775a993c2b07",
+  "generated_utc": "2026-09-30T14:48:36Z"
+ }
+}

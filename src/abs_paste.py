@@ -94,6 +94,13 @@ def a_texto(src, griegas_unicode=True):
     t = re.sub(r"(?m)^\s*%.*$", "", t)
     t = re.sub(r"(?<!\\)%.*", "", t)
 
+    # 2026-09-30 (revision final, MA-6): las llaves ESCAPADAS \{ \} son matematica
+    # (el \min\{1+w,...\} del Teorema 1), no agrupacion.  Antes el barrido final de
+    # llaves se las llevaba y dejaba 'min\1+w,...\' en el texto a pegar: el mismo
+    # defecto de clase que las raices perdidas del 2026-09-23.  Se aparcan aqui en
+    # marcadores y se restauran despues del barrido; la cuenta no cambia (1916).
+    t = t.replace(r"\{", "\x01").replace(r"\}", "\x02")
+
     # ordenes con argumento cuyo CONTENIDO se conserva
     for c in ("emph", "textit", "textbf", "text", "mathrm", "mathcal", "mathbf",
               "operatorname", "mbox", "textrm"):
@@ -153,6 +160,7 @@ def a_texto(src, griegas_unicode=True):
     DESCARTADOS = sorted(set(re.findall(r"\\([a-zA-Z]+)\*?", t)))
     t = re.sub(r"\\[a-zA-Z]+\*?", " ", t)
     t = t.replace("{", "").replace("}", "")
+    t = t.replace("\x01", "{").replace("\x02", "}")   # llaves escapadas (MA-6)
     t = t.replace("~", " ")
 
     # espacios

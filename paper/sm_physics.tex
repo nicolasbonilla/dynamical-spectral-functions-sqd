@@ -14,7 +14,7 @@ $6.2\%$ of it at the largest size reached here.
 
 \paragraph{Spin.} The lowest pole of $S^{zz}(q=\pi,\omega)$ gives $L\,\Delta_{s}=2.091$, $1.917$,
 $1.996$, $1.996$: a $1/L$ closing with a coefficient of about $2$ (mean $2.000$, range $1.917$--$2.091$). Two fits make that precise and
-bound it honestly. Fitting $\Delta_{s}=c_0+c_1/L$ over these four sizes gives an intercept
+bound it. Fitting $\Delta_{s}=c_0+c_1/L$ over these four sizes gives an intercept
 $c_0=-0.020\pm0.020$---consistent with zero at one standard error---against
 $c_0=4.561\pm0.044$ for the charge gap: one intercept is consistent with zero and the other is not,
 and that separation, not either intercept on its own, is the result. It has to be read with the control
@@ -28,12 +28,12 @@ product $L\,\Delta_s$ is flat to the resolution of four points. What is \emph{no
 third significant figure on the coefficient. The four values span $8\%$ and are not monotone, and we
 quote $L\,\Delta_{s}\approx2$ with the spread attached, not $2.00$; the intercept $d_0=2.09$ is the fit's value at $L=0$, not the level over $L=6$--$12$.
 
-The independent control is the effective spin model. The pure Heisenberg ring at $J=4t^{2}/U=0.5\,t$
----no charge degree of freedom, no double occupancy, a different Hamiltonian on a different Hilbert
+The independent control is the effective spin model. The pure Heisenberg ring at $J=4t^{2}/U=0.5\,t$---no
+charge degree of freedom, no double occupancy, a different Hamiltonian on a different Hilbert
 space, solved by dense diagonalization on a different code path---gives
 $\Delta_{\rm ST}(N=12)=0.35585\,J=0.17792\,t$ and reproduces the same $1/L$ law across the same four
 sizes, with $L\,\Delta_{\rm ST}=2.054$, $2.091$, $2.116$, $2.135$. Two things have to be said about
-that agreement rather than left for a referee. First, the two numbers at $L=12$ differ by $6.5\%$ of
+that agreement. First, the two numbers at $L=12$ differ by $6.5\%$ of
 the Heisenberg value, equivalently $7.0\%$ of the Hubbard one; we name the denominator because the
 two differ in the third figure. Second, the residual is not monotone and changes sign---the Hubbard
 gap is $1.8\%$ \emph{above} the Heisenberg one at $L=6$ and $8.3\%$, $5.7\%$ and $6.5\%$
@@ -58,8 +58,10 @@ spectrum inside the plotted window; each momentum carries a small number of disc
 broadening merges into a band. Counting poles that carry more than $1\%$ of the channel
 maximum---Lanczos with full reorthogonalization at $n_\ell=120$, checked for depth stability at
 $n_\ell=60$, $120$ and $240$ at $q=\pi$ in every channel, and validated pole by pole against dense
-diagonalization at $L=6$ and $L=8$~\cite{haydock1972,golub2010}---gives Table~\ref{tab:poles}. The
-census is the deposited \texttt{pole\_structure.json} and is taken on the momentum grid the figures of
+diagonalization at $L=6$ and $L=8$---gives Table~\ref{tab:poles}; the recursion is the Lanczos one of
+Refs.~\cite{haydock1972,golub2010}.
+
+The census is the deposited \texttt{pole\_structure.json} and is taken on the momentum grid the figures of
 this section plot, seven values of $k$ and six of $q$; a count over a coarser grid is a count of
 different momenta and is not comparable entry by entry. The
 census covers the three channels the figures of this section plot; the $k$-integrated $A(\omega)$,
@@ -161,9 +163,9 @@ demands is set by the spacing, $0.48\,t$; we take it from the spacing and not fr
 interval. The correct response is not a larger $\eta$: it is to stop using words that require
 the rule to hold. The dynamical-DMRG standard fixes the product $\eta L$ and lets $\eta$ fall with
 the size: Benthien and Jeckelmann use $\eta=5t/L$ in one place, the $L=100$ spin calculation, and
-declare $\eta L=12\,t$ for the finite-size scaling that carries the charge channel to
+declare $\eta L=12\,t$ for the finite-size scaling that carries the zone-boundary charge peak to
 $L=120$~\cite{benthien2007}; Jeckelmann's own prescription is $\eta(N)=c/N$ with $c=6.4$ and
 $12.8\,t$, on chains of up to $N=256$~\cite{jeckelmann2002}. This work is at $L=12$ with
 $\eta L=1.2$--$2.2\,t$, a factor of two to ten below every constant in that range,
-and it is the words, not the size, that we withdraw. Section~\ref{sec:scope:declared} states the same
-concession in the list of what this work does not claim, so that it is not read only here.
+and it is the words, not the size, that we do not use. Section~\ref{sec:scope:declared} records the same
+restriction: the spin--charge statement rests on pole positions at four sizes.

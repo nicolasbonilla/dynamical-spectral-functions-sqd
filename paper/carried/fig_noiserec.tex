@@ -2,13 +2,17 @@
 \begin{figure*}[tp]\centering\input{figs/fig_noise_recovery_native.tex}
 \caption{\textbf{SQD ground-state energy under a controlled bit-flip model across the molecular suite.}
 \textbf{(a)}~Energy error vs the per-qubit bit-flip rate $\varepsilon$ for five representative molecules
-($\mathrm{H_6}$, $\mathrm{NH_3}$, $\mathrm{N_2}$, CO, $\mathrm{C_2}$; seed-averaged over $8$ seeds at $4{,}000$ shots each, bands $=\pm1$ s.d.\ across seeds; log scale). Solid $=$ S-CoRe recovery, dashed $=$ naive
+($\mathrm{H_6}$, $\mathrm{NH_3}$, $\mathrm{N_2}$, CO, $\mathrm{C_2}$; seed-averaged over $8$ seeds at $4000$ shots each, bands $=\pm1$ s.d.\ across seeds, running to the bottom of the panel where the mean minus one s.d.\ falls below it, as for $\mathrm{N_2}$ at $\varepsilon=10\%$; log scale). Solid $=$ S-CoRe recovery, dashed $=$ naive
 post-selection. The advantage of recovery over naive post-selection, both arms consuming the same corrupted
-bitstrings at the same rate with the same seeds, grows with noise. For $\mathrm{CO}$ and
-$\mathrm{C_2}$ the error at finite $\varepsilon$ also falls below its own $\varepsilon=0$ value;
+bitstrings at the same rate with the same seeds, grows with noise. For $\mathrm{NH_3}$, CO and
+$\mathrm{C_2}$ the error at finite $\varepsilon$ also falls below its own $\varepsilon=0$ value, beyond
+the seed bands ($\mathrm{NH_3}$ $2.53\to1.24$~mHa at $\varepsilon=10\%$);
 that second comparison is not used here (Sec.~\ref{sec:scope:hw}): it is decided by the size of
 the recovered subspace, which this sweep does not record. \textbf{(b)}~The full nineteen-molecule suite at a realistic
-$\varepsilon=2\%$ (log scale, sorted): for each molecule the naive post-selection error (open circle) is
+$\varepsilon=2\%$ (log scale, sorted; errors that are exact to round-off, in both arms for
+$\mathrm{F_2}$, HF, LiH, $\mathrm{H_2}$ and $\mathrm{BeH_2}$, where the open circle is hidden behind the
+filled one, and after recovery for $\mathrm{H_4}$ and $\mathrm{H_2O}$, are drawn at the left edge of the
+axis): for each molecule the naive post-selection error (open circle) is
 linked to the S-CoRe value (filled), so the leftward pull is the recovery gain; the shaded band is
 chemical accuracy ($<1.6$~mHa). Eighteen of nineteen land inside it; $\mathrm{H_6}$, the most
 multireference case, is the residual challenge. Panels (a) and (b) are independent seed ensembles

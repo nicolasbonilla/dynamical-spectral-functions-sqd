@@ -28,6 +28,9 @@ l1_complete=float(np.sum(np.abs(Aex-Asm))/np.sum(np.abs(Aex)))
 S=d['sampled']; K=[r['K'] for r in S]; l1=[r['l1'] for r in S]; sd=[r['l1_std'] for r in S]
 # total shots behind panel (a): the per-snapshot budget times the number of snapshots.
 shots_total = d['shots'] * len(S)
+# 2026-09-28 (review item R3-M4 / remaining list): the panel-(a) title said 'from 5.2x10^4 shots'.
+# Those shots are classical Born draws from the exact evolved state (spectral_validation_max.py),
+# not device counts; the title now says 'simulated shots', as the caption does.  Title text only.
 Smean=[r['S'] for r in S]
 FL=0.010
 lo=" ".join(f"({r['K']},{max(r['l1']-r['l1_std'],FL):.4f})" for r in S)
@@ -49,7 +52,7 @@ L=r"""% native \input fragment (fig:method) — fonts = document body (11pt) exa
 % ---- (a) A(w): exact vs bitstring-sampled ----
 \nextgroupplot[
   xlabel={frequency \; $\omega/t$}, ylabel={$A(\omega)$},
-  title={(a)\quad reconstruction of $A(\omega)$ from $__TSH__$ shots},
+  title={(a)\quad $A(\omega)$ from $__TSH__$ simulated shots},
   xmin=3, xmax=14, ymin=0, ymax=0.50, ymajorgrids, y grid style={gridClr},
   legend style={draw=none, fill=white, fill opacity=0.75, text opacity=1, at={(0.985,0.985)}, anchor=north east}, legend cell align=left,
 ]

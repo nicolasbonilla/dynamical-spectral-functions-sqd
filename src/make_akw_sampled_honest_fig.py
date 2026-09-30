@@ -49,7 +49,9 @@ nk = rec("panel_b.n_momenta", len(perk), srcA + " len(['per_k'])")
 
 # Vertical offset of the k-stack: a LAYOUT constant, but derived from the data, not typed --
 # step = 1.05 * max(exact overlay).  Self-check: it reproduces the published fragment's
-# baselines (0.0007 / 0.7711 / 1.5416) to the 4 decimals that fragment prints.
+# baselines to the 4 decimals that fragment prints: 0.0007 / 0.7707 / 1.5408 on the
+# [-9t, 17t] grid (2026-09-28); they were 0.0007 / 0.7711 / 1.5416 on the old [-9t, 9t]
+# grid, whose points sampled the k=0 removal peak at a slightly different height.
 STEP = 1.05 * max(v for kk in ov for v in ov[kk]["exact"])
 rec("layout.offset_step", STEP, srcA + " 1.05*max over ['overlay'][*]['exact'] (layout only)")
 ORDER = ["0.0", "0.5", "1.0"]
@@ -57,7 +59,7 @@ OFF = {kk: i * STEP for i, kk in enumerate(ORDER)}
 klab = {"0.0": r"$k{=}0$", "0.5": r"$k{=}\pi/2$", "1.0": r"$k{=}\pi$"}
 for kk, off in OFF.items():
     got = ov[kk]["exact"][0] + off
-    ref = {"0.0": 0.0007, "0.5": 0.7711, "1.0": 1.5416}[kk]
+    ref = {"0.0": 0.0007, "0.5": 0.7707, "1.0": 1.5408}[kk]
     assert abs(got - ref) < 5e-5, ("offset self-check failed", kk, got, ref)
 
 # ---------------------------------------------------------------- panel (c): source B
@@ -123,7 +125,12 @@ w(r"  title={(a)~exact $A(k,\omega)$ versus the reconstruction on the top-$%d\%%
 w(r"  title style={at={(0,1)},anchor=south west,font=\normalsize\bfseries,yshift=15pt},")
 w(r"  label style={font=\normalsize}, tick label style={font=\footnotesize},")
 w(r"  xlabel={$\omega-E_0\ (t)$}, ylabel={$A(k,\omega)$ (offset by $k$)},")
-w(r"  xmin=-9,xmax=9, ymin=-0.3,ymax=2.85, ytick=\empty, xtick={-8,-6,-4,-2,0,2,4,6,8},")
+# The x range is the deposited grid's own (sampled_akw.py WINDOW), not a typed constant: it
+# was typed as -9..9 while the grid omitted the k=0 addition branch (corrected 2026-09-28).
+XA0, XA1 = wg[0], wg[-1]
+rec("panel_a.window", [XA0, XA1], srcA + " ['wg'][0], ['wg'][-1]")
+w(r"  xmin=%g,xmax=%g, ymin=-0.3,ymax=2.85, ytick=\empty, xtick={%s},"
+  % (XA0, XA1, ",".join("%d" % x for x in range(int(math.ceil(XA0 / 2.0)) * 2, int(XA1) + 1, 2))))
 w(r"  legend style={font=\footnotesize,at={(1,1.005)},anchor=south east,legend columns=2,"
   r"draw=none,fill=none,/tikz/every even column/.append style={column sep=10pt}},legend cell align=left]")
 first = True
@@ -136,7 +143,10 @@ for kk in ORDER:
     w(r"\addplot[akSamp,line width=1.1pt,dash pattern=on 4pt off 2.5pt] coordinates {%s};"
       % coords(wg, sa))
     if first:
-        w(r"\addlegendentry{exact (Haydock)}")
+        # Legend "exact", not "exact (Haydock)": sampled_akw.py builds the reference by dense
+        # diagonalization of each sector and a Lehmann sum, not by a Haydock continued
+        # fraction (review items VM-V3 / R3-m6, 2026-09-28; the printed caption says the same).
+        w(r"\addlegendentry{exact}")
         w(r"\addlegendentry{top-$%d\%%$ Born subspace, infinite-shot limit $T\rightarrow\infty$}"
           % round(fr_a * 100))
         first = False

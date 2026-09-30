@@ -84,11 +84,14 @@ frag=r"""% fragment: \input into the figure environment -> \normalsize equals th
     {noiseless (same circuit), $29.5$~mHa};
   \draw[-{Stealth[length=1.7mm]},inkPrim,line width=0.5pt] (nl.south) -- (axis cs:1.55,30.0);
   \node[anchor=south,align=center,font=\footnotesize,inkPrim] (nh) at (axis cs:3.20,5.2)
-    {noisy hardware\\$__DEM__\pm__DES__$~mHa};
+    {device counts\\$__DEM__\pm__DES__$~mHa};
   \draw[-{Stealth[length=1.7mm]},inkPrim,line width=0.5pt] (nh.south) -- (axis cs:3.92,0.70);
 \end{axis}
 \end{tikzpicture}
 """
+# 2026-09-28 (review item R2-03): the label of the solid curve read "noisy hardware"; it is
+# recovery run on the device counts, and no random-bitstring control separates what the counts
+# contributed from what recovery supplies, so the label now names the input, "device counts".
 out=(frag.replace('__XMIN__',f'{g[0]:.2f}').replace('__XMAX__',f'{g[-1]:.2f}')
         .replace('__YMAXA__',f'{Amax*1.10:.3f}').replace('__SIMC__',simc)
         .replace('__HWHI__',hwhi).replace('__HWLO__',hwlo).replace('__HWCE__',hwce)
