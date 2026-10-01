@@ -1218,3 +1218,202 @@ mathematics check; no physics number moved, no theorem or proposition changed):
 - **Guardians.** All five pass. `verify.py`: 1280 checks, 0 failures, 4 xfail, 0 xpass, 2 skips,
   14 563 numeric assertions (unchanged). `check_trim.py`: one AUDITADA entry added, with a date, for the
   Sec. IX claim list, whose obstruction item is now scoped "useful on every state".
+
+## 35. The abstract, the opening of Sec. I and the conclusion rewritten for readability -- **PROSE ONLY, 2026-10-01**
+
+No number, theorem, citation or limit changed, and no claim was added. The three passages kept their
+content but were too dense to read (sentences of 60 to 140 words; the conclusion nearly one block).
+They now use short sentences and one idea per paragraph. Final counts, after the closing review below
+(inline math counted as one word):
+
+| passage | before (`41327d4`) | after |
+|---|---|---|
+| abstract (`paper/main.tex`) | 8 sentences, mean 38 words, longest 78; 1 916 characters (Unicode Greek) | 12 sentences, mean 25, longest 40; 1 852 characters (1 874 spelled out), 295 words by `src/abs_paste.py`; after the second closing review, 1 910 (1 932 spelled out), 306 words |
+| Sec. I, up to the list of results (`paper/sec_1.tex`) | 4 paragraphs, mean 48 words, longest 142 | 10 paragraphs, 49 sentences, mean 23, longest 40 |
+| Sec. I, "Four bodies of work" paragraph | 8 sentences, longest 105 | 17 sentences, mean 26, longest 47 (an enumeration of four device experiments) |
+| Sec. X (`paper/sec_10.tex`) | 4 paragraphs, mean 56 words, longest 112 | 6 paragraphs, 56 sentences, mean 24, longest 39 |
+
+The abstract has twelve sentences rather than about eight: with every required item kept, eight
+sentences would need a mean above 35 words.
+
+Left the abstract, each still stated in the body: the ceiling 2 of the full-weight error
+(`sec_3_1.tex:88`); the sixteen cells of the calibrated crossing (`sec_5_body.tex:220`, `sec_1.tex`,
+`sec_10.tex`); the two-constant rule, tighter on 11 of 14 splits and with no guarantee outside its
+fitted range (`sec_5_body.tex:231-237`, Sec. I, Sec. X); the pairing-fiber no-go (Proposition 2,
+`sec_6_body.tex:171`, Sec. I, Sec. X; the §34 row "abstract and Sec. I" describes the abstract of
+2026-09-30). Kept in the abstract: the exact ground state; vacuity at every operating fraction of the
+resource scan at all five sizes, up to 10 306 296, by 1.66 to 8.61; classical Born draws or their
+infinite-shot ranking, with the spectral device run described as having kept its whole sector; the
+second-order certificate open below full weight; 0.35--0.43 at w=1; the crossing at (1.2--7.3)e-3,
+calibrated at L=6--12; 350--900 times the true error at 85%; the symmetry-allowed coordinate support at
+L=6--14; the 1/L block.
+
+Reworded as plain statements, not removed: "a gain of 1/L against an exponential" (now: 1/L of the
+sector, and the block, like the sector, grows exponentially; the original wording stays at
+`sec_5_body.tex:275`); "fitted here without guarantee" (now the body's "a regularity of these systems
+with no guarantee outside its fitted range"); "(one device run, an execution record, aside)" (now: our
+spectral device run kept its whole sector, so it checks execution, not accuracy; `sec_9.tex:162-172`).
+"only" before +0.20% in Sec. X was dropped (`sec_3_body.tex` has no "only"). Sec. X now also says "No
+quantum advantage is claimed at any size reached", restating Sec. I and Sec. IX B.
+
+**Closing review (2026-10-01).** Three independent reviews of the rewritten passages (accuracy, readability,
+mechanics) were checked against the body, and every finding that held was applied:
+
+- *Abstract.* The calibration is scoped again to L=6--12, the range it rests on and is not extrapolated
+  from (`sec_5_body.tex:230-231`); placed after "all five sizes, up to ... 10 306 296", the unscoped
+  sentence read as a calibration at L=14. "Covers every symmetry-allowed determinant" (readable as
+  "spans") is now the measured coordinate support, and "plane-wave orbitals confine a momentum probe's
+  Krylov space" (momentum conservation does that in any basis) is now "plane-wave orbitals reduce a
+  momentum probe's support to one block", the measurement-basis statement of `sec_5_body.tex:268-275`.
+  "Alone" is added ("does not do so alone"), so that the abstract no longer reads as denying the title.
+  The probe, L, the device run and the leakage term are said in words; the two tangled constructions
+  ("what bounds the error, with the missed weight, is ..."; "below it ... one is open") are rewritten.
+- *Sec. I.* The probe, the rings, L and the broadening, the seed site, the fibers, gamma and F_k, and the
+  operating fractions of the resource scan are said in words at first use. The qualifier "whatever value
+  the bound itself takes there" (full-weight identity), lost in the first rewrite, is restored. The
+  inference "the reconstructions are reproduced" now rests on both controls of `sec_5_body.tex:192-196`
+  (fractions recovered to under 2%, and the 5% criterion confirmed on the published subspaces). The
+  sixteen channels of the Born-ranked A(k,omega) are named as momentum channels (eight momenta,
+  addition and removal, `data/cert_akw.json`), so they are not read as the sixteen
+  (L, eta) cells. "Four bodies of work" is split into shorter sentences, every clause and citation kept;
+  "No quantum advantage is claimed." is now a sentence of its own.
+- *Sec. X.* "Fitted out of sample" is now "fitted on some sizes and tested on the others"
+  (`sec_5_body.tex:232`); "ordered in both arguments" names L and eta (`sm_frontier.tex:257-260`);
+  "survives replacing w_S by a floor" is now "still holds when ... w_S is replaced by an assumed lower
+  bound on it" (`sec_5_body.tex:229-230`); "One-body fermionic magic" is now the F_1 of Sec. I; (H1)
+  and (H4) are named as hypotheses of Theorem 1; "Certification raises that budget" is now
+  "Certification costs more", since the multipliers are shots per snapshot, not the total budget
+  (`sec_5_body.tex:214-216`); the gap sentence says which gap converges and which closes
+  (`sec_8.tex:58-60`); "the regime where it would costs" is repaired; the two "Whether ..." sentences and
+  the closing sentence are split.
+- Declined, with reasons: rewording "a spread of 5.9" (verify.py 9.9c pins it in Sec. I, and the
+  printed endpoints 1.2 and 7.3 are roundings consistent with 5.9); writing "permutation p-value"
+  (verify.py 9.3 requires the form "exact permutation $p=$"); a seventh conclusion paragraph (the
+  closing consequence stays in the sixth).
+
+Guardians. No check was weakened and no AUDITADA entry was added. `check_coherence.py`: Sec. I now
+names the operating fractions once more (in the definition), so the pooled floor of "published fraction
+| operating fraction(s) of the resource scan" was raised 20 -> 21 and the per-place floor of
+`sec_1.tex` 1 -> 2, upward, each with a dated comment; without the raise the self-test aborts, as
+designed. Every other per-file count that `check_coherence.py` and `verify.py` 9.9c read in these three
+places is the same as at `41327d4` (vacuity range, five sizes, symmetry-allowed support, drift,
+10 306 296, 0.77--1.75, 350--900, 455--483 of 490, the spread 5.9, 0.98 of the sector at L=8, the exact
+p, exactly -1). `verify.py`: 1280 checks, 0 failures, 4 xfail, 0 xpass, 2 skip, 14 563 assertions.
+`check_coherence.py`, `check_provenance.py` and `check_figures.py` (21 of 21) pass. `check_trim.py`
+passes against its default baseline `bc9670c` (0 distinctive numbers and 0 concessions lost). Against
+`41327d4`, the starting point of this pass, it reports 0 distinctive numbers lost and 21 concession
+sentences below its 0.60 threshold; each was read by hand and is a split or rewording of the old
+sentence, with content-word coverage of 0.78 to 1.00 over at most six consecutive new sentences (the
+missing words are connectives and synonyms: "alone", "cannot", "yet", "refers", "fermionic magic" for
+F_1). The exception is the old abstract sentence on the 1D Hubbard tests (coverage 0.58): what is
+missing from it is what is listed above as having left the abstract, each still in the body.
+
+Number audit of the three passages against `41327d4`: no number was added or changed. The abstract no
+longer prints 11, 14 (the 11-of-14 splits) or the ceiling 2; Sec. I prints "1/L" once instead of twice
+(the dropped "a gain of 1/L against an exponential").
+
+Build: `paper/main.pdf` 68 pp. (3 passes), main text pp. 1--28, Sec. X from p. 26, p. 28 with the
+acknowledgments and Appendix A, references from p. 29; 0 errors, 0 undefined or multiply-defined
+references, 0 overfull boxes, no "??". `python paper/pra_split.py --build` passes: main_pra 33 pp.
+(pixel-identical to main.pdf pp. 1--33), sm_pra 38 pp. (20 SM pages pixel-identical, 15 differing in
+citation numbers only). `build/abstract_arxiv.txt` and the `CITATION.cff` abstract carry the new
+abstract. `python src/build_arxiv_bundle.py --passes 3 --out build/arxiv-v4.tar.gz` was run locally
+after the closing review: 77 members, 1.98 MB, clean-room compile to 68 pp. with text identical to
+`paper/main.pdf`, `RESULT: PASS -- the package is complete, clean and self-contained`; nothing was
+uploaded. `CITATION.cff` and `.zenodo.json` now label this tree deposit 3.4.1, 2026-10-01.
+
+**Second closing review (2026-10-01, two fresh reviewers: honesty and numbers; language).** Nobody had
+read the final wording after the first closing review. Every finding was checked against the body and
+the deposited data; those that held were applied, the rest declined with reasons. No number changed and
+no claim was added (Sec. X now also restates the 6.2% of Sec. VIII, see below). This paragraph
+supersedes the lists above where they differ.
+
+- *Abstract.* (i) "its leakage term exceeds the trivial bound by factors of 1.66 to 8.61" attached the
+  vacuity factors to the wrong quantity: the body's leakage TERM is Lambda/eta (`sec_3_body.tex:42`),
+  while the factors are the whole leakage BRANCH of the min over the trivial branch (Table
+  tab:published caption; at L=12, eta=0.18t, Lambda/eta over the trivial bound is about 2.1 against the
+  printed 4.27). It now reads "its leakage branch exceeds the trivial bound $1+w$". (ii) The limit on the
+  calibration is restored: "though an unproven fit in $1-w$ is tighter on 11 of 14 splits"
+  (`sec_5_body.tex:231-237`), so the two-constant rule is no longer among the items that left the
+  abstract. (iii) "calibrated at L=6--12" (readable as "fitted") is now "and there it is calibrated: at
+  $L=6$--$12$ it first beats the trivial bound ...". (iv) The vacuity, calibration and A(k,omega)
+  numbers are scoped to the subspaces they were evaluated on, "On the ranked subspaces"
+  (`sec_5_body.tex:136`, `sm_frontier.tex:22`); "In these tests" tied them to the finite-shot draws as
+  well. (v) The device sentence is the body's own label, "our device runs are execution records only"
+  (Sec. I), instead of "our spectral device run kept its whole sector, so it checks execution, not
+  accuracy", which gave a partial reason (`sec_9.tex:160-173`) and could be read as a run of the probe
+  protocol. (vi) The rings and the broadening are named with the first number ("On Hubbard rings at
+  broadening $\eta=0.18\,t$, the probe's whole support ($w=1$) still gives a relative error of
+  0.35--0.43"), "follows from" is "is computed from", and the support sentence puts the need first and
+  the measured support after a colon. Kept in the abstract as before: the exact ground state; vacuity at
+  every operating fraction of the resource scan at all five sizes up to 10 306 296, by 1.66 to 8.61;
+  Born draws or their infinite-shot ranking; the crossing at (1.2--7.3)e-3 at L=6--12; 350--900 at 85%;
+  the symmetry-allowed support at L=6--14; the 1/L block; the open second-order question. Still only in
+  the body: the ceiling 2, the sixteen cells and the pairing-fiber no-go (three items). Abstract: 12
+  sentences, 306 words, **1 910 characters with Unicode Greek (margin 10); 1 932 spelled out, over the
+  limit**, so `build/abstract_arxiv.txt` must be pasted as written. The `CITATION.cff` abstract equals
+  that file with `--` as `-`.
+- *Sec. I.* The operating fractions are defined with their qualifiers ("the fractions of the symmetry
+  sector that the infinite-shot ranking of the scan of Sec. VII needs to meet this paper's 5% accuracy
+  criterion, relative $L_1<0.05$ at $\eta=0.15\,t$"; Table tab:published caption; finite-shot draws need
+  more, `caption_fig12.tex:11-17`), and the 0.98 carries its own $\eta=0.18\,t$ (`sec_5_body.tex:208-209`).
+  The bound is described with its two branches, so "trivial bound" and "leakage branch" are defined
+  before use, and the bound is equated with the certificate. The July-2026 priority clause, which after
+  the split read as Leone and Bittel alone, again names both groups ("Tarabunga et al. and Leone and
+  Bittel posted their works both in July 2026; the priority for those measures is theirs", pinned
+  substring verbatim). The Born-ranked A(k,omega) sentences close the calibration paragraph and cite
+  Sec. V, not Fig. 3, which Sec. I had cited before Figs. 1 and 2 (APS figure order). "every member F_k
+  of that family" is "every antiflatness F_k, like every other orbital-rotation invariant"
+  (Prop. leakinv); K is named as the number of geminals, since K is also the Krylov order. Grammar: the
+  probe is defined in its own clause and the captured weight as a fraction of the probe's squared norm;
+  "the relative $L_1$ error is 0.43 ..."; "No choice of constant"; "the number of shots needed"; "None
+  can therefore replace the certificate as an a priori predictor"; "The rotation to that basis"; "a
+  probe created at one site"; "the contrast between these measures and the basis-dependent determinant
+  support, a constructive instance of that contrast"; [Eq.] in brackets; "Three quantities share the
+  symbol S". To keep the main text on pp. 1--28, four Sec. I sentences were tightened without dropping a
+  fact ("a user faces", "subspace boundary", "full weight", "separates shot-budgeted reconstructions
+  from full-sector references", the crossing named as "first crosses below the trivial bound").
+- *Sec. X.* The upper bound is "the smaller of the trivial bound and a leakage branch", so the branch is
+  defined there. The closing sentence no longer says that the missed weight is computable from the Ritz
+  pairs: "The coupling is computable there from the same Ritz pairs, the retained probe and one
+  matrix--vector product per Ritz vector, and the missed weight from the norm of the exact probe and its
+  retained part" (`sec_3_body.tex`, "Neither term is free of the ground state"). "the charge gap
+  converges to a finite value" is "the charge gap decreases to within 6.2% of its Lieb--Wu value at
+  L=12" (`sec_8.tex:58-62, 93-101`; the 6.2% is the body's). "without the spectral function it bounds"
+  is "without the exact spectral function" (twice); "holds only up to an additive term"; "In the bound,
+  the frequencies of both spectra are measured from E_0"; the approximate-probe sentence has a subject;
+  the gap sentence now precedes "All spectra here are at exact-diagonalization sizes", so that "By
+  comparison" follows it; "correction-vector DMRG reaches"; "In one dimension tensor networks are
+  near-optimal"; "still separates a non-vacuous value from the trivial bound"; "can now be settled by a
+  well-posed measurement" (pinned phrase kept); "the identity behind Theorem 1"; "The error of that
+  spectral function is bounded"; "Evaluated on the scanned subspaces"; "a proven inequality whose
+  verdict"; "The leakage depends on the basis".
+- *Declined, with reasons.* "0.35--0.43 at L=6--8" in the abstract (cosmetic; no room under the
+  1 920-character limit, and Sec. I gives L=6 and L=8). A gloss of "operating fraction" in the abstract
+  (same reason; Sec. I defines it). "a spread of 5.9 (largest over smallest)" (verify.py 9.9c pins the
+  form; declined in the first closing review too). Writing w for w_S in Sec. X (the body's notation is
+  w_S; the abstract's w is its relative shorthand). Retitling to "... together bound ..." (the title is
+  registered on arXiv v3, Zenodo, CITATION.cff and the cover letter, and the parse resolves at "bound
+  the error").
+- *Metadata.* `CITATION.cff`, `README.md` and `docs/ARXIV_SUBMISSION.md` now say "no number, claim or
+  limit changed in the paper; three items moved from the abstract to the body".
+
+Guardians, after this review, none weakened and no floor or pin changed: `verify.py` pass 1280, FAIL 0,
+xfail 4, xpass 0, skip 2, 14 563 assertions; `check_coherence.py` PASS (20 of 20 and 16 of 16 controls
+fire); `check_trim.py` PASS against `bc9670c`; `check_provenance.py` PASS; `check_figures.py` 21 of 21.
+Against `41327d4`, `check_trim.py` reports 0 distinctive numbers lost and 22 concession sentences below
+its 0.60 threshold, one more than after the first closing review: the Sec. I calibration sentence
+("The crossing of the trivial bound occurs at a true relative error between ... a spread of ..."),
+now at 0.54 because "first improves on" became "first crosses below" and "Once the certificate
+improves on the trivial bound" became "Once it is below that bound"; read by hand, every fact of it
+(the crossing, the 1.2e-3 to 7.3e-3, the sixteen cells, five decades, the spread 5.9) is still in the
+paragraph. Build: `paper/main.pdf` 68 pp. (3 passes), Sec. X from p. 26, main text pp. 1--28,
+references from p. 29; 0 errors, 0 undefined or multiply-defined references, 0 overfull boxes, no
+"??". `python paper/pra_split.py --build`: main_pra 33 pp. (pixel-identical to main.pdf pp. 1--33),
+sm_pra 38 pp. (20 SM pages pixel-identical, 15 differing in citation numbers only). `python
+src/build_arxiv_bundle.py --passes 3 --out build/arxiv-v4.tar.gz`: 77 members, 1.98 MB, sha256
+`ccfb2595…c883c6bc3`, clean-room compile to 68 pp. with text identical to `paper/main.pdf`, `RESULT:
+PASS -- the package is complete, clean and self-contained`; nothing was uploaded. The cover letter
+(`work/carta_PRA_ENVIAR_2026-09-28.txt`) changed only where it echoed the changed wording (result 1,
+"without the exact spectral function" and "only up to an additive term"; result 4, the 0.98 "to certify
+the 5% accuracy criterion ... (at eta = 0.18 t)"), with CAMBIOS item 14.

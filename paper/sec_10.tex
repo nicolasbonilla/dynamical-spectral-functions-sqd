@@ -75,100 +75,147 @@
 %  sentence of Sec. I (which keeps \cite{supplemental}), is dropped so the paper ends on
 %  its consequence; that closing sentence now names the retained probe and the one
 %  matrix-vector product per Ritz vector that the leakage term also needs (Sec. III).
+%
+%  2026-10-01 (prose pass): six paragraphs, short sentences, one idea per paragraph:
+%    P1 the answer and Theorem 1;  P2 vacuous at the operating fractions, informative and
+%    calibrated well above them;  P3 the basis structure of the leakage and the invariant
+%    no-go;  P4 the cost of the certified regime and the prices;  P5 (H1), (H4), the sizes
+%    against DMRG, the gap references, bond dimension 42, no advantage;  P6 the open
+%    questions and what the work provides.  No number, limit or citation removed; the
+%    guardian counts listed above are unchanged.  Removed as belittling, not as fact:
+%    "a gain of 1/L against an exponential" (now: the block, like the sector, grows
+%    exponentially; the verbatim form stays in sec_5_body.tex) and "only" before +0.20%.
+%    Added as a restatement of Sec. I and Sec. IX B, not a new claim: "No quantum advantage
+%    is claimed at any size reached".
+%  2026-10-01 (closing review of the prose pass): "alone" added to the weight no-go (the
+%  title names captured weight AND leakage); "fitted out of sample" -> "fitted on some sizes
+%  and tested on the others" (sec_5_body.tex:232); "ordered in both arguments" -> "in both L
+%  and eta" (sm_frontier.tex:257-260); "a floor" -> "an assumed lower bound" (sec_5_body.tex:
+%  229-230); "One-body fermionic magic" -> the F_1 of Sec. I; (H1)/(H4) named as hypotheses
+%  of Theorem 1; "Certification raises that budget" -> "Certification costs more" (the
+%  multipliers are shots per snapshot, sec_5_body.tex:214-216); the gap sentence says which
+%  gap converges and which closes (sec_8.tex:58-60); "Whether ... Whether" split; the closing
+%  sentence split in two.  No number, limit or citation removed; every guardian count and
+%  pinned phrase listed above unchanged.
+%  2026-10-01 (second closing review, two fresh reviewers): the upper bound is described as
+%  the smaller of the trivial bound and a leakage branch, so "leakage branch" is defined in
+%  this section; "without the spectral function it bounds" -> "without the exact spectral
+%  function" (twice); the closing sentence no longer says the missed weight is computable
+%  from the Ritz pairs alone: it needs the norm of the exact probe (sec_3_body.tex, "Neither
+%  term is free of the ground state"); the charge gap "decreases to within 6.2% of its
+%  Lieb--Wu value at L=12" (sec_8.tex:58-62, 93-101) instead of "converges"; "holds only up
+%  to an additive term"; "With an approximate ground state instead" replaces the dangling
+%  "From an approximate ground state"; the gap
+%  sentence precedes "All spectra here ..." so that "By comparison" follows it;
+%  "correction-vector DMRG reaches"; K is named as the number of geminals; "still
+%  separates a non-vacuous value from the trivial bound"; "can now be settled by a
+%  well-posed measurement"; "the identity behind Theorem 1".  No number changed and no
+%  claim added; every pinned phrase kept.
 % =====================================================================================
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-For a spectral function reconstructed by Rayleigh--Ritz on a sampled subspace, the captured Born
-weight does not bound the error; the weight the subspace missed, together with the Hamiltonian
-coupling across its boundary, does. Theorem~\ref{thm:leakage}, for any orthogonal projector and
-given the exact ground state, bounds the $L_1$ error from below by the Born weight the subspace
-failed to capture and from above by that weight plus the coupling that leaks across the subspace
-boundary at the resolution asked for, a quantity computed from the Ritz pairs and the retained part
-of the probe, without the spectral function it bounds. The captured weight alone cannot replace it:
-an analytic counterexample and a counting argument rule out any bound indexed on it, and on the
-probe's own Born support, where the captured weight is exactly one, the relative error is still
-$0.43$ at $L=6$ and $0.35$ at $L=8$ at $\eta=0.18\,t$, because the weight a subspace keeps is
-displaced in $\omega$, not discarded (Sec.~\ref{sec:retraction}). What a Krylov-adequate subspace
-does guarantee is the classical moment exactness of Krylov projections, through order $2K+1$ and no
-further, a reach stated exactly and measured on coordinate subspaces (Theorem~\ref{thm:moments}).
-And no orbital-rotation invariant bounds the boundary \emph{usefully} on every state in advance, on pairing-model fibers every such bound
-being vacuous: one-body fermionic
-magic is constant along an orbit that contains a point of classical cost $O(K)$, at bond dimension
-$2$ and $2^{K}$ determinants in the pairing basis, and points at which sampling is plausibly hard, a
-hardness not established here, and on fibers on which the subspace-aware certificate still separates
-(Theorem~\ref{thm:witness}, Proposition~\ref{prop:leakinv}), consistent with the separation drawn by
-Tarabunga \emph{et al.}~\cite{tarabunga2026} between covariance-matrix quantities, two of which
-lower-bound the non-Gaussian gate count, and full-state natural-orbital participation entropies, which
-upper-bound the classical simulation cost in an orthonormal Gaussian basis.
+For a spectral function reconstructed by Rayleigh--Ritz on a sampled subspace, the weight the
+subspace missed, together with the Hamiltonian coupling across its boundary, bounds the error. The
+captured Born weight alone does not: an analytic counterexample and a counting argument rule out any
+bound indexed on it (Sec.~\ref{sec:retraction}). The weight a subspace keeps is displaced in $\omega$, not
+discarded. On the probe's own Born support, where the captured weight is exactly one, the relative
+error at $\eta=0.18\,t$ is therefore still $0.43$ at $L=6$ and $0.35$ at $L=8$.
+Theorem~\ref{thm:leakage} turns the answer into an a posteriori certificate for any orthogonal
+projector, given the exact ground state. It bounds the $L_1$ error from below by the Born weight the
+subspace failed to capture, and from above by the smaller of the trivial bound and a leakage branch,
+built from that weight and the coupling that leaks across the subspace boundary at the resolution
+asked for. That coupling is computed from the Ritz pairs and the retained part of the probe, without
+the exact spectral function. What a Krylov-adequate subspace
+does guarantee in addition is the classical moment exactness of Krylov projections, through order
+$2K+1$ and no further, a reach stated exactly and measured on coordinate subspaces
+(Theorem~\ref{thm:moments}).
 
-Evaluated on the subspaces of the resource scan at five system sizes up to a sector of dimension
-$10\,306\,296$, the certificate is vacuous at every operating fraction of the resource scan, by
-factors of $1.66$ to $8.61$, converged in Krylov depth at $L=12$, and informative only well above
-them. Where it is informative it is calibrated: over sixteen $(L,\eta)$ cells at $L=6$--$12$ the
-crossing of the trivial bound occurs at a true relative $L_1$ error between $1.2\times10^{-3}$ and
-$7.3\times10^{-3}$, a drift, not scatter, ordered in both arguments and conservative in $L$,
-computed without the spectral function it bounds, given the exact probe. A two-constant rule in
-$1-w_S$, fitted out of sample, localizes the same crossing more tightly on eleven of the fourteen
-splits; what distinguishes the certificate from such a rule is that it is an inequality with a
-proof, whose decision survives replacing $w_S$ by a floor. The Born-ranked, infinite-shot
-reconstruction of Fig.~\ref{fig:akwsampled}, at $85\%$ of its sector, is non-vacuous in all sixteen
-channels, at a relative bound of $0.77$--$1.75$ against the trivial $2$, $350$--$900$ times its true
-error. The basis dependence of the boundary term is measured as well. In the determinant basis a
-device measures in, the coordinate support of the Krylov space $\mathcal K(H,\phi)$ is every
-determinant the reflection about the seed site allows, measured at $L=6$ to $14$, so at full
-captured weight a subspace holding the whole probe leaks unless it contains all of them; the vacuity
-at the operating fractions, all below full captured weight, is measured and not deduced from that
-fact. A momentum-resolved probe measured in plane-wave orbitals has its Krylov space inside one
-momentum block instead, $1/L$ of the sector, on which the certificate still needs $455$--$483$ of
-$490$ determinants at $L=8$, a gain of $1/L$ against an exponential
-(Sec.~\ref{sec:frontier:obstruction}). The method is priced in support, resolution and shots
-(Sec.~\ref{sec:prices}): the determinant support that reconstructs $A(\omega)$ to relative
-$L_1<0.05$ at $\eta=0.15\,t$ grows as $e^{1.05\,L}$ over $L=4$--$14$, and the shot budget grows
-from $7.8\times10^{2}$ to $1.9\times10^{7}$ over $L=4$--$12$. The full-sector references reproduce
-the opposite finite-size scaling of the charge and spin gaps, the spin gap closing as $\approx2/L$
-with an independent effective-Heisenberg control (Table~\ref{tab:gaps}).
+Evaluated on the scanned subspaces at five system sizes, up to a sector of dimension
+$10\,306\,296$, the certificate is vacuous at every operating fraction of the resource scan. There
+its leakage branch exceeds the trivial bound by factors of $1.66$ to $8.61$, a verdict converged in
+Krylov depth at $L=12$. The certificate becomes informative only well above those fractions, and
+there it is calibrated. Over sixteen $(L,\eta)$ cells at $L=6$--$12$, it first improves on the
+trivial bound at a true relative $L_1$ error between $1.2\times10^{-3}$ and $7.3\times10^{-3}$. That
+spread is a drift, not scatter: it is ordered in both $L$ and $\eta$ and conservative in $L$. The
+certificate locates the crossing without the exact spectral function, given the exact probe. A
+two-constant rule in the missed weight $1-w_S$, fitted on some sizes and tested on the others,
+localizes the same crossing more tightly on eleven of the fourteen splits. What distinguishes the
+certificate from such a rule is that it is a proven inequality whose verdict still holds when
+the captured weight $w_S$ is replaced by an assumed lower bound on it. The Born-ranked,
+infinite-shot reconstruction of Fig.~\ref{fig:akwsampled}, at $85\%$ of its sector, is non-vacuous in
+all sixteen of its momentum channels. Its relative bound there, $0.77$--$1.75$ against the trivial
+$2$, is $350$--$900$ times its true error.
+
+The leakage depends on the basis, and that dependence is measured. In the determinant basis in
+which a device measures, the coordinate support of the Krylov space $\mathcal K(H,\phi)$ is every
+determinant the reflection about the seed site allows, measured at $L=6$ to $14$. At full captured
+weight, a subspace holding the whole probe therefore leaks unless it contains all of them. The
+vacuity at the operating fractions, all below full captured weight, is measured and not deduced from
+that fact. A momentum-resolved probe measured in plane-wave orbitals has its Krylov space inside one
+momentum block instead, $1/L$ of the sector. On that block the certificate still needs $455$--$483$
+of $490$ determinants at $L=8$, and the block, like the sector, grows exponentially with $L$
+(Sec.~\ref{sec:frontier:obstruction}). No orbital-rotation invariant bounds the boundary leakage
+\emph{usefully} on every state in advance: an invariant of the occupation spectrum cannot see a
+boundary. On pairing-model fibers every such bound is vacuous, while the subspace-aware certificate
+still separates a non-vacuous value from the trivial bound (Proposition~\ref{prop:leakinv}). The
+one-body non-Gaussianity $\mathcal F_1$ is constant along a geminal orbit that contains a point of
+classical cost $O(K)$ for $K$ geminals, at bond dimension $2$ and $2^{K}$ determinants in the
+pairing basis (Theorem~\ref{thm:witness}). The orbit also contains points at which sampling is
+plausibly hard, a hardness not established here. This is consistent with the separation drawn by
+Tarabunga \emph{et al.}~\cite{tarabunga2026} between covariance-matrix quantities, two of which
+lower-bound the non-Gaussian gate count, and full-state natural-orbital participation entropies,
+which upper-bound the classical simulation cost in an orthonormal Gaussian basis.
 
 The certificate does not certify the reconstructions at the operating fractions of the resource
-scan, and the regime where it would costs more shots than the method saves: moving from the
-operating fraction to the non-vacuous band multiplies the shots per snapshot needed for the marginal
-configuration by $7.5$ to $10$ at $L=8$ and by $20$ to $35$ at $L=12$, and at the acceptance
-criterion this work uses elsewhere, relative $L_1<0.05$, the certificate needs at least $0.98$ of
-the sector at $L=8$, a fraction at which diagonalizing the whole sector is what one would do
-instead, and one not reached on the grid at $L=6$, $10$ or $12$. The bound refers both spectra to
-the exact ground-state energy (H1); in a shot-based pipeline $E_0$ is itself estimated on a sampled
-subspace, and the bound then holds only after an additive term the certificate does not control; for the shift
-of $6.7\times10^{-4}\,t$ that $60\%$ of the $N$ sector gives at $L=8$ that term moves the bound by only
-$+0.20\%$, while the measured error grows by a factor $16$
-(Sec.~\ref{app:hyp}). It builds the probe from the exact ground state (H4); from an approximate one
-it bounds the error of that approximate probe's own spectral function, whose distance to the exact
-one nothing computed here controls, and no certificate in this work has been evaluated with an
-approximate probe. All spectra here are at exact-diagonalization sizes, the largest
-momentum-resolved one at $L=12$, whereas dynamical DMRG computed the same three channels at $60$ to
-$120$ sites in 2007~\cite{benthien2007} and correction vectors reach $L=48$ in the Hubbard
-chain~\cite{nocera2016}; one dimension
-is where tensor networks are near-optimal~\cite{whitedmrg1992,schollwock2011}, and the largest
-minimal bond dimension over the $74$ exact ground states deposited here is $42$
+scan, and the regime in which it would certify them costs more shots than the method saves. The method is priced in
+support, resolution and shots (Sec.~\ref{sec:prices}). The determinant support that reconstructs
+$A(\omega)$ to relative $L_1<0.05$ at $\eta=0.15\,t$ grows as $e^{1.05\,L}$ over $L=4$--$14$, and the
+shot budget grows from $7.8\times10^{2}$ to $1.9\times10^{7}$ over $L=4$--$12$. Certification costs
+more: moving from the operating fraction to the non-vacuous band multiplies the shots per
+snapshot needed for the marginal configuration by $7.5$ to $10$ at $L=8$ and by $20$ to $35$ at
+$L=12$. At the acceptance criterion this work uses elsewhere, relative $L_1<0.05$, the certificate
+needs at least $0.98$ of the sector at $L=8$, a fraction at which one would diagonalize the whole
+sector instead. On the scanned grid of fractions it does not reach that criterion at $L=6$, $10$ or $12$.
+
+In the bound, the frequencies of both spectra are measured from the exact ground-state energy $E_0$
+(hypothesis H1 of Theorem~\ref{thm:leakage}). In a shot-based pipeline $E_0$ is itself estimated on
+a sampled subspace, and the bound then holds only up to an additive term the certificate does not
+control. For the energy shift of $6.7\times10^{-4}\,t$ obtained from $60\%$ of the $N$-electron
+sector at $L=8$, that term moves the bound by $+0.20\%$, while the measured error grows by a factor of
+$16$ (Sec.~\ref{app:hyp}). The probe is likewise built from the exact ground state (hypothesis H4).
+With an approximate ground state instead, the bound applies to that probe's own spectral function,
+whose distance to the exact one nothing computed here controls; no certificate in this work has been
+evaluated with an approximate probe. The full-sector references reproduce the opposite finite-size
+scaling of the two gaps: the charge gap decreases to within $6.2\%$ of its Lieb--Wu value at
+$L=12$, while the spin gap closes as
+$\approx2/L$, with an independent effective-Heisenberg control (Table~\ref{tab:gaps}). All spectra
+here are at exact-diagonalization sizes, the largest momentum-resolved one at $L=12$. By comparison,
+dynamical DMRG computed the same three channels at $60$ to $120$ sites in 2007~\cite{benthien2007},
+and correction-vector DMRG reaches $L=48$ in the Hubbard chain~\cite{nocera2016}. In one dimension
+tensor networks are near-optimal~\cite{whitedmrg1992,schollwock2011}, and the largest minimal bond dimension over the
+$74$ exact ground states deposited here is $42$. No quantum advantage is claimed at any size reached
 (Sec.~\ref{sec:honest}).
 
-Whether a certified regime exists at low sector fraction is now a well-posed measurement, and the
-calibrated crossing is the instrument for making it. Whether it exists at all turns on two open
-questions: whether the certificate of second order in the boundary coupling that follows from the
-same identity at full captured weight has a counterpart below it, where the operating fractions
-lie, that can be evaluated without the answer; and whether some single-particle basis gives
-$\mathcal K(H,\phi)$ a coordinate support that is a small fraction of the sector, the plane-wave
-block being one such basis for a momentum probe, at about $L(L-1)$ further two-qubit gates whose
-effect on the sampled distribution is unmeasured, and with the filling of the block at $L\ge10$
-unmeasured as well. What this work provides toward both is a two-sided bound whose boundary-leakage
-term is computable from the Ritz pairs and the retained probe, a measured map of where it is
-informative and at what cost, and the coordinate support that fixes, basis by basis, what zero
-leakage at full captured weight requires. For a sampled pipeline validated at exact-diagonalization
-scale, where the exact ground state is in hand, the consequence is that the captured weight is not a
-convergence diagnostic for the spectral function built on the subspace; what bounds that error, as
-an exclusion rather than an error estimate, is the weight the subspace missed together with the
-boundary coupling, computable there from the same Ritz pairs, the retained probe and one
-matrix--vector product per Ritz vector.
+Whether a certified regime exists at low sector fraction can now be settled by a well-posed
+measurement, and the calibrated crossing is the instrument for making it. The answer turns on two
+open questions. At full captured weight, the identity behind Theorem~\ref{thm:leakage} yields a certificate of second order in the boundary coupling.
+The first question is whether it has a counterpart below full weight, where the operating fractions
+lie, that can be evaluated without the exact spectral function. The second is whether some
+single-particle basis gives $\mathcal K(H,\phi)$ a coordinate support that is a small fraction of
+the sector. The plane-wave orbitals are one such basis for a momentum probe, at about $L(L-1)$
+further two-qubit gates whose effect on the sampled distribution is unmeasured; whether the support
+fills the block at $L\ge10$ is unmeasured as well. Toward both, this work provides a two-sided bound
+whose boundary-leakage term is computable from the Ritz pairs and the retained probe, and a measured
+map of where that bound is informative and at what cost. It also provides the coordinate support
+that fixes, basis by basis, what zero leakage at full captured weight requires. For a sampled
+pipeline validated at exact-diagonalization scale, where the exact ground state is in hand, the
+captured weight is therefore not a convergence diagnostic for the spectral function built on the
+subspace. The error of that spectral function is bounded, though not estimated, by the weight the
+subspace missed together with the boundary coupling. The coupling is computable there from the same
+Ritz pairs, the retained probe and one matrix--vector product per Ritz vector, and the missed weight
+from the norm of the exact probe and its retained part.
 
 \begin{acknowledgments}
 We acknowledge the use of IBM~Quantum services for this work; the two device runs reported in

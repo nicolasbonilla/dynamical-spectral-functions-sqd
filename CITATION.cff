@@ -8,31 +8,31 @@ authors:
     affiliation: "Universidad Nacional de Colombia"
     email: "ngbonillav@unal.edu.co"
 abstract: >-
-  Sample-based quantum diagonalization returns a subspace of measured configurations; Rayleigh-Ritz on
-  it yields a spectral function, and we ask what bounds its error. The captured Born weight w alone
-  does not: Rayleigh-Ritz displaces the poles it keeps, an analytic counterexample forces any bound
-  indexed on it to its trivial value, and on the probe's support, where w=1, the error is still
-  0.35-0.43 at η=0.18t against a ceiling of 2. What bounds it, with the missed weight, is the
-  Hamiltonian coupling across the subspace boundary: for Rayleigh-Ritz on any orthogonal projector,
-  given the exact ground state, we prove that the relative L_1 error lies between 1-w and
-  min{1+w,(1+sqrt(w))(sqrt(1-w)+Λ(η)/η)}, with Λ the boundary coupling at resolution η, from the Ritz
-  pairs and the retained probe. For the 1D Hubbard A(ω), built from classical Born draws, or their
-  infinite-shot ranking, of a real-time evolved probe (one device run, an execution record, aside),
-  the bound first beats the trivial one at a true error of 1.2-7.3×10^-3 in all sixteen (L,η) cells
-  over L=6-12; a two-constant rule in 1-w, fitted here without guarantee, is tighter on 11 of 14
-  splits; the Born-ranked A(k,ω) at 85% of its sector is bounded at 350-900 times its true error. Yet
-  at all five sizes up to dimension 10306296 the bound is vacuous at every operating fraction of the
-  resource scan, by 1.66-8.61, and informative only well above them. In the determinant basis the
-  probe's Krylov space has, at L=6-14, coordinate support on every symmetry-allowed determinant, so
-  zero leakage at full weight needs all of them; a momentum probe measured in plane-wave orbitals
-  stays in one block, 1/L of the sector, a gain of 1/L against an exponential. On pairing-model fibers
-  every orbital-invariant leakage bound is vacuous. At full weight a second-order certificate follows;
-  below it, where every operating fraction lies, one is open.
+  Rayleigh-Ritz on a subspace from sample-based quantum diagonalization yields the spectral function
+  of a probe state; we ask what bounds its error. The probe's captured Born weight w does not do so
+  alone: an analytic counterexample forces any bound indexed on it to its trivial value. On Hubbard
+  rings at broadening η=0.18t, the probe's whole support (w=1) still gives a relative error of
+  0.35-0.43: Rayleigh-Ritz displaces the poles a subspace keeps. The error is bounded instead by the
+  missed weight and the Hamiltonian coupling across the subspace boundary. Given the exact ground
+  state, we prove for any orthogonal projector that the relative L_1 error lies between 1-w and
+  min{1+w,(1+sqrt(w))(sqrt(1-w)+Λ(η)/η)}, where Λ, that coupling at resolution η, is computed from the
+  Ritz pairs and the retained probe. We test it on L-site rings with classical Born draws of an
+  exactly time-evolved probe, or their infinite-shot ranking; our device runs are execution records
+  only. On the ranked subspaces the bound is vacuous at every operating fraction of the resource scan,
+  at all five sizes up to a sector of 10306296 determinants: its leakage branch exceeds the trivial
+  bound 1+w by factors of 1.66 to 8.61. Only well above those fractions is it informative, and there
+  it is calibrated: at L=6-12 it first beats the trivial bound at a true error of (1.2-7.3)×10^-3,
+  though an unproven fit in 1-w is tighter on 11 of 14 splits. For the Born-ranked A(k,ω) at 85% of
+  its sector, the bound is 350-900 times the true error. In the determinant basis, zero leakage at
+  full weight needs every symmetry-allowed determinant: the probe's measured Krylov support at L=6-14.
+  Plane-wave orbitals reduce a momentum probe's support to one block, 1/L of an exponentially growing
+  sector. At full weight a second-order certificate follows; whether one exists below full weight,
+  where every operating fraction lies, is open.
 repository-code: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
 url: "https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd"
-version: "3.4.0"
+version: "3.4.1"
 doi: "10.5281/zenodo.22967220"
-date-released: "2026-09-30"
+date-released: "2026-10-01"
 license:
   - "MIT"
   - "CC-BY-4.0"
@@ -61,6 +61,9 @@ preferred-citation:
     arXiv:2608.16436. Versions 1 and 2 were titled "Dynamical spectral functions from bitstring-sampled
     quantum subspaces: entanglement, not one-body magic, tracks the sampling cost"; in version 3 the
     weight-only bound of those versions (Theorem 1(iii)), which does not hold, is replaced by a proved
-    two-sided leakage bound, and the paper is retitled accordingly. Deposit 3.4.0 carries the revised
-    manuscript prepared for Physical Review A (2026-09-30). The version and release date
+    two-sided leakage bound, and the paper is retitled accordingly. Deposit 3.4.1 carries the revised
+    manuscript prepared for Physical Review A (2026-10-01; the abstract, the opening of Sec. I and
+    the conclusion were rewritten for readability, with no number, claim or limit changed in the
+    paper; three items moved from the abstract to the body, docs/KNOWN_DISCREPANCIES.md section
+    35). The version and release date
     above describe THIS deposit, not the arXiv posting date.

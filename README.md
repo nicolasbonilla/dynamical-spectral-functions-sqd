@@ -296,6 +296,11 @@ and see [`docs/KNOWN_DISCREPANCIES.md`](docs/KNOWN_DISCREPANCIES.md) §7.
 > alike; and `verify.py` now also checks the Fig. 3 caption's panel (b) numbers, window and branch
 > thresholds, the printed noise values and every restated Fig. 3 certificate number, while
 > `check_coherence.py` requires each vacuity statement in each place that carries it.
+> **The prose pass of 2026-10-01** (`docs/KNOWN_DISCREPANCIES.md` §35): the abstract, the opening of
+> Sec. I and Sec. X were rewritten in short sentences, one idea per paragraph; no number, claim or limit
+> changed in the paper, and three items moved from the abstract to the body (§35 lists them). After its
+> two closing reviews the guardians pass, the three PDFs keep their page counts, and
+> `build/arxiv-v4.tar.gz` was rebuilt locally from these sources (`RESULT: PASS`; nothing uploaded).
 >
 > **CI.** `.github/workflows/ci.yml` runs `make verify` and `make check-figures` on every push, and has
 > done so since 2026-09-19 (see the Actions tab). `make check-coherence` was added as a third job on

@@ -58,7 +58,9 @@
 %       relation between F_1 and the support is a deterministic monotone one with an
 %       unstable sign (Sec. 6.5), which is a different statement.
 %   (d) No claim of quantum advantage is made; the explicit disclaimer is the seventh
-%       paragraph and must survive copy-editing.
+%       paragraph and must survive copy-editing.  2026-10-01 (closing review): it is now the
+%       sentence "No quantum advantage is claimed." of its own, inside the "Four bodies of
+%       work" paragraph (see the 2026-10-01 note below).
 %   (e) The word "sampled" is used only where a budget is declared or where the object
 %       is named as the infinite-shot limit of the declared protocol (Sec. 7).  The
 %       fraction of the sector is the "published fraction" everywhere -- the name of
@@ -66,130 +68,180 @@
 %       count.  "sampled fraction" was still used in seven places (the abstract among
 %       them) until 2026-09-19; it is now used in none.  Generic uses say "sector
 %       fraction", the phrase Table XI already carried.
+%
+%  2026-10-01 (prose pass): the opening, up to the end of the list of results, is split into
+%  short paragraphs, one result each; no number changed and no claim added.  Every pinned
+%  phrase above and every guardian count carried by this file is unchanged.  Note (d):
+%  the explicit no-advantage disclaimer now closes the "Four bodies of work" paragraph,
+%  which is the eleventh paragraph of this section, not the seventh.
+%  2026-10-01 (closing review of the prose pass): the probe, the rings, L, eta, the seed
+%  site, the fibers, gamma and F_k and the operating fractions are said in words at first
+%  use; the qualifier "whatever value the bound itself takes there" is restored; the second
+%  control of Sec. V B (the 5% criterion met on the published subspaces) joins the first;
+%  "confines" becomes "has its Krylov support inside".  The "Four bodies of work"
+%  paragraph is split into shorter sentences with every clause, citation and pinned phrase
+%  kept ("both in July 2026; the priority for those measures is theirs" verbatim); its
+%  no-advantage disclaimer is now the sentence "No quantum advantage is claimed.", followed
+%  by the tensor-network sentence.  No number changed and no claim added.
+%  2026-10-01 (second closing review, two fresh reviewers): the operating fractions are
+%  defined with the qualifiers they carry (the infinite-shot ranking of the scan, relative
+%  L1<0.05 at eta=0.15t; Table tab:published), and the 0.98 with its own eta=0.18t
+%  (sec_5_body.tex:208-209); the bound is described with its two branches, so that "leakage
+%  branch" and "trivial bound" are defined before use; the July-2026 priority clause again
+%  names both groups (the pinned substring is kept verbatim); the Born-ranked A(k,omega)
+%  sentence closes the calibration paragraph and cites Sec. V instead of Fig. 3 (APS figure
+%  order); "every member F_k of that family" -> "every antiflatness F_k, like every other
+%  orbital-rotation invariant"; K is named as the number of geminals; smaller grammar fixes
+%  (the probe defined in its own clause, "the number of shots needed", "None can therefore
+%  replace", "The rotation to that basis", [Eq.] in brackets, "Three different quantities").  Declined: a
+%  gloss on "a spread of 5.9" (pinned by verify.py 9.9c; declined in the first closing review).
+%  No number changed and no claim added; every pinned phrase kept.
 % =====================================================================================
 
 \section{The operational question}
 \label{sec:intro}
 
-A sample-based quantum calculation returns a list of bitstrings. Diagonalizing the Hamiltonian inside
-the span of the configurations they name yields an energy, and---as this work and several others
-show---a frequency-resolved response as well. What it does not yield is a statement of how wrong that
-response is. This paper addresses the question a user is left with once the shots are spent:
-\emph{given the subspace those shots populated, how wrong is the spectral function built on it?} The
-natural diagnostic, the Born weight the subspace captures, does not answer it: Rayleigh--Ritz displaces
-the poles it keeps instead of deleting the ones it misses, so a subspace holding the probe's entire Born
-support still carries an error of order one. What enters a bound on it, together with the missed weight,
-is the Hamiltonian coupling across the boundary of the subspace. Given the exact ground state, that bound
-is provable on any subspace, and we measure where it is informative---not at the sector fractions at
-which the reconstructions here operate---and why, and price the method in determinants and shots.
+A sample-based quantum calculation returns a list of bitstrings. Diagonalizing the Hamiltonian in
+the span of the configurations they name yields an energy and, as this work and several others show,
+a frequency-resolved response as well. What it does not yield is a statement of how wrong that
+response is. This paper addresses the question a user faces once the shots are spent:
+\emph{given the subspace those shots populated, how wrong is the spectral function built on it?}
 
-Three statements hold on any subspace: two results and a classical property whose exact reach we state.
-First, the captured weight alone cannot bound the error: an analytic counterexample
-forces the constant of any bound indexed on it to its trivial value, and on the probe's own Born
-support, where the captured weight is exactly one, the relative error is still $0.43$ at $L=6$ and
-$0.35$ at $L=8$ at $\eta=0.18\,t$ on the periodic rings ($0.28$ on the open chain of
-Sec.~\ref{sec:moments}, a different lattice). Second, a two-sided bound (Theorem~\ref{thm:leakage}) whose
-boundary-leakage term is a posteriori: for Rayleigh--Ritz reconstruction on any orthogonal projector, the $L_1$
-error of the broadened spectral function lies between the Born weight of the probe that the subspace
-failed to capture and that weight plus the Hamiltonian coupling that leaks across the boundary of the
-subspace at the resolution $\eta$, a quantity with a closed form in the Ritz pairs the reconstruction
-already produces and in the retained part of the probe; both terms take the probe and the energy reference
-from the exact ground state, which makes the bound an instrument for benchmarking a sample-based
-pipeline where exact diagonalization is available; and by the identity behind it, the error that
-survives full captured weight is generated by the coupling across the boundary alone
-(Sec.~\ref{sec:retraction}), whatever the bound's own value there. Third, what the subspace structure does
-guarantee is moment exactness, the classical moment-matching property of Krylov
-projections (Sec.~\ref{sec:moments}): a subspace containing the order-$K$ Krylov space reproduces the spectral
-moments through order $2K+1$ and no further, a reach we state exactly and measure on coordinate
-subspaces (Theorem~\ref{thm:moments}), and a non-circular count gives
-the shots that capture every high-probability configuration (Proposition~\ref{prop:shots}).
+The natural diagnostic is the captured Born weight, the fraction of the probe's squared norm that
+lies in the subspace; the probe is the ground state acted on by the operator whose response is
+sought. It does not
+answer the question. Rayleigh--Ritz does not delete the poles a subspace misses; it displaces the
+poles it keeps. A subspace that holds the probe's entire Born support, where the captured weight is
+exactly one, therefore still carries an error of order one. On half-filled Hubbard rings of $L$
+sites, at Lorentzian broadening $\eta=0.18\,t$, the relative $L_1$ error is $0.43$ at $L=6$ and $0.35$ at $L=8$
+($0.28$ on the open chain of Sec.~\ref{sec:moments}, a different lattice). No choice of constant rescues the captured
+weight: an analytic counterexample forces the constant of any bound indexed on it to its trivial
+value (Sec.~\ref{sec:retraction}).
 
-Evaluated on the subspaces of the resource scan, at five sizes up to a
-sector of dimension $10\,306\,296$, the leakage branch of the bound is worse than the trivial bound at
-every operating fraction of the resource scan, by factors of $1.66$ to $8.61$, and at $L=12$ that
-verdict is converged in Krylov depth; it becomes informative only well above those fractions, and at
-this paper's $5\%$ accuracy criterion only from $0.98$ of the sector at $L=8$. The Born-ranked
-(infinite-shot) reconstruction of Fig.~\ref{fig:akwsampled}, at $85\%$ of its sector, is non-vacuous in
-all sixteen channels, at a relative bound of $0.77$--$1.75$ against the trivial $2$, $350$--$900$ times
-its true error (Sec.~\ref{sec:frontier}). An independent implementation recovers the acceptance
-fractions of the scan to under $2\%$. The crossing of the trivial bound occurs at a true relative error
-between $1.2\times10^{-3}$ and $7.3\times10^{-3}$ over sixteen $(L,\eta)$ cells whose true errors span
-five decades, a spread of $5.9$, so the certificate is calibrated: once it improves on the trivial bound,
-the true error is already at that level. A two-constant rule in the missed weight, fitted out of sample
-on these systems and carrying no guarantee, localizes the same crossing more tightly on eleven of
-fourteen splits; what distinguishes the certificate is that it is an inequality with a proof, given the
-exact probe. And in the determinant basis in which the device measures, the Krylov space of the probe has
-coordinate support on every determinant that the reflection about the seed site allows, measured from
-$L=6$ to $L=14$, so at full captured weight only a subspace holding all of them has zero leakage; if the
-device instead samples in the plane-wave orbital basis, at a cost of about $L(L-1)$ further
-two-qubit gates whose effect on the sampled distribution is unmeasured, a momentum-resolved probe
-confines its Krylov support to one momentum block, $1/L$ of the sector, a gain of $1/L$ against an
-exponential (Sec.~\ref{sec:frontier:obstruction}).
+What enters a bound, together with the missed weight, is the Hamiltonian coupling across the
+subspace boundary. Theorem~\ref{thm:leakage} makes this precise for Rayleigh--Ritz on any
+orthogonal projector: the $L_1$ error of the broadened spectral function lies between the missed
+Born weight and the smaller of the trivial bound and a leakage branch, built from that weight and
+the coupling that leaks across the boundary at resolution $\eta$. The leakage term is a posteriori:
+it has a closed form in the Ritz pairs the reconstruction produces and in the retained
+probe. Both terms take the probe and the energy reference from the exact ground state, so the bound
+is a certificate for benchmarking a sample-based pipeline where exact diagonalization is available. The identity behind it also shows that the error surviving at full
+weight is generated by the boundary coupling alone (Sec.~\ref{sec:retraction}), whatever
+value the bound itself takes there.
 
-No orbital-rotation invariant can bound the boundary leakage usefully on every state---on fibers of a
-pairing model every such bound is vacuous---so none replaces the certificate by an a priori predictor computed from the state before any circuit runs
-(Sec.~\ref{sec:nogo}). The natural candidates are the efficiently
-measurable monotones of fermionic non-Gaussianity, and on number-conserving states the one-body member
-collapses to the single invariant $\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$
-(Eq.~\eqref{eq:collapse}). An invariant of the occupation spectrum cannot see a boundary: along a
-geminal orbit every order of it is fixed while the orbit contains a point of classical cost $O(K)$ in
-the fixed computational basis (the pairing basis: $2^{K}$ determinants, but bond dimension $2$;
-Theorem~\ref{thm:witness}) and points at which Born sampling is plausibly hard (Sec.~\ref{sm:nogo}),
-a hardness we do not establish, and on fibers where every invariant and the captured
-weight are frozen the subspace-aware certificate still separates a non-vacuous value from the trivial
-bound (Proposition~\ref{prop:leakinv}). Within the six $(L,N)$ strata of the Hubbard interaction sweep
-the rank correlation of $\mathcal F_1$ with the determinant support is exactly $-1$ (exact permutation $p=3.35\times10^{-13}$
-against independent orderings, a null that six strata sharing one mechanism do
-not satisfy), a deterministic monotone relation whose sign
-reverses between families, as an orbital invariant compared with a basis-dependent count must
-(Sec.~\ref{sec:nogo}). Sections~\ref{sec:prices} and~\ref{sec:physics} then price the method in
-support, resolution and shots, and check the full-sector references against the opposite finite-size
-scaling of the charge and spin gaps of the Hubbard chain.
+What the subspace structure does guarantee is moment exactness, the classical moment-matching
+property of Krylov projections (Sec.~\ref{sec:moments}). A subspace containing the order-$K$ Krylov
+space reproduces the spectral moments through order $2K+1$ and no further; we state that reach
+exactly and measure it on coordinate subspaces (Theorem~\ref{thm:moments}). A non-circular count
+then gives the number of shots needed to capture every high-probability configuration
+(Proposition~\ref{prop:shots}).
+
+We then measure where the bound is informative. The operating fractions of the resource scan are
+its acceptance fractions: the fractions of the symmetry sector that the infinite-shot ranking of
+the scan of Sec.~\ref{sec:prices} needs to meet this paper's $5\%$ accuracy criterion, relative
+$L_1<0.05$ at $\eta=0.15\,t$. The leakage branch of the bound is worse than the
+trivial bound at every operating fraction of the resource scan, at five sizes up to a sector of
+dimension $10\,306\,296$, by factors of $1.66$ to $8.61$. At $L=12$ that verdict is converged in
+Krylov depth. The bound becomes informative only well above those fractions, and to certify the
+$5\%$ criterion at $\eta=0.18\,t$ it needs at least $0.98$ of the sector at $L=8$. An independent implementation recovers
+the acceptance fractions of the scan to under $2\%$ and confirms the $5\%$ criterion on the
+published subspaces: the reconstructions are reproduced, and what they lack is a certificate.
+
+Where the bound is informative, it is calibrated. Over sixteen $(L,\eta)$ cells at $L=6$--$12$, it
+first crosses below the trivial bound at a true relative error between $1.2\times10^{-3}$ and
+$7.3\times10^{-3}$: a spread of $5.9$, over true errors that span five decades. Once it is below
+that bound, the true error is already at that level. A two-constant rule in the missed weight,
+fitted on some sizes and tested on the others, localizes this crossing more tightly on eleven of
+fourteen splits. That rule is a regularity of these systems
+with no guarantee outside its fitted range; the certificate is a proven inequality, given the exact
+probe. The Born-ranked (infinite-shot) $A(k,\omega)$ of Sec.~\ref{sec:frontier}, at $85\%$ of its
+sector, is non-vacuous in all sixteen momentum channels. Its relative bound there, $0.77$--$1.75$
+against the trivial $2$, is $350$--$900$ times its true error.
+
+The leakage depends on the basis in which the device measures. In the determinant basis, the Krylov
+space of a probe created at one site, the seed site, has coordinate support on every determinant
+that the reflection about the seed site allows, measured at $L=6$ to $14$. At full captured weight,
+therefore, only a subspace holding all of them has zero leakage. If the device samples in
+plane-wave orbitals instead, a momentum-resolved probe has its Krylov support in one momentum block,
+$1/L$ of the sector. The rotation to that basis costs about $L(L-1)$ further two-qubit gates, whose
+effect on the sampled distribution is unmeasured, and the block, like the sector, grows
+exponentially with $L$
+(Sec.~\ref{sec:frontier:obstruction}).
+
+No orbital-rotation invariant can bound the boundary leakage usefully on every state: on fibers of a
+pairing model, families of states on which the invariants are held fixed, every such bound is
+vacuous. None can therefore replace the certificate as an a priori
+predictor computed from the state before any circuit runs (Sec.~\ref{sec:nogo}). The natural
+candidates are the efficiently measurable monotones of fermionic non-Gaussianity. On
+number-conserving states the one-body member collapses to the single invariant
+$\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$, with $\gamma$ the one-particle reduced density
+matrix [Eq.~\eqref{eq:collapse}]. An invariant of the occupation spectrum cannot see a boundary.
+Along a geminal orbit every antiflatness $\mathcal F_k$, like every other orbital-rotation
+invariant, is fixed, while
+the orbit contains a point of classical cost $O(K)$, for $K$ geminals, in the fixed computational basis
+(Theorem~\ref{thm:witness}). That basis is the pairing basis, in which the point has $2^{K}$
+determinants but bond dimension $2$. The orbit also contains points at which Born sampling is
+plausibly hard (Sec.~\ref{sm:nogo}), a hardness we do not establish. On those fibers the captured weight
+is frozen too, yet the subspace-aware certificate still separates a non-vacuous value from the
+trivial bound (Proposition~\ref{prop:leakinv}).
+
+Within each of the six $(L,N)$ strata of the Hubbard interaction sweep, the rank correlation of
+$\mathcal F_1$ with the determinant support is exactly $-1$. Its exact permutation
+$p=3.35\times10^{-13}$ assumes independent orderings, a null that six strata sharing one mechanism
+do not satisfy. The correlation is a deterministic monotone relation whose sign reverses between
+families, as it must when an orbital invariant is compared with a basis-dependent count
+(Sec.~\ref{sec:nogo}).
+
+Sections~\ref{sec:prices} and~\ref{sec:physics} then price the method in support, resolution and
+shots, and check the full-sector references against the opposite finite-size scaling of the charge
+and spin gaps of the Hubbard chain.
 
 Four bodies of work bound what is new here. \emph{(i)}~Patel, Rangi and Tam~\cite{patel2026}
 construct Green's functions from sampled Krylov subspaces for dynamical mean-field
 theory~\cite{dmft1996}, independently and concurrently, and cite this work as ``a closely related
 sample-based approach to dynamical spectral functions, constructed directly from bitstring-sampled
-subspaces''. \emph{(ii)}~Dynamical DMRG computed all three momentum-resolved channels
-reported here for the half-filled extended Hubbard chain at $L=60$--$120$ in 2007~\cite{benthien2007}, and
-correction-vector DMRG treats the Hubbard chain at $L=48$, the Heisenberg chain at $L=64$
-(the $k=\pi$ cut to $L=128$) and the
-$t$--$J$ ladder at $48\times2$ sites~\cite{nocera2016}; the classical toolbox for such spectra is
-broader still~\cite{kuehner1999,whitefeiguin2004,holzner2011,kpm2006,paeckel2019,tdasci2024}.
-\emph{(iii)}~Frequency-resolved responses of
-lattice models, all but one of them correlated, have been measured on devices far larger than the $12$-qubit spectral run of this work: a
-retarded spin Green's function of the Fermi--Hubbard chain at up to $30$ qubits~\cite{vilchez2025}, an
-angle-resolved-photoemission-like $A(k,\omega)$ of a free-fermion $27$-site chain at $54$
+subspaces''. \emph{(ii)}~Dynamical DMRG computed all three momentum-resolved channels reported here
+for the half-filled extended Hubbard chain at $L=60$--$120$ in 2007~\cite{benthien2007}.
+Correction-vector DMRG treats the Hubbard chain at $L=48$, the Heisenberg chain at $L=64$ (the
+$k=\pi$ cut to $L=128$) and the $t$--$J$ ladder at $48\times2$ sites~\cite{nocera2016}, and the
+classical toolbox for such spectra is broader
+still~\cite{kuehner1999,whitefeiguin2004,holzner2011,kpm2006,paeckel2019,tdasci2024}.
+\emph{(iii)}~Frequency-resolved responses of lattice models, all but one of them correlated, have
+been measured on devices far larger than the $12$-qubit spectral run of this work. They include a
+retarded spin Green's function of the Fermi--Hubbard chain at up to $30$ qubits~\cite{vilchez2025},
+an angle-resolved-photoemission-like $A(k,\omega)$ of a free-fermion $27$-site chain at $54$
 qubits~\cite{granet2026akw}, $S(q,\omega)$ on $50$ qubits against neutron scattering in
-$\mathrm{KCuF_3}$~\cite{lee2026sqw}, and quench spectroscopy of $L=101$ spins~\cite{millar2026}; at a
+$\mathrm{KCuF_3}$~\cite{lee2026sqw}, and quench spectroscopy of $L=101$ spins~\cite{millar2026}. At a
 scale comparable to ours, $S(q,\omega)$ of a $20$-site Heisenberg chain was computed on a trapped-ion
-device and compared with neutron data for copper sulfate~\cite{quantinuum_dsf2026}. The two
-device runs of this work are execution records only: the spectral one retained its entire sector, so its
+device and compared with neutron data for copper sulfate~\cite{quantinuum_dsf2026}. The two device
+runs of this work are execution records only: the spectral one retained its entire sector, so its
 agreement with exact diagonalization is exact by coverage rather than a test of the method
-(Sec.~\ref{sec:scope:hw}). \emph{(iv)}~Computable
-Gaussian-invariant quantifiers of fermionic non-Gaussianity include the antiflatness of
-Ref.~\cite{sierant2026} used here. Tarabunga \emph{et al.}~\cite{tarabunga2026} separate covariance-matrix
-occupation entropies, two members of which are strong monotones that lower-bound the non-Gaussian gate count, from
-full-state natural-orbital participation entropies, which upper-bound the classical simulation cost in
-an orthonormal Gaussian basis; the quadratic member, which coincides with the $k=1$ antiflatness, is one of
-the two, and Leone and Bittel~\cite{leonebittel2026} independently prove it an
-efficiently measurable strong pure-state Gaussian monotone, both in July 2026; the priority for those measures is theirs, and what this work adds is
-their contrast with the basis-dependent determinant support, a constructive instance of it, and its
-extension from the determinant support to the leakage. Every system studied here is classically
-tractable, Hubbard rings at $L\le14$ and nineteen active spaces with a largest minimal bond dimension of
-$42$, and no quantum advantage is claimed: the one quantitative statement this work makes about its own
-cost---that the basis-dependent bond dimension tracks the determinant support---argues, wherever that
-bond dimension is small, for a tensor network rather than for a sampler (Sec.~\ref{sec:honest}).
+(Sec.~\ref{sec:scope:hw}). \emph{(iv)}~Computable Gaussian-invariant quantifiers of fermionic
+non-Gaussianity include the antiflatness of Ref.~\cite{sierant2026} used here. Tarabunga
+\emph{et al.}~\cite{tarabunga2026} separate covariance-matrix occupation entropies from full-state
+natural-orbital participation entropies. Two members of the first family are strong monotones that
+lower-bound the non-Gaussian gate count; the second family upper-bounds the classical simulation cost
+in an orthonormal Gaussian basis. The quadratic member, which coincides with the $k=1$ antiflatness,
+is one of the two strong monotones. Leone and Bittel~\cite{leonebittel2026} independently prove it an
+efficiently measurable strong pure-state Gaussian monotone. Tarabunga \emph{et al.} and Leone and
+Bittel posted their works both in July 2026; the priority for those measures is theirs. What this
+work adds is the contrast between these measures and the basis-dependent determinant support, a
+constructive instance of that contrast, and its extension from the determinant support to the
+leakage. Every system studied here is classically tractable: Hubbard rings at $L\le14$ and nineteen
+active spaces with a largest minimal bond dimension of $42$. No quantum advantage is claimed. The one
+quantitative statement this work makes about its own cost---that the basis-dependent bond dimension
+tracks the determinant support---argues, wherever that bond dimension is small, for a tensor network
+rather than for a sampler (Sec.~\ref{sec:honest}).
 
-The paper is organized as follows. Section~\ref{sec:method} fixes the sampling primitive and states
-which reconstructions carry a shot budget and which are full-sector references. Section~\ref{sec:leakage}
+The paper is organized as follows. Section~\ref{sec:method} fixes the sampling primitive and separates
+shot-budgeted reconstructions from full-sector references. Section~\ref{sec:leakage}
 proves the bound and shows that no bound on the captured weight alone can replace it;
 Sec.~\ref{sec:moments} states what the subspace structure certifies; Sec.~\ref{sec:frontier} measures
 where the certificate is informative; Sec.~\ref{sec:nogo} addresses a priori predictors; Secs.~\ref{sec:prices}
 and~\ref{sec:physics} price the method and validate the references; and Sec.~\ref{sec:honest} reports
 the device runs, the molecular suite and the relation to classical methods. The systems are the half-filled
 one-dimensional Hubbard model at $U/t=8$, rings and open chains at $L=4$ to $14$, and nineteen molecular
-active spaces. Three different counts share the symbol $\mathcal S$ and are kept apart: the static
+active spaces. Three quantities share the symbol $\mathcal S$: the static
 ground-state support of Sec.~\ref{sec:nogo}, the dynamical support of Sec.~\ref{sec:prices}, and the set
 of configurations the sampler returned, the $\mathcal S$ of Theorem~\ref{thm:leakage}. The proof of
 Theorem~\ref{thm:leakage} is in Appendix~\ref{app:proof}; the other proofs, full tables and extended

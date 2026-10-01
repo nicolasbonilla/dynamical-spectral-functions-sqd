@@ -14,6 +14,28 @@
 > pdflatex". `build/abstract_arxiv.txt` was rewritten from the final sources: 1 916 characters. If any
 > source changes, rebuild both.)*
 >
+> *(2026-10-01, prose pass: the abstract, the opening of Sec. I and the conclusion were rewritten in short
+> sentences, with no number, claim or limit changed in the paper; three items moved from the abstract to
+> the body (`KNOWN_DISCREPANCIES.md` §35). After the closing review of that pass, item 1 was run again
+> locally and nothing was uploaded: `build/arxiv-v4.tar.gz` then held 77 members, 1.98 MB, sha256
+> `40135e7e…f120ea8a2`; its clean-room compile ran 3 passes to 68 pp.
+> with 0 errors, 0 undefined references or citations and 0 missing files, and its text flow is identical
+> to the full tree and to `paper/main.pdf`: `RESULT: PASS -- the package is complete, clean and
+> self-contained`. The bundle of 2026-09-30 (sha256 `52febdb2…a0b15e022`) is superseded.
+> `build/abstract_arxiv.txt` was rewritten: 1 852 characters with the Greek in Unicode. Page counts are
+> unchanged: `paper/main.pdf` 68 pp., main text pp. 1–28; `main_pra.pdf` 33 pp., `sm_pra.pdf` 38 pp.)*
+>
+> *(2026-10-01, second closing review of the prose pass (two fresh reviewers, `KNOWN_DISCREPANCIES.md`
+> §35): the abstract, Sec. I and Sec. X were corrected again, with no number changed and no claim added.
+> Item 1 was run again locally and nothing was uploaded: `build/arxiv-v4.tar.gz` now holds 77 members,
+> 1.98 MB, sha256 `ccfb2595…c883c6bc3`; its clean-room compile ran 3 passes to 68 pp. with 0 errors,
+> 0 undefined references or citations and 0 missing files, and its text flow is identical to the full
+> tree and to `paper/main.pdf`: `RESULT: PASS -- the package is complete, clean and self-contained`.
+> The bundle sha256 `40135e7e…f120ea8a2` is superseded. `build/abstract_arxiv.txt` was rewritten:
+> **1 910 characters with the Greek in Unicode (margin 10); spelled out it would be 1 932, which arXiv
+> rejects, so paste from the file.** Page counts are unchanged: `paper/main.pdf` 68 pp., main text
+> pp. 1–28; `main_pra.pdf` 33 pp., `sm_pra.pdf` 38 pp.)*
+>
 > 1. **Build with the documented script, into a new file.** The builder's default output is
 >    `build/arxiv-v3.tar.gz`, which is the record of the v3 upload, so name the output:
 >    `python src/build_arxiv_bundle.py --passes 3 --out build/arxiv-v4.tar.gz`, and require
@@ -32,7 +54,16 @@
 >    then writes. *(2026-09-30, final pass: `abs_paste.py` dropped the braces of Theorem 1's
 >    `\min\{...\}` and wrote `min\1+w,...\`. It now keeps them, with a dated comment, so the file reads
 >    `min{1+w,(1+sqrt(w))(sqrt(1-w)+Λ(η)/η)}`. The count is unchanged at 1 916, with 0 backslashes and
->    0 `$`. The file was rewritten from the final sources.)*
+>    0 `$`. The file was rewritten from the final sources.)* *(2026-10-01, prose pass: the abstract was rewritten for readability, twelve
+>    sentences, no number changed. `abs_paste.py` on the final sources of 2026-10-01 (after the closing
+>    review) gives **1 852 characters with the Greek in Unicode (margin 68) and 1 874 spelled out (margin
+>    46)**, 295 words, one paragraph, no LaTeX command dropped. Both forms now fit; paste from `build/abstract_arxiv.txt` all the same. The
+>    counts of 1 916 and 1 944 above describe the abstract of 2026-09-30.)* *(2026-10-01, second closing
+>    review: the vacuity factors are attributed to the leakage branch and the 11-of-14 limit on the
+>    calibration is back in the abstract. `abs_paste.py` now gives **1 910 characters with the Greek in
+>    Unicode (margin 10) and 1 932 spelled out (12 over the limit)**, 306 words, one paragraph, no LaTeX
+>    command dropped. Only the Unicode form fits: paste from `build/abstract_arxiv.txt`. The counts of
+>    1 852 and 1 874 above describe the first closing review.)*
 > 4. **Comments** (arXiv limit 400 characters). A draft of 392 characters, counted, not filed:
 >    `68 pages, 17 figures, 17 tables (28-page main text, then supplement). v4: revised for Phys. Rev. A;
 >    exact-probe hypothesis stated, proof in Appendix A, device runs described as executed, citations

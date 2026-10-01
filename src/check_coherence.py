@@ -254,7 +254,8 @@ def build_checks(txt):
          # 2026-09-25: floor 24 -> 23. intro rewrite: the new introduction names the operating fraction once.
          # 2026-09-25: floor 23 -> 21. conclusion rewrite: operating fraction named once more.
          # 2026-09-30: floor 21 -> 20. DOWNWARD, reframe (skeptic V1): Sec. IX C no longer restates the vacuity at 'every operating fraction of the resource scan'; Sec. V B, the abstract, Sec. I and Sec. X still do.
-         (r"published fraction|operating fractions? of the resource scan", 20),
+         # 2026-10-01: floor 20 -> 21. UPWARD, closing review of the prose pass: Sec. I now defines the operating fractions of the resource scan in words before stating the vacuity there, one more occurrence (body()+flat(): 21).
+         (r"published fraction|operating fractions? of the resource scan", 21),
          [r"sampled fraction"],
          "at every sampled fraction",
          "Sec. VII states in the printed text that describing the T->infinity curve as "
@@ -401,7 +402,9 @@ def located_checks(rng, word):
         out.append(("the vacuity range is stated in %s" % where, where, rng, 1))
     for where in ("abstract", "sec_1.tex", "sec_5_body.tex", "sec_9.tex", "sec_10.tex"):
         out.append(("the number of published sizes is stated in %s" % where, where, sizes, 1))
-    for where, n in (("abstract", 1), ("sec_1.tex", 1), ("sec_5_body.tex", 5), ("sec_7.tex", 1),
+    # 2026-10-01: sec_1.tex 1 -> 2, UPWARD (closing review of the prose pass): Sec. I now
+    # defines the operating fractions of the resource scan before stating the vacuity there.
+    for where, n in (("abstract", 1), ("sec_1.tex", 2), ("sec_5_body.tex", 5), ("sec_7.tex", 1),
                      ("sec_10.tex", 2), ("sm_frontier.tex", 8), ("sm_prices.tex", 1)):
         out.append(("the operating/published fraction is named in %s" % where, where, opf, n))
     return out
