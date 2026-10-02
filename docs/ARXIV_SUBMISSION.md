@@ -2,6 +2,15 @@
 
 > ## A v4 replacement: instructions, 2026-09-30 (nothing built; the decision is the author's)
 >
+> **2026-10-02: v4 SUBMITTED by the author** (`submit/8168606`, replacement of 2608.16436), from
+> `build/arxiv-v4.tar.gz` rebuilt that day at commit `fcd9a4a` (77 members, 68 pp, `RESULT: PASS`).
+> **Correction to item 3 below:** arXiv's help (info.arxiv.org/help/prep.html) states that Unicode
+> entry is not supported in the abstract field, so the Unicode file `build/abstract_arxiv.txt` must NOT
+> be pasted. The metadata abstract filed for v4 is the ASCII/TeX file `build/abstract_arxiv_tex.txt`
+> (1 907 characters, math in `$...$` for MathJax): the PDF abstract with six phrases condensed to fit
+> the 1 920-character limit and every number unchanged. Comments: `build/arxiv_comments_v4.txt`
+> (392 characters). `build/` is gitignored; copies are kept outside the repository.
+>
 > The sources now differ from v3 throughout (the review pass of 2026-09-28 and the passes of
 > 2026-09-30: README.md, "`paper/main.pdf` is the manuscript for Physical Review A";
 > `KNOWN_DISCREPANCIES.md` §31–§34). Whether arXiv v3 is replaced by this text, and when (before or
