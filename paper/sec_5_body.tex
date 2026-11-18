@@ -7,6 +7,14 @@
 %  contrast in Sec. 5.3).  No number and no limit was removed; the second-order certificate
 %  is displayed as Eq. eq:secondorder.  Heading renamed (the old one is in the git history).
 %
+%
+%
+%
+%
+%
+%
+%
+%
 %  NEW section; no predecessor in the v2 tree.  It resolves the live internal contradiction
 %  between discussion.tex:55-58 ("demands a large fraction of the sector") and
 %  results.tex:253-256 ("falls to 8 per cent"), today two opposite arguments in one paper.
@@ -95,30 +103,36 @@
 \section{Where the leakage certificate is informative: its non-vacuity threshold, measured}
 \label{sec:frontier}
 
+%
+%
+%
+%
 Whether the certificate of Theorem~\ref{thm:leakage} says anything on a given subspace is decided by
 one comparison, computed from the Ritz pairs and the retained probe, given the exact probe (H4). Its
-\emph{non-vacuity threshold} $\mathrm{FR}^{\ast}$ is the sector fraction above which the leakage branch
-of the bound first improves on the trivial bound $\lVert\phi\rVert^{2}(1+w_S)$, a property of the
+\emph{non-vacuity threshold} $\mathrm{FR}^{\ast}$ is the sector fraction above which the certificate
+first improves on the trivial bound $\lVert\phi\rVert^{2}(1+w_S)$, a property of the
 inequality chain that proves the theorem rather than of the reconstruction. Swept at $L=6$--$12$, the
-certificate first improves on the trivial bound at a true relative error of $1.2\times10^{-3}$ to
-$7.3\times10^{-3}$ in every one of sixteen $(L,\eta)$ cells (Sec.~\ref{sec:frontier:calib}); above the
+certificate first improves on the trivial bound at a true relative error of $2.6\times10^{-3}$ to
+$1.5\times10^{-2}$ in every one of sixteen $(L,\eta)$ cells (Sec.~\ref{sec:frontier:calib}); above the
 threshold it gives converged bounds below the trivial one (Sec.~\ref{sec:frontier:certified});
 evaluated on the published subspaces at five sizes up to $L=14$, at the operating points of the
-resource scan, which lie well below the threshold, it is vacuous (Sec.~\ref{sec:frontier:threshold}); and the
-displacement of the threshold is located rung by rung in the proof, with the basis structure behind it
-(Sec.~\ref{sec:frontier:obstruction}).
+resource scan, which lie below the threshold, it is vacuous (Sec.~\ref{sec:frontier:threshold}); and the
+displacement of the first-order threshold is located rung by rung in its proof, with the basis structure behind it
+(Sec.~\ref{sec:frontier:obstruction}). Figure~\ref{fig:results} shows the threshold, the trivial
+and the smaller leakage branch of the bound, the missed weight and the true error at $L=8$, $\eta=0.18\,t$.
 
-Non-vacuity is a condition on one number. With $\widehat\Lambda_S=\Lambda_S/\lVert\phi\rVert$, the
-leakage branch of Eq.~\eqref{eq:twobudget} improves on the trivial branch exactly when
+Non-vacuity is a condition on one number. With $\widehat\Lambda_S=\Lambda_S/\lVert\phi\rVert$, in the
+real case of Theorem~\ref{thm:leakage}, which covers every local probe of this paper, the certificate improves
+on the trivial branch exactly when
 \begin{widetext}
 \begin{equation}
-\frac{\widehat\Lambda_S(\eta)}{\eta}\;<\;\tau(w_S)\;:=\;\frac{1+w_S}{1+\sqrt{w_S}}-\sqrt{1-w_S},
-\qquad \tau(1)=1 ,
+\frac{\widehat\Lambda_S(\eta)}{\eta}\;<\;\tau(w_S)\;:=\;\sqrt{1+w_S}-\sqrt{1-w_S},
+\qquad \tau(1)=\sqrt2 ,
 \label{eq:tau}
 \end{equation}
 \end{widetext}
 so a subspace holding the entire Born weight of the probe certifies something as soon as its leakage,
-in units of the resolution it was asked for, drops below unity.
+in units of the resolution it was asked for, drops below $\sqrt2$.
 
 \subsection{What is evaluated}
 \label{sec:frontier:hyp}
@@ -141,10 +155,11 @@ costs are in Secs.~\ref{sm:frontier} and~\ref{app:hyp}.
 \subsection{The certificate at the operating fractions of the resource scan}
 \label{sec:frontier:threshold}
 
-Evaluated on the published subspaces themselves, the
-leakage branch of the bound exceeds the trivial bound $\lVert\phi\rVert^{2}(1+w_S)$ at all five sizes
-and all four resolutions, by factors running from $1.66$ ($L=6$, $\eta=0.25\,t$) to $8.61$ ($L=14$,
-$\eta=0.10\,t$), and by $2.40$ to $4.61$ at the $\eta=0.18\,t$ of the momentum-resolved channel;
+Evaluated on the published subspaces themselves, the smaller
+of the two leakage branches exceeds the trivial bound $\lVert\phi\rVert^{2}(1+w_S)$ at all five sizes
+and all four resolutions, by factors running from $1.38$ ($L=6$, $\eta=0.25\,t$) to $8.61$ ($L=14$,
+$\eta=0.10\,t$), the former by the second-order branch and every other by the first-order one, and by
+$2.40$ to $4.61$ at the $\eta=0.18\,t$ of the momentum-resolved channel;
 Table~\ref{tab:published} carries the twenty values. They are monotone in both
 arguments---rising with $L$ at every resolution, falling with $\eta$ at every size---so the certificate
 is furthest from non-vacuity at the largest sector and the finest resolution, the regime the method
@@ -152,9 +167,10 @@ targets.
 
 The largest classically converged case carries the evidence. At $L=12$ and the published
 subspace---$\lvert S\rvert=124\,407$ of $731\,808$ determinants---$w_S=0.998622$, so
-Eq.~\eqref{eq:tau} asks for $\widehat\Lambda_S/\eta<\tau(w_S)=0.9625$; the measured value is $4.236$
+Eq.~\eqref{eq:tau} asks for $\widehat\Lambda_S/\eta<\tau(w_S)=1.3766$; the measured value is $4.236$
 at $\eta=0.18\,t$, converged in depth (Sec.~\ref{sm:frontier}). Over the $606$ live subspaces of the
-pooled sweep the leakage branch is the smaller of the two on only $61$. The reconstructions at
+pooled sweep a leakage branch lies below the trivial one on only $85$ as evaluated ($57$ with a real probe, $28$ with a
+complex one, scored by the first-order bound with $\Lambda_S$; Sec.~\ref{sec:frontier:certified}). The reconstructions at
 the operating fractions of the resource scan---Fig.~\ref{fig:scaling} and the operating points of
 Secs.~\ref{sec:prices} and~\ref{sec:physics}---are therefore uncertified; the Born-ranked
 reconstruction of Fig.~\ref{fig:akwsampled}, at $85\%$ of its sector, lies above the threshold
@@ -165,7 +181,8 @@ reconstruction of Fig.~\ref{fig:akwsampled}, at $85\%$ of its sector, lies above
 never reached.} Each row is Theorem~\ref{thm:leakage} evaluated at the integer determinant count
 $\lvert\mathcal S\rvert=\mathrm{round}(\mathrm{frac}\times\dim)$ that Fig.~\ref{fig:scaling} reports,
 not at the nearest point of the grid of Table~\ref{tab:thresholds}. Columns~$5$--$8$ are the vacuity
-factor---the leakage branch of Eq.~\eqref{eq:twobudget} over the trivial branch
+factor---the smaller of the two leakage branches of Eq.~\eqref{eq:twobudget}, which is the first-order one in
+nineteen cells and the second-order one at $L=6$, $\eta=0.25\,t$, over the trivial branch
 $\lVert\phi\rVert^{2}(1+w_S)$---so a value above $1$ means the certificate says nothing the trivial
 bound does not. All twenty evaluations are the $T\to\infty$ limit of the ranking protocol; the sixteen up to
 $L=12$ pass the depth test of Sec.~\ref{sec:frontier:hyp}, and the $L=14$ row its indicator half only
@@ -180,7 +197,7 @@ recursion depth with the scan that produced the fractions. At $L=14$ the ground 
 \cmidrule(lr){3-4}\cmidrule(lr){5-8}
 $L$ & $\dim(N{+}1)$ & fraction & $\lvert\mathcal S\rvert$ & $0.10$ & $0.15$ & $0.18$ & $0.25$ & at $\eta=0.15\,t$\\
 \midrule
-$6$  & $300$          & $0.8200$ & $246$      & $4.54$ & $2.94$ & $2.40$ & $1.66$ & $0.0477$\\
+$6$  & $300$          & $0.8200$ & $246$      & $4.54$ & $2.94$ & $2.40$ & $1.38$ & $0.0477$\\
 $8$  & $3\,920$       & $0.5561$ & $2\,180$   & $5.65$ & $3.69$ & $3.05$ & $2.17$ & $0.0478$\\
 $10$ & $52\,920$      & $0.3625$ & $19\,183$  & $6.50$ & $4.28$ & $3.54$ & $2.52$ & $0.0484$\\
 $12$ & $731\,808$     & $0.1700$ & $124\,407$ & $8.04$ & $5.20$ & $4.27$ & $3.00$ & $0.0485$\\
@@ -189,63 +206,85 @@ $14$ & $10\,306\,296$ & $0.0800$ & $824\,504$ & $8.61$ & $5.59$ & $4.61$ & $3.26
 \end{tabular}
 \end{table*}
 
+%
+%
+%
 Two controls come with the table. Applying this paper's own acceptance criterion to the same sweep with
 that independent code returns the reported fractions to under $2\%$ (Table~\ref{tab:thresholds}), and
 the last column of Table~\ref{tab:published} evaluates the defining criterion at the published
 subspaces themselves, $0.0463$--$0.0485$ against the threshold $0.05$. The reconstructions and the
-curve are thus reproduced independently; what those fractions lack is a certificate.
+curve are thus reproduced independently. What the certificate adds is a proven bound on the error,
+computed without the exact spectral function, given the exact probe; it becomes informative at the
+larger fractions of Sec.~\ref{sec:frontier:certified}.
 
 \subsection{What the certificate certifies, and at what shot cost}
 \label{sec:frontier:certified}
 
-What the sweep does certify, at each size the strongest statement whose bracket is converged, is
+What the sweep does certify, in six $(L,\eta)$ cells the strongest statement whose bracket is converged, is
 collected in Table~\ref{tab:certified}: at $L=12$, $60\%$ of a $731\,808$-dimensional sector gives
-relative $L_1\le0.717$, a factor $2.8$ below the trivial cap, tightening to $\le0.218$ at $70\%$ and
+relative $L_1\le0.129$, a factor $16$ below the trivial cap, tightening to $\le0.0120$ at $70\%$ and
 $\eta=0.25\,t$. One further point of the map lies above the threshold: for the Born-ranked
 (infinite-shot) reconstruction of Fig.~\ref{fig:akwsampled}, at $85\%$ of its sector, the certificate
-of the depth-$500$ Krylov reconstruction is non-vacuous in all sixteen channels, at a relative bound of
-$0.77$--$1.75$ against the trivial $2$, and loose, $350$--$900$ times the true error of the channel
-integrated over the whole frequency line (\texttt{cert\_akw.json}). At the acceptance criterion used
+of the depth-$500$ Krylov reconstruction is non-vacuous in all sixteen channels (five of them
+symmetry-distinct). In the four channels at $k=0$ and $\pi$, whose probes are real, it is a relative bound of
+$0.15$--$0.35$ against the trivial $2$, and loose, $160$--$170$ times the true error of the channel
+integrated over the whole frequency line. In the twelve others the probe is complex and only the
+first-order bound with $\Lambda_S$ is evaluated, at $1.07$--$1.75$ and
+$350$--$650$ times the true error: both leakage branches need $\tilde\Lambda_S$, which for these probes is $\Lambda_S$ of the mirrored momentum on the same
+subspace and was not stored (\texttt{cert\_akw.json}). At the acceptance criterion used
 throughout this paper, relative $L_1<0.05$, which the reconstruction at $L=8$, $\eta=0.18\,t$ reaches at
-$\mathrm{FR}\approx0.52$, the certificate requires at least $0.98$ of the sector at $L=8$, the crossing
-lying in $[0.977,0.983]$, and on our grid it is not reached at all at $L=6$, $10$ or $12$: at that
-accuracy Theorem~\ref{thm:leakage} does not certify the operating points of Fig.~\ref{fig:scaling}, and
-the regime where it would costs more shots than the method saves, since reaching the non-vacuous band
-multiplies the shots per snapshot needed for the marginal determinant by $7.5$--$10$ at $L=8$ and by
-$20$--$35$ at $L=12$ (Table~\ref{tab:shotfrontier}).
+%
+%
+%
+%
+%
+%
+%
+%
+%
+$\mathrm{FR}\approx0.525$, the certificate requires between $0.90$ and $0.92$ of the sector at $L=8$ (two
+converged grid rows), and at the same resolution between $0.80$ and $0.85$ at $L=10$ and between $0.60$ and
+$0.70$ at $L=12$ (upper end marginal in depth); at $L=6$ it is not reached on our grid at
+$\eta\le0.18\,t$: at that
+%
+%
+accuracy Theorem~\ref{thm:leakage} does not certify the operating points of Fig.~\ref{fig:scaling}.
 
-\subsection{The crossing of the trivial bound is calibrated}
+\subsection{Where the bound first improves on the trivial one}
 \label{sec:frontier:calib}
 
 Across all sixteen $(L,\eta)$ cells the crossing of the trivial
-bound occurs at a true relative $L_1$ error of $1.2\times10^{-3}$ to $7.3\times10^{-3}$, median
-$2.8\times10^{-3}$: a spread of $5.9$ over true errors spanning five decades, and in every cell at least
-$47$ times the drift of our own reference. The spread is a drift, not scatter, and it runs the
+bound occurs at a true relative $L_1$ error of $2.6\times10^{-3}$ to $1.5\times10^{-2}$, median
+$5.7\times10^{-3}$: a spread of $5.8$ over true errors spanning five decades, and in every cell at least
+$96$ times the drift of our own reference (with the first-order branch alone the crossing error is
+$1.2\times10^{-3}$ to $7.3\times10^{-3}$). The spread is a drift, not scatter, and it runs the
 conservative way in $L$: the larger the system, the smaller the true error at which the certificate
 first says anything. The crossing of $\widehat\Lambda_S(\eta)/\eta$ therefore locates a true error to
 within that factor, and it is computed from $H$, $S$, the retained probe $\phi_S$, the probe norm
 $\lVert\phi\rVert$ and $\eta$, without the spectral function it bounds, given the exact probe (H4),
 with four limits (Sec.~\ref{sm:frontier}). It locates one error level per cell and is not an error
 estimate. A user without $w_S$ can discharge $\tau(w_S)$ conservatively: an assumed floor
-$w_S\ge0.995$ gives $\tau\ge0.9280$, moving the threshold by at most $7\%$. The calibration rests on
+$w_S\ge0.995$ gives $\tau\ge1.341$, moving the threshold by at most $5.2\%$. This measurement rests on
 these sixteen cells, $L=6$--$12$, and is not extrapolated to $L=14$. A two-constant rule in $1-w_S$,
 $1-w_S<c\,\eta^{p}$ with $c$ and $p$ fitted on some sizes and tested on the others, localizes the
-crossing error more tightly than the certificate on eleven of the fourteen train/test splits
-(\texttt{null\_ws7.py}): as a tracker of the error the certificate has no edge in sharpness over the
+crossing error more tightly than the certificate on thirteen of the fourteen train/test splits (eleven
+with the first-order branch alone; \texttt{null\_ws7\_\allowbreak second\_order.py}): as a tracker of the
+error the certificate has no edge in sharpness over the
 captured weight. Its edge is provability. It is an inequality with a proof, whose decision survives
 replacing $w_S$ by a floor, whereas the fitted rule is a regularity of these systems with no guarantee
 outside its fitted range---no inequality indexed on the captured weight alone bounds the error
-(Sec.~\ref{sec:retraction})---and it asks for $1-w_S$ to $10^{-5}$--$10^{-4}$ and, stripped of its
-second parameter, is the looser of the two on thirteen of the fourteen splits.
+(Sec.~\ref{sec:retraction})---and it asks for $1-w_S$ to $2.4\times10^{-5}$--$1.0\times10^{-3}$ and,
+stripped of its second parameter, is the looser of the two on twelve of the fourteen splits.
 
 \subsection{Where the threshold comes from}
 \label{sec:frontier:obstruction}
 
-Measured rung by rung along the chain of inequalities that proves Theorem~\ref{thm:leakage}, at $L=8$,
+For the first-order branch, measured rung by rung along the chain of inequalities that proves it, at $L=8$,
 the displacement of the threshold is $44\%$ the pointwise step to a Hilbert-space distance, $38\%$ the
 operator-norm step $\lVert R(z)\rVert\le1/\eta$, $11\%$ the Feshbach/Minkowski split and $4.6\%$
-Cauchy--Schwarz in $\omega$, whose total margin for tightening is a factor $1.05$ typically and $3.29$
-at worst. The subspace adds one structural fact. For a subspace holding the whole probe, $\Lambda_S=0$
+Cauchy--Schwarz in $\omega$, whose total margin for tightening is a factor $1.10$ at the median and
+$3.29$ at worst; the proof of the second-order branch has no pointwise step of that kind. The subspace adds
+one structural fact. For a subspace holding the whole probe, $\Lambda_S=0$
 requires $\operatorname{span}(S)\supseteq\mathcal K(H,\phi)$, and the reflection $j\to-j$ about the
 seed site commutes with $H$ and has $\phi$ as an eigenvector, so every vector of $\mathcal K$ vanishes on
 the reflection-fixed determinants of the opposite parity---$4$, $18$, $48$, $200$ and $600$ at
@@ -254,24 +293,27 @@ determinant in the support: $296$, $3902$, $52\,872$, $731\,608$ and $10\,305\,6
 full captured weight, therefore, no coordinate subspace short of all of them has zero leakage. That is a
 statement that $\Lambda_S\neq0$, not about its size; the vacuity at the operating fractions of the
 resource scan, all below full captured weight, is measured in Table~\ref{tab:published}, not deduced
-from it. Nor is the ranking the weak link: a Krylov-diagonal oracle ranking gives a \emph{worse} certificate than the
+from it. Nor is the ranking the weak link: a Krylov-diagonal oracle ranking gives \emph{larger} leakage branches than the
 Born ranking at $L=6$, $\eta=0.18\,t$, at every fraction checked from $0.50$ on. At full captured weight
-the leakage branch is of first order in the boundary coupling and the error of second, and the same
-identity gives an a posteriori certificate of second order,
+the first-order branch is of first order in the boundary coupling and the error of second, and there the
+second-order branch of Theorem~\ref{thm:leakage} reads
 \begin{equation}
 \lVert A-A_P\rVert_1\;\le\;\frac{\Lambda_P(\eta)\,\tilde\Lambda_P(\eta)}{\eta^{2}}\qquad(\phi_Q=0),
 \label{eq:secondorder}
 \end{equation}
-where $\tilde\Lambda_P$ is Eq.~\eqref{eq:lambda} with the energy difference in its kernel reversed in
-sign (equal to $\Lambda_P$ for a real Hamiltonian and probe) (Sec.~\ref{sm:frontier}); whether one
-exists below full captured weight, where every published fraction lies, is open. The measurement basis
+with $\tilde\Lambda_P$ of Eq.~\eqref{eq:lambdatilde} (Sec.~\ref{sm:frontier}). Below full captured weight,
+where every published fraction lies, the same branch adds the missed amplitude $\lVert\phi_Q\rVert$ to each
+factor, and at those fractions it stays above the trivial bound (Table~\ref{tab:published}). The measurement basis
 is a choice, and for the momentum-resolved probe of Fig.~\ref{fig:akwsampled} it is a forced one: the
 Krylov space lies inside one momentum block of exactly $\dim(N{+}1)/L$
-plane-wave determinants, on which the certificate becomes non-vacuous at $48$--$50$ of $50$ determinants
-($L=6$) and $455$--$483$ of $490$ ($L=8$) (\texttt{z\_kblock.py}), a factor $5$--$7$ fewer than the site
-determinant basis requires. The block exists only after the measurement is rotated to the plane-wave
+plane-wave determinants, on which the first-order branch becomes non-vacuous at $48$--$50$ of $50$ determinants
+($L=6$) and $455$--$483$ of $490$ ($L=8$) (\texttt{z\_kblock.py}), a factor $5$--$7$ fewer than it requires in
+the site determinant basis; the second-order branch can only lower these counts, these probes being real in
+the plane-wave basis. The block exists only after the measurement is rotated to the plane-wave
 orbitals, about $L(L-1)$ further two-qubit gates whose effect on the sampled distribution is unmeasured
 (Sec.~\ref{sm:frontier}); in the site basis the same probes at $L=8$ have support on $3848$ to $3920$ of
 the $3920$ determinants (Sec.~\ref{sm:leakage}). The gain is $1/L$ against an exponential, and whether
-the support fills the block at $L\ge10$ is unmeasured.
+the support fills the block at $L\ge10$ is unmeasured. That the sampling basis changes the efficiency
+of sample-based Krylov diagonalization has been reported independently on the Hubbard
+ladder~\cite{leicester2026}.
 

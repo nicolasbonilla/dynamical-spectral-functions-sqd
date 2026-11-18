@@ -63,6 +63,12 @@ imported) rather than re-running quantum chemistry.
 
 Exit status: 0 iff no hard check failed.  Any hard failure prints a line that names
 the defect -- which slot, which system, which value was found and which was due.
+
+DEPOSIT 3.5.0 (2026-11-18): paper/ holds the manuscript prepared for The Journal of
+Chemical Physics, whose Theorem 1 has a second-order branch.  The checks of this file
+that the new text made wrong (first-order values in sections 9.6c and 9.9c) are replaced
+by the checks of src/verify_jcp.py, run here as section (12); every change, with the old
+and the new expectation, is listed in docs/KNOWN_DISCREPANCIES.md section 36.
 """
 
 import argparse
@@ -832,6 +838,10 @@ COVERED_FRAGMENTS = {
     # fig_amort_native.tex is no longer \input by anything: Sec. 9.4 withdraws that
     # figure in the body ("Both figures of this test are therefore withdrawn").  It stays
     # in paper/figs/ because src/ still names it; nothing typesets it.
+    # 2026-11-18 (deposit 3.5.0, the manuscript prepared for JCP): Fig. 1, fig:results, is new.  Section (12)
+    # below (src/verify_jcp.py, check_fig_results) opens it and re-reads every plotted value, both marks and
+    # every number of its caption against the deposit.
+    "fig_results_native.tex",
 }
 
 # ---------------------------------------------------------------------------
@@ -877,12 +887,21 @@ SECTION_FLOORS = [
     ("(6) STATISTICS", 23),
     ("(7) MOLECULAR SUITE", 263),
     ("(8) SPECTRAL ARTEFACTS", 69),
-    ("(9) THE FILES", 10850),           # 2026-09-30 (final review): 11071 measured, less 2 %,
+    ("(9) THE FILES", 9635),            # 2026-11-18 (deposit 3.5.0, JCP text): 9832 measured, less 2 %.
+                                        # The section lost 1238 assertions, every one a first-order
+                                        # check the second-order branch made wrong: the two plotted
+                                        # n3_thmB tables of Fig. S10 (2 x 606 points, first-order
+                                        # ratios) and 26 restatements of 9.6c and 9.9c.  Each is
+                                        # replaced by a check of section (12), whose own floor is
+                                        # below; the two floors together (12810) exceed the 10850
+                                        # of 3.4.1, so no floor fell.  Until then:
+                                        # 2026-09-30 (final review): 11071 measured, less 2 % (10850),
                                         # after sections 9.6b (caption panel (b)), 9.9b and 9.9c;
                                         # 2026-09-28 (late): 11003 measured, less 2 %; sections
                                         # 9.6b/9.6c (Fig. 3 finite shots, the free-fermion
                                         # supports, the spin peaks, the Fig. S5 pool) added
     ("(10b) C3 FRONTIER", 2387),
+    ("(12) THE JCP TEXT", 3175),        # 2026-11-18 (deposit 3.5.0): 3240 measured, less 2 %
     ("(10) RETRACTED CLAIMS", 7),   # the header was renamed when the registry was inverted;
                                    # the floor of 7 is unchanged and is met by the seven
                                    # absence assertions, not by lowering it.
@@ -1216,7 +1235,9 @@ def section9(rep, root, ctx):
     _gf = read_json(root, "data/gflow.json")["runs"]
     _gtxt = " ".join(open(os.path.join(root, "paper", "app_dequant.tex"), encoding="utf-8")
                      .read().split())
-    _s9 = " ".join(open(os.path.join(root, "paper", "sec_9.tex"), encoding="utf-8").read().split())
+    # 2026-11-18 (deposit 3.5.0, the manuscript prepared for JCP): the dequantization paragraph moved, word for
+    # word, from Sec. IX (sec_9.tex) to the Supplement (sec_9_sm.tex); the same check reads it there.
+    _s9 = " ".join(open(os.path.join(root, "paper", "sec_9_sm.tex"), encoding="utf-8").read().split())
 
     def _pt(a, b):
         _d = np.asarray(a, float) - np.asarray(b, float)
@@ -1256,10 +1277,10 @@ def section9(rep, root, ctx):
               "a verbal verdict of App. dequant no longer matches data/gflow.json")
     _q9 = ("from $%.2f$ to $%.2f$~mHa (paired $t_9=%.2f$, all ten seeds)"
            % (_A["ibm"].mean(), _A["ibm+cheap"].mean(), _cl[2]))
-    rep.truth("Sec. IX dequantization paragraph matches gflow.json", _q9 in _s9 and
+    rep.truth("dequantization paragraph (sec_9_sm.tex) matches gflow.json", _q9 in _s9 and
               ("a further $%.2f$~mHa, a difference ten paired seeds do not resolve ($t_9=%.2f$)"
                % (_ge[0], _ge[2])) in _s9, _q9,
-              "Sec. IX prints numbers that are not those of data/gflow.json")
+              "the dequantization paragraph (sec_9_sm.tex) prints numbers that are not those of data/gflow.json")
     _ms = {r["L"]: r for r in
            read_json(root, "data/c3_frontier/adversarial/z_momseed_support.json")["results"]}
     _q = "support on $%d$ to $%d$ of the $%d$ determinants" % (
@@ -2063,6 +2084,12 @@ def section9(rep, root, ctx):
             got_d = _dat(dat_)
             rep.eq_int("Fig. S5 table %s: row count from the certificate rows" % dat_, len(got_d), len(want_),
                        "the plotted table does not hold one point per classified row", n=1)
+            if dat_.startswith("n3_thmB_"):
+                # 2026-11-18 (deposit 3.5.0): these two tables plot the error over the CERTIFICATE of Theorem 1,
+                # which for a real probe is now its second-order branch (src/make_fig_thmB_data.py); the ratios
+                # here are those of the first-order branch stored in the certificate rows.  Their point-by-point
+                # check is section (12), check_pooled_split (src/verify_jcp.py), on the new certificate.
+                continue
             rep.truth("Fig. S5 table %s: every plotted point is a classified certificate row (6 s.f.)" % dat_,
                       got_d == _fmt(want_), "%d points" % len(got_d),
                       "the plotted ratios are not the error-to-bound ratios of the deposited rows", n=len(want_))
@@ -2164,17 +2191,14 @@ def section9(rep, root, ctx):
                 else:
                     for g_, x_ in zip(m_.groups(), (0.5, 0.7, 0.85, 0.95)):
                         rep.eq("Fig. S5 caption: median at fraction %.2f" % x_, float(g_), round(med_[x_], 1), 1e-12, DN)
-        m_ = re.search(r"is violated on none of the \$(\d+)\$; its ratios span \$([\d.]+)\\times10\^\{-5\}\$ to \$([\d.]+)\$", capn)
-        if not m_:
-            rep.missing("Fig. S5 caption: Theorem 1 ratio range", "'violated on none of the 606; its ratios span' is gone")
-        else:
-            rep.eq_int("Fig. S5 caption: Theorem 1 tested on every live row", int(m_.group(1)), n_live, DN)
-            rep.eq("Fig. S5 caption: smallest Theorem 1 ratio (x1e-5)", float(m_.group(2)), round(Bmin_ * 1e5, 2), 1e-12, DN)
-            rep.eq("Fig. S5 caption: largest Theorem 1 ratio", float(m_.group(3)), round(Bmax_, 10), 1e-12, DN)
+        # 2026-11-18 (deposit 3.5.0, the manuscript prepared for JCP): the caption's range of error over the
+        # certificate ("violated on none of the 606; its ratios span ... to ...") and its count of rows on which the
+        # leakage entry beats the trivial bound (85 = 57 real + 28 complex) are those of the CERTIFICATE, whose real-
+        # probe entry is now the second-order branch; the two first-order checks that stood here (ratio range from
+        # the stored 'upper', 61 rows from 'bound_nontrivial') are replaced by section (12), check_pooled_split
+        # (src/verify_jcp.py), which re-derives both from the same five sources with the new certificate.
         rep.truth("Fig. S5 caption: the maximum is reached on four subspaces",
                   "reached on four subspaces" in capn and len(sat_) == 4, "%d" % len(sat_), DN)
-        _pnum(r"is the smaller of the two on only \$(\d+)\$ of the \$\d+\$ rows", "caption", capn,
-              "Fig. S5 caption: rows on which the leakage branch is the smaller", leak_n, 0, DN)
         m_ = re.search(r"Hubbard-chain rows exist only at \$\\eta/t=([\d.,\\ ]+)\$ and the stress[^$]*\$([\d.,\\ ]+)\$", capn)
         if m_:
             e_ = sorted(float(x) for x in (m_.group(1) + "," + m_.group(2)).replace("\\,", "").split(",") if x.strip())
@@ -2219,8 +2243,8 @@ def section9(rep, root, ctx):
         _pnum(r"it survives on \$\d+\$ of \$(\d+)\$, in every case", "sec_3_app.tex", s3a, "Sec. S9: rows below 0.99", len(lo_), 0, DN9)
         _pnum(r"the largest ratio of error to bound is \$([\d.]+)\$", "sec_3_app.tex", s3a, "Sec. S9: largest Theorem 1 ratio",
               round(Bmax_, 10), 1e-12, DN9)
-        _pnum(r"is the smaller of the two on only \$(\d+)\$ of the \$\d+\$", "sec_3_app.tex", s3a,
-              "Sec. S9: rows on which the leakage branch is the smaller", leak_n, 0, DN9)
+        # 2026-11-18 (deposit 3.5.0): "is the smaller of the two on only 61 of the 606" (first-order) became the
+        # count of the certificate, 85 = 57 + 28, which section (12), check_pooled_split, requires here with its split.
         rep.truth("Sec. S9 no longer explains the plotted pool as an earlier run",
                   "earlier run" not in s3a, "absent", "Sec. S9 still says the plotted pool was read from an earlier run")
         # Sec. S2 (sm_leakage)
@@ -2540,21 +2564,20 @@ def section9(rep, root, ctx):
         below_ = [s for s, v in fine_ if v < 0.05]
         frac_ = round(min(below_) / 3920.0, 2) if below_ else float("nan")
         A_ = ("sec_1.tex", "sec_5_body.tex", "sec_10.tex", "sm_frontier.tex")
+        # 2026-11-18 (deposit 3.5.0, the manuscript prepared for JCP, whose Theorem 1 has a second-order branch):
+        # six of the eight restatements checked here were first-order values and are no longer printed as such --
+        # the relative bound (0.77--1.75) and its looseness (350--900x) of the sixteen channels, now given for the
+        # real channels with the certificate and for the complex ones with the first-order branch, labelled; the
+        # spread of the crossing (5.9, now 5.8 for the certificate's crossing); and the fraction at which the
+        # certificate reaches 0.05 at L=8 (0.98 with the first-order branch, now "between 0.90 and 0.92").  Their
+        # replacements, which re-derive the new values from the same stored rows, are section (12)
+        # (src/verify_jcp.py): check_akw_channels, check_threshold_error and check_fraction_five_percent.  The two
+        # momentum-block counts below are first-order values the text keeps, labelled, and stay checked here.
         checks_ = (   # (pattern, deposited value at its printed rounding, label, files that must carry it)
-            (r"\$([\d.]+)\$--\$[\d.]+\$ against the trivial \$2\$", round(lo_u, 2), "relative bound, low", A_),
-            (r"\$[\d.]+\$--\$([\d.]+)\$ against the trivial \$2\$", round(hi_u, 2), "relative bound, high", A_),
-            (r"\$(\d+)\$--\$\d+\$ times (?:its|the) true error", _sf2(lo_s), "slack, low (2 s.f.)",
-             ("main.tex",) + A_),
-            (r"\$\d+\$--\$(\d+)\$ times (?:its|the) true error", _sf2(hi_s), "slack, high (2 s.f.)",
-             ("main.tex",) + A_),
             (r"\$(\d+)\$--\$\d+\$ of (?:its )?\$490\$", kb_lo, "momentum block, first non-vacuous low",
              ("sec_5_body.tex", "sec_10.tex", "sm_frontier.tex")),
             (r"\$\d+\$--\$(\d+)\$ of (?:its )?\$490\$", kb_hi, "momentum block, first non-vacuous high",
              ("sec_5_body.tex", "sec_10.tex", "sm_frontier.tex")),
-            (r"a spread of \$([\d.]+)\$", round(spread_, 1), "calibration spread",
-             ("sec_1.tex", "sec_5_body.tex", "sm_frontier.tex")),
-            (r"(?:from|at least) \$([\d.]+)\$ of the sector at \$L=8\$", frac_,
-             "fraction at which the certificate reaches 0.05 at L=8", A_),
         )
         for pat_, want_, lab_, need_files in checks_:
             for rel_ in ("main.tex", "sec_1.tex", "sec_5_body.tex", "sec_10.tex", "sm_frontier.tex"):
@@ -2569,10 +2592,12 @@ def section9(rep, root, ctx):
                     continue
                 for h_ in hits_:
                     rep.eq("%s: %s" % (rel_, lab_), h_, want_, 1e-12, DC)
+        # 2026-11-18 (deposit 3.5.0): kept as a data check; it is the crossing of the FIRST-ORDER branch (the 0.98
+        # of deposit 3.4.1), which the JCP text prints once, labelled, in Sec. S4 ("${\approx}0.98$")
         rep.truth("z_fine_L8.txt: the 0.05 crossing is bracketed at integer sizes",
                   bool(above_) and bool(below_) and max(above_) < min(below_),
                   "%d < |S| <= %d" % (max(above_ or [0]), min(below_ or [0])),
-                  "the fine scan no longer brackets the crossing the text places at 0.98")
+                  "the fine scan no longer brackets the first-order crossing (0.98 of the sector at L=8)")
         rep.truth("z_kblock_L8.json: the momentum blocks hold 490 determinants", kb_blk == {490},
                   "490", "the block size printed as 490 is not the deposited one (%s)" % sorted(kb_blk))
 
@@ -3269,6 +3294,36 @@ def section_c3(rep, root):
             rep.truth("%s: the superseded 'not re-run' caveat is gone" % rel_,
                       bad_ not in " ".join(read(root, rel_).split()), "absent",
                       "the text still says the L=14 ranking was not re-run")
+
+
+def section_jcp(rep, root):
+    """2026-11-18 (deposit 3.5.0, the manuscript prepared for JCP).  The checks of src/verify_jcp.py: the JCP
+    package's guard of its sources, whose checks replace the first-order checks of sections 9.6c and 9.9c that the
+    second-order branch of Theorem 1 made wrong, and check what the JCP text added (Fig. 1, the re-scored numbers,
+    the registry of 706 printed numbers with their stored sources).  Each is one check here, counted with its
+    assertions; a failing one prints every line it failed on.  The module is loaded from the tree being checked
+    (--root), and pointed at that tree."""
+    rep.head("(12) THE JCP TEXT -- the second-order certificate and the checks of src/verify_jcp.py")
+    import importlib.util
+    sys.dont_write_bytecode = True                  # the guardian writes nothing into the tree
+    path = os.path.join(root, "src", "verify_jcp.py")
+    try:
+        spec = importlib.util.spec_from_file_location("verify_jcp", path)
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+    except Exception as exc:                                    # noqa: BLE001
+        rep.missing("src/verify_jcp.py", "cannot load the checks of the JCP text: %s" % exc)
+        return
+    m.RELEASE = root
+    m.JCP_PAPER = os.path.join(root, "paper")
+    m.DATA = os.path.join(root, "data")
+    m.SOURCES = os.path.join(root, "src", "jcp", "number_sources.json")
+    m.SCRIPTS = os.path.join(root, "src", "jcp")
+    for label, name, ok, n, lines in m.run_all(echo=False):
+        okline = [ln.strip()[4:].strip() for ln in lines if ln.strip().startswith("ok ")]
+        bad = [ln.strip() for ln in lines if ln.strip().startswith("FAIL")]
+        rep.truth("%s (verify_jcp.%s)" % (label, name), ok, okline[-1] if okline else "",
+                  "; ".join(bad)[:4000] or "the check did not pass", n=n)
 
 
 def coverage_floor(rep):
@@ -4324,6 +4379,7 @@ def main(argv=None):
                              mol_pts=mol_pts, hub_pts=hub_pts, lvc=lvc, mm=mm, her=her))
     section10(rep, root)
     section_c3(rep, root)
+    section_jcp(rep, root)                      # 2026-11-18, deposit 3.5.0: the JCP text
     if not args.fast:
         coverage_floor(rep)
     else:

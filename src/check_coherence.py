@@ -299,7 +299,11 @@ def build_checks(txt):
          # 2026-09-30 (final review): 1214 / 14,497 -> 1280 / 14,563, verify.py sections 9.6b
          # (Fig. 3 caption panel (b), window and branch thresholds), 9.9b (the printed noise
          # values) and 9.9c (every restated Fig. 3 certificate number).
-         (r"\$1280\$ checks over \$14\\,563\$ numeric assertions", 1),
+         # 2026-11-18 (deposit 3.5.0, the manuscript prepared for JCP): 1280 / 14,563 -> 1269 / 16,565.  The
+         # statement is in sec_10.tex; verify.py section (12) runs the 21 checks of src/verify_jcp.py, and the
+         # first-order checks of 9.6c and 9.9c they replace left section 9 (docs/KNOWN_DISCREPANCIES.md section 36).
+         # The counts of 3.4.1 are forbidden below.
+         (r"\$1269\$ checks over \$16\\,565\$ numeric assertions", 1),
          # The forbidden phrase used to be the bare "four known open defects", which was
          # unambiguous while the live sentence read "five".  On 2026-09-21 the live
          # sentence became "four known open defects, and two declared gaps in its own
@@ -309,7 +313,8 @@ def build_checks(txt):
          # ban is dangerous and is done here only because the wider form now has a
          # legitimate match; the superseded claim is still caught in full.
          [r"\$807\$ checks", r"\$7\\,454\$ numeric assertions",
-          r"four known open defects are printed by name"],
+          r"four known open defects are printed by name",
+          r"\$1280\$ checks", r"\$14\\,563\$ numeric assertions"],
          "$807$ checks over $7\\,454$ numeric assertions",
          "Sec. IX F tells the reader what `python src/verify.py` prints. Run it and "
          "compare. If verify.py's counts have moved, this check is the reminder that "
@@ -475,5 +480,185 @@ def main():
     return 0
 
 
+# =====================================================================================================================
+#  DEPOSIT 3.5.0 (2026-11-18): the registrations of the manuscript prepared for The Journal of Chemical Physics.
+#
+#  The JCP package checked its sources with a wrapper (check_coherence_jcp.py) that imported this file unchanged,
+#  pointed it at the JCP sources and re-registered what the JCP text changed, each re-registration first asserting
+#  the 3.4.1 value it replaces.  In 3.5.0 paper/ IS the JCP text, so the wrapper is merged here, word for word in its
+#  logic: the functions above are the checks of 3.4.1, and the three wrapped below are what main() now calls.  Each
+#  change, with its reason (the dated notes are the wrapper's):
+#
+#  1. 2026-10-28 (device runs, on the author's instruction one line of Sec. S8):
+#       - "the hardware shot budget is one number in all four places": floor 7 -> 1; its absent-list is WIDENED with
+#         the absent-pattern of the check retired below;
+#       - "the Fig. 14 caption carries the same total": retired (the figure is not printed); its superseded form
+#         stays forbidden through the check above.
+#  2. 2026-11-08 (results-first abstract): the abstract no longer prints the vacuity factors or the phrase
+#     "operating fraction(s) of the resource scan"; both are still stated in Secs. I, V and X, which keep their own
+#     per-place floors.  So "the vacuity range is stated in abstract" and "the operating/published fraction is named
+#     in abstract" are retired; pooled floors move DOWNWARD by the count of what left (vacuity range 4 -> 3;
+#     operating / published fraction 21 -> 16 in all, with items 3 and 4), pooled floors that went UP are raised to
+#     the measured count (published sizes 5 -> 6, largest sector 8 -> 9); three NEW per-place pins hold the
+#     abstract to its own content (the vacuity in words, the qualifier "infinite-shot Born-ranked", the hypothesis
+#     "Given the exact ground state"); two NEW pooled checks (each with its two controls) forbid two overclaims
+#     ("rule(s) out any bound indexed", "calibrated").
+#  3. 2026-11-08, pass 7: Sec. S4 names the operating fraction 5 times, not 8 (the three others were in the
+#     shot-frontier table and its paragraph, withdrawn as unsourced, docs/JCP_WITHDRAWN_NUMBERS.md): that
+#     per-place floor 8 -> 5.
+#  4. 2026-11-14 (closing reading): the conclusion's two paragraphs that opened with the vacuity are one; the
+#     operating fraction of the resource scan is named once there, so the sec_10.tex per-place floor 2 -> 1
+#     (DOWNWARD, one duplicate fewer).
+#  5. 2026-11-16 (Theorem 1 gains the second-order branch; rules D7, D17, docs/KNOWN_DISCREPANCIES.md section 36): a
+#     vacuity factor quoted above the trivial bound is the SMALLER of the two leakage branches.  vacuity_range() is
+#     wrapped: the 3.4.1 values are asserted first (1.66, 8.61), then each cell takes min(first-order, second-order),
+#     the second-order factor (sqrt(1-w)+Lambda^/eta)^2/(1+w) from the same stored fields.  The range becomes
+#     1.38--8.61; the superseded 1.66--8.61 joins the forbidden forms of that check.
+# =====================================================================================================================
+_V4_VACUITY_RANGE, _V4_BUILD_CHECKS, _V4_LOCATED_CHECKS = vacuity_range, build_checks, located_checks
+
+JCP_BUDGET = 'the hardware shot budget is one number in all four places'
+JCP_CAPTION = 'the Fig. 14 caption carries the same total'
+JCP_VACUITY = 'the vacuity range is the deposited one, everywhere it is stated'
+JCP_SIZES = 'the number of published sizes agrees with the deposited grid'
+JCP_OPF = "the sector fraction is named as Sec. VII's own rule requires"
+JCP_SECTOR = 'the largest sector quoted is the largest sector evaluated'
+
+# name -> (3.4.1 floor asserted, JCP floor, reason)
+JCP_FLOORS = {
+    JCP_VACUITY: (4, 3, 'abstract no longer prints 1.66--8.61; Secs. I, V, X do'),
+    JCP_SIZES: (5, 6, 'Sec. VIII A Limitations adds "at all five sizes"'),
+    JCP_OPF: (21, 16, 'abstract no longer names the operating fraction; Secs. I, V, VII, X, S4, S6 do; pass 7: '
+                      'the shot-frontier table of S4, withdrawn as unsourced (docs/JCP_WITHDRAWN_NUMBERS.md), named '
+                      'it three times; 2026-11-14 (closing reading): the conclusion states the vacuity at the '
+                      'operating fractions once instead of twice (17 -> 16)'),
+    JCP_SECTOR: (8, 9, 'the opening paragraph of Sec. I quotes the largest sector'),
+}
+JCP_VAC_V4 = ('1.66', '8.61')
+JCP_FIRST_ORDER_RANGE = re.escape('$1.66$') + r'.{0,40}' + re.escape('$8.61$')
+
+JCP_NEW_POOLED = [
+    ('the captured weight forces a bound to its trivial value, it does not "rule it out"',
+     (r'forces (?:the constant of )?any bound indexed on', 3),
+     [r'rules? out any\s+bound indexed'],
+     'an analytic counterexample and a counting argument rule out any bound indexed on it',
+     'JCP 2026-11-08: the counterexample forces the constant of any bound indexed on the captured '
+     'weight alone to its trivial value (Sec. III D); "rules out" is wider than that, and the fact '
+     'check of the APS abstract on this work removed it.'),
+    ('the crossing is measured, not "calibrated"',
+     (r'The true error at which the bound becomes informative|Where the bound first improves on '
+      r'the trivial one', 2),
+     [r'\bcalibrated\b'],
+     'Where the bound is informative, it is calibrated.',
+     'JCP 2026-11-08: at the crossing the bound is 3e2--2.4e3 times the true error (Sec. III C; since 2026-11-16 '
+     'the certificate, 1.4e2--7.8e2 times); '
+     'what is reproducible is the true error at which it first improves on the trivial bound.'),
+]
+
+JCP_RETIRED_PLACES = ('the vacuity range is stated in abstract',
+                      'the operating/published fraction is named in abstract',
+                      'the operating/published fraction is named in sm_frontier.tex')
+JCP_NEW_PLACES = [
+    ('the abstract states the vacuity in words', 'abstract', r'no better than the trivial one', 1),
+    ('the abstract keeps the qualifier "infinite-shot Born-ranked"', 'abstract',
+     r'infinite-shot Born-ranked', 1),
+    ('the abstract states the hypothesis of the bound', 'abstract', r'Given the exact ground state', 1),
+]
+
+
+def jcp_second_order_factors(root):
+    """2026-11-16 (D7, D17): the second-order vacuity factor (sqrt(1-w)+x)^2/(1+w) of each of the twenty
+    published-fraction cells, from the same stored fields vacuity_range() reads: PUB_rows.json (w_S, B, triv;
+    x = B/(1+sqrt w) - sqrt(1-w), the stored first-order branch inverted) and L14_FR008.json at the deepest
+    depth (w_S, LamHat_over_eta, bound_trivial)."""
+    import io
+    import json
+    import math
+    d = os.path.join(root, 'data', 'c3_frontier', 'published_fraction')
+    out = {}
+    for r in json.load(io.open(os.path.join(d, 'PUB_rows.json'), encoding='utf-8')):
+        w = r['w_S']
+        x = r['B'] / (1.0 + math.sqrt(w)) - math.sqrt(1.0 - w)
+        out[(r['L'], r['eta'])] = (math.sqrt(1.0 - w) + x) ** 2 / r['triv']
+    blk = json.load(io.open(os.path.join(d, 'L14_FR008.json'), encoding='utf-8'))[0]
+    deepest = max(q['n'] for q in blk['rows'])
+    for q in blk['rows']:
+        if q['n'] == deepest:
+            out[(blk['L'], q['eta'])] = (math.sqrt(1.0 - blk['w_S']) + q['LamHat_over_eta']) ** 2 / q['bound_trivial']
+    return out
+
+
+def _jcp_vacuity_range():
+    vals = _V4_VACUITY_RANGE()
+    got = ('%.2f' % min(vals.values()), '%.2f' % max(vals.values()))
+    assert got == JCP_VAC_V4, ('the 3.4.1 vacuity range changed; re-register by hand', got)
+    two = jcp_second_order_factors(ROOT)
+    assert set(two) == set(vals), 'the second-order factors do not cover the cells of vacuity_range()'
+    return dict((k, min(v, two[k])) for k, v in vals.items())
+
+
+def _jcp_build_checks(txt):
+    res = _V4_BUILD_CHECKS(txt)            # (checks, lo, hi, nsizes)
+    checks = res[0]
+    names = [c[0] for c in checks]
+    assert JCP_BUDGET in names and JCP_CAPTION in names, 'the 3.4.1 checks changed; re-register by hand'
+    for nm in JCP_FLOORS:
+        assert nm in names, ('the 3.4.1 checks changed; re-register by hand', nm)
+    cap = checks[names.index(JCP_CAPTION)]
+    assert cap[1][1] == 1, cap[1]
+    out = []
+    for name, (pat, floor), absent, poison, why in checks:
+        if name == JCP_BUDGET:
+            assert floor == 7, floor
+            out.append((name, (pat, 1), list(absent) + list(cap[2]), poison,
+                        why + ' [JCP 2026-10-28: the device runs are one line of Sec. S8, which '
+                        'prints 3.5e5 once; floor 7 -> 1; the retired caption check\'s '
+                        'superseded form is forbidden here]'))
+        elif name == JCP_CAPTION:
+            continue
+        elif name in JCP_FLOORS:
+            rel, new, reason = JCP_FLOORS[name]
+            assert floor == rel, (name, floor, rel)
+            if name == JCP_VACUITY:
+                # 2026-11-16 (D7, D17): the range is the smaller branch's (vacuity_range is re-registered below);
+                # the superseded first-order range must appear nowhere
+                absent = list(absent) + [JCP_FIRST_ORDER_RANGE]
+                why = why + (' [JCP 2026-11-16: the smaller of the two leakage branches over the trivial '
+                             'one; the first-order range 1.66-8.61 must appear nowhere]')
+            out.append((name, (pat, new), absent, poison,
+                        why + ' [JCP 2026-11-08: floor %d -> %d, %s]' % (rel, new, reason)))
+        else:
+            out.append((name, (pat, floor), absent, poison, why))
+    out.extend(JCP_NEW_POOLED)
+    return (out,) + tuple(res[1:])
+
+
+def _jcp_located_checks(rng, word):
+    loc = _V4_LOCATED_CHECKS(rng, word)
+    have = [c[0] for c in loc]
+    for r in JCP_RETIRED_PLACES:
+        assert r in have, ('the 3.4.1 per-place checks changed; re-register by hand', r)
+    # pass 7 (2026-11-08): S4 names the operating fraction 5 times, not 8: the three others were in the
+    # shot-frontier table and its paragraph, withdrawn as unsourced; same pattern, floor 8 -> 5
+    sf = [c for c in loc if c[0] == 'the operating/published fraction is named in sm_frontier.tex'][0]
+    assert sf[3] == 8, sf
+    extra = [(sf[0] + ' (floor 8 -> 5, pass 7)', sf[1], sf[2], 5)]
+    # 2026-11-14 (closing reading): the two conclusion paragraphs that opened with the vacuity are merged into one
+    # that states the crossing first and the vacuity once; sec_10.tex names the operating fraction of the resource
+    # scan once (in the sentence check_trim keeps verbatim as a proof), floor 2 -> 1
+    s10 = [c for c in loc if c[0] == 'the operating/published fraction is named in sec_10.tex'][0]
+    assert s10[3] == 2, s10
+    extra.append((s10[0] + ' (floor 2 -> 1, closing 2026-11-14)', s10[1], s10[2], 1))
+    drop = JCP_RETIRED_PLACES + (s10[0],)
+    return [c for c in loc if c[0] not in drop] + JCP_NEW_PLACES + extra
+
+
+vacuity_range = _jcp_vacuity_range
+build_checks = _jcp_build_checks
+located_checks = _jcp_located_checks
+
+
 if __name__ == "__main__":
+    print('check_coherence: deposit 3.5.0, the JCP registrations of 2026-10-28, 2026-11-08, 2026-11-14 and '
+          '2026-11-16 are merged (see the block above main\'s call)')
     sys.exit(main())

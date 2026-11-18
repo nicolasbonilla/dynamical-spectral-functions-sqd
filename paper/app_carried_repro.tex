@@ -43,6 +43,9 @@ LiF & (1+1,2) & 1.564 & 3.20 & 4 & 1 & 1 & 1 & 1 \\
 \hline\hline\end{tabular}
 \end{table*}
 
+% 2026-11-14 (closing round 2, D3): the largest CASCI residual, max |dFCI| = 1.1369e-13 (n19_suite.json), is
+% printed one way in all four places, 1.14e-13 (three figures, where nearest and ceiling agree): here, below, and
+% in the captions of tab:molecules and fig:hero ("converged to within").
 Table~\ref{tab:repro} lists, for every molecule of Table~\ref{tab:molecules}, the equilibrium and
 dissociation bond lengths, the active space, the $N$-electron (neutral, ground-state) sector dimension $D$, the ground-state
 determinant support $|\mathcal S|$ (the number of determinants carrying $\ge99\%$ of the FCI weight), and
@@ -54,7 +57,7 @@ $\mathcal F_1$--$\log_2|\mathcal S|$ $r=0.80$). The $|\mathcal S|/D$ reported in
 Table~\ref{tab:molecules} is a \emph{distinct} quantity---the fraction of the $(N{+}1)$ sector used in
 the spectral \emph{reconstruction}, not the ground-state support tabulated here. Every active-space FCI
 energy is converged to better than $10^{-12}$~Ha (the largest residual across all $38$ points is
-$1.1\times10^{-13}$~Ha); the full Cartesian geometries and the active-space definitions (frozen core,
+$1.14\times10^{-13}$~Ha); the full Cartesian geometries and the active-space definitions (frozen core,
 $n_e$, $n_{\rm o}$) are given in \texttt{src/n19\_suite.py} of the deposit, and the absolute ground-state
 energies are not deposited, only these FCI residuals (\texttt{data/n19\_suite.json}).
 
@@ -80,7 +83,7 @@ absolute subspace size at the end of the protocol. Top row: five sectors of
 dimension $2$, one of $3$ and one of $6$, where the reported error is identically zero and where in
 three cases the sampled subspace is the entire two-dimensional sector. Middle row: five further cases
 whose subspace contains the probe's Krylov space $\mathcal K(H,\phi)$, so what is reported is floating-point round-off (containing the probe's support alone would not suffice, Sec.~\ref{sec:retraction}). Bottom row: the seven cases in which a truncation costs something. The largest sector in the
-suite is $300$, the dimension of the $L=6$ Hubbard sector of Sec.~\ref{sec:scope:hw}, against
+suite is $300$, the dimension of the $L=6$ Hubbard sector, against
 $731\,808$ at $L=12$ on the lattice side of this work.}\label{tab:molscope}
 \begin{tabular}{lcccc}
 \toprule
@@ -101,7 +104,7 @@ genuine truncation               & $7$ & $20$--$300$ & $5$--$149$ & $2.2\times10
 \input{table_molecules_v3.tex}
 
 Twelve of the nineteen reconstructions are exact by construction rather than by approximation, and the
-dimensions say why: seven sectors have dimension six or less, and in five more the six to twelve sampled determinants already contain $\mathcal K(H,\phi)$. The suite therefore cannot show that the reconstruction is efficient across chemistry: on twelve of the nineteen there is nothing for efficiency to mean. Its energy check is an active-space CASCI energy against itself, and the residual the appendix records is $1.1\times10^{-13}$~Ha across all
+dimensions say why: seven sectors have dimension six or less, and in five more the six to twelve sampled determinants already contain $\mathcal K(H,\phi)$. The suite therefore cannot show that the reconstruction is efficient across chemistry: on twelve of the nineteen there is nothing for efficiency to mean. Its energy check is an active-space CASCI energy against itself, and the residual the appendix records is $1.14\times10^{-13}$~Ha across all
 $38$ points---a convergence check on a deterministic diagonalization, worth keeping in the
 reproducibility appendix at its true magnitude, but not a validation against an independent method.
 

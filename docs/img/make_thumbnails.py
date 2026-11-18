@@ -9,6 +9,11 @@ four are cropped out of paper/main.pdf: the page is found by searching for the c
 running head and the top of that caption, so no caption text enters the thumbnail.
 Written 2026-09-26, when the ten thumbnails cropped from the v1 PDF were moved to
 _superseded/v1_readme_img/.
+
+Deposit 3.5.0 (2026-11-18): paper/main.pdf, the arXiv-v4 build these thumbnails were cropped from, moved to
+_superseded/arxiv_v4/paper/main.pdf; MAIN_PDF below reads it there, so the script still reproduces the eight
+committed thumbnails (the caption tags are those of 3.4.1).  The manuscript prepared for JCP prints the same
+figures with other numbers (docs/FIGURE_PROVENANCE.md).
 """
 import os
 import sys
@@ -17,6 +22,7 @@ import fitz  # PyMuPDF
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
+MAIN_PDF = os.path.join(REPO, "_superseded", "arxiv_v4", "paper", "main.pdf")   # 3.5.0: moved from paper/
 DPI = 150
 ZOOM = fitz.Matrix(DPI / 72.0, DPI / 72.0)
 
@@ -64,7 +70,7 @@ def main():
         doc = fitz.open(os.path.join(REPO, rel))
         doc[0].get_pixmap(matrix=ZOOM, alpha=False).save(os.path.join(HERE, name))
         out.append((name, rel, "whole page"))
-    doc = fitz.open(os.path.join(REPO, "paper", "main.pdf"))
+    doc = fitz.open(MAIN_PDF)
     for name, tag in CROPPED.items():
         hit = None
         for page in doc:

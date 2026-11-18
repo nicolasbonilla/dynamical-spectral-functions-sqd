@@ -1,0 +1,506 @@
+{
+ "never_below": {
+  "n_rows": 1044,
+  "violations": 0,
+  "smallest": {
+   "source": "pool (real rows)",
+   "key": "cert_stress.json /rows[114]",
+   "true": 0.9999999996780667,
+   "B2": 1.0,
+   "ratio": 1.0000000003219334,
+   "cert_ratio": 1.0000000003219334,
+   "note": "absolute L1, w=0",
+   "leakage_nonzero": false
+  },
+  "smallest_cert_ratio": {
+   "source": "pool (real rows)",
+   "key": "cert_stress.json /rows[114]",
+   "true": 0.9999999996780667,
+   "B2": 1.0,
+   "ratio": 1.0000000003219334,
+   "cert_ratio": 1.0000000003219334,
+   "note": "absolute L1, w=0",
+   "leakage_nonzero": false
+  },
+  "per_source": {
+   "C3_grid.json": {
+    "n": 204,
+    "min_ratio": 116.9873414437926,
+    "at": "c3_frontier/C3_grid.json /grid[51] L=6 FR=0.97 eta=0.25 CONVERGED"
+   },
+   "pt_L10_FR0.36_nl700_PUB.json": {
+    "n": 8,
+    "min_ratio": 312.58693506260596,
+    "at": "rows[63] n=700 eta=0.25 "
+   },
+   "pt_L12_FR0.17_nl300_PUB.json": {
+    "n": 8,
+    "min_ratio": 410.56467417009844,
+    "at": "rows[43] n=300 eta=0.25 "
+   },
+   "pt_L6_FR0.82_nl400_PUB.json": {
+    "n": 8,
+    "min_ratio": 124.93197318310104,
+    "at": "rows[39] n=245 eta=0.25 "
+   },
+   "pt_L8_FR0.56_nl900_PUB.json": {
+    "n": 8,
+    "min_ratio": 221.90267918432758,
+    "at": "rows[59] n=650 eta=0.25 "
+   },
+   "L14_FR008.json": {
+    "n": 4,
+    "min_ratio": 461.3007801829251,
+    "at": "rows[39] n=250 eta=0.25 "
+   },
+   "z_fine_L8.txt": {
+    "n": 3,
+    "min_ratio": 295.8368506635407,
+    "at": "c3_frontier/adversarial/z_fine_L8.txt |S|=3802 "
+   },
+   "z_rank_L6.json": {
+    "n": 21,
+    "min_ratio": 40.78616336923544,
+    "at": "c3_frontier/adversarial/z_rank_L6.json [11] phi"
+   },
+   "support_witness.json": {
+    "n": 12,
+    "min_ratio": 17.03817235908422,
+    "at": "support_witness.json /results[0]/table[5] "
+   },
+   "pool (real rows)": {
+    "n": 526,
+    "min_ratio": 1.0000000003219334,
+    "at": "cert_stress.json /rows[114] absolute L1, w=0"
+   },
+   "cert_frontier_6-8.json": {
+    "n": 26,
+    "min_ratio": 176.80177332252046,
+    "at": "curves/6/points[12] frac=0.98 absolute L1"
+   },
+   "ladder_L4.json": {
+    "n": 30,
+    "min_ratio": 6.187920349142036,
+    "at": "cases[5] (S*=supp(phi)) rows[5] eta=0.5 absolute L1"
+   },
+   "ladder_L6.json": {
+    "n": 96,
+    "min_ratio": 17.03313036878972,
+    "at": "cases[16] (S*=supp(phi)) rows[5] eta=0.5 absolute L1"
+   },
+   "ladder_L8.json": {
+    "n": 90,
+    "min_ratio": 16.52732453391473,
+    "at": "cases[14] (S*=supp(phi)) rows[5] eta=0.5 absolute L1"
+   }
+  },
+  "complex_akw_rows_INFO_ONLY_err_over_B2_if_Ltilde_eq_L": 0.010864517789118983,
+  "excluded_full_sector_rows": [
+   {
+    "src": "cert_frontier_6-8.json curves/6/points[13]",
+    "relL1_true": 0.0,
+    "upper": 0.0,
+    "mode": "dense"
+   },
+   {
+    "src": "cert_frontier_6-8.json curves/8/points[13]",
+    "relL1_true": 3.4638089204062435e-07,
+    "upper": 0.0,
+    "mode": "krylov(260)"
+   }
+  ],
+  "n_rows_zero_leakage": 15,
+  "zero_leakage_ratio_range": [
+   1.0000000003219334,
+   1.000000015915495
+  ],
+  "smallest_with_nonzero_leakage": {
+   "source": "pool (real rows)",
+   "key": "cert_stress.json /rows[78]",
+   "true": 0.24999999854125118,
+   "B2": 0.25002890492182633,
+   "ratio": 1.0001156255229753,
+   "cert_ratio": 1.0000000067609918,
+   "note": "absolute L1, w=9.26e-10",
+   "leakage_nonzero": true
+  },
+  "smallest_with_nonzero_leakage_per_source": {
+   "C3_grid.json": {
+    "n": 204,
+    "min_ratio": 116.9873414437926,
+    "at": "c3_frontier/C3_grid.json /grid[51] L=6 FR=0.97 eta=0.25 CONVERGED"
+   },
+   "pt_L10_FR0.36_nl700_PUB.json": {
+    "n": 8,
+    "min_ratio": 312.58693506260596,
+    "at": "rows[63] n=700 eta=0.25 "
+   },
+   "pt_L12_FR0.17_nl300_PUB.json": {
+    "n": 8,
+    "min_ratio": 410.56467417009844,
+    "at": "rows[43] n=300 eta=0.25 "
+   },
+   "pt_L6_FR0.82_nl400_PUB.json": {
+    "n": 8,
+    "min_ratio": 124.93197318310104,
+    "at": "rows[39] n=245 eta=0.25 "
+   },
+   "pt_L8_FR0.56_nl900_PUB.json": {
+    "n": 8,
+    "min_ratio": 221.90267918432758,
+    "at": "rows[59] n=650 eta=0.25 "
+   },
+   "L14_FR008.json": {
+    "n": 4,
+    "min_ratio": 461.3007801829251,
+    "at": "rows[39] n=250 eta=0.25 "
+   },
+   "z_fine_L8.txt": {
+    "n": 3,
+    "min_ratio": 295.8368506635407,
+    "at": "c3_frontier/adversarial/z_fine_L8.txt |S|=3802 "
+   },
+   "z_rank_L6.json": {
+    "n": 21,
+    "min_ratio": 40.78616336923544,
+    "at": "c3_frontier/adversarial/z_rank_L6.json [11] phi"
+   },
+   "support_witness.json": {
+    "n": 12,
+    "min_ratio": 17.03817235908422,
+    "at": "support_witness.json /results[0]/table[5] "
+   },
+   "pool (real rows)": {
+    "n": 511,
+    "min_ratio": 1.0001156255229753,
+    "at": "cert_stress.json /rows[78] absolute L1, w=9.26e-10"
+   },
+   "cert_frontier_6-8.json": {
+    "n": 26,
+    "min_ratio": 176.80177332252046,
+    "at": "curves/6/points[12] frac=0.98 absolute L1"
+   },
+   "ladder_L4.json": {
+    "n": 30,
+    "min_ratio": 6.187920349142036,
+    "at": "cases[5] (S*=supp(phi)) rows[5] eta=0.5 absolute L1"
+   },
+   "ladder_L6.json": {
+    "n": 96,
+    "min_ratio": 17.03313036878972,
+    "at": "cases[16] (S*=supp(phi)) rows[5] eta=0.5 absolute L1"
+   },
+   "ladder_L8.json": {
+    "n": 90,
+    "min_ratio": 16.52732453391473,
+    "at": "cases[14] (S*=supp(phi)) rows[5] eta=0.5 absolute L1"
+   }
+  },
+  "grid_B2_over_true_where_nontrivial": [
+   116.9873414437926,
+   835.5373025774028
+  ],
+  "grid_min_cert_new_over_true": [
+   1.5114203919218865,
+   "c3_frontier/C3_grid.json /grid[0]"
+  ]
+ },
+ "D13": {
+  "a_cert_no_better_than_trivial_at_FR05_every_cell": true,
+  "a_min_B2_over_T_at_FR05": 3.335207512020526,
+  "a_max_B2_over_T_at_FR05": 16.743196820370656,
+  "a_min_B1_over_T_at_FR05": 2.5827136127781216,
+  "a_upper_bracket_row_B2_over_T_min": 1.8604015630586497,
+  "a_FRstar_new_above_FR05_cells": 16,
+  "b_every_published_subspace_uncertified": true,
+  "b_min_smaller_branch_over_T": 1.3767825135817642,
+  "b_min_B2_over_T": 1.3767825135817642,
+  "c_Sstar_eta018_vacuous": true,
+  "c_Sstar_all_eta_vacuous": false,
+  "c_Sstar_nonvacuous_rows": [
+   [
+    6,
+    0.5,
+    1.9906505822251201
+   ]
+  ],
+  "c_Sstar_error_range": [
+   0.3518851356028672,
+   0.4310828370779901
+  ],
+  "d_falls_with_L": true,
+  "d_rises_with_eta": true,
+  "lemma_B2_le_B1_where_B1_nontrivial_violations": []
+ },
+ "guard_records": [
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "8.544",
+   "line": 83,
+   "file": "c3_frontier/published_fraction/PUB_rows.json",
+   "key": "[6]/B",
+   "value": 8.54386486946148,
+   "expr": null,
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "17.21",
+   "line": 96,
+   "file": "c3_frontier/published_fraction/L14_FR008.json",
+   "key": "[0]/rows[36]/bound_leak",
+   "value": 17.21162280842881,
+   "expr": null,
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "11.18",
+   "line": 96,
+   "file": "c3_frontier/published_fraction/L14_FR008.json",
+   "key": "[0]/rows[37]/bound_leak",
+   "value": 11.177087152907474,
+   "expr": null,
+   "round": null,
+   "note": "2026-11-16 (second-order branch, the number sheet row GD14): was [0]/rows[33]/bound_leak = 11.18216598946551, the depth-200 row, which agrees with the printed 11.18 only at the printed digits; the four printed values are the first-order branch (the smaller there, D17) at the deepest depth n=250, rows[36..39]."
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "9.21",
+   "line": 96,
+   "file": "c3_frontier/published_fraction/L14_FR008.json",
+   "key": "[0]/rows[38]/bound_leak",
+   "value": 9.207842263844068,
+   "expr": null,
+   "round": null,
+   "note": "2026-11-16 (second-order branch, the number sheet row GD13): rule D23: was [0]/rows[16]/LamHat_over_eta = 9.208353133875788 (n=80, eta=0.10t, a different quantity) that agrees with the printed 9.21 by coincidence; the printed number is the first-order branch (the smaller there, D17) at n=250, eta=0.18t."
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "6.50",
+   "line": 96,
+   "file": "c3_frontier/published_fraction/L14_FR008.json",
+   "key": "[0]/rows[39]/bound_leak",
+   "value": 6.504982718325995,
+   "expr": null,
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "21.76",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_rank_L6.json",
+   "key": "[14]/relR5",
+   "value": null,
+   "expr": "",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "24.52",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_rank_L6.json",
+   "key": "[0]/relR5",
+   "value": null,
+   "expr": "",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "12.97",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_rank_L6.json",
+   "key": "[18]/relR5",
+   "value": null,
+   "expr": "",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "4.27",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_rank_L6.json",
+   "key": "[4]/relR5",
+   "value": null,
+   "expr": "",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "5.82",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_rank_L6.json",
+   "key": "[19]/relR5",
+   "value": null,
+   "expr": "",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "0.02",
+   "line": 0,
+   "file": "c3_frontier/C3_grid.json",
+   "key": "",
+   "value": 0.019999999999999907,
+   "expr": "min(f['bracket_hi'] - f['bracket_lo'] for f in d['frontier'])",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "455",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_kblock_L8.json",
+   "key": "",
+   "value": 455.0,
+   "expr": "min(r['first_nonvacuous'] for r in d['rows'])",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sm_frontier.tex",
+   "lit": "483",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_kblock_L8.json",
+   "key": "",
+   "value": 483.0,
+   "expr": "max(r['first_nonvacuous'] for r in d['rows'])",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sec_5_body.tex",
+   "lit": "8.627",
+   "line": 0,
+   "file": "c3_frontier/published_fraction/L14_FR008.json",
+   "key": "[0]/rows[32]/vacuity_factor",
+   "value": null,
+   "expr": "",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sec_5_body.tex",
+   "lit": "8.613",
+   "line": 0,
+   "file": "c3_frontier/published_fraction/L14_FR008.json",
+   "key": "[0]/rows[36]/vacuity_factor",
+   "value": null,
+   "expr": "",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sec_5_body.tex",
+   "lit": "0.17",
+   "line": 0,
+   "file": "c3_frontier/published_fraction/L14_FR008.json",
+   "key": "",
+   "value": 0.0016522659040810739,
+   "expr": "1 - [r['vacuity_factor'] for r in d[0]['rows'] if r['n'] == 250 and abs(r['eta'] - 0.1) < 1e-12][0] / [r['vacuity_factor'] for r in d[0]['rows'] if r['n'] == 200 and abs(r['eta'] - 0.1) < 1e-12][0]",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sec_5_body.tex",
+   "lit": "4.236",
+   "line": 0,
+   "file": "c3_frontier/published_fraction/pt_L12_FR0.17_nl300_PUB.json",
+   "key": "/rows[38]/LamHat_over_eta",
+   "value": null,
+   "expr": "",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sec_5_body.tex",
+   "lit": "50",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_kblock_L6.json",
+   "key": "",
+   "value": 50.0,
+   "expr": "max(r['first_nonvacuous'] for r in d['rows'])",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sec_5_body.tex",
+   "lit": "455",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_kblock_L8.json",
+   "key": "",
+   "value": 455.0,
+   "expr": "min(r['first_nonvacuous'] for r in d['rows'])",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sec_5_body.tex",
+   "lit": "483",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_kblock_L8.json",
+   "key": "",
+   "value": 483.0,
+   "expr": "max(r['first_nonvacuous'] for r in d['rows'])",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sec_10.tex",
+   "lit": "455",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_kblock_L8.json",
+   "key": "",
+   "value": 455.0,
+   "expr": "min(r['first_nonvacuous'] for r in d['rows'])",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sec_10.tex",
+   "lit": "483",
+   "line": 0,
+   "file": "c3_frontier/adversarial/z_kblock_L8.json",
+   "key": "",
+   "value": 483.0,
+   "expr": "max(r['first_nonvacuous'] for r in d['rows'])",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "sec_3_app.tex",
+   "lit": "0.9999999997",
+   "line": 0,
+   "file": "thm1iii_violation/thm3_results.json",
+   "key": "",
+   "value": 0.9999999996780667,
+   "expr": "max(r['err'] / r['B'] for r in [dict(rel=r['relL1'], err=r['LHS'], pub=r['RHS_pap'], B=min(r['RHS_new'], r['RHS_triv']), wS=r['wS']) for r in D[0]] + [dict(rel=r['relL1'], err=r['LHS'], pub=r['RHS_pap'], B=min(r['RHS_new'], r['LB'] / (1 - r['wS']) * (1 + r['wS'])), wS=r['wS']) for r in D[1]] + [dict(rel=r['relL1_true'], err=r['L1_true'], pub=2 * r['lower'], B=r['upper'], wS=r['w_S']) for k in (2, 3, 4) for r in D[k]['rows']] if r['rel'] > 1e-10 and r['B'] > 0)",
+   "round": null,
+   "note": null
+  },
+  {
+   "tex": "figs/caption_thm1iii_violation.tex",
+   "lit": "0.9999999997",
+   "line": 0,
+   "file": "thm1iii_violation/thm3_results.json",
+   "key": "",
+   "value": 0.9999999996780667,
+   "expr": "max(r['err'] / r['B'] for r in [dict(rel=r['relL1'], err=r['LHS'], pub=r['RHS_pap'], B=min(r['RHS_new'], r['RHS_triv']), wS=r['wS']) for r in D[0]] + [dict(rel=r['relL1'], err=r['LHS'], pub=r['RHS_pap'], B=min(r['RHS_new'], r['LB'] / (1 - r['wS']) * (1 + r['wS'])), wS=r['wS']) for r in D[1]] + [dict(rel=r['relL1_true'], err=r['L1_true'], pub=2 * r['lower'], B=r['upper'], wS=r['w_S']) for k in (2, 3, 4) for r in D[k]['rows']] if r['rel'] > 1e-10 and r['B'] > 0)",
+   "round": null,
+   "note": null
+  }
+ ],
+ "misattributed_guard_record": {
+  "printed": "9.21 (sm_frontier.tex, \"leakage branch of 17.21, 11.18, 9.21 and 6.50\", the eta=0.18 value)",
+  "record": "L14_FR008.json [0]/rows[16]/LamHat_over_eta = 9.208353133875788 (n=80, eta=0.1)",
+  "actual_quantity": "L14_FR008.json [0]/rows[38]/bound_leak = 9.207842263844068 (n=250, eta=0.18)"
+ }
+}

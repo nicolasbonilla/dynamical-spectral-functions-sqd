@@ -52,7 +52,7 @@ build/
 # not broken, ABSENT.  The exclusion is removed; the workflow is now tracked.
 
 # TeXstudio/TeXmaker scratch bibliography -- an editor artefact, never a source
-paper/mainNotes.bib
+paper/*Notes.bib
 
 # Edit backups -- NEVER publish these. Agents and scripts that rewrite a .tex
 # leave them behind, and one of them shipping inside an arXiv source package

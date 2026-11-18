@@ -36,10 +36,29 @@ On half-filled periodic Hubbard rings at $U/t=8$ ($L=4$--$14$, $8$ to $28$ qubit
 priced on three axes, each measured here: the determinant support the sampler must populate grows
 as $e^{1.05\,L}$, more slowly than the sector's $e^{1.30\,L}$; the sector fraction, unlike the
 support, is a property of the question put to the model rather than of the model, its exponent
-moving by a factor $2.2$ over a decade of the resolution $\eta$; and the shot budget $T$ that
+moving by a factor $2.3$ over a decade of the resolution $\eta$; and the shot budget $T$ that
 populates the support, measured at $L=4$--$12$, lies two orders of magnitude above it and grows as
-$e^{1.12\,L}$ over $L=6$--$12$, its $L=14$ value being a floor of $1.3\times10^{8}$ shots for a
-single seed and branch.
+$e^{1.12\,L}$ over $L=6$--$12$, its $L=14$ value, extrapolated at the $L=12$ overhead, being
+${\approx}1.3\times10^{8}$ shots for a single seed and branch (the log-linear fit itself gives
+${\approx}2.2\times10^{8}$, $95\%$ confidence interval $[6.5\times10^{7},7.2\times10^{8}]$).
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
 
 \paragraph{The dynamical support.} $|\mathcal S|_\eta$ here is the number of
 determinants needed for the reconstruction of $A(\omega)$ to reach relative $L_1<\mathrm{thr}$ at
@@ -65,20 +84,19 @@ $n_\ell=150$ grows exponentially,
 more slowly than the $(N{+}1)$ sector itself,
 $\dim = 24,\,300,\,3920,\,52920,\,731808,\,10306296\sim e^{1.30\,L}$. Restricted to $L=4$--$12$, the five sizes of the replication grid, the fit gives $1.082$ at
 $R^{2}=0.998$. The fraction is the support divided by the sector dimension, exactly, so the fraction and
-support exponents differ by the constant $b_{\dim}=1.291$ and move together, by $0.148$ over the decade
-$\eta=0.05\to0.50\,t$ (Table~\ref{tab:fracgrid}): a seventh of the support exponent, three quarters of
-the fraction exponent. We therefore report the support, the absolute resource a device has to populate,
+support exponents differ by the constant $b_{\dim}=1.291$ and move together, by $0.165$ over the decade
+$\eta=0.05\to0.50\,t$ (Table~\ref{tab:fracgrid}): a seventh of the support exponent, more than half
+of the fraction exponent. We therefore report the support, the absolute resource a device has to populate,
 and the fraction as the derived, resolution-dependent quantity that it is.
 
 \subsection{The sector fraction is a property of the question, not of the model}
 
 At $\eta=0.15\,t$ the fraction needed for a fixed spectral accuracy falls from $0.92$ at $L=4$ to
 $0.08$ at $L=14$, but its exponent is set by $\eta$: over the decade of $\eta$ it moves by a factor
-$2.2$, from $-0.1266$ to $-0.2743$ (Table~\ref{tab:fracgrid}), and even at fixed $\eta$ the local
+$2.3$, from $-0.1269$ to $-0.2922$ (Table~\ref{tab:fracgrid}), and even at fixed $\eta$ the local
 logarithmic slopes between consecutive published points steepen by a factor $6.8$ across five
 intervals, so the fraction is not a single exponential either. The reference is itself a
-depth-$150$ Lanczos computation whose drift between depths $100$ and $200$ at $L=12$ is $0.93\%$ at
-$\eta=0.15\,t$ and $3.0\%$ at $\eta=0.10\,t$, so the fraction is reported as a declared window,
+depth-$150$ Lanczos computation whose drift with depth is not quantified here, so the fraction is reported as a declared window,
 $\eta\ge0.15\,t$ at $n_\ell=150$, with the full grid and the finite-depth caveats in
 Sec.~\ref{sm:prices}.
 
@@ -101,8 +119,8 @@ separately at $L=6$ and $L=8$. At $L=4$ run~B
 is censored by its own cap of $10^{8}$ shots per snapshot, the $24$-state sector being degenerate for
 this purpose, and run~A is quoted there. The last column divides $T$ by the \emph{published} support;
 dividing instead by the support each run actually populated gives $95$, $107$, $141$ and $124$ at
-$L=6$--$12$. Only $L=14$ is a floor: the overhead held at its $L=12$ value, which is a lower bound and
-not an estimate.}\label{tab:shots}
+$L=6$--$12$. Only $L=14$ is extrapolated, not measured: the overhead is held at its $L=12$
+value.}\label{tab:shots}
 \setlength{\tabcolsep}{5pt}
 \begin{tabular}{lccccl}
 \toprule
@@ -115,7 +133,7 @@ $8$  & $3\,920$       & $2\,180$   & $(2.70\pm0.13)\times10^{5}$ & $124$ & measu
 $8$  & $3\,920$       & $2\,180$   & $(2.61\pm0.08)\times10^{5}$ & $120$ & measured, run~B, $4$ seeds\\
 $10$ & $52\,920$      & $19\,183$  & $(3.09\pm0.04)\times10^{6}$ & $161$ & measured, run~B, $6$ seeds\\
 $12$ & $731\,808$     & $124\,407$ & $(1.91\pm0.01)\times10^{7}$ & $154$ & measured, run~B, $4$ seeds\\
-$14$ & $10\,306\,296$ & $824\,503$ & $\gtrsim1.3\times10^{8}$    & $154$ & floor, not measured\\
+$14$ & $10\,306\,296$ & $824\,503$ & ${\approx}1.3\times10^{8}$  & $154$ & extrapolated, not measured\\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -126,13 +144,14 @@ $L=6$--$12$ giving $T\sim e^{1.12\,L}$ at $R^{2}=0.996$. At $L=8$ the sixteen-ch
 configuration of Fig.~\ref{fig:akwsampled} reached its own resolution and
 accuracy with $8.3\times10^{7}$, and not with half as many; the $16\times2.7\times10^{5}\approx4\times10^{6}$
 shots that sixteen channels at the local-seed budget would cost is a transfer and not a measurement,
-because the momentum seeds have larger support. The $L=14$ floor of $1.3\times10^{8}$ shots for a
-\emph{single} seed and branch (Table~\ref{tab:shots}) exceeds the largest shot budget drawn anywhere
+because the momentum seeds have larger support. The $L=14$ extrapolation at the $L=12$ overhead,
+${\approx}1.3\times10^{8}$ shots for a \emph{single} seed and branch (Table~\ref{tab:shots}), exceeds the
+largest shot budget drawn anywhere
 in this work, the $8.3\times10^{7}$ shots of the sixteen-channel configuration of
 Fig.~\ref{fig:akwsampled}. The overhead per determinant is a level and not a growth law---$35$,
 $99$, $124$, $161$, $154$ against the published support across $L=4$--$12$, rising by a factor $3.5$
 over the first three sizes ($35$ to $124$), then to $161$ at $L=10$, and not rising over the last
-step, $161$ to $154$. Its exponent is not resolved by these data. Fitted on $L=6$--$12$ it is $0.08$ per site against the published support ($95\%$ interval $[-0.03,0.19]$) and $0.054$ ($[-0.066,0.174]$) against the support each run populated; both intervals contain zero, so \emph{these data do not establish that the shot budget grows with a larger exponent than the
+step, $161$ to $154$. Its exponent is not resolved by these data. Fitted on $L=6$--$12$ it is $0.08$ per site against the published support ($95\%$ interval $[-0.03,0.19]$) and $0.054$ ($[-0.065,0.173]$) against the support each run populated; both intervals contain zero, so \emph{these data do not establish that the shot budget grows with a larger exponent than the
 support}, only that it is larger in absolute terms at every size measured.
 
 \paragraph{What the published curve is.} The published curve is the $T\to\infty$ limit of the

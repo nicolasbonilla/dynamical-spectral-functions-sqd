@@ -682,7 +682,17 @@ def _prueba_ok(prueba, hoy_crudo):
     el campo Comments de arXiv, no en el cuerpo (decision del autor, 2026-09-25)."""
     if prueba.startswith("@comments:"):
         c = os.path.join(REPO, "build", "arxiv_comments.txt")
-        return os.path.exists(c) and prueba[len("@comments:"):] in io.open(c, encoding="utf-8").read()
+        if os.path.exists(c):
+            return prueba[len("@comments:"):] in io.open(c, encoding="utf-8").read()
+        # 2026-11-18 (deposit 3.5.0): build/ is not deposited (.gitignore), so in a clone this proof could never
+        # hold and the three registrations that use it failed there.  docs/ARXIV_SUBMISSION.md quotes the field as
+        # filed, verbatim, in the code block after the line below; the proof is read from that block.
+        d = os.path.join(REPO, "docs", "ARXIV_SUBMISSION.md")
+        if not os.path.exists(d):
+            return False
+        m = re.search(r"The Comments field as filed for v3 on 2026-09-25[^\n]*\n\s*```\n(.*?)\n```",
+                      io.open(d, encoding="utf-8").read().replace("\r\n", "\n"), re.S)
+        return bool(m) and prueba[len("@comments:"):] in m.group(1)
     if prueba.startswith("@doc:"):
         # '@doc:<ruta>:<texto>' -- una retirada DELIBERADA de un resultado entero, con su
         # razon escrita en la documentacion del deposito (2026-09-25: la prueba de
@@ -862,5 +872,297 @@ def main():
     return 0
 
 
+# =====================================================================================================================
+#  DEPOSIT 3.5.0 (2026-11-18): the registrations of the manuscript prepared for The Journal of Chemical Physics.
+#
+#  The JCP package checked its sources with a wrapper (check_trim_jcp.py) that imported this file unchanged, pointed
+#  it at the JCP sources and added registrations, each with a proof that must hold or this guardian fails again.  In
+#  3.5.0 paper/ IS the JCP text, so the registrations are merged here, verbatim; they are consulted BEFORE the ones
+#  above (the guardian takes the first key that matches).  What they are, as the wrapper recorded it:
+#    1. a fact still stated in the JCP text has as proof a phrase of that text;
+#    2. a fact withdrawn with the device runs (2026-10-28, on the author's instruction the runs are one line of
+#       Sec. S8) or withdrawn as unsourced (2026-11-08) has an '@doc' proof, this guardian's own form for a
+#       deliberate withdrawal with its reason written in the documentation: the phrase must be in
+#       docs/JCP_MOVED_DEVICE_RUNS.md or docs/JCP_WITHDRAWN_NUMBERS.md, which hold the reason and the verbatim text;
+#    3. 2026-11-08: sentence registrations for the results-first abstract and opening, the removal of "calibrated"
+#       and the merged Data Availability statement;
+#    4. 2026-11-10: five literals re-rounded as bounds (a ceiling rounds up, a floor down);
+#    5. 2026-11-14 (closing reading): '1.1' (the CASCI residual, now printed 1.14e-13 in all four places);
+#    6. 2026-11-16 (Theorem 1 gains the second-order branch; docs/KNOWN_DISCREPANCIES.md section 36): the values
+#       that depend on the upper branch are re-scored, so baseline literals leave the paper as REGENERATED values,
+#       each registered with the new value that prints the same fact today; five baseline concessions whose
+#       sentence the change rewrites are registered with the phrase that keeps their fact;
+#    7. 2026-11-18 (corrections after the independent readings, rounds 2-4): the proofs whose wording those rounds
+#       changed.
+#  A proof that is not printed forgives nothing.
+# =====================================================================================================================
+import json
+
+D = '@doc:docs/JCP_MOVED_DEVICE_RUNS.md:'
+
+# (number literal, proof).  Each was printed once, in the hardware passages that left.
+JCP_NUM = {
+    '0.0':  D + 'The recorded relative $L_1$ is $0.0$',
+    '2.0':  D + 'Stretched $\\mathrm{N_2}$ ($R=2.0$~\\AA,',
+    '29.5': D + 'below the $29.5$~mHa of the noiseless simulation of the same circuit',
+    '14.4': D + 'are $14.4$ times the $(2.43\\pm0.34)\\times10^{4}$',
+}
+
+# (fragment of the baseline sentence, proof).
+JCP_AUDITADA = [
+    # still stated in the one line of Sec. S8
+    ('That number is exact by coverage', 'returns the exact $A(\\omega)$ by coverage'),
+    ('The run establishes that the pipeline executes end to end',
+     'Two exploratory runs on IBM~Heron processors add no evidence to this work'),
+    ('The raw measured bitstrings are not part of the deposit',
+     'their raw bitstrings are not, and neither run can be regenerated'),
+    ('The hardware runs themselves cannot be regenerated',
+     'their raw bitstrings are not, and neither run can be regenerated'),
+    # reworded in Sec. S8 (the noise sweeps), fact unchanged
+    ('The same gap runs through the controlled sweep',
+     'The scripts of the controlled sweeps save at most the size of the naively post-selected subspace'),
+    # the prior device spectral records are still credited in Sec. I (iii)
+    ('These runs are', "retarded spin Green's function of the Fermi--Hubbard chain at up to $30$ qubits"),
+    # withdrawn with the ibm_marrakesh / ibm_fez result: no contrast and no record left to qualify
+    ('Versions 1--2 read that contrast as device noise', D + 'That contrast invites the reading that device noise'),
+    ('Our two arms differ in the one quantity', D + 'our two arms differ in the one quantity neither of them recorded'),
+    ('It is not the smallest such record either', D + 'four-qubit trapped-ion Hubbard-dimer reconstruction'),
+]
+
+# 2026-11-08 (results-first abstract and opening, "calibrated" removed, Data Availability merged;
+# see the working log of 2026-11-08).  Each baseline sentence below lost its best match because the sentence
+# that carried its fact was reworded or shortened; the fact is still printed, and the proof is the
+# phrase of today's JCP text that prints it.  The itemized list of open deposit gaps now lives in
+# docs/KNOWN_DISCREPANCIES.md of the deposit, to which the Data Availability statement points.
+JCP_AUDITADA_1108 = [
+    # 2026-11-18 (round 4, correction round 4 (deposit 3.5.0) T3): the abstract now reads "on that spectral
+    # function's error"; the proof is that sentence as printed
+    ('We prove a two-sided bound on the relative',
+     "We prove a two-sided bound on that spectral function's error."),
+    ('No bound indexed on the captured weight alone can do this',
+     'an analytic counterexample forces any bound indexed on $w$ alone to its trivial value'),
+    ('What it does not yield is any statement about how wrong',
+     'but no statement of how wrong that response is'),
+    ("Patel, Rangi and Tam construct Green's functions from sampled Krylov subspaces",
+     "construct Green's functions from sampled Krylov subspaces for dynamical mean-field"),
+    ('The bound itself stands where a weight-only bound cannot',
+     'an analytic counterexample forces any bound indexed on it alone'),
+    ('One positive result survives the sweep',
+     'The crossing measurement is the reason the sweep is reported'),
+    ('is therefore a calibrated a posteriori risk tracker',
+     'is therefore an a posteriori risk tracker with a reproducible crossing'),
+    ('are additionally regenerab',
+     'measured table of what a clean clone does and does not reach'),
+    ('Known gaps between the deposited code and the deposited artefacts',
+     'Known gaps between the deposited code and the deposited artifacts are enumerated in'),
+    # 2026-11-08, third pass (independent hostile reading the hostile reading of 2026-11-08 and the refocus:
+    # Secs. VI, VII, VIII B-C to the SM word for word, the introduction and conclusion shortened to
+    # one sentence each for them, M1 and M3 corrected, two defensive asides cut).  Each fact below is
+    # still printed; the proof is the phrase that prints it today.
+    ('An invariant of the occupation spectrum cannot see a boundary',
+     'an invariant of the occupation spectrum cannot see a boundary'),
+    ('Along a geminal orbit every order of it is fixed',
+     'on which every order of the invariant is maximal while the'),
+    ('That is not an absence of relation but a deterministic monotone one',
+     'as an orbital invariant compared with a basis-dependent count must'),
+    ('And the method is priced on three axes rather than one',
+     'The method has three prices, support, resolution and shots'),
+    ('false if MATH is a constant, vacuous if it may depend on the instance',
+     'requires $C\\ge2\\lVert\\phi\\rVert^{2}$, the trivial constant'),
+    # 2026-11-16 (second-order branch, rows T8, I4, F-42): the crossing ratio is the certificate's, 1.4e2-7.8e2
+    ('At fixed MATH the looseness is stable',
+     '$1.4\\times10^{2}$ to $7.8\\times10^{2}$'),
+    ('Three rows is all this validation system has',
+     'These three rows say nothing about the large-$K$ behavior'),
+    # the Tarabunga et al. attribution is aligned with that work's abstract (one member of the first
+    # family is proven monotone under Gaussian protocols), checked on the arXiv API on 2026-11-08; the
+    # priority clause is unchanged and is the proof.
+    ('Tarabunga et al. , six weeks before version 1 of this work, set out the same division',
+     'who in July 2026, before this work, showed that'),
+]
+
+# 2026-11-08, rule "no printed number without a source": SI-only numbers from September checks whose
+# output was never deposited (searched for on the laptop that day; none found) are WITHDRAWN.  The
+# guardian's own form for a deliberate withdrawal is an '@doc' proof: the verbatim text and the reason
+# are in docs/JCP_WITHDRAWN_NUMBERS.md.  Each proof phrase sits on one line of that file.
+W = '@doc:docs/JCP_WITHDRAWN_NUMBERS.md:'
+JCP_NUM_W = {
+    '276': W + 'An exhaustive search over all $276$ coordinate subspaces',
+    '1169': W + '$1169$ of $6000$ random triples violate it, at a minimum ratio of $0.5258$',
+    '6000': W + '$1169$ of $6000$ random triples violate it, at a minimum ratio of $0.5258$',
+    '0.5258': W + '$1169$ of $6000$ random triples violate it, at a minimum ratio of $0.5258$',
+    '1.4868': W + 'where the captured weight then reads $1.4868$',
+    '1.000000000000': W + '$|\\braket{\\Psi(0)|\\Psi(U_{\\rm in})}|=1.000000000000$',
+    '2.34': W + '$\\widehat\\Lambda/\\eta\\in[2.34,5.61]$',
+    '5.61': W + '$\\widehat\\Lambda/\\eta\\in[2.34,5.61]$',
+    '1.61': W + 'endpoint descends to $1.61$ as $s\\to0$',
+}
+JCP_AUDITADA_W = [
+    ('Full reorthogonalization is mandatory throughout: without it MATH is not a projector --- the',
+     'without it $P_{\\mathcal K}$ is not a projector, and the captured weight'),
+    ('that would extend it to the dense MATH being false',
+     'that would extend it to the dense $A_S$ not being implied by the'),
+    ('At the rotated endpoint the minimum over the same MATH is exactly the trivial bound',
+     W + 'endpoint the minimum over the same $276$ is exactly the trivial bound'),
+]
+
+
+# 2026-11-08, pass 7 (systematic number sweep): the numbers and concessions that left the paper with the
+# withdrawals of that pass (fraction grid rewritten from eta_sweep.json, shot-frontier table, L=8 E0-shift
+# example, fiber exhibit, Cauchy-Schwarz margin 1.05).  The number proofs were generated by
+# the registration helper of 2026-11-08 from the verbatim record in docs/JCP_WITHDRAWN_NUMBERS.md and are read
+# from trim_withdrawn_pass7.json; the entries below were written by hand after reading each sentence.
+_P7 = os.path.join(HERE, 'jcp', 'trim_withdrawn_pass7.json')
+_p7 = json.load(io.open(_P7, encoding='utf-8')) if os.path.isfile(_P7) else {'numbers': {}, 'concessions': []}
+JCP_NUM_P7 = {n: W + p for n, p in _p7['numbers'].items()}
+JCP_NUM_P7['234'] = W + 'equally valid outputs at $K=2,3,4$)'   # the list K=2,3,4, read by the guardian as 234
+JCP_AUDITADA_P7 = [(k, W + p) for k, p in _p7['concessions']] + [
+    ('(These are the periodic rings; the open chain on which Sec.',
+     W + '"0.28 on the open chain"** (unit-weight error of the open-chain support'),
+    ('The statement is one of non-determination and non-vacuity, not of non-existence',
+     W + 'The statement is one of non-determination and non-vacuity, not of non-existence: invariants do not fail'),
+    ('an additive term verified to MATH in all MATH cases tested and which the certificate does not control',
+     W + 'an additive term verified to $2\\times10^{-5}$ in all $48$ cases tested'),
+    ('the discrepancy acquires an additive MATH , verified to MATH in all MATH cases tested',
+     W + 'an additive term verified to $2\\times10^{-5}$ in all $48$ cases tested'),
+    ('In shots the distance between those two columns is a budget and not a rhetorical gap',
+     W + 'In shots the distance between those two columns is a budget and not a rhetorical gap'),
+    ('It stops at MATH : at the maximal-pairing angle MATH the Born distribution',
+     W + 'It stops at $s=0.654$: at the maximal-pairing angle $s=\\pi/4$ the Born'),
+    ('proposition [Fibers on which every orbital-rotation invariant gives a vacuous leakage certificate]',
+     W + '\\begin{proposition}[Fibers on which every orbital-rotation invariant gives a vacuous leakage certificate]'),
+    ('Since the larger value exceeds MATH , the resolution above which the leakage branch',
+     W + 'larger value exceeds $\\tau(w_S)=0.795$ of Eq.~\\eqref{eq:tau}, above which the leakage branch of'),
+    # pass 8: the |S|=280 negative control has no stored distribution (moments_table.json keeps counts only)
+    ('the random draws fail by MATH to MATH (median MATH ), again without exception',
+     W + 'At $|\\mathcal S|=280$ the random draws fail by $4.8\\times10^{-5}$'),
+    # reworded, not withdrawn: the proof is today's sentence
+    ('What our construction adds to that division is the constructive instance it does not contain',
+     'What our construction adds to that division is the constructive instance it does not'),
+    ('What the work does claim is four things, each with its measurement attached',
+     'What the work establishes is four things, each with its measurement attached'),
+]
+
+
+# 2026-11-10 (7b audit, the rounding audit of 2026-11-10): five literals of the baseline left the paper
+# because a bound rounds in its own direction, not to nearest -- the "certified rel-L1 <=" values round UP
+# (0.502 -> 0.503, 0.136 -> 0.137, 0.717 -> 0.718, 0.218 -> 0.219; C3_grid.json cert) and the L=14 shot
+# floor rounds DOWN (1.3e8 -> 1.2e8, 154 x 824 503 = 1.27e8).  The fact is still printed; the proof is the
+# phrase that prints it today.
+JCP_NUM_7B = {
+    # 2026-11-16 (second-order branch, rows V17, V19, F-22, F-24, F-26, F-29): the certified values at these grid
+    # points are re-scored with the certificate of D6 (0.718 -> 0.129, 0.503 -> 0.0631, 0.137 -> 0.00466, 0.219 ->
+    # 0.0120, rounded UP); the fact is still printed, and the proof is the new value
+    '0.717': '$L_1\\le0.129$',
+    '0.502': '$0.0631$',
+    '0.136': '$0.00466$',
+    '0.218': '0.0120$',
+    # 2026-11-14 (closing reading A1): '1.3' is printed again (the L=14 value is an extrapolation, a plain value
+    # rounded to nearest, 1.268e8 -> 1.3e8), so it needs no proof; the proof phrase of 2026-11-10 is no longer printed.
+}
+
+# 2026-11-14 (closing reading C2, working rule 1b; the closing reading of 2026-11-14): the conclusion's two paragraphs
+# that opened with the vacuity are merged and state it once.  The baseline concession "First, the certificate does
+# not certify the reconstructions this paper reports." lost the sentence that carried its release proof ("does not
+# certify the reconstructions at the operating fractions", a duplicate); the fact is still printed, in the same
+# paragraph, by the sentence below, which the release keeps verbatim as the proof of another entry.
+JCP_AUDITADA_1114 = [
+    ('certify the reconstructions this paper reports',
+     'the certificate is vacuous at every operating fraction of the resource scan'),
+]
+
+# 2026-11-14 (closing round 2, D3; the closing reading of 2026-11-14): the CASCI residual, max |dFCI| = 1.1369e-13
+# (n19_suite.json), was printed '1.1e-13' (nearest, App.) and '1.2e-13' ("within", rounded up, two captions); it is
+# now printed one way, '1.14e-13', in all four places (at three figures nearest and ceiling agree), so the literal
+# '1.1' leaves the paper.  The fact is still printed; the proof is the phrase that prints it today.  The three other
+# baseline printings of '1.1' had left earlier and were masked by this one until today, each with its record:
+# '[1.1,1.8]e-15' (sec_4_app, withdrawn as unsourced, docs/JCP_WITHDRAWN_NUMBERS.md), '1.1e8' (the shot-frontier
+# table of Sec. V, withdrawn, same file) and 'P_K phi = phi_S to 1.1e-14' (corrected to 1.5e-15 on 2026-11-08,
+# the working log of 2026-11-08; sec_5_app.tex prints the corrected value).
+JCP_NUM_1114 = {
+    '1.1': 'the largest residual across all $38$ points is $1.14\\times10^{-13}$~Ha',
+}
+
+# 2026-11-16 (Theorem 1 gains the second-order branch; the rules of the change, docs/KNOWN_DISCREPANCIES.md
+# section 36; the number sheet).  Baseline literals that the re-scoring replaces in every place they were printed
+# (checked against the saved state of 2026-11-16 and the sheet's rows): a REGENERATED value, not a
+# deleted fact.  The proof is the new value as the sheet prints it; '0.220' and '2.0' are already registered
+# (pass 7, 2026-10-28) and stay so.
+JCP_NUM_1116 = {
+    '0.219': '0.0120$',                      # F-29, V19: certified value at L=12, 70%, eta=0.25t (rounded up)
+    '0.878': '$0.193$',                      # F-28: certified value at L=12, 60%, eta=0.15t
+    '9.2': '$1.7\\times10^{2}$',              # F-33: trivial cap over the certified value at L=12, 70%
+    '0.9625': '=1.3766',                     # V8, F-4, F-44: tau(w_S) of the L=12 published subspace
+    '0.928': '1.341$',                       # F-45: the floor w_S >= 0.995 gives tau >= 1.341 (rounded down)
+    '0.060': '$0.079$',                      # F-31: the certificate's 0.05 bracket at L=8 is two grid rows
+    '0.084': '$0.079$',                      # F-31
+    '3802': '$3528$',                        # F-31
+    '3830': '$3528$',                        # F-31
+    '3855': '$3606$',                        # F-31
+    '0.977': 'between $0.90$ and $0.92$',    # V22, F-31: the certificate's 0.05 crossing at L=8
+    '0.983': 'between $0.90$ and $0.92$',    # V22, F-31
+    '0.98': 'between $0.90$ and $0.92$',     # I2, V22, C6, F-31
+    '5.9': 'a spread of $5.8$',              # I3, V26, F-34, F-38, F-48: spread of the certificate's crossing
+    '9.4': 'over $14$ against $4.0$',        # F-48: 1-w at the crossing, extremes dropped
+    '3.8': 'over $14$ against $4.0$',        # F-48
+    '0.911': '$0.208$',                      # F-56: Born ranking at 0.95, now the certificate itself (B2)
+    '3.50': '$7.22$',                        # F-37: crossing error at L=8, eta=0.18t (x 1e-3)
+}
+
+# 2026-11-16: baseline concessions whose present best match is a sentence the change rewrites (rule D12, D22;
+# rows T8, T10, T10b, F-1, F-31, F-40): the fact each states is still printed, and the proof is the phrase that
+# prints it (the first: the gap between the bound and the error is large, now 1.4e2-7.8e2 times; the second
+# overrides the release proof 'is therefore an exclusion, not an error estimate', a sentence D22 rewords).
+JCP_AUDITADA_1116 = [
+    ('The gap between the bound and the measured error is large', '$1.4\\times10^{2}$ to $7.8\\times10^{2}$'),
+    # 2026-11-18 (round 3, correction round 3 R3-05): the proof was 'not an error estimate', printed in five places
+    # (a deletion of the sentence that draws the conclusion would not be seen); it is now that sentence (Sec. III C)
+    ('Calling Eq. an error estimate would be refutable',
+     'Eq.~\\eqref{eq:twobudget} is an exclusion, not an error estimate'),
+    ('Throughout this section we call', 'non-vacuity threshold of the certificate'),
+    ('The crossing is one point per cell', 'locates one error level and does not estimate the error away from it'),
+    # 2026-11-18 (round 3, correction round 3 R3-04): the proof was the key itself
+    # (the sentence's opening words), which forgave the loss of the limit the sentence carries; it is now the phrase
+    # that states that limit (Sec. S4; the baseline said "on our grid it is not reached at all at L=6, L=10 or L=12")
+    ('At the acceptance criterion this paper uses everywhere else',
+     'and at $L=6$ it is not reached on our grid at $\\eta\\le0.18\\,t$'),
+]
+
+# 2026-11-18 (round 2 of the independent readings, defect 15; correction round 2 R2-28):
+# the baseline concession below lost its best match (0.62 -> 0.58) when "the lower branch ... the upper branch" became
+# "the lower bound ... the upper bound"; its fact -- the bound is two-sided on one object, its lower side fixed by the
+# captured weight, its upper side adding what the weight does not control -- is still printed, by the proof phrase.
+JCP_AUDITADA_1118 = [
+    ('Second, that the bound is two-sided on the same object',
+     'the lower bound is fixed by the captured weight and the upper bound adds what the weight does not control'),
+    # 2026-11-18 (round 4, deposit 3.5.0, correction T2): "at a fraction a sampler can plausibly reach" left the
+    # sentence (it contradicted the paragraph before it); its fact -- what the table certifies is weaker than the
+    # acceptance criterion and not empty -- is printed, once, by the proof phrase
+    ('What the table does certify at a fraction a sampler can plausibly reach is weaker',
+     'the certified $0.129$, weaker than the acceptance criterion'),
+]
+
+
+def _jcp_register():
+    clash = sorted((set(JCP_NUM) | set(JCP_NUM_W) | set(JCP_NUM_P7) | set(JCP_NUM_7B) | set(JCP_NUM_1114)
+                    | set(JCP_NUM_1116))
+                   & set(AUDITADO_NUM))
+    assert not clash, ('a JCP number entry would override a 3.4.1 one', clash)
+    assert not (set(JCP_NUM_7B) & (set(JCP_NUM) | set(JCP_NUM_W) | set(JCP_NUM_P7))), 'JCP_NUM_7B overlap'
+    assert not (set(JCP_NUM_1114) & (set(JCP_NUM) | set(JCP_NUM_W) | set(JCP_NUM_P7) | set(JCP_NUM_7B))), \
+        'JCP_NUM_1114 overlap'
+    assert not (set(JCP_NUM_1116) & (set(JCP_NUM) | set(JCP_NUM_W) | set(JCP_NUM_P7) | set(JCP_NUM_7B)
+                                     | set(JCP_NUM_1114))), 'JCP_NUM_1116 overlap'
+    for reg in (JCP_NUM, JCP_NUM_W, JCP_NUM_P7, JCP_NUM_7B, JCP_NUM_1114, JCP_NUM_1116):
+        AUDITADO_NUM.update(reg)
+    AUDITADA[:0] = (JCP_AUDITADA_1118 + JCP_AUDITADA_1116 + JCP_AUDITADA_1114 + JCP_AUDITADA + JCP_AUDITADA_1108
+                    + JCP_AUDITADA_W + JCP_AUDITADA_P7)
+    print('check_trim: deposit 3.5.0, JCP registrations merged: %d numbers and %d sentences (proofs must hold)'
+          % (len(JCP_NUM) + len(JCP_NUM_W) + len(JCP_NUM_P7) + len(JCP_NUM_7B) + len(JCP_NUM_1114) + len(JCP_NUM_1116),
+             len(JCP_AUDITADA_1118 + JCP_AUDITADA_1116 + JCP_AUDITADA_1114 + JCP_AUDITADA + JCP_AUDITADA_1108
+                 + JCP_AUDITADA_W + JCP_AUDITADA_P7)))
+
+
 if __name__ == "__main__":
+    _jcp_register()
     sys.exit(main())

@@ -1,4 +1,4 @@
-\section{Hardware and scope: full account}
+\section{Scope: full account}
 \label{sm:scope}
 
 Three claims one could make for this method are larger than the quantity that fixes them: the hardware claim
@@ -7,69 +7,35 @@ by the same bond dimension this paper puts forward as its own cost tracker. This
 with its fixing quantity attached, and derives the region in which this method
 has no advantage over a classical one.
 
-\paragraph{The two hardware runs.} Both device runs are reported in full and they are the entirety of the quantum hardware used in this
-work. The first was executed on the IBM~Heron processor \texttt{ibm\_fez} (job
-\texttt{d9s16avpemts73ct6g8g}): the $L=6$ periodic Hubbard ring at $U/t=4$, $\eta=0.15\,t$, $12$ qubits,
-$3.5\times10^{5}$ computational-basis shots---$5\times10^{4}$ on each of seven circuits
-$k=0,\dots,6$, of which $k=0$ is the $t=0$ reference---pooled into one subspace,
-under measurement twirling, Pauli twirling and dynamical decoupling, with no readout-error
-mitigation applied to the counts and no zero-noise extrapolation
-(Fig.~\ref{fig:heron}(a) is the result; the circuits prepared the computational-basis $(N{+}1)$ determinant with orbitals $0$--$3\!\uparrow$ and $0$--$2\!\downarrow$ occupied rather than $\hat c^{\dagger}_p\lvert\Psi_0\rangle$, and their hopping layer applies $R_{xx}R_{yy}$ rotations without Jordan--Wigner strings, so they are not the primitive of Fig.~\ref{fig:circ}; because the retained subspace is the whole sector, neither affects the reported $A_{\rm hw}$). No configuration recovery was applied. The notebook post-selected on particle number and $S_z$ after
-reading each bitstring in reversed qubit order (\texttt{int(bs[::-1],2)}), which maps qubit $q$ to $11-q$:
-site $i$ to $5-i$ and spin $\uparrow$ to $\downarrow$. The circuits conserve both quantities and start
-from four $\uparrow$ and three $\downarrow$ electrons, so under that reading their own output falls in
-the $S_z=-\tfrac12$ sector and is discarded: in a noiseless statevector simulation of the same seven circuits,
-$0$ of $3.5\times10^{5}$ shots are retained, against all $3.5\times10^{5}$ and the full sector of $300$
-under the correct reading (\texttt{src/hw\_bitorder\_check.py}, \texttt{data/hw\_bitorder\_check.json}).
-The $|\mathcal S|=300$ determinants retained from the device therefore all came from device errors that
-changed the spin balance; the device counts needed to redo the post-selection are not part of the
-deposit (Sec.~\ref{sec:scope:data}). The recorded relative $L_1$ is $0.0$: the reconstructed $A_{\rm hw}$ agrees with the exact $A$
-to $7.9\times10^{-15}$ at every frequency, not byte for byte, because the retained subspace spans the
-whole sector.
+\paragraph{Device runs.} Two exploratory runs on IBM~Heron processors add no evidence to this work,
+and no result of it rests on them: on \texttt{ibm\_fez}, circuits that are not the primitive of
+Fig.~\ref{fig:circ} sampled the $L=6$ ring at $U/t=4$ ($12$ qubits, $3.5\times10^{5}$ shots), and the
+post-selection read every bitstring in reversed qubit order, under which the circuits' own output is
+discarded, so each of the $300$ retained determinants arose from a device error and the retained
+subspace, the whole $(N{+}1)$ sector, returns the exact $A(\omega)$ by coverage; on
+\texttt{ibm\_marrakesh}, stretched $\mathrm{N_2}$ ($24$ qubits) was run with no random-configuration
+control and without recording the recovered subspace sizes; their arrays, shot counts and job
+identifiers are deposited (\texttt{data/heron\_spectral.json}, \texttt{data/hw\_lucj\_n2\_result.json};
+bit-order check \texttt{src/hw\_bitorder\_check.py}, \texttt{data/hw\_bitorder\_check.json}), their raw
+bitstrings are not, and neither run can be regenerated.
 
-That number is exact \emph{by coverage}, and the distinction is not rhetorical: at
-$|\mathcal S|=\dim$, Rayleigh--Ritz on $\operatorname{span}(\mathcal S)$ \emph{is} diagonalization of
-the full sector, $P_{\mathcal S}HP_{\mathcal S}=H$, and a vanishing error is an identity rather than a
-measurement of device fidelity. The run establishes only that the steps of the pipeline execute end
-to end on a processor---transpiled circuits, device counts, post-selection to a particle-number and
-$S_z$ sector, and the classical Lehmann assembly of Sec.~\ref{sec:method}. The post-selection itself was
-wrong: it read every bitstring in reversed bit order, so every determinant it kept came from a device
-error, and the run is not evidence that the device sampled the intended distribution. It establishes
-nothing about accuracy, neither at the complete coverage it reached, where agreement is an identity, nor
-at incomplete coverage, the regime the rest of this paper is about.
-The runs are therefore described as \emph{executed on} the named processors, not as demonstrating the method on them, and the coverage qualification applies wherever they are mentioned.
-
-\paragraph{The second run, and a comparison the record cannot decide.} Stretched $\mathrm{N_2}$ ($R=2.0$~\AA,
-CAS(10e,12o)/cc-pVDZ, $24$ qubits) was executed on \texttt{ibm\_marrakesh} (job
-\texttt{da125f2ein7c73bcsqs0}, $10^{4}$ shots, CCSD-seeded local unitary cluster-Jastrow (LUCJ) circuit). Averaged over $8$
-recovery seeds on the cached device counts it reaches $0.59\pm0.14$~mHa of the exact active-space value
-(best seed $0.40$~mHa), while the noiseless statevector simulation of the same circuit stops at
-$29.5$~mHa (Fig.~\ref{fig:heron}(b)). That contrast invites the reading that device noise \emph{helps}, and the record cannot support it, because the mechanism named for it is a statement about a quantity the
-record does not contain: recovery is said to turn corrupted bitstrings into valid configurations and
-thereby \emph{enlarge} the variational subspace---a valid-shot economy, not a fidelity gain---so the
-comparison is decided by the two recovered subspace sizes, and neither is stored. The same gap runs
-through the controlled sweeps, whose scripts save at most the size of the naively post-selected subspace
-and not of the recovered one (the spectral script of Fig.~\ref{fig:noise} saves neither), so the places
-where an error \emph{below} the noiseless value is reported beyond the seed bands---$\mathrm{NH_3}$ from
-$2.53$ to $1.24$~mHa at $\varepsilon=10\%$, CO from $1.73$ to $0.63$~mHa at $20\%$ and $\mathrm{C_2}$
-from $0.184$ to $0.026$~mHa at $30\%$ in Fig.~\ref{fig:noiserec}(a), and the spectral relative $L_1$ of
-Fig.~\ref{fig:noise}, from $0.105$ at $\varepsilon=0$ to $0.045$ at $13\%$---rest on the same unrecorded
-variable, at the price of one line in each script, both of which already build the subspace.%
-% 2026-09-30 (final pass), layout only: \looseness=-1 sets this paragraph one line shorter
-% (its last line held two words).  The final-review rewording of Sec. S5 moved the page
-% breaks that follow, and p. 55 came out 4.97 pt overfull again at the \pagebreak below (the
-% footnote of this page booked at half height, see that comment).  No word changes; the
-% paragraph has no \cite, so its lines are the same in main.pdf and sm_pra.pdf.
-\looseness=-1\relax
-
+\paragraph{Noise and recovery.} Recovery is said to turn corrupted bitstrings into valid
+configurations and thereby \emph{enlarge} the variational subspace---a valid-shot economy, not a
+fidelity gain---so a comparison with the noiseless value is decided by the size of the recovered
+subspace. The scripts of the controlled sweeps save at most the size of the naively post-selected
+subspace and not of the recovered one (the spectral script of Fig.~\ref{fig:noise} saves neither), so
+the places where an error \emph{below} the noiseless value is reported beyond the seed
+bands---$\mathrm{NH_3}$ from $2.53$ to $1.24$~mHa at $\varepsilon=10\%$, CO from $1.73$ to $0.63$~mHa
+at $20\%$ and $\mathrm{C_2}$ from $0.184$ to $0.026$~mHa at $30\%$ in Fig.~\ref{fig:noiserec}(a), and
+the spectral relative $L_1$ of Fig.~\ref{fig:noise}, from $0.105$ at $\varepsilon=0$ to $0.045$ at
+$13\%$---rest on that unrecorded variable, at the price of one line in each script, both of which
+already build the subspace.
 The mechanism itself is reported elsewhere. On the dissociation of
-$\mathrm{N_2}$ in a large active space, with the same LUCJ ansatz used for the run above,
+$\mathrm{N_2}$ in a large active space, with a local unitary cluster-Jastrow (LUCJ) ansatz,
 Vaquero-Sabater, Carreras, Broers, Shirakawa, Yunoki and Casanova report that ``sampling noise can
 enhance Hilbert-space exploration by generating additional configurations beyond those supported by
 the ideal ansatz,'' and that ``when combined with configuration recovery, this leads to systematically
-improved energies''~\cite{vaquero2026}: the same molecule, the same ansatz and the same mechanism, and there it is carried by a controlled comparison under a simple noise model that the work introduces. The same work also reports that ``recovery alone (starting from randomly generated configurations) can efficiently construct accurate CI spaces''~\cite{vaquero2026}. Our record contains no control of that kind (uniformly random bitstrings passed through the same recovery with the same eight seeds), so it cannot show that the device counts contributed anything to the $0.59$~mHa beyond what recovery supplies on its own. What this work cannot claim is its own measurement of the effect, not the effect: our two arms differ in
-the one quantity neither of them recorded, so they cannot be evidence either way, whatever the
-literature independently establishes.
+improved energies''~\cite{vaquero2026}, carried there by a controlled comparison under a simple noise model that the work introduces. The same work also reports that ``recovery alone (starting from randomly generated configurations) can efficiently construct accurate CI spaces''~\cite{vaquero2026}. No such control was run in this work.
 
 What \emph{is} controlled is the comparison in which both arms consume the same corrupted bitstrings at
 the same rate with the same seeds and differ only in the recovery step, and there the gain from
@@ -81,41 +47,11 @@ while naive post-selection on the same bitstrings degrades steadily
 (Fig.~\ref{fig:noise})---seed-averaged, with $\pm1$~s.d.\ bands, at matched noise. That is the noise
 result of this work.
 
-\paragraph{Scale.} These runs are $12$ and $24$ qubits, and the same class of observable has been
-executed elsewhere at larger scale---retarded spin Green's functions of the one-dimensional
-Fermi--Hubbard model on IBM~Heron~r2 at up to $30$ qubits~\cite{vilchez2025}, an ARPES-type
-$A(k,\omega)$ of a free-fermion $27$-site chain at $54$ qubits~\cite{granet2026akw}---and, at a
-comparable $20$ sites on trapped ions, dynamical structure factors against scattering
-data~\cite{quantinuum_dsf2026}.
-% Paragraph break (2026-09-28): the three citations above print as [5]-[7] in main.pdf and as
-% two-digit numbers in sm_pra.pdf; ending the paragraph here keeps that width difference from
-% reflowing the rest of it, which pra_split.py's page comparison would report as a difference.
+\paragraph{Shot cost of the momentum-resolved observable.} At $L=8$ the momentum-resolved
+observable is sixteen channels, $8.3\times10^{7}$ shots as measured for Fig.~\ref{fig:akwsampled} to
+reach its relative $L_1$ of $2.16\times10^{-3}$. That is not its cost at the $0.05$ threshold of the
+resource scan, which was not measured: half that budget already gives $6.16\times10^{-3}$.
 
-In those works the device data
-determine the reported spectrum, as they do in the four-qubit trapped-ion Hubbard-dimer reconstruction
-of Ref.~\cite{greenediniz2024}; in our spectral run they do not: the retained subspace is the whole
-$300$-dimensional $(N{+}1)$ sector and every retained determinant came from a device error, so the
-spectral function it returns is the exact-diagonalization one, the run is not an entry in that class,
-and it is not offered as a scale result. The run is also at a size where the coverage question is
-degenerate, and Sec.~\ref{sec:prices} says how degenerate in
-shots: the $3.5\times10^{5}$ spent---seven circuits at $5\times10^{4}$ shots each, pooled into one
-subspace---are $14.4$ times the $(2.43\pm0.34)\times10^{4}$ that Table~\ref{tab:shots} measures for one
-orbital seed and one branch at $L=6$, so complete coverage of a $300$-dimensional sector is what the
-budget predicts for a correctly read run, as the noiseless simulation above confirms; the coverage
-this run recorded came from device errors and does not test that prediction.\footnote{Table~\ref{tab:shots} replicates the repository protocol, $K=18$ with $19$ snapshots,
-at $U/t=8$ rather than the $U/t=4$ of the device run; this is a consistency statement between two
-budgets, not an identity.} The first size at which a device run would test the reconstruction rather
-than only the execution of the pipeline is $L=8$: sector $3\,920$, at $(2.70\pm0.13)\times10^{5}$ shots per orbital seed and
-branch---a factor $1.3$ \emph{below} what was already spent here, so what confined this run to $L=6$
-was not the shot budget. The momentum-resolved observable at that size is a different matter: sixteen
-channels, $8.3\times10^{7}$ shots as measured for Fig.~\ref{fig:akwsampled} to reach its relative $L_1$ of
-$2.16\times10^{-3}$, over two orders of magnitude above this job. That is not its cost at the $0.05$
-threshold used above, which was not measured: half that budget already gives $6.16\times10^{-3}$.
-% 2026-09-30, layout only: the page ends here.  Without the break the page builder ran one
-% line further, counting the two-line footnote above at half its height (revtex4-2 one-column
-% \count\footins=500), and the page came out 4.97 pt overfull (p. 55).  The break is vertical
-% only, so no line of any paragraph is reset, in main.pdf or in sm_pra.pdf.  No text changes.
-\pagebreak
 
 \paragraph{The region of no advantage, in full.} The resource statement of Sec.~\ref{sec:nogo} has a consequence for the standing of this method. What tracks the determinant support is $\chi$,
 the minimal bond dimension across a bipartition in the working basis (Sec.~\ref{sec:nogo:chi}). But

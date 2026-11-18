@@ -35,7 +35,47 @@ listed.
 
 ---
 
-## `paper/` — the v3 manuscript (REVTeX 4.2, one column for submission)
+## Deposit 3.5.0 (2026-11-18) — every file added, moved or replaced
+
+`paper/` holds the manuscript prepared for *The Journal of Chemical Physics* and its Supplementary Material; the
+sections below this one describe the files of 3.4.1 (arXiv v4) and keep its numbering unless a row is dated
+2026-11-18. The JCP numbering is in [`KNOWN_DISCREPANCIES.md`](KNOWN_DISCREPANCIES.md) §36.
+
+**Added**
+
+| file | what it is |
+|---|---|
+| `paper/main_jcp.tex`, `paper/sm_jcp.tex` | the two documents for JCP: main text with its references, and the Supplementary Material; both run `main.tex` and hold no text of the paper |
+| `paper/main_jcp.pdf`, `paper/sm_jcp.pdf` | their builds from these sources (24 and 47 pages; `make paper`) |
+| `paper/sec_9_sm.tex` | the part of the Supplement that holds the dequantization paragraph, moved word for word from `sec_9.tex` |
+| `paper/figs/fig_results_native.tex` | Fig. 1 (`fig:results`): the bound against the true error on Born-ranked subspaces of the `L=8` ring |
+| `paper/figs/fig_results_L8.dat`, `fig_results_star.dat`, `fig_results_marks.tex` | its plotted rows, its `S*` point and its two marks, written by `src/make_fig_results_data.py` |
+| `src/make_fig_results_data.py` | writes the three files above from `data/c3_frontier/` and `data/c3_frontier/second_order/` |
+| `src/make_fig_thmB_data.py` | writes `paper/figs/n3_thmB_frac.dat` and `n3_thmB_eta.dat` (Fig. S10, error over the certificate); `--old` rebuilds the first-order tables of 3.4.1 |
+| `src/verify_jcp.py` | the 21 checks of the JCP text; `src/verify.py` runs them as its section (12) |
+| `src/jcp/number_sources.json` | registry of 706 printed numbers with their stored source (file, key, rounding) |
+| `src/jcp/trim_withdrawn_pass7.json` | proofs of the numbers withdrawn on 2026-11-08, read by `src/check_trim.py` |
+| `src/jcp/fracgrid_numbers.py` | the numbers of Table S4 (`tab:fracgrid`) from `data/eta_sweep.json`, read by `src/verify_jcp.py` |
+| `src/frontier/rescore_second_order.py` | re-scores every number that depends on the upper branch, from the stored data (no simulation) |
+| `src/frontier/null_ws7_second_order.py` | the copy of `src/frontier/null_ws7.py` on the re-scored crossings (the name printed in Secs. V D and S4) |
+| `data/c3_frontier/second_order/` | the 14 outputs of the two scripts above; listed in [`C3_FRONTIER.md`](C3_FRONTIER.md) §8 |
+| `docs/JCP_MOVED_DEVICE_RUNS.md`, `docs/JCP_WITHDRAWN_NUMBERS.md` | the verbatim text that left the JCP build (device runs, 2026-10-28; numbers without a stored source, 2026-11-08) and why; `src/check_trim.py` points to them |
+| `_superseded/arxiv_v4/README.md` | one line for each file below |
+
+**Moved to `_superseded/arxiv_v4/paper/`** (the arXiv-v4 text does not need them in `paper/`; tag `v3.4.1` has them
+in place): `main.pdf`, `main_pra.tex`, `sm_pra.tex`, `main_pra.pdf`, `sm_pra.pdf`, `pra_split.py`. **Copied there:**
+`figs/n3_thmB_frac.dat`, `figs/n3_thmB_eta.dat` of 3.4.1 (first-order), before `paper/figs/` received the JCP ones.
+
+**Replaced by the JCP sources** (byte-identical to the package's except comment lines): every `.tex` of `paper/`,
+`paper/carried/` and `paper/figs/`, and `paper/figs/n3_thmB_*.dat`; `paper/figs/sqw_edges.dat` and `paper/figs/src/*`
+differ from 3.4.1 only in their line endings in the working copy.
+
+**Changed**: `src/verify.py`, `src/check_figures.py`, `src/recovered/build_n3.py`, `src/check_coherence.py`,
+`src/check_trim.py`, `docs/img/make_thumbnails.py` (the path of the moved `main.pdf`), `Makefile` (`make paper`;
+`make pra` removed), `README.md`, `CITATION.cff`, `.zenodo.json`, the documents of `docs/` and `_superseded/README.md`
+([`KNOWN_DISCREPANCIES.md`](KNOWN_DISCREPANCIES.md) §36 lists every change of a check).
+
+## `paper/` — the v3 manuscript (REVTeX 4.2, one column for submission); since 3.5.0 the manuscript prepared for JCP (section above)
 
 `main.tex` is the only hand-written driver. Everything it reaches is listed here, and the list is
 derived: `python src/check_provenance.py` expands `\input` from `main.tex` and reports **61 source
@@ -123,7 +163,7 @@ line-level `\input` expander finds two floats in this manuscript instead of thir
 
 ---
 
-## `src/` — 66 scripts at the root, run from the repository root as `python src/<name>.py`; 29 more in `src/frontier/` and 9 files in `src/recovered/`
+## `src/` — 69 scripts at the root since 3.5.0 (66 in 3.4.1), run from the repository root as `python src/<name>.py`; 31 more in `src/frontier/` (29 in 3.4.1), 9 files in `src/recovered/` and 3 in `src/jcp/`
 
 ### The checkers
 
@@ -262,7 +302,7 @@ folder's `README.md` gives the detail; `KNOWN_DISCREPANCIES.md` §29 the measure
 
 ---
 
-## `data/c3_frontier/` — 96 files, the C3 sweep itself (`published_fraction/L14_rerank.json`, the K=18 ranking re-run at L=14, added 2026-09-28, late; `C3_FRONTIER.md` §5)
+## `data/c3_frontier/` — 110 files since 3.5.0 (14 of them in `second_order/`, §3.5.0 above; 96 in 3.4.1), the C3 sweep itself (`published_fraction/L14_rerank.json`, the K=18 ranking re-run at L=14, added 2026-09-28, late; `C3_FRONTIER.md` §5)
 
 54 point files, the 204-row grid they aggregate to, three gate outputs, three proof ladders, the
 verdict, and three sub-directories (`published_fraction/`, `adversarial/` — including the Krylov-support

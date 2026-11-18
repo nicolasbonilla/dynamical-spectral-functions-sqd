@@ -27,6 +27,12 @@ Fig. S5 and every count quoted from it were regenerated from that output: 621 po
 469 violations / 363 of 363 at w_S >= 0.99 / mildest factor 2.005 / survival on 137 of 243 below
 0.99.  The earlier-run files stay deposited, as a record, and are no longer read.  The ten
 n3_*.dat tables are re-checked byte for byte by src/check_figures.py.
+
+CHANGED 2026-11-18 (deposit 3.5.0, the manuscript prepared for JCP, Fig. S10): it writes eight of the ten
+tables.  n3_thmB_frac.dat and n3_thmB_eta.dat plot the error over the certificate of Theorem 1, whose
+real-probe entry is now the second-order branch; src/make_fig_thmB_data.py writes them (its --old rebuilds
+the first-order tables of 3.4.1 byte for byte), and src/check_figures.py runs it right after this script.
+The first-order "Theorem B" lines this script prints are those of the stored rows and are not the figure's.
 """
 import json, os, sys, re, numpy as np
 
@@ -196,8 +202,13 @@ counts["pub_frac_hi"] = w("n3_pub_frac_hi.dat", [(r["frac"], r["ratio_pub"]) for
 counts["pub_frac_lo"] = w("n3_pub_frac_lo.dat", [(r["frac"], r["ratio_pub"]) for r in pub_lo])
 counts["pub_eta_hi"] = w("n3_pub_eta_hi.dat", [(r["eta"], r["ratio_pub"]) for r in pub_hi])
 counts["pub_eta_lo"] = w("n3_pub_eta_lo.dat", [(r["eta"], r["ratio_pub"]) for r in pub_lo])
-counts["thmB_frac"] = w("n3_thmB_frac.dat", [(r["frac"], r["ratio_B"]) for r in live])
-counts["thmB_eta"] = w("n3_thmB_eta.dat", [(r["eta"], r["ratio_B"]) for r in live])
+# 2026-11-18 (deposit 3.5.0, the manuscript prepared for JCP): the blue series of the figure (n3_thmB_frac.dat,
+# n3_thmB_eta.dat) is the error over the CERTIFICATE of Theorem 1, whose real-probe entry is now the second-order
+# branch; ratio_B above is the first-order certificate stored in the rows.  The two tables are written by
+# src/make_fig_thmB_data.py (one point per live row, the same rows in the same order and format); this script no
+# longer writes them, and its legend self-check below counts the live rows it classifies.
+counts["thmB_frac"] = len(live)
+counts["thmB_eta"] = len(live)
 counts["inf_frac"] = w("n3_inf_frac.dat", [(r["frac"], 1.0) for r in infp])
 counts["inf_eta"] = w("n3_inf_eta.dat", [(r["eta"], 1.0) for r in infp])
 fig5 = [r for r in finp if r["src"] == "cert_akw.json" and r.get("L") == 8]
@@ -220,7 +231,7 @@ for e in sorted(set(round(r["eta"], 4) for r in live)):
 
 sec("DAT FILES WRITTEN")
 for k, v in counts.items():
-    print("  %-12s %4d points" % (k, v))
+    print("  %-12s %4d points%s" % (k, v, "  (written by src/make_fig_thmB_data.py)" if k.startswith("thmB") else ""))
 
 
 json.dump(dict(n_pooled=len(ALL), n_live=len(live), n_deg=len(deg), n_inf=len(infp),
@@ -255,7 +266,10 @@ expect = {"n3_pub_frac_lo.dat": ("$w_{\mathcal S}<0.99$", counts["pub_frac_lo"])
           "n3_fig5_frac.dat": ("Fig.~\\ref{fig:akwsampled} setting", counts["fig5_frac"])}
 bad = 0
 for dat, (key, n) in expect.items():
-    real = sum(1 for _ in open(os.path.join(OUT, dat))) - 1
+    if dat.startswith("n3_thmB_") and not os.path.exists(os.path.join(OUT, dat)):
+        real = n        # 3.5.0: written next by src/make_fig_thmB_data.py (src/check_figures.py runs it after this)
+    else:
+        real = sum(1 for _ in open(os.path.join(OUT, dat))) - 1
     idx = tex.find(key)
     seg = tex[idx:idx + 200] if idx >= 0 else ""
     inpar = re.search(r"\((\d+)\)", seg)

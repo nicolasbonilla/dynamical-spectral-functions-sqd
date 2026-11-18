@@ -1,3 +1,44 @@
+# Data Availability Statement — the manuscript prepared for JCP (deposit 3.5.0); the statement of 3.4.1 below
+
+## Part 0 — the statement of the manuscript prepared for The Journal of Chemical Physics (2026-11-18)
+
+This is the section of `paper/sec_10.tex` (main text, after the acknowledgments), verbatim, comment lines omitted. It is printed in `paper/main_jcp.pdf`; if the two ever disagree, the manuscript is the one that is published and this file is the one that is wrong.
+
+```tex
+\section*{Data Availability}
+The data that support the findings of this study are openly available in Zenodo at
+\url{https://doi.org/10.5281/zenodo.22967220}, reference number~\cite{p2repo}, and in the
+reproduction repository at \url{https://github.com/nicolasbonilla/dynamical-spectral-functions-sqd};
+the code is under the MIT license and the manuscript, the deposited datasets and the reproduction
+documentation under CC~BY~4.0. Every figure's plotted values are deposited, and
+\texttt{docs/FIGURE\_PROVENANCE.md} names the file that is authoritative for each; the one exception
+is Fig.~\ref{fig:circ}, a circuit schematic that plots no data. The classical data are
+additionally regenerable: the computation scripts that produced them are deposited in
+\texttt{src/}, and \texttt{docs/REPRODUCE.md} gives the reproduction commands together with a
+measured table of what a clean clone does and does not reach; the $L=14$ ground-state checkpoint
+($94$~MB) is deposited in \texttt{ckpt/} with its SHA-256 checksums. An automated guardian (\texttt{python src/verify.py}) recomputes the
+underlying physics by exact diagonalization and checks the deposited artifacts against
+it---$1269$ checks over $16\,565$ numeric assertions, exiting non-zero on any discrepancy; it is
+not a proof that every sentence of this manuscript is verified. Known gaps between the deposited
+code and the deposited artifacts are enumerated in \texttt{docs/KNOWN\_DISCREPANCIES.md}.
+```
+
+**Audit of each sentence against deposit 3.5.0 (2026-11-18):**
+
+| sentence | holds because |
+|---|---|
+| openly available in Zenodo (concept DOI 10.5281/zenodo.22967220) and in the GitHub repository | the concept DOI resolves to the latest version; this deposit is 3.5.0 (`CITATION.cff`, `.zenodo.json`) |
+| code under MIT; manuscript, datasets and documentation under CC BY 4.0 | `LICENSE` (unchanged since 3.4.1): `*.py`, `notebooks/`, `Makefile` MIT; `paper/`, `data/`, `docs/` CC BY 4.0 |
+| every figure's plotted values are deposited, and `docs/FIGURE_PROVENANCE.md` names the authoritative file for each; the one exception is Fig. 2, the circuit schematic | `python src/check_provenance.py` PASS: the document covers exactly the 17 typeset figures and every file it names exists; Fig. 1 plots `paper/figs/fig_results_*.dat` from `data/c3_frontier/` and `data/c3_frontier/second_order/`, Fig. S10 `paper/figs/n3_*.dat` (the blue series from `src/make_fig_thmB_data.py`) |
+| the computation scripts are deposited in `src/`; `docs/REPRODUCE.md` gives the commands and a measured table of what a clean clone does and does not reach | `docs/REPRODUCE.md`, section "What a clean clone can and cannot reach", rows measured on 2026-11-18 for 3.5.0 and the earlier rows with their dates; the re-scoring of the second-order branch is `src/frontier/rescore_second_order.py` and `src/frontier/null_ws7_second_order.py` |
+| the L=14 ground-state checkpoint (94 MB) is deposited in `ckpt/` with its SHA-256 checksums | `ckpt/L14_gs.npz`, `ckpt/L14_order.npy`, `ckpt/README.txt` (unchanged since 3.4.1) |
+| `python src/verify.py` recomputes the physics by exact diagonalization and checks the deposited artifacts, 1269 checks over 16 565 numeric assertions, exiting non-zero on any discrepancy | the final run on 3.5.0: SUMMARY pass 1269, FAIL 0, xfail 4, xpass 0, skip 2, 16565 numeric assertions, exit 0; its section (12) runs the 21 checks of `src/verify_jcp.py` (3240 assertions) |
+| known gaps are enumerated in `docs/KNOWN_DISCREPANCIES.md` | its sections 1-35 (3.4.1) and 36 (3.5.0) |
+
+---
+
+*The parts below are the statement drafted for Physical Review A for deposit 3.4.1 and its audit, kept as the record; their counts and figure numbers are those of 3.4.1.*
+
 # Data Availability Statement — for Physical Review A
 
 *Third pass 2026-09-19, the pass that finally **pasted** the statement into the manuscript*
@@ -212,7 +253,7 @@ negative control that fires on a deliberately unanchored file (it fired). Four s
 | `src/scaling_lanczos.py` | `fn='scaling_data.json'` (line 120), *relative*. Worse than a crash: line 122 is `json.load(open(fn)) if os.path.exists(fn) else {'U':8.0,'points':[]}`, so run from anywhere it **silently starts a fresh file in the caller's directory** and never updates `data/scaling_data.json`. |
 | `src/scaling_lanczos_mf.py` | `fn='scaling_data.json'` (line 157), *relative*, and it `json.load`s it first, so it raises from anywhere the file is not sitting. |
 | `src/build_repro_notebook.py` | writes the relative `'notebooks/00_Reproduce_Everything.ipynb'` (line 226). |
-| `src/make_akw_sampled_honest_fig.py` | the worst of the four: lines 17-18 hard-code **the author's own machine paths** — `REPO = r"C:\Users\Nicolas\Downloads\..."` and `CALC = r"C:\Users\Nicolas\AppData\Local\Temp\claude\...\scratchpad\p2_calc"`, a session scratch directory that is **not in the deposit**. |
+| `src/make_akw_sampled_honest_fig.py` | the worst of the four: lines 17-18 hard-code **the author's own machine paths** — `REPO = r"C:\Users\...\Downloads\..."` and `CALC = r"C:\Users\...\AppData\Local\Temp\claude\...\scratchpad\p2_calc"`, a session scratch directory that is **not in the deposit**. |
 
 The last one has a second consequence, and it is the reason this pass does not advertise
 `src/check_figures.py` in Part 1: **`check_figures.py` passes for the wrong reason.** It regenerates six

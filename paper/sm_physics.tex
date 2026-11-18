@@ -100,17 +100,15 @@ $7$ in the addition branch, from $4$ to $9$ in the charge channel and from $2$ t
 channel. A line count that roughly doubles while the Hilbert space grows by three
 orders of magnitude is a discrete spectrum whose resolvable lines are being broadened together, not a
 dense one forming. The spin channel is the extreme case: at every momentum a single pole carries
-between $80\%$ and $99\%$ of the weight, at separations of at least $1.08$ full widths, and at $q=\pi$
+between $80\%$ and $99\%$ of the weight, at separations of at least $1.07$ full widths, and at $q=\pi$
 that single pole \emph{is} the $0.16635\,t$ scale of Table~\ref{tab:gaps}. What Fig.~\ref{fig:spin}
 shows at $L=12$ is one dominant antiferromagnetic mode plus at most two satellites.
 
 This has a consequence for how the reference itself must be described: $A(k,\omega)$ is not computed exactly, as the Lehmann sum would be. With $n_\ell=150$ and no reorthogonalization in a sector of dimension $731\,808$, what
 is computed is a $150$-node Gauss quadrature of the spectral measure~\cite{haydock1972,golub2010}. It
 is accurate enough here---and it is accurate \emph{precisely because} the measure it integrates is a
-handful of poles; a dense spectrum at this dimension would not be reproduced by $150$ nodes. It is not,
-however, converged: the same depth moves the reference by $0.93\%$ at $\eta=0.15\,t$ and by $3.0\%$ at
-the $\eta=0.10\,t$ of Fig.~\ref{fig:spin} when it is taken from $n_\ell=100$ to $n_\ell=200$
-(Sec.~\ref{sec:prices}). The reference is therefore labelled for what it is: a finite-depth continued
+handful of poles; a dense spectrum at this dimension would not be reproduced by $150$ nodes. It is not
+shown to be converged in depth (Sec.~\ref{sec:prices}). The reference is therefore labelled for what it is: a finite-depth continued
 fraction, checked against dense diagonalization at $L\le8$ and quoted with its depth. The pole
 positions of Table~\ref{tab:gaps} are a separate and stronger object---they are computed at full
 reorthogonalization and are stable across $n_\ell=60$, $120$, $240$---which is why the physical claim
@@ -152,20 +150,13 @@ within it.
 What the convention does not license is the vocabulary of the thermodynamic limit, and the criterion
 that says so is in the dynamical-DMRG literature this paper already cites. Jeckelmann's rule is
 explicit~\cite{jeckelmann2002}: \emph{``$\eta_0(N)$ must be larger than the distance $\delta\omega$
-between two consecutive excited states.''} At $L=12$ the largest spacing between consecutive
-excited-state energies in the window is ${\approx}0.48\,t$, a factor $2.7$ \emph{above} the
-$\eta=0.18\,t$ used for $A(k,\omega)$ and $4.8$ above the $\eta=0.10\,t$ used for the spin channel.
-The rule is not satisfied here. Satisfying it would demand $\eta>0.48\,t$. That is only a tenth of
-the Mott scale, so the Hubbard bands would survive; but it is $0.96\,J$ and $2.9$ times the $L=12$
-spin gap itself, so the entire low-frequency structure of Fig.~\ref{fig:spin} would merge into one
-feature. The number the rule
-demands is set by the spacing, $0.48\,t$; we take it from the spacing and not from a rounded-up
-interval. The correct response is not a larger $\eta$: it is to stop using words that require
+between two consecutive excited states.''} The spacing between consecutive excited-state energies at $L=12$ is not tabulated in the
+deposit, so this work does not claim that the rule is satisfied at the resolutions it uses. The correct response is not a larger $\eta$: it is to stop using words that require
 the rule to hold. The dynamical-DMRG standard fixes the product $\eta L$ and lets $\eta$ fall with
 the size: Benthien and Jeckelmann use $\eta=5t/L$ in one place, the $L=100$ spin calculation, and
 declare $\eta L=12\,t$ for the finite-size scaling that carries the zone-boundary charge peak to
 $L=120$~\cite{benthien2007}; Jeckelmann's own prescription is $\eta(N)=c/N$ with $c=6.4$ and
 $12.8\,t$, on chains of up to $N=256$~\cite{jeckelmann2002}. This work is at $L=12$ with
-$\eta L=1.2$--$2.2\,t$, a factor of two to ten below every constant in that range,
+$\eta L=1.2$--$2.2\,t$, a factor of two to eleven below every constant in that range,
 and it is the words, not the size, that we do not use. Section~\ref{sec:scope:declared} records the same
 restriction: the spin--charge statement rests on pole positions at four sizes.

@@ -1,11 +1,11 @@
 # Reproducibility Makefile.  Requires: a TeX distribution (pdflatex) + `pip install -r requirements.txt`.
-# Usage:  make verify | make figures | make paper | make pra | make all | make clean
+# Usage:  make verify | make figures | make paper | make all | make clean
 
 PYTHON ?= python
 LATEX  ?= pdflatex
-PAPER  := paper/main
+PAPER  := paper/main_jcp
 
-.PHONY: all ci verify check-figures check-coherence figures data paper pra clean help
+.PHONY: all ci verify check-figures check-coherence figures data paper clean help
 
 help:
 	@echo "make verify        - adversarial guardian: recompute the physics, then check every"
@@ -19,15 +19,13 @@ help:
 	@echo "make data          - regenerate the deposited tables that have a generator (~4 min)"
 	@echo "make ci            - what .github/workflows/ci.yml runs: verify + check-figures"
 	@echo "                     + check-coherence"
-	@echo "make paper         - compile paper/main.tex -> paper/main.pdf"
-	@echo "make pra           - the Physical Review A split: paper/main_pra.pdf (main text and"
-	@echo "                     references) and paper/sm_pra.pdf (the SM), built and checked"
-	@echo "                     page by page against paper/main.pdf (run make paper first)"
+	@echo "make paper         - the manuscript prepared for JCP: paper/main_jcp.pdf (main text"
+	@echo "                     and references) and paper/sm_jcp.pdf (the Supplementary Material)"
 	@echo "make all           - figures + paper"
 	@echo "make reproduce     - execute notebooks/00_Reproduce_Everything.ipynb, the v1-v2"
 	@echo "                     narrated pipeline kept as a record (needs pyscf; NOT the v3"
 	@echo "                     figure set; NOT verified -- see docs/KNOWN_DISCREPANCIES.md)"
-	@echo "make clean         - remove LaTeX aux files (keeps main.pdf)"
+	@echo "make clean         - remove LaTeX aux files (keeps the PDFs)"
 	@echo ""
 	@echo "Where output goes: every compute script writes into THIS clone's data/ by default"
 	@echo "(the path is derived from the script's own location), and --out PATH overrides it."
@@ -96,23 +94,18 @@ reproduce:
 	jupyter nbconvert --to notebook --execute --inplace notebooks/00_Reproduce_Everything.ipynb
 	@echo "OK: full pipeline executed in notebooks/00_Reproduce_Everything.ipynb"
 
-# ---- compile the preprint ----
+# ---- compile the manuscript prepared for JCP (deposit 3.5.0) ----
+# main_jcp.tex (main text and references) and sm_jcp.tex (the Supplementary Material) run main.tex itself and hold
+# no text of the paper; each reads the other's .aux for the cross-references, so they are built in turn, four
+# rounds (from a clean copy sm_jcp.tex still asks for a rerun after three; measured 2026-11-18).  Needs REVTeX 4.2,
+# pgfplots >= 1.18 and an xr-hyper of 2023 or later.
+# Until 3.4.1 this target built paper/main.pdf (the arXiv text) and `make pra` split it for Physical Review A with
+# paper/pra_split.py; those files are in _superseded/arxiv_v4/paper/, and tag v3.4.1 runs them.
 paper:
-	cd paper && $(LATEX) -interaction=nonstopmode main.tex >/dev/null && \
-	            $(LATEX) -interaction=nonstopmode main.tex >/dev/null
-	@echo "OK: paper/main.pdf built."
-
-# ---- the two files Physical Review A takes, split from the SAME document (added 2026-09-28) ----
-# paper/main_pra.tex and paper/sm_pra.tex run main.tex itself and hold no text of the paper.
-# pra_split.py builds both in a temporary copy of paper/ (it writes only the two PDFs into paper/)
-# and exits non-zero unless: 0 errors, 0 undefined or multiply defined labels and citations, no
-# overfull box or warning the main.tex build does not have, the SM reference list = the SM's
-# citations, the APS reference to the SM names exactly the works cited only in the SM, and every
-# page of paper/main.pdf is in exactly one of the two PDFs.  It compares against the paper/main.pdf
-# that is in the tree, which is why it depends on `paper`.  Needs pdftotext, pdftoppm, Pillow and an
-# xr-hyper of 2023 or later (the [nocite] option).
-pra: paper
-	$(PYTHON) paper/pra_split.py --build
+	cd paper && for i in 1 2 3 4; do \
+	    $(LATEX) -interaction=nonstopmode main_jcp.tex >/dev/null; \
+	    $(LATEX) -interaction=nonstopmode sm_jcp.tex >/dev/null; done
+	@echo "OK: paper/main_jcp.pdf and paper/sm_jcp.pdf built."
 
 all: figures paper
 

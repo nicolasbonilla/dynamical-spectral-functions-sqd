@@ -7,36 +7,43 @@ to the same $E_0$; (H2) the $L_1$ norm is taken over the whole line and normaliz
 $\lVert\phi\rVert^{2}$; (H3) $A$ is the exact spectral function of the full sector; (H4) the probe is
 built from the exact ground state. They are stated with the theorem in Sec.~\ref{sec:leakage}, and each
 is checked against this work's own pipeline, with numbers and with the measured consequence of its
-failure, in Sec.~\ref{app:hyp}. The proof of the theorem and of the closed form, Eq.~\eqref{eq:lambda},
-is Appendix~\ref{app:proof} of the main text; its steps are numbered (1) to (5) there.
+failure, in Sec.~\ref{app:hyp}. The proof of the theorem and of the closed forms, Eqs.~\eqref{eq:lambda}
+and~\eqref{eq:lambdatilde}, is Appendix~\ref{app:proof} of the main text; its steps are numbered (1) to (7) there.
 
 \paragraph{What object is certified.} If the resolvent inside $\operatorname{ran}P$ is itself evaluated
 by a Krylov recursion of depth $n_\ell$, then $\Lambda$ computed on that Krylov space bounds the error
-of the depth-$n_\ell$ reconstruction \emph{and of nothing else}. The convenient inequality
-$\Lambda_{\mathcal K}\ge\Lambda_S$ that would transfer the statement to the dense $A_S$ is false:
-$1169$ of $6000$ random triples violate it, at a minimum ratio of $0.5258$. Every table of
+of the depth-$n_\ell$ reconstruction \emph{and of nothing else}. % 2026-11-08 (JCP, rule "no printed number without a source"): the counts of a random-triple test of
+%
+%
+%
+%
+%
+The convenient inequality
+$\Lambda_{\mathcal K}\ge\Lambda_S$ that would transfer the statement to the dense $A_S$ is not implied
+by the proof and is not used; on the one subspace where both were computed ($L=8$, $85\%$ of the
+sector) they agree to within $1\%$ (\texttt{data/c3\_frontier/validation.json}). Every table of
 Sec.~\ref{sec:frontier} carries the depth of the object it certifies for that reason. Full
-reorthogonalization is mandatory throughout: without it $P_{\mathcal K}$ is not a projector---the
-orthogonality defect reaches $0.238$ at $L=8$, where the captured weight then reads $1.4868$, an
-impossible value---and $\Lambda$ is inflated thirtyfold.
+reorthogonalization is mandatory throughout: without it $P_{\mathcal K}$ is not a projector, and the
+captured weight and $\Lambda$ computed on it are not those of any subspace; with it the orthogonality
+defect of the published-subspace rows is at most $4.9\times10^{-15}$ (Sec.~\ref{sm:frontier}).
 
 \paragraph{Relation to the classical error theory, and the scope of the novelty claim.} Nothing in the
 proof of Appendix~\ref{app:proof} is new as analysis. The split,
 Eq.~\eqref{eq:split}, is L\"owdin partitioning~\cite{lowdin1962}, the same algebra as the Feshbach projection of scattering
 theory~\cite{feshbach1958}; and sixty years of Rayleigh--Ritz and Krylov error analysis for resolvents
-and matrix functions~\cite{saad2011,golub2010} contains every rung of steps (2) and (3),
+and matrix functions~\cite{saad2011,golub2010} contains every rung of steps (2) and (3), which prove the first-order branch,
 along with far sharper residual, Temple and Kato--Temple estimates for individual
 eigenpairs~\cite{temple1928,weinstein1934,kato1949}, their extension to the noisy, ill-conditioned
 eigenvalue problem of quantum subspace diagonalization~\cite{epperly2022}, and the
-loss-of-orthogonality analysis of Paige~\cite{paige1976} that makes step (5) conditional on
-reorthogonalization, and the polynomial-restart convergence theory of Beattie, Embree and Sorensen~\cite{beattie2005}. Step (3) in particular is the reduced-basis bound on a Galerkin projection onto an arbitrary subspace---the dual norm of the residual over an inf--sup constant~\cite{rozza2008,hesthaven2016}---with that constant equal to $\eta$.
+loss-of-orthogonality analysis of Paige~\cite{paige1976} that makes step (6) conditional on
+reorthogonalization, and the polynomial-restart convergence theory of Beattie, Embree and Sorensen~\cite{beattie2005}. Step (3) in particular is the reduced-basis bound on a Galerkin projection onto an arbitrary subspace---the dual norm of the residual over an inf--sup constant~\cite{rozza2008,hesthaven2016}---with that constant equal to $\eta$, and step (4), which proves the second-order branch, starts from the classical error representation of a Galerkin approximation of a bilinear form, credited in Sec.~\ref{sec:leakage:branches}.
 
 Nor is ``a posteriori'' ours to claim, and we name the prior art rather than wait to be shown it.
 Stopping criteria for rational matrix functions of Hermitian matrices, computed from the residual
 alone, are Frommer and Simoncini's~\cite{frommersimoncini2008}; Jia and Lv's title is this section's
 claim word for word---\emph{a posteriori error estimates of Krylov subspace approximations to matrix
 functions}~\cite{jialv2015}---and Frommer and Schweitzer carry that line to Stieltjes
-functions~\cite{frommerschweitzer2016}; Lanczos approximations to matrix functions carry a posteriori bounds from the same Cauchy-integral argument as step (5)~\cite{chen2022lanczos,xuchen2025block}, and stochastic Lanczos quadrature carries them on an approximated spectral measure itself, in Wasserstein and Kolmogorov--Smirnov distance, through Gauss-quadrature brackets that hold for each seeded (weighted) spectral measure and for the global density of states that averages them~\cite{chen2021slq}---bounds on a full-space Lanczos quadrature, not on a projection onto a sampled determinant subspace with boundary leakage as bounded here; and in April 2026, before this work, on \emph{quantum} Krylov,
+functions~\cite{frommerschweitzer2016}; Lanczos approximations to matrix functions carry a posteriori bounds from the same Cauchy-integral argument as step (6)~\cite{chen2022lanczos,xuchen2025block}, and stochastic Lanczos quadrature carries them on an approximated spectral measure itself, in Wasserstein and Kolmogorov--Smirnov distance, through Gauss-quadrature brackets that hold for each seeded (weighted) spectral measure and for the global density of states that averages them~\cite{chen2021slq}---bounds on a full-space Lanczos quadrature, not on a projection onto a sampled determinant subspace with boundary leakage as bounded here; and in April 2026, before this work, on \emph{quantum} Krylov,
 Oliveira, Ziems and Glaser introduce ``two new metrics, the imaginary and unitary filters, that
 successfully assess the reliability of the obtained solutions without any knowledge of the true
 eigenspectrum''~\cite{oliveira2026}. That is the framing of this section, established earlier and by others, and the priority is theirs. On the selection side, that a subspace chosen for the energy misses configurations a response needs, and a selection criterion built for the response instead, are Reinholdt, Kjellgren and Kongsted's, for classical selected configuration interaction~\cite{reinholdt2026lr}.
@@ -45,8 +52,8 @@ What we did not find in that literature is the conjunction of three things, and 
 novelty claimed here. First, a closed form for the frequency-integrated residual $\Lambda_P(\eta)$, assembled from the Ritz pairs, on a subspace of \emph{coordinates} carrying no Krylov structure, no invariance and no spectral-gap assumption---so that the estimate
 attaches to the set of determinants a sampler returned, which is not the span of the iterates of any
 recursion, and Eq.~\eqref{eq:split} is evaluated on that set directly. Second, that the bound is
-two-sided on the same object: the lower branch is fixed by the captured weight and the upper branch adds what the weight does not control, and Sec.~\ref{sec:frontier} uses the distance between them rather than either alone.
-Third, a \emph{measured} calibration of where that bound crosses the trivial one, over sixteen
+two-sided on the same object: the lower bound is fixed by the captured weight and the upper bound adds what the weight does not control, and Sec.~\ref{sec:frontier} uses the distance between them rather than either alone.
+Third, a \emph{measurement} of where that bound crosses the trivial one, over sixteen
 $(L,\eta)$ cells whose true errors span five decades (Sec.~\ref{sec:frontier:calib}), in place of an
 asymptotic statement about the crossing. Whether such a bound is \emph{useful} at the
 fractions sampling reaches is a separate question; it is not settled by the proof, and
@@ -75,9 +82,8 @@ Its ranking uses $K=16$ slices, one protocol step short of the $K=18$ of the res
 Sec.~\ref{sec:prices}. Its momentum seeds have support on $3848$ to $3920$ of the $3920$ determinants and captured weight below one at every fraction, so the support floor derived below for the local seed does not apply to it; the members of a translation orbit carry equal Born weight, so the cut can fall inside a tied orbit. How far a tie-breaking can move an error was measured on a local-seed subspace at $L=6$, fraction $0.85$, whose cut fell among zero-amplitude determinants: ten tie-breakings moved the measured error by ${\pm}20\%$, which is why the violation factors are quoted to three figures at most and why the rise
 across fractions is read as a direction and not as a rate. (That $\pm20\%$ is the spread of the
 \emph{measured error} over tie-breakings of a zero-amplitude cut. It is a different quantity from the
-$6.6\times10^{-4}$ by which ties move the \emph{bound} in the sweep of Sec.~\ref{sec:frontier}, where
-the cut falls below the support floor and only two determinants are tied.) And the error at fraction $0.85$ has two independent determinations that differ by a
-factor $2.3$, so only its order of magnitude is quoted. None of this touches the conclusion: the
+relative change that ties produce in the smaller leakage branch of the \emph{bound}, at most $1.1\times10^{-3}$ in the sweep of Sec.~\ref{sec:frontier}, where
+only two determinants are tied at the cut, four at $L=6$ at fractions $0.80$ and $0.85$ (Sec.~\ref{app:hyp}).) And the error at fraction $0.85$ is quoted only to its order of magnitude. None of this touches the conclusion: the
 two-level counterexample is analytic, and the counting argument of the next paragraph but one uses no
 ranking, no protocol and no numerics at all. The sweep is corroboration of a conclusion that does not
 depend on it.
@@ -99,6 +105,5 @@ must be, it never said how wrong it can be.
 
 \paragraph{The normalization of the witness errors.} (Relative here and throughout this subsection means divided by $\lVert\phi\rVert^{2}$, the normalization
 of Theorem~\ref{thm:leakage}; dividing instead by the in-window integral of the exact $A$, as the
-repository's own relative $L_1$ does, moves them by about $1\%$ at $\eta=0.05\,t$ and by $2.6$ to
-$3.3\%$ at $\eta=0.18\,t$, measured in Sec.~\ref{app:hyp}, and the two conventions are not interchanged
+repository's own relative $L_1$ does, moves them by a few per cent, measured in Sec.~\ref{app:hyp}, and the two conventions are not interchanged
 anywhere in this paper without saying so.)

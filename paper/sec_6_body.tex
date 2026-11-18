@@ -57,8 +57,9 @@ coordinate subspace the sampler returned. What replaces the predictor is the mea
 Sec.~\ref{sec:frontier}. Three results establish this. On number-conserving states the one-body
 antiflatness is a single invariant of the one-particle density matrix (Eq.~\eqref{eq:collapse}); a
 geminal family carries antiflatness of every order at bond dimension $2$ (Theorem~\ref{thm:witness});
-and on fibers on which every invariant is frozen the subspace-aware certificate still separates, so
-the leakage bound that invariants do supply is vacuous there (Proposition~\ref{prop:leakinv}).
+and an invariant is constant along orbital-rotation fibers on which the leakage moves, so it cannot
+follow the leakage, and the one bound invariants do supply is vacuous by a factor that grows with the
+system (Proposition~\ref{prop:leakinv}).
 
 \subsection{The collapse: one-body magic is a single 1-RDM invariant}
 \label{sec:nogo:collapse}
@@ -132,8 +133,8 @@ is a bond-dimension-$2$ tensor network, representable, contractible and Born-sam
 
 \noindent One-body magic, higher-order magic and determinant support therefore all diverge with $K$:
 magic of every order is unbounded at bond dimension $2$, where the simulation cost grows only linearly, as $O(K)$. The
-proof, four block-diagonal computations, is given in the Supplemental Material
-(Sec.~\ref{app:witness}). The values of $\mathcal F_1$, $\mathcal F_2$ and
+proof, four block-diagonal computations, is given in
+Sec.~\ref{app:witness}. The values of $\mathcal F_1$, $\mathcal F_2$ and
 $|\mathcal S|_{\mathrm{pair}}$ are reproduced by exact diagonalization for $K=1,\dots,4$, and so is
 $\chi=2$, the largest Schmidt rank over all cuts of the pairing ordering (Fig.~\ref{fig:witness} and
 Sec.~\ref{app:witness}). The orbit is the
@@ -145,7 +146,23 @@ magic therefore does not lower-bound the bond dimension, nor the cost beyond lin
 rotated points are in fact easy. The same orbit reaches the second
 budget of Eq.~\eqref{eq:twobudget}:
 
-\begin{proposition}[Fibers on which every orbital-rotation invariant gives a vacuous leakage certificate]
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\begin{proposition}[Orbital-rotation invariants cannot follow the leakage along a fiber]
 \label{prop:leakinv}
 Let $\mathcal U_U$ be the Gaussian unitary implementing $U\in\mathrm U(n_{\rm o})$, and let the same
 physical problem written in the rotated orbital basis be
@@ -154,31 +171,22 @@ $(H_U,\Psi_U,\phi_U)=(\mathcal U_U^{\dagger}H\mathcal U_U,\,\mathcal U_U^{\dagge
 coordinate subspace---held fixed. Along this orbit the spectrum of $H$, $E_0$, $\lVert\phi\rVert^{2}$,
 every Lehmann weight and hence $A(\omega)$ pointwise are constant, as is every orbital-rotation invariant
 of the state, in particular $\mathcal F_1=4\,\mathrm{tr}[\gamma(1-\gamma)]$ and all
-$\mathcal F_k$. $\Lambda_S(\eta)/\eta$ is not. An upper bound on $\Lambda_S(\eta)/\eta$ is available from
+$\mathcal F_k$. $\Lambda_S(\eta)/\eta$ in general is not. An upper bound on $\Lambda_S(\eta)/\eta$ is available from
 invariants alone---combining $\Lambda_S\le\lVert P_SHQ_S\rVert\,\lVert\phi_S\rVert$ with
 $\lVert Q_SHP_S\rVert=\lVert Q_S(H-c)P_S\rVert\le\min_c\lVert H-c\rVert$ gives
 $\Lambda_S(\eta)/\eta\le(W/2)\lVert\phi\rVert\sqrt{w_S}/\eta$, $W$ the spectral width of the $(N\pm1)$
-sector---but it is vacuous by a factor of at least $W/2\eta$, which grows extensively with system size.
+sector---but, against the threshold of Eq.~\eqref{eq:tau}, it is vacuous by a factor of at least
+$W/(2\sqrt2\,\eta)$, which grows extensively with system size (also after a complex rotation, since
+$\tilde\Lambda_S$ of Eq.~\eqref{eq:lambdatilde} obeys the same bound).
 That no invariant bound can be useful on these fibers is seen at fixed invariants: any
 $B(\text{invariants},|\mathcal S|,w_S)$ valid for $\Lambda_S(\eta)/\eta$ is constant on a fiber of fixed
-arguments and must therefore exceed the fiber maximum. In the geminal family $\mathrm{APSG}(\pi/4)$ on
-$2K$ orbitals with $H=\varepsilon\hat N-g\sum_iA^{\dagger}_iA_i+\delta h$ we exhibit fibers
-($K=2,3,4$; $\delta=0.01$; $\eta=0.10$; $|\mathcal S|=2^{K-1}$; spectrum, Lehmann weights and all
-$\mathcal F_k$ matched to $10^{-14}$, $w_S$ to $2.2\times10^{-16}$) whose endpoints carry
-$\widehat\Lambda_S(\eta)/\eta=0.237$ and $2.326$, $0.323$ and $2.336$, $0.391$ and $2.346$. Since the
-larger value exceeds $\tau(w_S)=0.795$ of Eq.~\eqref{eq:tau}, above which the leakage branch of
-Theorem~\ref{thm:leakage} no longer improves on the trivial bound
-$\lVert\phi\rVert^{2}(1+w_S)$, every valid invariant bound is vacuous on these fibers---while the
-subspace-aware certificate is non-vacuous at the aligned endpoint ($0.856$ against a trivial $1.962$).
-The statement is one of non-determination and non-vacuity, not of non-existence: invariants do not fail
-to bound the leakage, they fail to bound it usefully.
+arguments and must therefore exceed the fiber maximum; whenever that maximum lies above
+$\tau(w_S)$ of Eq.~\eqref{eq:tau}, above which, on a fiber of real problems, the certificate of
+Theorem~\ref{thm:leakage} no longer improves on the trivial bound $\lVert\phi\rVert^{2}(1+w_S)$, every valid invariant bound is
+vacuous on the fiber, whatever the leakage at its other points. The statement is one of
+non-determination, not of non-existence: invariants do not fail to bound the leakage, they cannot follow
+it along a fiber.
 \end{proposition}
-
-\noindent The fibers (Table~\ref{tab:fiber}), an exhaustive search over the $276$ subspaces of that
-size at $K=2$, and four limits of the exhibit---a matched pair at one angle, a margin over the trivial
-bound that shrinks from $2.29$ to $1.69$ between $K=2$ and $K=4$, a small-leakage endpoint realized
-only by the stabilizer of the state, and sector dimensions of at most $3920$---are in
-Sec.~\ref{sm:nogo}.
 
 The \emph{raw} determinant support---the unthresholded Slater rank---is obstructed separately, by
 continuity: no continuous functional of a fixed set of reduced density matrices can upper-bound the
@@ -208,12 +216,11 @@ within-stratum $\rho=0.948$), but it is itself basis dependent, measured rather 
 blind to the leakage. Computable Gaussian-invariant measures of non-Gaussianity include the
 antiflatness used here~\cite{sierant2026} and the two families of Tarabunga \emph{et al.}~\cite{tarabunga2026},
 whose natural-orbital participation entropies, themselves Gaussian invariant, also upper-bound the
-classical simulation cost in an orthonormal Gaussian basis; their quadratic occupation entropy, which
-equals $\mathcal F_1$, is a strong pure-state monotone, proved by Tarabunga \emph{et al.} and,
-independently, by Leone and Bittel~\cite{leonebittel2026}. The contrast
+classical simulation cost in an orthonormal Gaussian basis, and one member of whose first family they
+prove monotone under Gaussian protocols; their quadratic occupation entropy equals $\mathcal F_1$,
+which Leone and Bittel~\cite{leonebittel2026} prove a strong pure-state Gaussian monotone. The contrast
 between an orbital invariant and a basis-dependent count is our observation, and what the
 construction adds is a family on which every order of the invariant is maximal at $O(K)$ cost, and
-fibers on which the invariants are frozen while the certificate of Theorem~\ref{thm:leakage} still
-separates. The stratified statistics, the molecular set, which does not discriminate, and the two
+the observation that an invariant cannot follow the leakage along a fiber. The stratified statistics, the molecular set, which does not discriminate, and the two
 families where $\mathcal F_1$ wins are in Secs.~\ref{sm:nogo} and~\ref{app:stats}.
 

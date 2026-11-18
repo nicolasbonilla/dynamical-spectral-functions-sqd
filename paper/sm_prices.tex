@@ -4,9 +4,9 @@
 \paragraph{The support exponent and its fit range.} Restricting the fit of Eq.~\eqref{eq:supportexp} to
 $L=4$--$12$, the five sizes Table~\ref{tab:fracgrid} covers, gives $1.082$ at $R^{2}=0.998$; we quote
 the fit range with the exponent throughout, because it matters at the second decimal. The same caution
-applies to the object fitted: $1.082$ is the fit to the published points, while the $1.090$ in the
-bottom block of Table~\ref{tab:fracgrid} is the fit to that table's own coarser replication grid at the
-same resolution. They are two fits to two datasets and the difference is theirs, not a rounding.
+applies to the object fitted: $1.082$ is the fit to the published points, and it is also the
+$\eta=0.15\,t$ entry of the bottom block of Table~\ref{tab:fracgrid}, whose $\eta=0.15\,t$ column
+reproduces those points.
 
 \paragraph{The two exponents are one exponent.} It would be convenient to report that the support
 exponent, unlike the fraction exponent, is resolution-independent. It is not, and the arithmetic is
@@ -14,15 +14,15 @@ immediate: the fraction \emph{is} the support divided by the sector dimension---
 digit, at all six sizes---and the sector dimension does not depend on $\eta$. The two exponents
 therefore differ by a constant,
 $b_{|\mathcal S|}(\eta)-b_{\rm frac}(\eta)=b_{\dim}=1.291$ on $L=4$--$12$, and they move together:
-across the decade $\eta=0.05\to0.50\,t$ both shift by $0.148$ in absolute value
+across the decade $\eta=0.05\to0.50\,t$ both shift by $0.165$ in absolute value
 (Table~\ref{tab:fracgrid}). There is one resolution-dependent exponent in this analysis, and quoting
 the fraction and the support separately reports it twice.
 
 What differs is the base it is measured against, and that is not cosmetic. On the fraction exponent
-$0.148$ is three quarters of the quantity itself: $e^{-0.13\,L}$ becomes $e^{-0.27\,L}$, and the
+$0.165$ is more than half of the quantity itself: $e^{-0.13\,L}$ becomes $e^{-0.29\,L}$, and the
 headline changes qualitatively with a choice the model does not make. On the support exponent the same
-$0.148$ carries it from $1.165$ to $1.017$---a seventh of its own value, $13\%$ measured against the
-larger end and $15\%$ against the smaller---and ``exponential in $L$ with an exponent near one''
+$0.165$ carries it from $1.164$ to $0.999$---a seventh of its own value, $14\%$ measured against the
+larger end and $16\%$ against the smaller---and ``exponential in $L$ with an exponent near one''
 survives at every resolution in the decade. We therefore report the support, and we report it for two reasons, neither of which is
 stability: it is the absolute resource a device has to populate, and it is not divided by a sector
 dimension that grows for a reason---the combinatorics of the Hilbert space---that has nothing to do
@@ -32,18 +32,15 @@ with its full grid attached.
 \begin{table*}[tp]\centering\small
 \caption{\textbf{Sector fraction required for relative $L_1<0.05$, versus system size and resolution.}
 Same ground state, same time-evolution ranking (protocol $K=18$, $dt=0.5$, $16$ substeps, $19$
-snapshots; \texttt{scaling\_lanczos\_mf.py}), same threshold, same depth $n_\ell=150$; only $\eta$
-changes. The scan over subspace size in this replication is coarser than the bisection that produced
-the published points, and returns the smallest scanned fraction meeting the threshold, so the
-$\eta=0.15\,t$ column is an upper bound on them: against the published $0.9167$, $0.8200$, $0.5561$,
-$0.3625$, $0.1700$ it reads $0.917$, $0.820$, $0.560$, $0.380$, $0.180$, agreeing at the two smallest
-sizes and standing $0.7\%$, $4.8\%$ and $5.9\%$ high at the three largest. The same granularity is why
-the fraction exponent of this column, $-0.2012$, is not identical to the $-0.2093$ obtained by fitting
-the published points themselves over $L=4$--$12$. Bottom block: least-squares exponents. \emph{Both}
+snapshots), same threshold; only $\eta$ changes (\texttt{eta\_sweep.py},
+\texttt{data/eta\_sweep.json}: Lanczos depth $260$, a coarse scan over the subspace size followed by
+bisection to $\dim/200$). The $\eta=0.15\,t$ column reproduces the published points, $0.9167$, $0.8200$, $0.5561$, $0.3625$, $0.1700$, and its
+fraction exponent is the $-0.2093$ of those points over $L=4$--$12$. Bottom block: least-squares
+exponents. \emph{Both}
 fit windows are given for the support, because the choice moves the third digit and this work
-criticizes exactly that elsewhere in this section. The fraction exponent moves by a factor $2.2$ over
-the decade, from $-0.1266$ to $-0.2743$, while the support exponent moves from $1.165$ to $1.017$; in
-absolute value both move by $0.148$, which is the whole content of the
+criticizes exactly that elsewhere in this section. The fraction exponent moves by a factor $2.3$ over
+the decade, from $-0.1269$ to $-0.2922$, while the support exponent moves from $1.164$ to $0.999$; in
+absolute value both move by $0.165$, which is the whole content of the
 comparison.}\label{tab:fracgrid}
 \begin{tabular}{lcccccccc}
 \toprule
@@ -51,26 +48,26 @@ comparison.}\label{tab:fracgrid}
 \cmidrule(lr){2-9}
 $L$ & $0.05$ & $0.075$ & $0.10$ & $0.15$ & $0.18$ & $0.25$ & $0.35$ & $0.50$\\
 \midrule
-$4$  & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.875$\\
-$6$  & $0.900$ & $0.890$ & $0.870$ & $0.820$ & $0.800$ & $0.730$ & $0.680$ & $0.630$\\
-$8$  & $0.740$ & $0.680$ & $0.640$ & $0.560$ & $0.540$ & $0.480$ & $0.420$ & $0.380$\\
-$10$ & $0.520$ & $0.480$ & $0.440$ & $0.380$ & $0.340$ & $0.260$ & $0.220$ & $0.200$\\
-$12$ & $0.340$ & $0.280$ & $0.240$ & $0.180$ & $0.160$ & $0.140$ & $0.120$ & $0.100$\\
+$4$   & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.917$ & $0.917$\\
+$6$   & $0.900$ & $0.890$ & $0.867$ & $0.820$ & $0.797$ & $0.730$ & $0.680$ & $0.623$\\
+$8$   & $0.730$ & $0.678$ & $0.631$ & $0.556$ & $0.528$ & $0.469$ & $0.412$ & $0.366$\\
+$10$  & $0.525$ & $0.472$ & $0.431$ & $0.362$ & $0.328$ & $0.259$ & $0.212$ & $0.187$\\
+$12$  & $0.337$ & $0.272$ & $0.228$ & $0.170$ & $0.150$ & $0.125$ & $0.105$ & $0.090$\\
 \midrule
-fraction exponent, $L{=}4$--$12$ & $-0.1266$ & --- & $-0.1681$ & $-0.2012$ & --- & $-0.2395$ & --- & $-0.2743$\\
-$R^{2}$                          & $0.904$   & --- & $0.918$   & $0.929$   & --- & $0.970$   & --- & $0.982$\\
-support exponent, $L{=}4$--$12$  & $1.165$   & --- & $1.123$   & $1.090$   & --- & $1.052$   & --- & $1.017$\\
-$R^{2}$                          & $0.999$   & --- & $0.999$   & $0.998$   & --- & $0.999$   & --- & $0.999$\\
-support exponent, $L{=}6$--$12$  & $1.136$   & --- & $1.088$   & $1.053$   & --- & $1.022$   & --- & $0.992$\\
+fraction exponent, $L{=}4$--$12$ & $-0.1269$ & --- & $-0.1740$ & $-0.2093$ & --- & $-0.2510$ & --- & $-0.2922$\\
+$R^{2}$                          & $0.905$ & --- & $0.917$ & $0.931$ & --- & $0.963$ & --- & $0.986$\\
+support exponent, $L{=}4$--$12$  & $1.164$ & --- & $1.117$ & $1.082$ & --- & $1.040$ & --- & $0.999$\\
+$R^{2}$                          & $0.999$ & --- & $0.999$ & $0.998$ & --- & $0.999$ & --- & $0.999$\\
+support exponent, $L{=}6$--$12$  & $1.136$ & --- & $1.081$ & $1.043$ & --- & $1.006$ & --- & $0.976$\\
 \bottomrule
 \end{tabular}
 \end{table*}
 
 The headline these numbers offer---that the fraction needed for a fixed spectral accuracy falls
 from $0.92$ at $L=4$ to $0.08$ at $L=14$, as $e^{-0.25\,L}$---is tunable, and no headline of that form
-is claimed here. Over the decade of $\eta$ the fraction exponent moves by a factor $2.2$, from
-$-0.1266$ at $\eta=0.05\,t$ to $-0.2743$ at $\eta=0.50\,t$. At $\eta=0.50\,t$ the fraction at $L=12$
-is already $0.10$, a quarter above the $L=14$ value at the resolution used throughout this work and
+is claimed here. Over the decade of $\eta$ the fraction exponent moves by a factor $2.3$, from
+$-0.1269$ at $\eta=0.05\,t$ to $-0.2922$ at $\eta=0.50\,t$. At $\eta=0.50\,t$ the fraction at $L=12$
+is already $0.090$, within $13\%$ of the $L=14$ value at the resolution used throughout this work and
 reached two sizes earlier: any headline of this form is reachable by choosing the broadening.
 
 Nor is the fraction exponential even at fixed $\eta$. The local logarithmic slopes between consecutive
@@ -93,13 +90,9 @@ threshold is applied is itself a finite-depth Lanczos computation, recomputed at
 subspaces so that the comparison is internally consistent ($n_\ell=150$;
 \texttt{scaling\_lanczos\_mf.py}). Two consequences follow, and both belong in the open. First, the
 published relative $L_1$ is a distance between two depth-$150$ objects, not between the reconstruction
-and the exact $A$. Second, that reference drifts with depth, and the drift is resolution-dependent:
-between $n_\ell=100$ and $n_\ell=200$ at $L=12$ the relative $L_1$ change of the reference
-\emph{alone} is $11.1\%$ at $\eta=0.05\,t$, $3.0\%$ at $\eta=0.10\,t$, $0.93\%$ at $\eta=0.15\,t$ and
-$0.05\%$ at $\eta=0.25\,t$. At the depth used here the protocol is self-consistent only for
-$\eta\gtrsim0.15\,t$---which is exactly where the published column sits, at the margin. Fig.~\ref{fig:spin}, a
-different channel drawn at $n_\ell=200$, sits \emph{below} that margin, at $\eta=0.10\,t$, which is why
-its caption quotes its lineshape with its depth and not as exact.
+and the exact $A$. Second, that reference itself drifts with depth, by more at finer resolution, and the size of that
+drift is not quantified in the deposit. Fig.~\ref{fig:spin}, a different channel drawn at
+$n_\ell=200$ and $\eta=0.10\,t$, therefore quotes its lineshape with its depth and not as exact.
 
 The fraction is therefore reported as a declared window rather than as a number: only for
 $\eta\ge0.15\,t$ at $n_\ell=150$, with the full $\mathrm{frac}(L,\eta)$ grid of

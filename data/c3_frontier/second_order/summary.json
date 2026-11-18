@@ -1,0 +1,172 @@
+{
+ "printed_candidates": {
+  "crossing_error_range_new": {
+   "full": [
+    0.002552313344370886,
+    0.014779533574531148
+   ],
+   "outward_2sf": [
+    "2.5x10^-3",
+    "1.5x10^-2"
+   ],
+   "nearest_2sf": [
+    "2.6x10^-3",
+    "1.5x10^-2"
+   ]
+  },
+  "crossing_error_range_old": {
+   "full": [
+    0.00122663779030195,
+    0.007268460542839928
+   ],
+   "outward_2sf": [
+    "1.2x10^-3",
+    "7.3x10^-3"
+   ],
+   "nearest_2sf": [
+    "1.2x10^-3",
+    "7.3x10^-3"
+   ]
+  },
+  "crossing_median_new": [
+   0.005659139758554938,
+   "5.7x10^-3"
+  ],
+  "crossing_spread_new": [
+   5.7906422842349405,
+   "5.8"
+  ],
+  "crossing_geo_mid_new": [
+   0.006141823895705036,
+   6,
+   2.4063753415115734
+  ],
+  "ratio_at_crossing_new": {
+   "full": [
+    135.2668508839888,
+    783.5920026999628
+   ],
+   "outward_2sf": [
+    "1.3x10^2",
+    "7.9x10^2"
+   ],
+   "nearest_2sf": [
+    "1.4x10^2",
+    "7.8x10^2"
+   ]
+  },
+  "ratio_at_crossing_old": {
+   "full": [
+    275.0877350971737,
+    1630.4633631199183
+   ]
+  },
+  "least_loose_conv_new": {
+   "full": [
+    116.9873414437926,
+    795.0323599392794
+   ],
+   "outward_2sf": [
+    "1.1x10^2",
+    "8.0x10^2"
+   ]
+  },
+  "least_loose_all_new": {
+   "full": [
+    116.9873414437926,
+    551.7311430808754
+   ]
+  },
+  "drift_margin_new_floor": [
+   [
+    96.69773336126444,
+    12,
+    0.1
+   ],
+   96
+  ],
+  "drift_margin_old_floor": [
+   [
+    46.472778994424466,
+    12,
+    0.1
+   ],
+   46
+  ],
+  "eta018_new": [
+   "1.18x10^-2",
+   "7.22x10^-3",
+   "5.22x10^-3",
+   "3.26x10^-3"
+  ],
+  "L6_over_L12_new": [
+   "2.8",
+   "3.6"
+  ],
+  "eta_factor_new": [
+   "1.6",
+   "2.1"
+  ],
+  "fixedP_new_up1": [
+   "3.9",
+   "3.9"
+  ],
+  "fixedP_old_up1": [
+   "1.8",
+   "2.0"
+  ],
+  "across_cell_new": [
+   [
+    1.1510268328011881,
+    2.5247515879985416
+   ],
+   "1.15",
+   "2.53"
+  ],
+  "tau_new_0995_floor": [
+   "1.3417",
+   "1.341"
+  ],
+  "tau_new_L12pub": "1.3766",
+  "move_new_up1": "5.2",
+  "slopes_factor_new_eta018": "3.6",
+  "slopes_factor_old_eta018": "4.1",
+  "FRstar_L8_018_new": "0.74",
+  "vac_range_new": [
+   "1.38",
+   "8.61"
+  ],
+  "vac_range_eta018_new": [
+   "2.40",
+   "4.61"
+  ],
+  "pooled_min_ratio_new": "3.54x10^-4"
+ },
+ "needs_a_run": [
+  {
+   "item": "z_kblock first non-vacuous counts with the second-order branch (L=6: 48-50 of 50; L=8: 455-483 of 490)",
+   "why": "only the first-order count and the bound at that count are stored; the count at which B2 first beats 1+w needs the bound at smaller block subspaces",
+   "policy": "D9 (keep the stored first-order counts, labelled; add that the second-order branch can only lower them)"
+  },
+  {
+   "item": "A(k,omega) certificate with the second-order branch for complex momentum probes k not in {0, pi} (0.77-1.75, 350-900x; 80 of the 112 cert_akw rows)",
+   "why": "Lambda~_P is not stored for complex probes; Lambda~(k) = Lambda(-k) on the same S is not established (the sets S_k were not stored)",
+   "policy": "D8 (first-order values kept, labelled, one sentence why)"
+  },
+  {
+   "item": "the rung anatomy of the threshold for the second-order chain (44/38/11/4.6 %, 52/31/11/4.1 %, 1.10/3.29, 15 of 18 cells, 84 ladder rows)",
+   "why": "the stored ladders (verdict_frontier.json, ladder_L*.json) are the rungs of the first-order proof; the second-order proof has no pointwise step",
+   "policy": "D10 (keep, labelled as the first-order chain)"
+  },
+  {
+   "item": "fitted-rule comparison with the new crossing: COMPUTED since 2026-11-16 (D20) by null_ws7_second_order.py (null_ws7_second_order.json); the entry is kept as the record of 2026-11-15",
+   "why": "null_ws7.py fits c and p by a grid search (an optimisation), which this script does not run; an unverified replica reported 13/14 and 12/14",
+   "policy": "none of D8-D11; D5 forbids a new run -- decided on 2026-11-16 by D20 (the copy null_ws7_second_order.py)"
+  }
+ ],
+ "runtime_s": 0.1639716625213623,
+ "inputs": {
+  "data": "data",
+  "number_sources": "src/jcp/number_sources.json"
+ }
+}

@@ -1,0 +1,537 @@
+{
+ "per_cell": {
+  "L6_eta0.1": {
+   "new": {
+    "reached": false,
+    "above_FR": 0.97,
+    "above_FR_real": 0.97,
+    "value_at_last": 0.22678290493253164,
+    "conv_last": "CONVERGED",
+    "printed": ">0.97"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.97,
+    "above_FR_real": 0.97,
+    "value_at_last": 0.9524340904114189,
+    "conv_last": "CONVERGED",
+    "printed": ">0.97"
+   },
+   "FR05_true": 0.8601889044948724
+  },
+  "L6_eta0.15": {
+   "new": {
+    "reached": false,
+    "above_FR": 0.97,
+    "above_FR_real": 0.97,
+    "value_at_last": 0.09468804330125295,
+    "conv_last": "CONVERGED",
+    "printed": ">0.97"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.97,
+    "above_FR_real": 0.97,
+    "value_at_last": 0.6154281337116204,
+    "conv_last": "CONVERGED",
+    "printed": ">0.97"
+   },
+   "FR05_true": 0.8161789659112496
+  },
+  "L6_eta0.18": {
+   "new": {
+    "reached": false,
+    "above_FR": 0.97,
+    "above_FR_real": 0.97,
+    "value_at_last": 0.06302681405982874,
+    "conv_last": "CONVERGED",
+    "printed": ">0.97"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.97,
+    "above_FR_real": 0.97,
+    "value_at_last": 0.5021025788418539,
+    "conv_last": "CONVERGED",
+    "printed": ">0.97"
+   },
+   "FR05_true": 0.7861987560993052
+  },
+  "L6_eta0.25": {
+   "new": {
+    "reached": true,
+    "lo": 0.95,
+    "hi": 0.97,
+    "lo_FR_real": 0.95,
+    "hi_FR_real": 0.97,
+    "lo_value": 0.10633766830769571,
+    "hi_value": 0.029390223853987756,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "CONVERGED",
+    "mark": "",
+    "FR_interp_loglin": 0.9617359490501466,
+    "FR_real_interp_loglin": 0.9617359490501466,
+    "rows": [
+     47,
+     51
+    ],
+    "later_above": [],
+    "printed": "[0.95,0.97]"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.97,
+    "above_FR_real": 0.97,
+    "value_at_last": 0.3428713691442242,
+    "conv_last": "CONVERGED",
+    "printed": ">0.97"
+   },
+   "FR05_true": 0.7272520422626648
+  },
+  "L8_eta0.1": {
+   "new": {
+    "reached": true,
+    "lo": 0.92,
+    "hi": 0.95,
+    "lo_FR_real": 0.9198979591836735,
+    "hi_FR_real": 0.95,
+    "lo_value": 0.14977615902247085,
+    "hi_value": 0.04254111256250144,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "CONVERGED",
+    "mark": "",
+    "FR_interp_loglin": 0.946149461219578,
+    "FR_real_interp_loglin": 0.9461363641488962,
+    "rows": [
+     104,
+     108
+    ],
+    "later_above": [],
+    "printed": "[0.92,0.95]"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.95,
+    "above_FR_real": 0.95,
+    "value_at_last": 0.4125098530942978,
+    "conv_last": "CONVERGED",
+    "printed": ">0.95"
+   },
+   "FR05_true": 0.6213810340290304
+  },
+  "L8_eta0.15": {
+   "new": {
+    "reached": true,
+    "lo": 0.92,
+    "hi": 0.95,
+    "lo_FR_real": 0.9198979591836735,
+    "hi_FR_real": 0.95,
+    "lo_value": 0.06412627835067751,
+    "hi_value": 0.017797153454498463,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "CONVERGED",
+    "mark": "",
+    "FR_interp_loglin": 0.9258237209317411,
+    "FR_real_interp_loglin": 0.9257414886900123,
+    "rows": [
+     105,
+     109
+    ],
+    "later_above": [],
+    "printed": "[0.92,0.95]"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.95,
+    "above_FR_real": 0.95,
+    "value_at_last": 0.26681188873162276,
+    "conv_last": "CONVERGED",
+    "printed": ">0.95"
+   },
+   "FR05_true": 0.5533609217663055
+  },
+  "L8_eta0.18": {
+   "new": {
+    "reached": true,
+    "lo": 0.9,
+    "hi": 0.92,
+    "lo_FR_real": 0.9,
+    "hi_FR_real": 0.9198979591836735,
+    "lo_value": 0.07812927174517863,
+    "hi_value": 0.04358379535732753,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "CONVERGED",
+    "mark": "",
+    "FR_interp_loglin": 0.9152940741991911,
+    "FR_real_interp_loglin": 0.9152160432083788,
+    "rows": [
+     102,
+     106
+    ],
+    "later_above": [],
+    "printed": "[0.90,0.92]"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.95,
+    "above_FR_real": 0.95,
+    "value_at_last": 0.2191222674459392,
+    "conv_last": "CONVERGED",
+    "printed": ">0.95"
+   },
+   "FR05_true": 0.5250196494282123
+  },
+  "L8_eta0.25": {
+   "new": {
+    "reached": true,
+    "lo": 0.88,
+    "hi": 0.9,
+    "lo_FR_real": 0.8801020408163265,
+    "hi_FR_real": 0.9,
+    "lo_value": 0.07023703855254683,
+    "hi_value": 0.03923259129848195,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "CONVERGED",
+    "mark": "",
+    "FR_interp_loglin": 0.8916714103803471,
+    "FR_real_interp_loglin": 0.891713903184529,
+    "rows": [
+     99,
+     103
+    ],
+    "later_above": [],
+    "printed": "[0.88,0.90]"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.95,
+    "above_FR_real": 0.95,
+    "value_at_last": 0.15326079292154451,
+    "conv_last": "CONVERGED",
+    "printed": ">0.95"
+   },
+   "FR05_true": 0.46576744130284536
+  },
+  "L10_eta0.1": {
+   "new": {
+    "reached": true,
+    "lo": 0.85,
+    "hi": 0.9,
+    "lo_FR_real": 0.85,
+    "hi_FR_real": 0.9,
+    "lo_value": 0.07821389193699715,
+    "hi_value": 0.016467757969854776,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "CONVERGED",
+    "mark": "",
+    "FR_interp_loglin": 0.8643585353414385,
+    "FR_real_interp_loglin": 0.8643585353414385,
+    "rows": [
+     140,
+     144
+    ],
+    "later_above": [],
+    "printed": "[0.85,0.90]"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.9,
+    "above_FR_real": 0.9,
+    "value_at_last": 0.2566535091395712,
+    "conv_last": "CONVERGED",
+    "printed": ">0.90"
+   },
+   "FR05_true": 0.425434399922146
+  },
+  "L10_eta0.15": {
+   "new": {
+    "reached": true,
+    "lo": 0.8,
+    "hi": 0.85,
+    "lo_FR_real": 0.8,
+    "hi_FR_real": 0.85,
+    "lo_value": 0.09277547843762836,
+    "hi_value": 0.033639158168302,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "CONVERGED",
+    "mark": "",
+    "FR_interp_loglin": 0.8304664615558993,
+    "FR_real_interp_loglin": 0.8304664615558993,
+    "rows": [
+     137,
+     141
+    ],
+    "later_above": [],
+    "printed": "[0.80,0.85]"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.9,
+    "above_FR_real": 0.9,
+    "value_at_last": 0.16609103005465825,
+    "conv_last": "CONVERGED",
+    "printed": ">0.90"
+   },
+   "FR05_true": 0.356410499495098
+  },
+  "L10_eta0.18": {
+   "new": {
+    "reached": true,
+    "lo": 0.8,
+    "hi": 0.85,
+    "lo_FR_real": 0.8,
+    "hi_FR_real": 0.85,
+    "lo_value": 0.0635973003885141,
+    "hi_value": 0.022982038254475513,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "CONVERGED",
+    "mark": "",
+    "FR_interp_loglin": 0.8118163832156565,
+    "FR_real_interp_loglin": 0.8118163832156565,
+    "rows": [
+     138,
+     142
+    ],
+    "later_above": [],
+    "printed": "[0.80,0.85]"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.9,
+    "above_FR_real": 0.9,
+    "value_at_last": 0.13638756143503405,
+    "conv_last": "CONVERGED",
+    "printed": ">0.90"
+   },
+   "FR05_true": 0.3227302418566954
+  },
+  "L10_eta0.25": {
+   "new": {
+    "reached": true,
+    "lo": 0.7,
+    "hi": 0.8,
+    "lo_FR_real": 0.7,
+    "hi_FR_real": 0.8,
+    "lo_value": 0.19817523724264033,
+    "hi_value": 0.03232249005401549,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "CONVERGED",
+    "mark": "",
+    "FR_interp_loglin": 0.7759422895475715,
+    "FR_real_interp_loglin": 0.7759422895475715,
+    "rows": [
+     135,
+     139
+    ],
+    "later_above": [],
+    "printed": "[0.70,0.80]"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.9,
+    "above_FR_real": 0.9,
+    "value_at_last": 0.09548082872293223,
+    "conv_last": "CONVERGED",
+    "printed": ">0.90"
+   },
+   "FR05_true": 0.26059443773127455
+  },
+  "L12_eta0.1": {
+   "new": {
+    "reached": true,
+    "lo": 0.7,
+    "hi": 0.8,
+    "lo_FR_real": 0.7000005465914557,
+    "hi_FR_real": 0.7999994534085443,
+    "lo_value": 0.12237628431925615,
+    "hi_value": 0.04878633636256072,
+    "conv_lo": "NOT-CONVERGED",
+    "conv_hi": "NOT-CONVERGED",
+    "mark": "n.c.",
+    "FR_interp_loglin": 0.7973280361075242,
+    "FR_real_interp_loglin": 0.7973275187255212,
+    "rows": [
+     188,
+     192
+    ],
+    "later_above": [
+     0.85,
+     0.9
+    ],
+    "printed": "n.c."
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.9,
+    "above_FR_real": 0.8999997267042722,
+    "value_at_last": 0.5385543575994585,
+    "conv_last": "NOT-CONVERGED",
+    "printed": ">0.90"
+   },
+   "FR05_true": 0.2250740914585878
+  },
+  "L12_eta0.15": {
+   "new": {
+    "reached": true,
+    "lo": 0.6,
+    "hi": 0.7,
+    "lo_FR_real": 0.6000002732957278,
+    "hi_FR_real": 0.7000005465914557,
+    "lo_value": 0.1926567091458772,
+    "hi_value": 0.039158660058551904,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "MARGINAL",
+    "mark": "*",
+    "FR_interp_loglin": 0.6846605660725755,
+    "FR_real_interp_loglin": 0.6846610707420137,
+    "rows": [
+     185,
+     189
+    ],
+    "later_above": [],
+    "printed": "[0.60,0.70]*"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.9,
+    "above_FR_real": 0.8999997267042722,
+    "value_at_last": 0.12130734224185694,
+    "conv_last": "NOT-CONVERGED",
+    "printed": ">0.90"
+   },
+   "FR05_true": 0.1681444379994529
+  },
+  "L12_eta0.18": {
+   "new": {
+    "reached": true,
+    "lo": 0.6,
+    "hi": 0.7,
+    "lo_FR_real": 0.6000002732957278,
+    "hi_FR_real": 0.7000005465914557,
+    "lo_value": 0.12864084522969688,
+    "hi_value": 0.02521579607945335,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "MARGINAL",
+    "mark": "*",
+    "FR_interp_loglin": 0.6579914207148386,
+    "FR_real_interp_loglin": 0.6579918524986419,
+    "rows": [
+     186,
+     190
+    ],
+    "later_above": [],
+    "printed": "[0.60,0.70]*"
+   },
+   "old": {
+    "reached": false,
+    "above_FR": 0.9,
+    "above_FR_real": 0.8999997267042722,
+    "value_at_last": 0.057158009348366304,
+    "conv_last": "NOT-CONVERGED",
+    "printed": ">0.90"
+   },
+   "FR05_true": 0.14720979138398094
+  },
+  "L12_eta0.25": {
+   "new": {
+    "reached": true,
+    "lo": 0.6,
+    "hi": 0.7,
+    "lo_FR_real": 0.6000002732957278,
+    "hi_FR_real": 0.7000005465914557,
+    "lo_value": 0.062079516203433,
+    "hi_value": 0.01191372135375213,
+    "conv_lo": "CONVERGED",
+    "conv_hi": "CONVERGED",
+    "mark": "",
+    "FR_interp_loglin": 0.613108969636512,
+    "FR_real_interp_loglin": 0.6131092787584939,
+    "rows": [
+     187,
+     191
+    ],
+    "later_above": [],
+    "printed": "[0.60,0.70]"
+   },
+   "old": {
+    "reached": true,
+    "lo": 0.8,
+    "hi": 0.85,
+    "lo_FR_real": 0.7999994534085443,
+    "hi_FR_real": 0.8500002732957278,
+    "lo_value": 0.08471605018571467,
+    "hi_value": 0.041460296078086226,
+    "conv_lo": "MARGINAL",
+    "conv_hi": "MARGINAL",
+    "mark": "*",
+    "FR_interp_loglin": 0.8368951212744024,
+    "FR_real_interp_loglin": 0.836895179679688,
+    "rows": [
+     195,
+     199
+    ],
+    "later_above": [],
+    "printed": "[0.80,0.85]*"
+   },
+   "FR05_true": 0.11941039550261925
+  }
+ },
+ "fine_L8": [
+  {
+   "S": 3802,
+   "FR": 0.9698979591836735,
+   "w": 0.999999888359,
+   "relL1": 5.925324e-06,
+   "B1": 0.08373598,
+   "B2": 0.0017529291913210934,
+   "trivial": 1.999999888359,
+   "missed": 1.116410000001622e-07,
+   "B2_over_true": 295.8368506635407,
+   "src": "c3_frontier/adversarial/z_fine_L8.txt |S|=3802"
+  },
+  {
+   "S": 3830,
+   "FR": 0.9770408163265306,
+   "w": 0.999999967612,
+   "relL1": 2.956771e-06,
+   "B1": 0.06013845,
+   "B2": 0.0009041583921371506,
+   "trivial": 1.9999999676120002,
+   "missed": 3.2387999948646495e-08,
+   "B2_over_true": 305.7924986876395,
+   "src": "c3_frontier/adversarial/z_fine_L8.txt |S|=3830"
+  },
+  {
+   "S": 3855,
+   "FR": 0.9834183673469388,
+   "w": 0.999999986524,
+   "relL1": 1.184005e-06,
+   "B1": 0.0389402,
+   "B2": 0.00037908464505644567,
+   "trivial": 1.9999999865240001,
+   "missed": 1.3475999982581754e-08,
+   "B2_over_true": 320.1714900329354,
+   "src": "c3_frontier/adversarial/z_fine_L8.txt |S|=3855"
+  }
+ ],
+ "fig1": {
+  "reached": true,
+  "lo": 0.9,
+  "hi": 0.92,
+  "lo_FR_real": 0.9,
+  "hi_FR_real": 0.9198979591836735,
+  "lo_value": 0.07812927174517863,
+  "hi_value": 0.04358379535732753,
+  "conv_lo": "CONVERGED",
+  "conv_hi": "CONVERGED",
+  "mark": "",
+  "FR_interp_loglin": 0.9152940741991911,
+  "FR_real_interp_loglin": 0.9152160432083788,
+  "rows": [
+   102,
+   106
+  ],
+  "later_above": [],
+  "printed": "[0.90,0.92]"
+ }
+}

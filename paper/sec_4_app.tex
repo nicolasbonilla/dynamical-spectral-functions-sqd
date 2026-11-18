@@ -56,38 +56,31 @@ Table~\ref{tab:moments} is computed by exact diagonalization of the $(N{+}1,S_z{
 open $L=6$, $U/t=8$ Hubbard chain ($D=300$, $\lVert\phi\rVert^{2}=1/2$), with
 $\mathcal S=\bigcup_{a\le K}\operatorname{supp}(H^{a}\phi)$. Four measurements support it.
 
-\emph{Reach.} Through order $2K+1$ the relative discrepancy is $\le3.2\times10^{-15}$ for $K=0,1$ and
-$\le7.5\times10^{-15}$ for $K=2$. At order $2K{+}2$ it is $9.5\times10^{-4}$ ($K=0$) and
+\emph{Reach.} Through order $2K+1$ the relative discrepancy of the deposited generator is
+$2.1\times10^{-16}$ for $K=1$ and zero for $K=0$ and $K=2$ (\texttt{data/moments\_table.json}). At order $2K{+}2$ it is $9.5\times10^{-4}$ ($K=0$) and
 $6.0\times10^{-8}$ ($K=1$), eleven and seven decades above the arithmetic floor. The absolute
 discrepancies at that order, $3.104583\times10^{-2}$ and $1.340167\times10^{-4}$, agree to six
 significant figures across all six implementations listed below and are properties of the
 construction, not of the arithmetic. The $K=2$ row carries no entry there, for a structural reason and
 not a numerical one: the ladder has filled the sector, $A_{\mathcal S}=A$ identically, and their
-relative $L_1$ distance is $0$ to machine arithmetic. One run of one of the six routes does report a
-nonzero residue in that row; the same run reports a cyclic-subspace dimension of $301$ inside a sector
-of dimension $300$ and emits floating-point overflow while forming the high powers. It is discarded,
-and the corrected run is the one quoted.
+relative $L_1$ distance is $0$ to machine arithmetic. One run of one of the six routes reported a nonzero residue in that row while emitting
+floating-point overflow in the high powers; it is discarded, and the corrected run is the one quoted.
 
 \emph{Reproducibility of the residues.} The relative discrepancies are quoted, and the absolute ones
 below order $2K{+}2$ are not, for a reason worth recording. The exact moments
-$\mu_j=\braket{\phi|(H-E_0)^{j}|\phi}$ run from $5.0\times10^{-1}$ at $j=0$ to $1.6\times10^{5}$ at
-$j=6$, so an absolute residue at the top of the ladder is a roundoff quantity whose size depends on the
+$\mu_j=\braket{\phi|(H-E_0)^{j}|\phi}$ grow steeply with $j$ from $\mu_0=\lVert\phi\rVert^{2}$, so an
+absolute residue at the top of the ladder is a roundoff quantity whose size depends on the
 route taken to the same identity. Across six equivalent routes---Rayleigh--Ritz on the shifted or on
 the unshifted matrix, crossed with exact moments obtained from the Lehmann sum, from the shifted
 matrix--vector recursion, or by binomial recombination of unshifted powers---the relative residue below
-order $2K{+}2$ stays inside $[1.1,1.8]\times10^{-15}$ at $K=0$ and $[1.0,3.2]\times10^{-15}$ at $K=1$,
-a spread under a factor $3.3$, while the absolute residue at the same orders is not stable to two
+order $2K{+}2$ stays at round-off, while the absolute residue at the same orders is not stable to two
 significant figures. We therefore quote relative residues below $2K{+}2$, and absolute ones only at
 $2K{+}2$, where the discrepancy is physical and route independent.
 
 \emph{Negative control.} Over $300$ uniformly drawn coordinate subspaces of the same size
-$|\mathcal S|=200$, the zeroth moment is wrong by between $1.86\times10^{-2}$ and $4.18\times10^{-1}$
-(median $1.67\times10^{-1}$), i.e.\ by $3.7\%$ to $84\%$ of $\lVert\phi\rVert^{2}$ (median $33\%$),
-with every one of
-the $300$ draws failing; the Krylov-support subspace of identical size is exact to
-$4.4\times10^{-16}$. At $|\mathcal S|=280$ the random draws fail by $4.8\times10^{-5}$ to
-$2.6\times10^{-1}$ (median $1.12\times10^{-2}$), again without exception, against
-$5.0\times10^{-16}$. The discriminating variable is the identity of the determinants, not their number.
+$|\mathcal S|=200$, the zeroth moment is wrong in every one of the $300$ draws
+(\texttt{moments\_table.json}), while the Krylov-support subspace of identical size reproduces it
+exactly (Table~\ref{tab:moments}). The discriminating variable is the identity of the determinants, not their number.
 
 \emph{Scale.} The Krylov ladder at $L=6$ occupies $0.667$, $0.933$ and $1.000$ of the sector at
 $K=0,1,2$, so it exhausts the sector at $K=2$ and the table has exactly three rows. This system can
@@ -101,8 +94,7 @@ exact, because $\operatorname{span}(\mathcal S)$ then carries every eigenvector 
 weight. On the periodic rings of Sec.~\ref{sec:prices} that happens early: at $L=6$ the ladder runs
 $200\to296$ and stalls at $296$ of $300$ determinants, where $A_{\mathcal S}=A$ to
 $1.0\times10^{-14}$ in relative $L_1$ and the moments are exact past order $2K{+}1$ at every $K\ge1$.
-The ring therefore offers a single row in which the reach of Eq.~\eqref{eq:momex} is visible at all
-($K=0$: relative discrepancy $4.4\times10^{-16}$ through order $1$, $4.6\times10^{-3}$ at order $2$);
+The ring therefore offers a single row in which the reach of Eq.~\eqref{eq:momex} is visible at all;
 the open chain offers two, and is the system on which the method validation of Sec.~\ref{sec:method} is
 performed. Within the reach they cover, both agree: the identity is exact, sharp at the next order, and
 decidable from the subspace and the probe alone.
@@ -170,10 +162,9 @@ Two independent obstructions stand between the two quantities. First, the weight
 bounded only by $|\{x:p(x)<\varepsilon\}|\cdot\varepsilon$, which for a delocalized state is $O(1)$:
 many small probabilities can sum to most of the mixture. Second, and decisively, a subspace holding the
 \emph{entire} Born support of the probe---$w_{\mathcal S}=1$ exactly, nothing left to capture at any
-$\varepsilon$---still has relative $L_1$ error $0.28$ at $L=6$ on the open chain of
-Table~\ref{tab:moments}, and $0.43$ at $L=6$ and $0.35$ at $L=8$ on the periodic rings, all at
-$\eta=0.18\,t$ and all relative to $\lVert\phi\rVert^{2}$ (Sec.~\ref{sec:leakage}); it is the $K=0$
-row of Table~\ref{tab:moments}.
+$\varepsilon$---still has relative $L_1$ error $0.43$ at $L=6$ and $0.35$ at $L=8$ on the periodic rings, at
+$\eta=0.18\,t$ and relative to $\lVert\phi\rVert^{2}$ (Sec.~\ref{sec:leakage}); on the open chain
+that subspace is the $K=0$ row of Table~\ref{tab:moments}.
 Proposition~\ref{prop:shots} is a statement about the sampler and about nothing else. The spectral
 error at fixed $\eta$ is the subject of Theorem~\ref{thm:leakage}, and what the composition of the two
 actually costs is reported as three separate prices in Sec.~\ref{sec:prices}.

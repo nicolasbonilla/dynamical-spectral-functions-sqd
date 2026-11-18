@@ -23,8 +23,10 @@ weight alone,
 \end{equation}
 with $w_S=\lVert P_S\phi\rVert^{2}/\lVert\phi\rVert^{2}$ and $K_S$ the largest Krylov order
 contained in $\operatorname{span}(S)$ (we set $K_S=-1$ when $\phi\notin\operatorname{span}(S)$).
-It is false, for every constant $C$ and every $\rho$, and it fails hardest in exactly the regime
-a sampling experiment aims for. 
+For every $\rho>1$ it is false, whatever the constant $C$; for $\rho\le1$ it requires
+$C\ge2\lVert\phi\rVert^{2}/\rho$ (the decoupled-level family below), at which it is nowhere better
+than the trivial bound.
+It fails hardest in exactly the regime a sampling experiment aims for.
 
 \paragraph{A two-level counterexample forces the trivial constant.}
 Take $H=\big(\begin{smallmatrix}0&g\\ g&0\end{smallmatrix}\big)$, $\phi=e_0$, $S=\{0\}$, $E_0=0$. Then
@@ -34,10 +36,10 @@ $\mathcal K_1\not\subseteq\operatorname{span}(S)$, so $K_S=0$ exactly and the se
 constant $C$. The exact $A$ is a pair of Lorentzians of weight $\tfrac12$ at $\pm g$; the
 reconstruction, built on $H_S=P_SHP_S=0$, is one Lorentzian of weight $1$ at the origin, so
 $\lVert A-A_S\rVert_{1}\to2\lVert\phi\rVert^{2}$ as $g/\eta\to\infty$. Since $g$ is free,
-Eq.~\eqref{eq:weightonly} requires $C\ge2\lVert\phi\rVert^{2}$: false if $C$ is a constant, vacuous if it may depend on the instance. The same holds at every Krylov order: on a chain of $K+2$ sites with $\phi=e_0$ and $S$ its first $K+1$ sites, $w_S=1$ and $K_S=K$, and the exact and reconstructed spectra have strictly interlacing poles, so the same limit requires $C\rho^{-K}\ge2\lVert\phi\rVert^{2}$ for every $K$, which no fixed $C$ satisfies when $\rho>1$. With $w_S<1$ strictly the weight term alone fails without bound: in a three-level family its violation diverges as $\varepsilon^{-2}$ in the amplitude $\varepsilon$ of the discarded component (Sec.~\ref{app:counterex}). By contrast
+Eq.~\eqref{eq:weightonly} requires $C\ge2\lVert\phi\rVert^{2}$, the trivial constant. The same holds at every Krylov order: on a chain of $K+2$ sites with $\phi=e_0$ and $S$ its first $K+1$ sites, $w_S=1$ and $K_S=K$, and the exact and reconstructed spectra have strictly interlacing poles, so the same limit requires $C\rho^{-K}\ge2\lVert\phi\rVert^{2}$ for every $K$, which no fixed $C$ satisfies when $\rho>1$. The same limit holds below full weight: with a third level $e_2$ decoupled from the other two and far from $\pm g$ and from the origin, the probe $\phi=\lVert\phi\rVert(\sqrt{w}\,e_0+\sqrt{1-w}\,e_2)$ gives $w_S=w$ and $\lVert A-A_S\rVert_{1}\to\lVert\phi\rVert^{2}(1+w)$, the trivial value, so no bound indexed on the captured weight alone does better than the trivial one at any $w$. With $w_S<1$ strictly the weight term alone fails without bound: in a three-level family its violation diverges as $\varepsilon^{-2}$ in the amplitude $\varepsilon$ of the discarded component (Sec.~\ref{app:counterex}). By contrast
 $\lVert A-A_S\rVert_{1}\le\lVert\phi\rVert^{2}(1+w_S)$ holds for every $S$ under no hypothesis at all,
 $A$ and $A_S$ being nonnegative with known integrals: that trivial bound is the only surviving member of
-the family of Eq.~\eqref{eq:weightonly}, and Theorem~\ref{thm:leakage} keeps it explicitly, as the first branch
+the family of Eq.~\eqref{eq:weightonly}, and Theorem~\ref{thm:leakage} keeps it explicitly, as the trivial branch
 of its minimum.
 \paragraph{The violation is systematic, and worst where the reconstruction is best.} In a pooled sweep
 of $606$ subspaces from five Hamiltonian families the weight term of Eq.~\eqref{eq:weightonly}
@@ -69,8 +71,7 @@ Eq.~\eqref{eq:weightonly} are therefore never both informative: either $w_S=1$ a
 second term---the two-level counterexample---or $K_S=-1$ and $C\rho^{-K_S}=C\rho$, an undefined
 constant with no decay in it. Counting settles which branch applies here. The seed is
 $\phi=\hat c^{\dagger}_{0\uparrow}\ket{\Psi_0}$ at half filling, so $\operatorname{supp}(\phi)$ lies in the set of $(N{+}1)$ determinants with orbital $0\!\uparrow$ occupied, a fraction $n_\uparrow/L=\tfrac12+\tfrac1L$ of the sector, and fills it except where symmetry zeroes an amplitude of $\Psi_0$. By Eq.~\eqref{eq:exclusion}, $K_S\ge0$ demands $|S|\ge\lvert\operatorname{supp}(\phi)\rvert$, a floor of $0.571$ at $L=8$ ($2237$ of $3920$), $0.600$ at $L=10$, and above $0.54$ at $L=12$ and $14$ at any amplitude threshold from $10^{-12}$ to $10^{-10}$, against the sector fractions $0.5561$, $0.3625$, $0.1700$, $0.0800$
-at which the resource scan of Sec.~\ref{sec:prices} operates (Fig.~\ref{fig:scaling}; the coarser
-replication grid of Table~\ref{tab:fracgrid} reads $0.180$ at $L=12$ for the same operating point).
+at which the resource scan of Sec.~\ref{sec:prices} operates (Fig.~\ref{fig:scaling}).
 From $L=8$ on, every operating point of that scan lies below its own floor, so $K_S=-1$ by counting
 alone, with no
 numerics, no ranking and no protocol, and any point below the same line inherits the verdict
@@ -109,8 +110,8 @@ That boundary coupling is the magnitude the replacement is indexed on: it contro
 through $\Lambda_S(\eta)\le\lVert P_SHQ_S\rVert\,\lVert\phi_S\rVert$, and Theorem~\ref{thm:leakage}
 averages it over the resolution window rather than over the spectrum. The captured weight says what the
 subspace \emph{contains}; the error is set by what the Hamiltonian does to the seed at the subspace's
-\emph{edge}. Both halves of this paper follow from that displacement: Sec.~\ref{sec:frontier} measures
+\emph{edge}. Two results follow from that displacement: Sec.~\ref{sec:frontier} measures
 where the boundary term is small enough for the certificate to say something, and Sec.~\ref{sec:nogo}
-shows why no orbital-rotation invariant can predict it usefully on every state in advance.
+shows why no orbital-rotation invariant can follow it in advance.
 
 

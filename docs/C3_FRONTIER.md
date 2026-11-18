@@ -297,3 +297,50 @@ the repository, never on the tree itself. All seven fired and all seven named th
 consistently would still satisfy every relation above. What defends against that is §3 — the fact,
 measured and printed there, that the code in `src/frontier/` reproduces the deposited primitives
 from scratch.
+
+## 8. The re-scoring of the second-order branch — `data/c3_frontier/second_order/` (deposit 3.5.0, 2026-11-18)
+
+Theorem 1 of the manuscript prepared for JCP has a second-order upper branch; for a real probe the certificate is
+`min{1+w, (sqrt(1-w) + Lambda^/eta)^2}` (relative to `||phi||^2`). Every number of the text that depends on the upper
+branch was re-scored from fields already stored in `data/` — `w_S`, `Lam_over_eta` / `LamHat_over_eta`, the stored
+first-order bound and the true errors of `C3_grid.json`, the published-fraction files, the fine scans, the support
+witness, the pooled sweep of Fig. S10 and `cert_akw.json` — with **no new run of any kind**. The complex
+momentum-resolved probes keep the first-order branch, since `Lambda~` was not stored for them.
+
+| file | written by | what it holds |
+|---|---|---|
+| `grid_rows.json` | `src/frontier/rescore_second_order.py` | the 204 grid rows of `C3_grid.json` with both branches and the certificate |
+| `cells.json` | same | the sixteen `(L,eta)` cells: the crossing `FR*` of the certificate, its bracket, the true error there, bound over error, the drift margin; `crossing` (range, median, spread) |
+| `published.json` | same | the twenty published-fraction cells, both branches over the trivial one |
+| `five_percent.json` | same | where the certificate first falls below 0.05, per cell |
+| `supplement.json` | same | Tables S1 and S2, `tau`, the looseness, the oracle ranking, `S*`, `A(k,omega)`, the momentum blocks |
+| `pooled.json` | same | the 621 pooled subspaces of Fig. S10 (606 above round-off), error over certificate, the counts 85 = 57 + 28 |
+| `checks.json` | same | "never below the true error", the D13 statements, the guard records it reads from `src/jcp/number_sources.json` |
+| `summary.json` | same | candidate printed literals, the items that would need a run, its inputs and its run time |
+| `v2.json` | same | the additions of 2026-11-16: the smaller-branch values (D17), the momentum channels (D18), the 0.05 brackets (D19), the census (D21), the looseness (D22), the corrected record (D23) |
+| `null_ws7_second_order.json`, `.txt` | `src/frontier/null_ws7_second_order.py` (stdout to the `.txt`) | the fitted-rule comparison on the certificate's crossings: tighter on 13 of 14 splits, eta-blind rule looser on 12 |
+| `null_ws7_first_order_copy.json`, `.txt` | the same with `--stored` | the control: on the stored first-order `FR_star` the copy reproduces the table of `src/frontier/null_ws7.py` (11 and 13 of 14) |
+| `null_ws7_original_first_order.txt` | `src/frontier/null_ws7.py`, unchanged (stdout) | that table, as the JCP package recorded it on 2026-11-16 (21 s then) |
+
+**How to regenerate** (from the repository root; arithmetic, one thread):
+
+```bash
+python src/frontier/rescore_second_order.py
+python src/frontier/null_ws7_second_order.py          > data/c3_frontier/second_order/null_ws7_second_order.txt
+python src/frontier/null_ws7_second_order.py --stored > data/c3_frontier/second_order/null_ws7_first_order_copy.txt
+```
+
+**Measured, 2026-11-18, in a clean copy of the tracked files** (no `.git`): `rescore_second_order.py` 0.4 s, seven of its nine JSON files byte-identical to the deposited ones and the other two
+(`summary.json`, `v2.json`) different only in the run time they record; `null_ws7_second_order.py` 10.2 s and, with
+`--stored`, 15.7 s, both `.json` and both `.txt` byte-identical (`REPRODUCE.md`, the table measured for 3.5.0).
+
+The files of this folder were written by the deposited scripts in this repository on 2026-11-18. Against the files the
+JCP package wrote on 2026-11-16 they agree in every number, with five kinds of difference, each in a string or a
+record of the run: the inputs recorded in `summary.json` are repository-relative paths (the package recorded local
+absolute ones); the notes copied from the number registry (`checks.json`) and the note of `v2.json` no longer name the
+package's working files; the two sections of `checks.json` and `v2.json` that describe the registry
+(`guard_records`, `guard_records_touched`, `D23`) describe it as it stands, after the guards of the package updated the
+records of the re-scored literals and corrected two records on 2026-11-16 (the package's own script, run on that
+registry, writes the same); the source path recorded in the two `null_ws7` JSON files (`summary.FRstar_source`); and
+the wording of `needs_a_run[3]` in `summary.json`. `src/verify.py`
+section (12) reads these files and re-derives every value it compares from the stored primitives.

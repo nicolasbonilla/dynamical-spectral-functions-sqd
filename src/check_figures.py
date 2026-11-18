@@ -34,6 +34,11 @@ tables and writes data/thm1iii_violation/n3_fig5_summary.json; both are compared
 byte-for-byte (it is seeded, because the script rewrites it in place and build_n3.py reads its
 legend) and the JSON after being removed from the scratch copy of data/.  Nine generators,
 twenty-one artefacts.
+
+Changed 2026-11-18 (deposit 3.5.0, the manuscript prepared for JCP): make_fig_thmB_data.py (the blue series of
+Fig. S10 on the certificate of Theorem 1, which build_n3.py no longer writes) and make_fig_results_data.py (the
+tables and marks of Fig. 1) joined; make_hardware_hero.py and its two artefacts left (the device figure is not
+typeset).  Ten generators, twenty-two artefacts.
 """
 import os
 import re
@@ -49,16 +54,25 @@ GENERATORS = [
     "make_method_fig_max.py",
     "make_akw_sampled_honest_fig.py",
     "make_noise_recovery_native.py",
+    # 2026-11-18 (deposit 3.5.0): its fragment fig_hardware_hero_frag.tex left ARTEFACTS: it is the device
+    # figure fig:heron, which the manuscript prepared for JCP does not typeset (src/check_provenance.py refuses a
+    # guard on a fragment the manuscript does not \input).  Its table heron_hot.dat stays guarded.
     "make_hardware_hero.py",
     "make_table.py",
     # recovered 2026-09-26 (src/recovered/README.md)
     "recovered/make_fig_gapscaling.py",
     "recovered/build_n3.py",
+    # 2026-11-18 (deposit 3.5.0): the blue series of Fig. S10, n3_thmB_frac.dat and n3_thmB_eta.dat, is the error
+    # over the certificate of Theorem 1 (second-order branch for a real probe); build_n3.py no longer writes it.
+    "make_fig_thmB_data.py",
     # added 2026-09-28 (late): the min/median/max whiskers of Fig. S5, rewritten into the
     # fragment from the two n3_fig5_*.dat build_n3.py has just written (it replaces the
     # one-shot patcher fix_n3_fig5_series.py, which is kept as the record).  Runs after
     # build_n3.py, in this order.
     "recovered/n3_fig5_whiskers.py",
+    # 2026-11-18 (deposit 3.5.0): Fig. 1 of the manuscript prepared for JCP (fig:results), its two tables and its
+    # two marks, from data/c3_frontier/ and the re-scored data/c3_frontier/second_order/.
+    "make_fig_results_data.py",
 ]
 
 # What those generators are expected to (re)write, relative to the repository root (the
@@ -77,7 +91,7 @@ ARTEFACTS = [
     "paper/figs/aw_method.dat",
     "paper/figs/fig_akw_sampled_honest.tex",
     "paper/figs/fig_noise_recovery_native.tex",
-    "paper/figs/fig_hardware_hero_frag.tex",
+    # 2026-11-18 (deposit 3.5.0): fig_hardware_hero_frag.tex left (fig:heron is not typeset); heron_hot.dat stays.
     "paper/figs/heron_hot.dat",
     # Added 2026-09-26: written by the two recovered generators.
     "paper/figs/fig_gapscaling_native.tex",
@@ -97,13 +111,19 @@ ARTEFACTS = [
     # scratch copy of data/ before the run, so the script must write it.
     "paper/figs/fig_thm1iii_violation_native.tex",
     "data/thm1iii_violation/n3_fig5_summary.json",
+    # 2026-11-18 (deposit 3.5.0): written by make_fig_results_data.py (Fig. 1 of the JCP text); not seeded.
+    # (n3_thmB_frac.dat and n3_thmB_eta.dat above are written by make_fig_thmB_data.py since that day.)
+    "paper/figs/fig_results_L8.dat",
+    "paper/figs/fig_results_star.dat",
+    "paper/figs/fig_results_marks.tex",
 ]
 
 # Artefacts that are compared but NOT copied into the scratch tree first: the generator must
-# write them, or they are MISSING.  (The eight older ones are seeded, as they always were.)
+# write them, or they are MISSING.  (The older ones written by the first generators are seeded, as
+# they always were.)
 NOT_SEEDED = {a for a in ARTEFACTS
               if a.endswith("/fig_gapscaling_native.tex") or a.startswith("paper/figs/n3_")
-              or a.endswith("/n3_fig5_summary.json")}
+              or a.endswith("/n3_fig5_summary.json") or a.startswith("paper/figs/fig_results_")}
 
 # Read by a generator, never written or compared.  Until 2026-09-28 (late) this held the
 # Fig. S5 fragment, whose legend build_n3.py checks; n3_fig5_whiskers.py now rewrites that

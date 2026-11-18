@@ -1,5 +1,7 @@
 # KNOWN DISCREPANCIES — where running a script does *not* reproduce the deposit
 
+> **Deposit 3.5.0 (2026-11-18):** `paper/` holds the manuscript prepared for The Journal of Chemical Physics; its Theorem 1 has a second-order upper branch. Section 36 (at the end) records the change, every printed number that changed with it, every change of a check and the JCP numbering of the figures (1–4, S1–S13). The sections before it describe deposit 3.4.1 (arXiv v4) and keep the numbering of their date.
+
 *Last audited: **2026-09-26**, against the v3 manuscript as submitted to arXiv on 2026-09-25 (17 figures, 17 tables, 66 pp). Updated 2026-09-28 in §5, §8 item 8, §13, §29 and §30 for the manuscript edits of that day.*
 
 > ### Figure numbers in this file
@@ -418,9 +420,9 @@ at the first non-zero exit -- which is what `make` does. Measured 2026-09-18:
 |---|---|
 | `make figures` | **6/6 commands, exit 0**, and every regenerated fragment byte-identical to the committed one |
 | `make check-figures` | **PASS** -- 8 regenerated artefacts byte-identical (re-measured 2026-09-19). Before the §25 repair of the same day one of the eight was compared against a copy of itself; since that repair all 8 are guarded. *Since 2026-09-26: 19 artefacts from 8 generators, one comment line of the Fig. 6 fragment normalised (§29)* |
-| `make verify` | **PASS** -- 1280 checks, 0 failures, **4 registered xfail, 0 xpass**, 2 skips, 14 563 numeric assertions (re-measured 2026-09-30, final review: +66 checks and +66 assertions, verify.py checks the Fig. 3 caption's panel (b) mean and maximum, window and branch thresholds (section 9.6b), the printed noise values of Figs. S7-S8, Sec. S8 and Sec. VIII (section 9.9b) and every restated Fig. 3 certificate number in the abstract and Secs. I, V, X and S3 (section 9.9c); 1214 / 14 497 earlier on 2026-09-30: +2 checks and +2 assertions, verify.py section 9.3 checks every printed exact permutation p (Sec. I, Sec. VI, Fig. 6 caption) against `exact_perm_p_one_sided_F1` at 1e-15, unified on the 3.35e-13 rounding; re-measured 2026-09-28, late, closing the review, §33: +278 checks and +2 821 assertions for section 9.6c (the free-fermion supports, the spin-peak deviations and the Fig. S5 pool re-classified from the deposited certificate rows), the chi_max of the witness, the LF hash of the Fig. 3 generator and the L=14 re-ranking record, and the Fig. S5 coverage gap closed, so 5 xfail became 4; 934 / 11 674 after the Fig. 3 finite-shot run was deposited, §31: +60 checks and +187 assertions recompute the caption's finite-shot numbers from `data/fig3_finite_shot_T*.json`; 874 / 11 487 after the Fig. 3 frequency grid was widened to [-9t, 17t], §31: +1 596 assertions, the 266 extra plotted points of each of its six curves; 874 / 9 891 after the two phrase guards on Sec. S8 of §30 were added, +2 checks and +2 assertions; 872 / 9 889 on 2026-09-26 after the hardware bit-order check and three phrase guards were added, +4 checks and +5 assertions; before that 868 / 9 884, re-measured 2026-09-19 after the C3 frontier deposit added section (10b), 2 387 assertions, and registered `ladder_L4.ngrid_eta050` as the fifth open defect; the earlier 807 / 7 454 / 4, 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
+| `make verify` | 3.5.0 (2026-11-18): **PASS** -- 1269 checks, 0 failures, 4 registered xfail, 0 xpass, 2 skips, 16 565 numeric assertions (§36). Until then: **PASS** -- 1280 checks, 0 failures, **4 registered xfail, 0 xpass**, 2 skips, 14 563 numeric assertions (re-measured 2026-09-30, final review: +66 checks and +66 assertions, verify.py checks the Fig. 3 caption's panel (b) mean and maximum, window and branch thresholds (section 9.6b), the printed noise values of Figs. S7-S8, Sec. S8 and Sec. VIII (section 9.9b) and every restated Fig. 3 certificate number in the abstract and Secs. I, V, X and S3 (section 9.9c); 1214 / 14 497 earlier on 2026-09-30: +2 checks and +2 assertions, verify.py section 9.3 checks every printed exact permutation p (Sec. I, Sec. VI, Fig. 6 caption) against `exact_perm_p_one_sided_F1` at 1e-15, unified on the 3.35e-13 rounding; re-measured 2026-09-28, late, closing the review, §33: +278 checks and +2 821 assertions for section 9.6c (the free-fermion supports, the spin-peak deviations and the Fig. S5 pool re-classified from the deposited certificate rows), the chi_max of the witness, the LF hash of the Fig. 3 generator and the L=14 re-ranking record, and the Fig. S5 coverage gap closed, so 5 xfail became 4; 934 / 11 674 after the Fig. 3 finite-shot run was deposited, §31: +60 checks and +187 assertions recompute the caption's finite-shot numbers from `data/fig3_finite_shot_T*.json`; 874 / 11 487 after the Fig. 3 frequency grid was widened to [-9t, 17t], §31: +1 596 assertions, the 266 extra plotted points of each of its six curves; 874 / 9 891 after the two phrase guards on Sec. S8 of §30 were added, +2 checks and +2 assertions; 872 / 9 889 on 2026-09-26 after the hardware bit-order check and three phrase guards were added, +4 checks and +5 assertions; before that 868 / 9 884, re-measured 2026-09-19 after the C3 frontier deposit added section (10b), 2 387 assertions, and registered `ladder_L4.ngrid_eta050` as the fifth open defect; the earlier 807 / 7 454 / 4, 806 / 7 454 / 4+1, 806 / 7 452 / 5, 801 / 5 014 / 11 and 748 / 4 951 readings are all superseded). The assertion total moves with the number of scripts in `src/`, so re-measure it rather than copying it |
 | `make data` | **exit 0** -- `paper/figs/sqw_edges.dat` and `data/charge_gap.json` regenerated (~256 s, L=4...12 ED) |
-| `make paper` | two `pdflatex` passes; not re-run in this pass |
+| `make paper` | 3.5.0: `pdflatex main_jcp`, `pdflatex sm_jcp`, four rounds (the procedure of the JCP package repeats until no rerun is asked, at least three; from a clean copy the fourth is needed; measured 2026-11-18, `REPRODUCE.md`). Until 3.4.1: two `pdflatex` passes on `main.tex`; not re-run in this pass |
 | `make reproduce` | **NOT verified** -- it executes `notebooks/00_Reproduce_Everything.ipynb`, which needs `pyscf`; see §13. That notebook is the **v1–v2 pipeline**, kept as a record: it reproduces the v1–v2 figure set, several of which v3 withdrew, and it is not the reproduction path of the v3 manuscript |
 
 ## 12. The deposit was reproduced from the command line -- what was actually run
@@ -705,8 +707,8 @@ four entries below were all found by measurement, and three of them are open.
 `src/make_akw_sampled_honest_fig.py` lines 17-18 hard-code two absolute paths:
 
 ```
-REPO = r"C:\Users\Nicolas\Downloads\Proyecto_SQD_ML\P2_dynamical_spectral_functions\release"
-CALC = r"C:\Users\Nicolas\AppData\Local\Temp\claude\...\scratchpad\p2_calc"
+REPO = r"C:\Users\...\Downloads\Proyecto_SQD_ML\P2_dynamical_spectral_functions\release"
+CALC = r"C:\Users\...\AppData\Local\Temp\claude\...\scratchpad\p2_calc"
 ```
 
 It is the only script in `src/` that does (measured: one grep for `C:\Users` over all 56). Two
@@ -1417,3 +1419,104 @@ PASS -- the package is complete, clean and self-contained`; nothing was uploaded
 (`work/carta_PRA_ENVIAR_2026-09-28.txt`) changed only where it echoed the changed wording (result 1,
 "without the exact spectral function" and "only up to an additive term"; result 4, the 0.98 "to certify
 the 5% accuracy criterion ... (at eta = 0.18 t)"), with CAMBIOS item 14.
+
+## 36. The manuscript prepared for JCP: the second-order branch of Theorem 1, every printed number that changed with it, and every change of a check -- **DEPOSIT 3.5.0, 2026-11-18**
+
+**What changed in the text.** `paper/` now holds the manuscript prepared for *The Journal of Chemical Physics*
+(`main_jcp.tex`, main text and references; `sm_jcp.tex`, the Supplementary Material; both run `main.tex`). Its
+Theorem 1 gains a **second-order upper branch**; nothing is removed (the lower bound, the trivial branch and the
+first-order branch stay). For a real probe (`H`, `P` and `phi_P` real in one basis: every local probe of the paper)
+the certificate is `min{1+w, (sqrt(1-w) + Lambda^/eta)^2}` relative to `||phi||^2`; its two sides coincide when the
+leakage vanishes. The complex momentum-resolved probes keep the first-order branch, because the second-order one needs
+`Lambda~_P`, which was not stored for them. The text is numbered 1-4 (main text) and S1-S13 (Supplement): `fig:results`
+1 (new), `fig:circ` 2, `fig:method` 3, `fig:akwsampled` 4; `fig:witness` S1, `fig:decoupling` S2, `fig:master` S3,
+`fig:ladder` S4, `fig:scaling` S5, `fig:lattice` S6, `fig:gapscaling` S7, `fig:sqw` S8, `fig:spin` S9,
+`fig:thm1iii-violation` S10, `fig:hero` S11, `fig:noise` S12, `fig:noiserec` S13; `fig:heron` is not typeset (the
+device runs are one line of Sec. S12). The arXiv-v4 text stays at tag `v3.4.1` (Zenodo 10.5281/zenodo.23088494).
+
+**The rules of the change** (the code comments of 3.5.0 cite them as "rule Dn"). D1: Theorem 1 gains the branch,
+nothing removed. D2: names (first-order, second-order branch, the certificate = their minimum with the trivial bound).
+D3: the proof of Appendix A gains the error identity of the Galerkin approximation and its integration. D4: credit
+where it is used (Strakoš and Tichý 2011; Jeckelmann 2002). D5: every number from stored data, no new run. D6: for
+real probes the certificate is the formula above. D7: a vacuity factor names its branch. D8: complex momentum probes,
+first-order branch only, labelled. D9: the stored momentum-block counts are first-order values, kept and labelled.
+D10: the rung anatomy of the threshold describes the first-order proof, kept and labelled. D11: the first-order
+crossing error is printed once, in Sec. V D, labelled. D12: the sentences that called the second-order question open
+are gone. D13: what does not change (title, lower bound, counterexample, support results, the 0.35-0.43 example, the
+exact ground state, vacuity at the operating fractions, every published subspace uncertified). D14: length. D15: every
+number with a stored source, rounding in the direction of the bound. D16: the text frozen after the change. D17: a
+value quoted above the trivial bound is the smaller of the two leakage branches. D18: the momentum channels `k=0, pi`
+are real probes, the others complex; the pooled count is split the same way. D19: "not reached at L=6" holds at
+`eta<=0.18t`. D20: the fitted-rule comparison is re-run on the re-scored crossings by a copy of
+`src/frontier/null_ws7.py`. D21: "never below the true error" is stated for the rows whose true error exceeds 1e-10.
+D22: sentences whose meaning changed with the branch although no number did. D23: one record of the number registry
+pointed to the wrong stored field and was corrected. The working rules the comments cite: 1b (state a result, then its
+limit, once), 2 (never delete a limit), 7b (a ceiling rounds up, a floor down, a plain value or a range of stored
+values to nearest), 20 (independent readings until nothing false or misleading is found). Two more labels appear in code comments: "the number sheet" is the JCP package's table of printed numbers with their stored sources, each row of which survives as the note of its record in `src/jcp/number_sources.json`; "closing round n, Dk", "R2-nn" and "R3-nn" name items of the package's internal readings, not the rules D1-D23 above. Local paths quoted in the older records of this file, `docs/DATA_AVAILABILITY.md` and `docs/FIGURE_PROVENANCE.md` are shortened to `C:\Users\...\`.
+
+**Every printed number that changed with the bound** (re-scored from stored data by
+`src/frontier/rescore_second_order.py` and `src/frontier/null_ws7_second_order.py`; each new value is re-derived from
+the stored primitives on every run of `python src/verify.py` section 12, by the check named):
+
+| where | what | 3.4.1 (first-order) | 3.5.0 (certificate) | deposited source; check |
+|---|---|---|---|---|
+| abstract, Secs. I, V, VII, S4 | true relative error at which the bound falls below the trivial one, sixteen `(L,eta)` cells, `L=6-12` | 1.2-7.3e-3 (kept once, labelled, in Sec. V D) | 2.6e-3-1.5e-2 | `second_order/cells.json` (`crossing.new`); `check_threshold_error` |
+| Secs. I, V, S4 | spread and median of that error | 5.9; 2.7e-3 | 5.8; 5.7e-3 | the same |
+| Secs. I, III, S4 | bound over true error at the crossing; at the least loose certified point | 3e2-1.6e3; 3e2-2.4e3 | 1.4e2-7.8e2; 1.2e2-8.0e2 | the same |
+| Secs. VI, S4 | geometric middle of the crossing error | ~3e-3 | ~6e-3 | the same |
+| Secs. I, V, VII, Table III | vacuity at the operating fractions (smaller of the two leakage branches over the trivial one) | 1.66-8.61 | 1.38-8.61 (one cell changes: `L=6`, `eta=0.25t`) | `second_order/v2.json` (`D17.table_III`); `check_main_numbers`, `src/check_coherence.py` |
+| Secs. I, V, VII, S4 | fraction of the sector at which the bound reaches 0.05 at `L=8`, `eta=0.18t` | about 0.98 | between 0.90 and 0.92; at `L=10` and `12` now reached (0.80-0.85; 0.60-0.70), at `L=6` not at `eta<=0.18t` | `second_order/v2.json` (`D19`); `check_fraction_five_percent` |
+| Secs. I, V, VII, S4 | splits on which a two-constant rule in `1-w` is tighter; on which the eta-blind rule is looser | 11 of 14; 13 | 13 of 14 (11 kept once, labelled); 12 | `second_order/null_ws7_second_order.json`; `check_fitted_rule` |
+| Secs. V, S4 | firing level of the fitted rule; the floor 5e-3 over it | 1e-5-1e-4 | 2.4e-5 to 1.0e-3; a factor 5.0 to 2.1e2 | the same |
+| Secs. I, V, VII, S4 | Fig. 4 (`A(k,omega)` at 85% of its sector): relative bound and its ratio to the true error | 0.77-1.75, 350-900x (all sixteen channels) | real channels `k=0, pi`: 0.15-0.35, 160-170x; complex channels, first-order branch: 1.07-1.75, 350-650x | `second_order/v2.json` (`D18`); `check_akw_channels` |
+| Fig. S10, Secs. S9, V, S4 | pooled subspaces on which the leakage entry beats the trivial bound; range of error over certificate | 61; 1.18e-5 to 0.9999999997 | 85 = 57 real + 28 complex; 3.55e-4 to 0.9999999997 | `second_order/pooled.json`; `check_pooled_split` |
+| Fig. 1 caption | crossing `FR*` at `L=8`, `eta=0.18t`; last plotted leakage value; the plotted rows between which the bound falls below 0.05 | 0.79; 0.039; 0.977 and 0.983 | 0.74; 3.8e-4; 0.90 and 0.92 | `second_order/cells.json`, `v2.json` (`D17.fig1`); `check_fig_results` |
+| Secs. V, S4 | threshold of the certificate, `tau(w)` | `(1+w)/(1+sqrt w) - sqrt(1-w)`, `tau(1)=1` | `sqrt(1+w) - sqrt(1-w)`, `tau(1)=sqrt 2` | formula; `check_second_order_tau` |
+| Secs. V, S4 | `tau` at the `L=12` published subspace; the floor `w_S>=0.995`; the threshold move | 0.9625; 0.928; at most 7.2% | 1.3766; 1.341; at most 5.2% | `second_order/supplement.json` (`tau`); `check_directed_rounding` |
+| Sec. S5 (Prop. 2) | vacuity factor of an invariant bound | `W/(2 eta)` | `W/(2 sqrt2 eta)` | formula; `check_second_order_tau` |
+| Secs. III, S4 | fixed-subspace looseness over eta; across the subspaces of a cell | at most 1.8 (2.0 to `L=12`); 23 to 148 | at most 3.9; 1.2 to 2.5 | `second_order/v2.json` (`D22`); `check_fixedP_looseness` |
+| Secs. V, S15, S4 | margin of the crossing error over the reference drift | 46 | at least 96 | `second_order/cells.json`; `check_threshold_error` |
+| Secs. S15, S2 | largest change of the smaller branch made by ties at the cut | 7.8e-4 | 1.1e-3 | `second_order/v2.json` (`D17.ties`); `check_d17_named` |
+| Sec. S4, Table S1 | certified values at grid points (`L=12`) and Table S1 columns 5-7 | 0.718, 0.503, 0.137, 0.219, 0.878; trivial cap over certified 9.2 | 0.129, 0.0631, 0.00466, 0.0120, 0.193; 1.7e2 | `second_order/grid_rows.json`, `supplement.json`; `check_table_S1`, `src/jcp/number_sources.json` |
+| Sec. S9 | deposited rows on which each side holds | 378 | 376 (two rows are round-off, excluded and counted) | `second_order/v2.json` (`D21`); `check_never_below` |
+
+**Every change of a check** (old expectation -> new expectation; nothing was weakened: each first-order check the new
+text made wrong was replaced by the check of the JCP package that re-derives the new value from the same stored rows):
+
+- `src/verify.py` 9.9c: the relative bound (0.77-1.75), the slack (350-900) of the sixteen channels in the abstract and
+  four sections, the calibration spread (5.9) and the fraction 0.98 at `L=8` -> removed there, replaced by section (12):
+  `check_akw_channels`, `check_threshold_error`, `check_fraction_five_percent`. The momentum-block counts and the
+  first-order fine-scan bracket stay checked in 9.9c.
+- `src/verify.py` 9.6c: the point-by-point first-order check of `n3_thmB_frac.dat` and `n3_thmB_eta.dat` (2 x 606
+  points), the caption's ratio range (`x 10^-5`) and the two counts "61 of the 606" -> replaced by section (12),
+  `check_pooled_split`, on the certificate; the row counts of the two tables stay checked in 9.6c.
+- `src/verify.py` 9.x: the dequantization paragraph is read from `sec_9_sm.tex`, where it moved word for word.
+- `src/verify.py`: `fig_results_native.tex` joins the covered fragments (opened by section 12, `check_fig_results`);
+  new section (12) runs the 21 checks of `src/verify_jcp.py`; floors: (9) 10850 -> 9635 (9832 measured less 2%, the
+  1238 assertions that left are the first-order checks above) and (12) 3175 (3240 measured less 2%); the two floors
+  together exceed the 10850 of 3.4.1.
+- `src/check_figures.py`: `make_fig_thmB_data.py` and `make_fig_results_data.py` join (5 artefacts, not seeded);
+  `make_hardware_hero.py` stays with one of its two artefacts, `heron_hot.dat`; its fragment
+  `fig_hardware_hero_frag.tex` leaves the list (the device figure is not typeset; `src/check_provenance.py`
+  forbids a guard on a fragment the manuscript does not `\input`). 23 artefacts from 11 generators.
+- `src/recovered/build_n3.py`: no longer writes `n3_thmB_*.dat`; its legend self-check counts the live rows.
+- `src/check_coherence.py`, `src/check_trim.py`: the registrations of the JCP package merged, each with its reason; one
+  registration added for the correction of Sec. S4 of 2026-11-18 (its proof, the phrase that keeps the fact, printed
+  once); the `@comments:` proofs of `check_trim.py` read the Comments field as filed, quoted verbatim in
+  `docs/ARXIV_SUBMISSION.md`, when `build/arxiv_comments.txt` (not deposited) is absent.
+- The guardian counts the data availability statement quotes: 1269 checks over 16 565 numeric assertions
+  (3.4.1: 1280 over 14 563); `src/check_coherence.py` pins the new sentence.
+
+**Re-scored outputs, reproduced.** Run in a clean copy of this deposit, `src/frontier/rescore_second_order.py` and
+`src/frontier/null_ws7_second_order.py` (with and without `--stored`) write `data/c3_frontier/second_order/` with every
+number equal to the deposited files; the two run times they record (`summary.json`, `v2.json`) differ from run to run
+([`C3_FRONTIER.md`](C3_FRONTIER.md) §8, [`REPRODUCE.md`](REPRODUCE.md)).
+
+**The files of 3.4.1 the JCP text does not use** are in `_superseded/arxiv_v4/` (one line each in its README):
+`paper/main.pdf` (the arXiv-v4 build), the Physical Review A split (`main_pra.tex`, `sm_pra.tex`, their PDFs,
+`pra_split.py`) and the first-order `n3_thmB_*.dat`. Three comments of the JCP sources (`main_jcp.tex`,
+`app_proof.tex`, `bibliography.tex`) still name `pra_split.py` or `main.pdf`: they describe the PRA split of 3.4.1.
+`src/build_arxiv_bundle.py`, the packager of the arXiv versions, compares its build with `paper/main.pdf`, which 3.5.0
+does not carry; build `paper/main.pdf` from `main.tex` before running it. Internal working notes of the JCP package in
+the comments of the TeX sources were blanked to a bare `%` (the comparison that shows the sources differ from the
+package's in comment lines only is in the record of this version).

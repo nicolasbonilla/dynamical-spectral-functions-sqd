@@ -1,0 +1,19 @@
+TRAIN L        TEST L         cert      nullA     nullB     winner
+(6,)           (8, 10, 12)    x3.37     x9.51     x2.39     NULL
+(8,)           (6, 10, 12)    x5.79     x5.15     x2.18     NULL
+(10,)          (6, 8, 12)     x5.79     x7.26     x2.41     NULL
+(12,)          (6, 8, 10)     x4.00     x10.74    x3.20     NULL
+(6, 8)         (10, 12)       x2.39     x5.28     x2.29     NULL
+(6, 10)        (8, 12)        x3.37     x6.43     x1.59     NULL
+(6, 12)        (8, 10)        x2.33     x6.42     x2.15     NULL
+(8, 10)        (6, 12)        x5.79     x4.78     x1.72     NULL
+(8, 12)        (6, 10)        x4.00     x5.51     x2.22     NULL
+(10, 12)       (6, 8)         x2.93     x5.94     x3.14     CERT
+(6, 8, 10)     (12,)          x1.65     x4.76     x1.11     NULL
+(6, 8, 12)     (10,)          x1.65     x4.61     x1.40     NULL
+(6, 10, 12)    (8,)           x1.71     x3.88     x1.36     NULL
+(8, 10, 12)    (6,)           x2.09     x3.73     x1.73     NULL
+
+splits where the ZERO-parameter certificate beats BOTH fitted w_S rules: 1 / 14
+two-constant rule tighter than the certificate on 13 / 14 splits; eta-blind rule looser on 12 / 14
+two-constant rule fires at 1-w_S = 2.399e-05 .. 9.957e-04 (all splits, eta = 0.10-0.25); floor 5e-3 is 5.0 .. 208.4 times larger

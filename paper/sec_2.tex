@@ -99,13 +99,6 @@ are per channel and per stream.}
  & \raggedright Fig.~\ref{fig:hero}(a)
  & \raggedright full CAS sector
  & \raggedright none\tabularnewline
-\raggedright $A(\omega)$; hardware, \texttt{ibm\_fez}, $L{=}6$, $U/t{=}4$, $\eta{=}0.15\,t$; $\dim=300$
- & \raggedright Fig.~\ref{fig:heron}(a)
- & \raggedright post-selected from device bitstrings read in reversed bit order, so every retained shot is a
-   device error (Sec.~\ref{sec:scope:hw}); $|\mathcal S|=300$ of $300$, the entire sector, so the reconstruction
-   equals the exact $A(\omega)$ by coverage
- & \raggedright $3.5\times10^{5}$: $5\times10^{4}$ on each of $7$ circuits, $k{=}0$ (the $t{=}0$
-   reference) to $k{=}6$\tabularnewline
 \midrule
 \raggedright $A(k,\omega)$; $L{=}12$, $\eta{=}0.18\,t$; $\dim=731\,808$
  & \raggedright Fig.~\ref{fig:lattice}
@@ -119,7 +112,11 @@ are per channel and per stream.}
 \raggedright $A(\omega)$; $L{=}8$, $\eta{=}0.15\,t$; $\dim=3920$
  & \raggedright Fig.~\ref{fig:akwsampled}(c)
  & \raggedright observed bitstrings; sector fraction $0.835\pm0.0025$ at the largest budget
- & \raggedright up to $2.60\times10^{6}$ over $19$ snapshots ($K{=}18$), $8$ streams\tabularnewline
+ & \raggedright largest $2.60\times10^{6}$, over $19$ snapshots ($K{=}18$), $8$ streams\tabularnewline
+% 2026-11-10 (7b audit): "up to" rounds UP: the largest budget is T = 2 603 190 (sampled_honest.json
+% results[2].shot_sweep[6].T), 2.60e6 to nearest; the point-value mentions elsewhere stay 2.60e6.
+% 2026-11-14 (closing reading A2): the cell prints the largest budget as a plain value, "largest 2.60e6", as
+% Sec. II D and the Fig. 4 caption do, so one stored value is no longer printed two ways.
 \midrule
 \raggedright $S(q,\omega)$; $L{=}12$, $\eta{=}0.18\,t$; $\dim=853\,776$
  & \raggedright Fig.~\ref{fig:sqw}
@@ -145,7 +142,10 @@ are per channel and per stream.}
 %  *** DELETE IT FROM hardware.tex WHEN THIS FILE IS INSTALLED. ***
 % -------------------------------------------------------------------------------------
 \begin{figure*}[tp]\centering\includegraphics[width=\linewidth]{figs/fig_circuit.pdf}
-\caption{\textbf{One sampling primitive, four dynamical responses.} An ancilla-free circuit---state preparation and a Trotter layer repeated $K$ times (Givens rotations for the hopping
+\caption{\textbf{One sampling primitive, four dynamical responses (schematic).} Every sampled
+reconstruction in this work is a classical simulation of this primitive, with exact time evolution and
+Born draws from the exact evolved state or their infinite-shot ranking; no circuit is executed on a
+device for any result. An ancilla-free circuit---state preparation and a Trotter layer repeated $K$ times (Givens rotations for the hopping
 $t$, native $R_{zz}$ for the on-site $U\hat n_\uparrow\hat n_\downarrow$)---is measured in the
 computational basis; no Hadamard test or controlled unitary is run on the device. The sampled
 bitstrings define a sector-specific subspace $\mathcal S$ and feed a single classical engine---a Haydock
@@ -176,9 +176,11 @@ not to \emph{estimate matrix elements}~\cite{bauer2016,endo2020,rungger2020,gree
 as a \emph{sampling distribution} selecting a determinant
 subspace~\cite{robledomoreno2025,kanno2023,skqd2025,teqsci2024,extsqd2025,adaptqsci,shirakawa2025},
 extended since to embedded fragments and to auxiliary-field
-post-processing~\cite{shajan2024,danilov2025}, and here lifted to the $(N{\pm}1)$ manifold and to a
-frequency-resolved observable. Apart from the concurrent Green's-function extension of Ref.~\cite{patel2026}
-(Sec.~\ref{sec:intro}), that lineage stops at
+post-processing~\cite{shajan2024,patra2026,danilov2025}, and here lifted to the $(N{\pm}1)$ manifold and to a
+frequency-resolved observable. On the classical side, selected configuration interaction already
+yields Green's functions, as an impurity solver for dynamical mean-field theory~\cite{mejutozaera2019},
+and time-correlation functions~\cite{tdasci2024}. Apart from the concurrent Green's-function extension of Ref.~\cite{patel2026}
+(Sec.~\ref{sec:intro}), the quantum-sampling lineage stops at
 energies, static correlators and, at most, discrete levels: the closest published results are a QSCI quasiparticle band
 structure returning discrete poles~\cite{ohgoe2025}, a molecular spectrum built from a neutral-sector
 autocorrelation with classically projected long-time dynamics~\cite{santini2025}, and, from the
@@ -234,4 +236,20 @@ error $(4.81\pm0.27)\times10^{-3}$ (Fig.~\ref{fig:akwsampled}(c)), and the liter
 Fig.~\ref{fig:akwsampled}(a,b) reaches the accuracy of panel~(b) at $5.2\times10^{6}$ shots per channel
 and not at half that budget. The full declarations, including the branch sum rules and what is guaranteed
 in advance, are in Sec.~\ref{sm:method}.
+
+% 2026-11-14 (closing reading C1): AIP's AI policy asks for the reason for using the tool; it is added as one
+% sentence.  The list of tools is brought up to the revision of November 2026 (Claude Fable 5.2; Claude Code up
+% to 2.1.322), from the metadata of the session records on the author's machine; the entries written on
+% 2026-10-28 from the records kept then are kept.
+\paragraph{Use of AI tools.} Claude models of Anthropic (Claude Opus~4.8, Opus~5 and Opus~5.5,
+Claude Fable~5.1 for delegated subtasks, and Claude Fable~5.2), run through the Claude~Code
+command-line tool (versions 2.1.158 to 2.1.322), were used as programming and writing assistants: to
+write and test the code of the deposited repository, to build figure sources from the deposited data,
+to draft and edit the text and to check the cited works against their sources. They were used so
+that a single author could write and test this amount of code and text and have both re-checked in
+separate sessions. Because such output can be wrong,
+the deposited verification script (see the Data Availability statement) recomputes the physics by
+exact diagonalization and checks against it the deposited data and the numbers in the figure
+sources and the tables; it does not verify every sentence. The author reviewed all of this work and
+takes full responsibility for its content.
 

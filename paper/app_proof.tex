@@ -1,8 +1,14 @@
 % =====================================================================================
-%  Appendix A -- the proof of Theorem~\ref{thm:leakage} and of the closed form
-%  Eq.~\eqref{eq:lambda}.  Items (1)-(5) are those of the Supplemental Material section
-%  sm:leakage, moved here verbatim so that the main text carries the proof of its
-%  central theorem; \label{eq:split} lives here, and the SM reaches it through xr-hyper.
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
 %  main.tex inputs this file after sec_10.tex (which ends with the acknowledgments) and
 %  before bibliography.tex, i.e. before sm_begin.tex, so pra_split.py places it in
 %  main_pra.pdf.  \appendix itself is issued in main.tex, next to the \input.
@@ -10,7 +16,9 @@
 \section{Proof of the leakage certificate and of its closed form}
 \label{app:proof}
 
-This appendix proves Theorem~\ref{thm:leakage} and the second equality of Eq.~\eqref{eq:lambda}.
+This appendix proves Theorem~\ref{thm:leakage} and the second equalities of Eqs.~\eqref{eq:lambda}
+and~\eqref{eq:lambdatilde}. The sector is finite-dimensional, so every integrand below is a continuous rational
+function of $\omega$ without real poles, and every integral is finite.
 
 \begin{proof}
 Write $u=R(z)\phi$ and $u_P=R_P(z)\phi_P$, extended by zero outside $\operatorname{ran}P$.
@@ -18,21 +26,21 @@ Write $u=R(z)\phi$ and $u_P=R_P(z)\phi_P$, extended by zero outside $\operatorna
 \emph{(1) The split.} Since $u_P\in\operatorname{ran}P$ and $(z-H_P)u_P=\phi_P$ there,
 $(z-H)u_P=zu_P-PHu_P-QHu_P=\phi_P-QHu_P$; subtracting this from $(z-H)u=\phi$ gives
 \begin{equation}
-u-u_P\;=\;R(z)\bigl[\,\phi_Q\;+\;QH\,R_P(z)\phi_P\,\bigr].
+u-u_P\;=\;R(z)\,r(z),\qquad r(z)\;:=\;\phi_Q\;+\;QH\,R_P(z)\phi_P\;\in\operatorname{ran}Q .
 \label{eq:split}
 \end{equation}
 This is the Feshbach--L\"owdin partition of the resolvent~\cite{feshbach1958,lowdin1962}, written as an
 exact identity rather than as an expansion: the first source term is the part of the probe the subspace
 never held, the second is the part of the Hamiltonian that carries amplitude out of it. Only $P^{2}=P$,
-$P^{\dagger}=P$, $H=H^{\dagger}$ and $\eta>0$ are used; no property of the determinant basis, of the
-ranking, or of the sampler enters anywhere below.
+$P^{\dagger}=P$, $H=H^{\dagger}$ and $\operatorname{Im}z\neq0$ are used; no property of the determinant basis, of
+the ranking, or of the sampler enters anywhere below.
 
-\emph{(2) Pointwise.}
+\emph{(2) First order, pointwise.}
 $A-A_P=(\eta/\pi)(\lVert u\rVert+\lVert u_P\rVert)(\lVert u\rVert-\lVert u_P\rVert)$ and
 $\bigl|\lVert u\rVert-\lVert u_P\rVert\bigr|\le\lVert u-u_P\rVert$, so
 $|A-A_P|\le(\eta/\pi)(\lVert u\rVert+\lVert u_P\rVert)\,\lVert u-u_P\rVert$ at every $\omega$.
 
-\emph{(3) Integration.} By Cauchy--Schwarz in $\omega$,
+\emph{(3) First order, integrated.} By Cauchy--Schwarz in $\omega$,
 \begin{widetext}
 \begin{equation*}
 \lVert A-A_P\rVert_1\;\le\;\frac{\eta}{\pi}
@@ -46,14 +54,48 @@ first term obeys the sum rule with seed $\phi_Q$, contributing exactly
 $(\pi/\eta)^{1/2}\lVert\phi_Q\rVert$; its second obeys
 $\lVert R(z)v\rVert\le\eta^{-1}\lVert v\rVert$, since $H$ is self-adjoint and $\operatorname{Im}z=\eta$,
 and the definition~\eqref{eq:lambda} then contributes at most $(\pi/\eta)^{1/2}\Lambda_P(\eta)/\eta$.
-Multiplying the three factors gives the leakage branch of~\eqref{eq:twobudget}.
+Multiplying the three factors gives $(\lVert\phi\rVert+\lVert\phi_P\rVert)(\lVert\phi_Q\rVert+\Lambda_P/\eta)$.
+Because $\lVert R(\bar z)v\rVert=\lVert R(z)v\rVert$ for self-adjoint $H$, and likewise for $H_P$, steps (1)--(3)
+hold verbatim with $\bar z$ in place of $z$, which gives the same bound with $\tilde\Lambda_P$ in place of
+$\Lambda_P$; the smaller of the two is the second entry of~\eqref{eq:twobudget}.
 
-\emph{(4) The other two branches.} $A$ and $A_P$ are nonnegative with known integrals, so
+\emph{(4) Second order.} Let $G_\phi(z)=\braket{\phi,R(z)\phi}$ and $G_{\phi,P}(z)=\braket{\phi_P,R_P(z)\phi_P}$,
+so that $A=-\pi^{-1}\operatorname{Im}G_\phi$ and $A_P=-\pi^{-1}\operatorname{Im}G_{\phi,P}$ (for self-adjoint $H$,
+$-\operatorname{Im}\braket{v,R(z)v}=\eta\lVert R(z)v\rVert^{2}$, and likewise for $H_P$ on $\operatorname{ran}P$).
+Since $u_P\in\operatorname{ran}P$, $\braket{\phi,u_P}=G_{\phi,P}$, and Eq.~\eqref{eq:split} gives
+$G_\phi-G_{\phi,P}=\braket{\phi,R(z)r(z)}=\braket{R(\bar z)\phi,r(z)}$. Using Eq.~\eqref{eq:split} once more, at
+$\bar z$, and $R_P(\bar z)\phi_P\perp r(z)$,
+\begin{equation}
+G_\phi(z)-G_{\phi,P}(z)\;=\;\braket{r(\bar z),\,R(z)\,r(z)} ,
+\label{eq:identity}
+\end{equation}
+the error representation of a Galerkin approximation of a bilinear form~\cite{strakos2011}: the dual residual
+against the resolvent applied to the primal one. Write $r(z)=\phi_Q+\ell(z)$ with $\ell(z)=QHR_P(z)\phi_P$. Then
+$A-A_P=T_1+T_2+T_3+T_4$, with $T_1=(\eta/\pi)\lVert R(z)\phi_Q\rVert^{2}\ge0$,
+$T_2=-\pi^{-1}\operatorname{Im}\braket{R(\bar z)\phi_Q,\ell(z)}$,
+$T_3=-\pi^{-1}\operatorname{Im}\braket{\ell(\bar z),R(z)\phi_Q}$ and
+$T_4=-\pi^{-1}\operatorname{Im}\braket{\ell(\bar z),R(z)\ell(z)}$. The first integrates to
+$\lVert\phi_Q\rVert^{2}$ exactly, by the sum rule. For the others, $|\operatorname{Im}\zeta|\le|\zeta|$, the
+Cauchy--Schwarz inequality in the sector and then in $\omega$, the sum rule for $R(z)\phi_Q$ and
+$R(\bar z)\phi_Q$, the definitions~\eqref{eq:lambda} and~\eqref{eq:lambdatilde}, and, for $T_4$,
+$\lVert R(z)\rVert\le1/\eta$, give
+\begin{equation*}
+\int|T_2|\,d\omega\le\frac{\lVert\phi_Q\rVert\,\Lambda_P}{\eta},\qquad
+\int|T_3|\,d\omega\le\frac{\lVert\phi_Q\rVert\,\tilde\Lambda_P}{\eta},\qquad
+\int|T_4|\,d\omega\le\frac{\Lambda_P\tilde\Lambda_P}{\eta^{2}} .
+\end{equation*}
+The sum of the four is $(\lVert\phi_Q\rVert+\Lambda_P/\eta)(\lVert\phi_Q\rVert+\tilde\Lambda_P/\eta)$, the third entry
+of~\eqref{eq:twobudget}. The static part $\phi_Q$ of the residual is treated exactly, which is what keeps the
+integral over $\omega$ finite when the probe is not fully captured; if $\Lambda_P=0$ then $\ell(z)$, a rational
+function of $z$ that vanishes on the line $\operatorname{Im}z=\eta$, vanishes identically, so
+$\tilde\Lambda_P=0$ and the bound equals the lower one.
+
+\emph{(5) The other two bounds.} $A$ and $A_P$ are nonnegative with known integrals, so
 $\lVert A-A_P\rVert_1\le\int A+\int A_P=\lVert\phi\rVert^{2}(1+w_P)$ under no hypothesis at all; and
 $\bigl|\int A-\int A_P\bigr|\le\lVert A-A_P\rVert_1$ gives the lower bound
 $\lVert\phi\rVert^{2}(1-w_P)$.
 
-\emph{(5) The closed form.} $R_P(z)\phi_P=\sum_m c_m(z-\tilde E_m)^{-1}\ket{\tilde m}$, so
+\emph{(6) The closed forms.} $R_P(z)\phi_P=\sum_m c_m(z-\tilde E_m)^{-1}\ket{\tilde m}$, so
 \begin{equation*}
 \bigl\lVert QHR_P(z)\phi_P\bigr\rVert^{2}\;=\;\sum_{m,m'}
 \frac{c_m\bar c_{m'}\,\braket{g_{m'},g_m}}{(z-\tilde E_m)(\bar z-\tilde E_{m'})}\,.
@@ -61,5 +103,15 @@ $\lVert\phi\rVert^{2}(1-w_P)$.
 With $x=\omega+E_0$ the remaining integral is
 $\int dx\,[(x-\tilde E_m+i\eta)(x-\tilde E_{m'}-i\eta)]^{-1}$, which has one pole in each half
 plane; closing above picks up $2\pi i/[(\tilde E_{m'}-\tilde E_m)+2i\eta]$, and multiplying by
-$\eta/\pi$ gives Eq.~\eqref{eq:lambda}.
+$\eta/\pi$ gives Eq.~\eqref{eq:lambda}. With $\bar z$ in place of $z$ the pole in the upper half plane is
+$x=\tilde E_m+i\eta$ and the same steps give Eq.~\eqref{eq:lambdatilde}.
+
+\emph{(7) The real case.} Let $\Theta$ be antiunitary with $\Theta H=H\Theta$, $\Theta P=P\Theta$ and
+$\Theta\phi_P=e^{i\theta}\phi_P$; complex conjugation in a basis in which $H$, $P$ and $\phi_P$ are real is one.
+Then $\Theta R_P(z)=R_P(\bar z)\Theta$, hence $\Theta\,\ell(z)=e^{i\theta}\ell(\bar z)$ and
+$\lVert\ell(\bar z)\rVert=\lVert\ell(z)\rVert$ at every $\omega$, so $\tilde\Lambda_P=\Lambda_P$. With
+$a=\sqrt{1-w_P}$ and $x=\widehat\Lambda_P/\eta$ the second and third entries of~\eqref{eq:twobudget}, divided by
+$\lVert\phi\rVert^{2}$, are $(1+\sqrt{w_P})(a+x)$ and $(a+x)^{2}$. If the former is below $1+w_P$ then
+$a+x<(1+w_P)/(1+\sqrt{w_P})\le1\le1+\sqrt{w_P}$, so the latter does not exceed it: the second entry never lowers
+the minimum. For a complex $\phi_P$ it can: $\tilde\Lambda_P$ and $\Lambda_P$ then differ in general.
 \end{proof}

@@ -1,0 +1,75 @@
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\input{figs/fig_results_marks.tex}
+\begin{figure*}[tbp]
+\centering
+\begin{tikzpicture}
+\begin{semilogyaxis}[paperaxis,
+  width=0.86\linewidth, height=0.50\linewidth,
+  xmin=0.18, xmax=1.0, ymin=5e-9, ymax=80, xtick={0.2,0.3,...,1.0},
+  xlabel={sector fraction $\lvert S\rvert/D$ \quad ($L=8$, $D=3920$, $\eta=0.18\,t$)},
+  ylabel={relative $L_1$},
+  ytick={1e-8,1e-6,1e-4,1e-2,1},
+  legend pos=south west, legend cell align=left,
+  legend style={font=\footnotesize},
+  clip=true]
+  % the region where the bound is no better than the trivial one
+  \fill[black!7] (axis cs:0.18,5e-9) rectangle (axis cs:\FigResFRstar,80);
+  \addplot[densely dashed, line width=0.9pt, mark=square, mark size=1.7pt, color=BrickRed]
+    table[x=FR, y=leak]{fig_results_L8.dat};
+  \addlegendentry[align=left]{smaller leakage branch $\min\{(1{+}\sqrt w)\,b,\;b^{2}\}$,\\
+    with $b=\sqrt{1{-}w}+\widehat\Lambda/\eta$}
+  \addplot[densely dotted, line width=0.9pt, color=black!70]
+    table[x=FR, y=trivial]{fig_results_L8.dat};
+  \addlegendentry{trivial branch $1+w$}
+  \addplot[solid, line width=1.0pt, mark=*, mark size=1.6pt, color=NavyBlue]
+    table[x=FR, y=relL1]{fig_results_L8.dat};
+  \addlegendentry{true error $\lVert A-A_S\rVert_1/\lVert\phi\rVert^2$}
+  \addplot[dashdotted, line width=0.8pt, mark=triangle, mark size=1.8pt, color=ForestGreen]
+    table[x=FR, y=missed]{fig_results_L8.dat};
+  \addlegendentry{missed weight $1-w$ (lower bound)}
+  \addplot[only marks, mark=star, mark size=3.6pt, line width=0.9pt, color=black]
+    table[x=FR, y=relL1]{fig_results_star.dat};
+  \addlegendentry{$S^\ast=\mathrm{supp}(\phi)$, $w=1$ exactly}
+  % the accuracy target and the crossing of the trivial bound
+  \draw[dashed, black!55] (axis cs:0.18,0.05) -- (axis cs:1.0,0.05);
+  \node[anchor=south west, font=\footnotesize, black!70] at (axis cs:0.19,0.05) {$0.05$};
+  \draw[dotted, line width=0.8pt, black!70] (axis cs:\FigResFRstar,5e-9) -- (axis cs:\FigResFRstar,80);
+  \node[anchor=north east, font=\footnotesize, align=right] at (axis cs:0.734,70)
+    {bound $=$ trivial branch};
+  \node[anchor=north west, font=\footnotesize, align=left] at (axis cs:0.754,70)
+    {bound $<1+w$};
+\end{semilogyaxis}
+\end{tikzpicture}
+\caption{\textbf{The two-sided bound against the true error, on Born-ranked subspaces of the
+$L=8$ ring (classical simulation, $\eta=0.18\,t$).} As the sector fraction $\lvert S\rvert/D$ grows,
+the missed weight $1-w$ (triangles), which is the lower bound of Theorem~\ref{thm:leakage}, falls
+toward zero, the true relative $L_1$ error (filled circles) falls from $0.40$ to
+$1.2\times10^{-6}$, and the smaller leakage branch of the upper bound (open squares; first-order up to
+$\lvert S\rvert/D=0.60$, second-order from $0.70$ on) falls from $20$ to $3.8\times10^{-4}$; the bound
+is the smaller of that branch and the trivial branch $1+w$ (dotted). Left of the
+vertical line, $\mathrm{FR}^{\ast}=0.74$, the bound is no better than the trivial one (shaded),
+although the true error is below $0.05$ (dashed line) from $\lvert S\rvert/D\approx0.525$ on; the
+bound itself first falls below $0.05$ between $0.90$ and $0.92$. Star: the probe's own determinant
+support $S^\ast=\mathrm{supp}(\phi)$, where $w=1$ exactly ($\lvert S\rvert/D=0.571$); its error,
+$0.35$, is ten times that of the Born-ranked subspace of nearly the same size ($0.560$), whose
+captured weight is lower ($0.9988$). The subspaces are the infinite-shot limit of the Born ranking
+(Sec.~\ref{sec:frontier}); the reconstruction is the Krylov reconstruction at a declared depth, except
+for the last three points, which use the dense Rayleigh--Ritz spectrum of $H_S$.
+Data: \texttt{data/c3\_frontier/C3\_grid.json}, \texttt{data/c3\_frontier/second\_order/cells.json},
+\texttt{data/c3\_frontier/second\_order/v2.json}, \texttt{z\_fine\_L8.txt} and \texttt{support\_witness.json} of the deposit.}\label{fig:results}
+\end{figure*}

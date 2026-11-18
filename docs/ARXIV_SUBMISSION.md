@@ -1,5 +1,7 @@
 # arXiv submission — the **v3** source package
 
+> **Deposit 3.5.0 (2026-11-18).** This file describes the arXiv packages of versions 3 and 4 of arXiv:2608.16436. Version 4 corresponds to deposit 3.4.1 (tag `v3.4.1`, Zenodo 10.5281/zenodo.23088494). Deposit 3.5.0 carries the manuscript prepared for The Journal of Chemical Physics, from which no arXiv package was built or uploaded. `src/build_arxiv_bundle.py` packages `paper/main.tex` and compares its build with `paper/main.pdf`, which 3.5.0 does not carry (the arXiv-v4 PDF is `_superseded/arxiv_v4/paper/main.pdf`); the Comments field quoted below is the one filed for v3, which `src/check_trim.py` reads.
+
 > ## A v4 replacement: instructions, 2026-09-30 (nothing built; the decision is the author's)
 >
 > **2026-10-02: v4 SUBMITTED by the author** (`submit/8168606`, replacement of 2608.16436), from

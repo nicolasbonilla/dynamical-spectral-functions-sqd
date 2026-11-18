@@ -9,18 +9,22 @@
 %      one-column source   \textwidth = 472.32 pt, body 10.95 pt
 %      revtex4-2 aps pra   \textwidth = 510.00 pt, \columnwidth = 246.00 pt, body 10 pt
 %  So a float promoted to figure*/table* is 8.0 % WIDER than it was, not 52 % narrower.
-%  That is why 34 of the 17+17 floats are starred -- all of them: it is the assignment
+%  That is why 31 of the 17+14 floats are starred -- all of them: it is the assignment
 %  that leaves the validated figures at (or above) the size they were validated at.
+%  (JCP build: 17 figures and 14 tables, counted by src/check_provenance.py on deposit
+%  3.5.0, 2026-11-18; the device figure fig:heron is not typeset, the results figure
+%  fig:results is.)
+%
 %  (Counted by src/check_provenance.py, which expands \input from this file; the
 %  comment said '35 of the 19+16' until 2026-09-19, and '33 of the 17+16' until the
 %  L=14 table of Sec. 5 landed later the same day.  Each was one float behind.)
 % =====================================================================================
 
 \documentclass[
-  aps,              % APS journal styles
-  pra,              % Physical Review A
-  10pt,             % PRA's own size; stated explicitly so the class stops warning
-                    % "No type size specified, using default 10"
+  aip,              % AIP Publishing journal styles   (JCP build, 2026-10-23: the
+  jcp,              % The Journal of Chemical Physics  release reads "aps, pra" here)
+  10pt,             % stated explicitly: under aip the default would be 12pt
+                    % (the measurements quoted below are those of the APS build)
   onecolumn,        % MEASURED CHOICE, 2026-09-19, not a default.
                     % APS does not require the journal's two-column layout at
                     % submission: "A PDF version of your paper is all that's needed
@@ -191,7 +195,33 @@
 % Loaded last, and after REVTeX, which is hyperref-aware.  caption.sty and titlesec
 % are NOT loaded: both patch machinery revtex4-2 owns, and APS wants REVTeX's own
 % caption and section styling anyway.
+% 2026-10-23 (JCP build): revtex4-2 4.2f redefines \label, and nameref then replaced it with
+% the kernel definition below, warning "The definition of \label has changed!".  The same
+% kernel definition (copied token for token from nameref.sty) is installed here instead, so
+% the labels written are identical and the warning is gone.
+\makeatletter
+\def\label#1{\@bsphack
+  \begingroup
+  \UseHookWithArguments{label}{1}{#1}%
+  \protected@write\@auxout{}%
+      {\string\newlabel{#1}{{\@currentlabel}{\thepage}%
+      {\@currentlabelname}{\@currentHref}{\@kernel@reserved@label@data}}}%
+  \endgroup
+  \@esphack}
+\let\ltx@label\label
+\makeatother
 \usepackage[colorlinks=true,allcolors=blue,breaklinks=true]{hyperref}
+% 2026-10-23 (JCP build): in-text citations as bracketed numbers on the baseline, as in the
+% release.  The aip class would set them as superscripts, and this text puts a citation
+% directly after a number or a formula in 16 places ("in 2007~\cite", "$L=128$~\cite", ...),
+% where a superscript reads as an exponent, and writes "Ref.~\cite" in 12 more.  JCP takes any
+% layout at first submission; AIP production sets its own citation style.  The reference list
+% is numbered [1], [2], ... to match.
+\makeatletter
+\def\JCP@bibnum#1{[#1]\ }
+\AtBeginDocument{\bibpunct{[}{]}{,}{n}{}{,}\NAT@set@cites
+  \let\place@bibnumber\JCP@bibnum}
+\makeatother
 % The data-availability URL is 63 characters and the column is 246 pt: with url.sty's
 % default break set it is one unbreakable box, and it stretched the three lines above
 % it by factors of 3.2-4.3 (word gaps of 10.65-14.05 pt against a normal 3.3 pt).
@@ -201,7 +231,7 @@
 \g@addto@macro\UrlBreaks{\UrlOrds}
 \makeatother
 \hypersetup{
-  pdftitle={Captured weight and boundary leakage bound the error of sample-based spectral functions},
+  pdftitle={A two-sided error bound for spectral functions from sample-based quantum diagonalization},
   pdfauthor={Nicolas Bonilla Vargas},
   pdfkeywords={sample-based quantum diagonalization, QSCI, spectral functions, a posteriori error bound, Hubbard model, quantum simulation}
 }
@@ -211,8 +241,12 @@
 % No \\ here: REVTeX puts the title into the PDF bookmark string, where \\ is not a
 % legal token (that was the last of the eleven "Token not allowed in a PDF string"
 % warnings).  REVTeX breaks the title on its own.
-\title{Captured weight and boundary leakage bound the error of
-sample-based spectral functions}
+% 2026-11-08 (JCP): the title of the APS Global Physics Summit 2027 talk on this work (abstract
+% 4684177), which reads in the direction of the result; the arXiv v4 title, "Captured weight and
+% boundary leakage bound the error of sample-based spectral functions", could be read as saying
+% that the captured weight bounds the error, which Sec. III D shows it does not.
+\title{A two-sided error bound for spectral functions from sample-based quantum
+diagonalization}
 
 % --------------------------------------------------------------------------------
 %  AUTHOR BLOCK.  The one-column version carried
@@ -287,38 +321,107 @@ sample-based spectral functions}
 % number; "follows from" -> "is computed from"; the support sentence puts the need first and
 % the measured support after a colon.  No number changed and no claim added; 1910 characters
 % by src/abs_paste.py (Unicode Greek).  docs/KNOWN_DISCREPANCIES.md section 35.
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
 \begin{abstract}
-Rayleigh--Ritz on a subspace from sample-based quantum diagonalization yields the spectral function
-of a probe state; we ask what bounds its error. The probe's captured Born weight $w$ does not do so
-alone: an analytic counterexample forces any bound indexed on it to its trivial value. On Hubbard
-rings at broadening $\eta=0.18\,t$, the probe's whole support ($w=1$) still gives a relative error
-of $0.35$--$0.43$: Rayleigh--Ritz displaces the poles a subspace keeps. The error is bounded instead
-by the missed weight and the Hamiltonian coupling across the subspace boundary. Given the exact
-ground state, we prove for any orthogonal projector that the relative $L_1$ error lies between $1-w$
-and $\min\{1+w,(1+\sqrt{w})(\sqrt{1-w}+\widehat\Lambda(\eta)/\eta)\}$, where $\widehat\Lambda$,
-that coupling at resolution $\eta$, is computed from the Ritz pairs and the retained probe. We test
-it on $L$-site rings with classical Born draws of an exactly time-evolved probe, or their
-infinite-shot ranking; our device runs are execution records only. On the ranked subspaces the
-bound is vacuous at every operating fraction of the resource scan, at all five sizes up to a sector
-of $10\,306\,296$ determinants: its leakage branch exceeds the trivial bound $1+w$ by factors of
-$1.66$ to $8.61$. Only well above those fractions is it informative, and there it is calibrated: at
-$L=6$--$12$ it first beats the trivial bound at a true error of $(1.2$--$7.3)\times10^{-3}$, though
-an unproven fit in $1-w$ is tighter on 11 of 14 splits. For the Born-ranked $A(k,\omega)$ at $85\%$
-of its sector, the bound is $350$--$900$ times the true error. In the determinant basis, zero
-leakage at full weight needs every symmetry-allowed determinant: the probe's measured Krylov
-support at $L=6$--$14$. Plane-wave orbitals reduce a momentum probe's support to one block, $1/L$ of
-an exponentially growing sector. At full weight a second-order certificate follows; whether
-one exists below full weight, where every operating fraction lies, is open.
+In sample-based quantum diagonalization and quantum-selected configuration interaction,
+Rayleigh--Ritz on sampled determinants yields the spectral function of a probe, the ground state
+acted on by an operator. We prove a two-sided bound on that
+spectral function's error. Its relative $L_1$ error on any subspace lies between
+$1-w$, with $w$ the probe's captured Born weight, and a bound set by $1-w$ and the Hamiltonian
+coupling out of the subspace at resolution $\eta$, computed from the Ritz pairs, the retained probe
+and one matrix--vector product per Ritz vector; without that coupling the two sides coincide. The coupling term is necessary:
+an analytic counterexample forces any bound indexed on $w$ alone to its trivial value, and on
+Hubbard rings ($L=6$, $8$) the probe's determinant support ($w=1$) has relative error
+$0.35$--$0.43$ at $\eta=0.18\,t$, because Rayleigh--Ritz displaces the poles it keeps. In
+classical Hubbard-ring simulations at five sizes up to a sector of $10\,306\,296$
+determinants, the bound falls below the trivial one at a nearly fixed true error,
+$2.6\times10^{-3}$--$1.5\times10^{-2}$ over sixteen $(L,\eta)$ cells at $L=6$--$12$; infinite-shot Born-ranked
+subspaces reach a relative $L_1$ error below $0.05$ at smaller sector fractions, where the bound is
+no better than the trivial one. In the determinant basis its coupling term vanishes at $w=1$ for
+the local probes studied only when every symmetry-allowed determinant is kept (measured at
+$L=6$--$14$). Given the exact ground state, it is a certificate for benchmarking at exact-diagonalization scale; a
+convergence diagnostic must see the boundary coupling, not only the captured weight.
 \end{abstract}
 
 \maketitle
 
 \input{sec_1.tex}
+%
+%
+%
+%
+\input{figs/fig_results_native.tex}
 
 \input{sec_2.tex}
 \input{carried/fig_method.tex}
 \input{figs/float_f5.tex}
-\input{carried/fig_lattice.tex}
+% 2026-11-08 (JCP refocus): fig:lattice, a full-sector reference A(k,omega) and not a reconstruction,
+% is set in the supplementary material with Sec. S7, which uses it.
 
 \input{sec_3_body.tex}
 
@@ -326,15 +429,18 @@ one exists below full weight, where every operating fraction lies, is open.
 
 \input{sec_5_body.tex}
 
-\input{sec_6_body.tex}
+% 2026-11-08 (JCP, refocus): Sec. VI (the obstruction for orbital-rotation invariants and its
+% geminal witness) and Sec. VII (the three prices, with Table IV and Fig. 5) are set, word for word,
+% in the supplementary material, each directly before its own extension (sm_nogo.tex,
+% sm_prices.tex); so are Secs. VIII B-C (noise sweeps, molecular suite, classical reach and the
+% dequantization test, now sec_9_sm.tex).  The main text keeps one sentence for each, with a
+% pointer, in Sec. VI (sec_9.tex).
+% (was: \input{sec_6_body.tex} \input{sec_7.tex} \input{figs/float_f12.tex})
 
-\input{sec_7.tex}
-\input{figs/float_f12.tex}
-
-\input{sec_8.tex}
-\input{figs/float_n2.tex}
-\input{carried/fig_sqw.tex}
-\input{carried/fig_spin.tex}
+% 2026-11-08 (JCP): Sec. VIII (the check of the full-sector references against the gap scaling,
+% which the section itself calls "a check of the references and not a result") is set in the
+% supplementary material, with its table and its three figures, directly before its own extension
+% sm_physics.tex.  No word of it changed; see the \input list after sm_begin.tex.
 
 \input{sec_9.tex}
 % ---------------------------------------------------------------------------------
@@ -373,9 +479,18 @@ one exists below full weight, where every operating fraction lies, is open.
 \input{sm_leakage.tex}
 \input{sm_moments.tex}
 \input{sm_frontier.tex}
+\input{sec_6_body.tex}
 \input{sm_nogo.tex}
+\input{sec_7.tex}
+\input{figs/float_f12.tex}
 \input{sm_prices.tex}
+\input{sec_8.tex}
+\input{carried/fig_lattice.tex}
+\input{figs/float_n2.tex}
+\input{carried/fig_sqw.tex}
+\input{carried/fig_spin.tex}
 \input{sm_physics.tex}
+\input{sec_9_sm.tex}
 \input{sm_scope.tex}
 \input{sec_3_app.tex}
 \input{figs/float_n3.tex}

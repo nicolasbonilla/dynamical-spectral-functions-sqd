@@ -1,0 +1,64 @@
+% =====================================================================================
+%  sec_9_sm.tex -- Secs. VIII B and VIII C of the 2026-11-08 JCP manuscript (the noise sweeps
+%  and the molecular suite; what the cost tracker implies for classical simulation, with the
+%  dequantization test), moved WORD FOR WORD to the supplementary material on 2026-11-08 (JCP
+%  refocus).  The text below is the byte-for-byte cut of sec_9.tex; the main text keeps one
+%  sentence for each, with a pointer, in sec_9.tex ("Further results ...").  src/verify.py checks the
+%  dequantization paragraph in this file, against data/gflow.json.
+% =====================================================================================
+
+% 2026-11-08 (final check R3): its own section, so that the two subsections below no longer print
+% under the heading of sm_physics.tex.
+\section{Noise sweeps, the molecular suite and classical reach}
+\label{sm:noisemol}
+
+\subsection{The noise sweeps and the molecular suite}
+\label{sec:scope:hw}
+
+The noise results of this work are controlled classical simulations: under a synthetic per-qubit
+bit-flip channel, recovery is compared with no recovery on the same corrupted bitstrings, and the gain
+grows with the noise (Figs.~\ref{fig:noise} and~\ref{fig:noiserec}). Where the recovered error falls
+below the noiseless value, that comparison is not used here: it is decided by the size of the
+recovered subspace, which the sweeps do not record (Sec.~\ref{sm:scope}). A study under a simple
+noise model reports the mechanism~\cite{vaquero2026}. That study also finds that recovery from
+randomly generated configurations alone builds accurate CI spaces, and no such control was run here.
+
+
+
+% 2026-11-14 (closing round 2, D2): the seven are those whose sampled subspace does not contain K(H,phi) (their
+% error is not round-off); sector size does not pick them out (n19_spectral.json: five exact molecules have
+% sectors of 24 to 90 determinants, O2 has 20).  The sector range is kept, as a description only.
+\paragraph{The molecular suite.} On the seven Hamiltonians of the nineteen-molecule suite (Sec.~\ref{sec:scope:mol}, Table~\ref{tab:molscope}) whose sampled subspaces do not contain the probe's Krylov space (sectors of dimension $20$ to $300$), the sampling primitive of Sec.~\ref{sec:method} reproduces the orbital-projected $A(\omega)$ to a relative $L_1$ between $2.2\times10^{-6}$ and $1.0\times10^{-4}$ from $21\%$ to $50\%$ of the sector, a consistency check of the primitive outside the Hubbard family and not a scaling statement. The other twelve reconstructions are exact by construction, because their sampled subspaces, of at most twelve determinants, already contain the probe's Krylov space, so the suite cannot show that the reconstruction is efficient across chemistry.
+
+\subsection{What the cost tracker implies for classical simulation}
+\label{sec:scope:boomerang}
+
+The cost tracker of Sec.~\ref{sec:nogo}, the bond dimension $\chi$, is by definition the cost
+parameter of a matrix-product representation of the same state: wherever it says the determinant
+support is small, a matrix-product state is small too. A sampler can therefore be needed only for a
+target whose minimal bond dimension is large in every ordering while the sampled support stays
+compact, a property of geometry and orbital connectivity that two-dimensional lattices and molecular
+orbital graphs would test and that nothing here measures (Sec.~\ref{sm:scope}). Every target measured
+here---Hubbard rings at $L\le14$, nineteen active spaces, and a largest minimal bond dimension of $42$
+over the $74$ deposited exact ground states---lies on the other side: there is no computation
+performed here that a classical method cannot perform, and we make no advantage claim at any size
+reached. The literature shows the same pattern. The $7\,260$ trajectories of a $120$-qubit
+Fermi--Hubbard dynamics experiment~\cite{qctrlfh2026} were reproduced by tensor contraction at bond
+dimension $32$~\cite{ouyang2026}, the pattern in which tensor-network and Pauli-propagation methods
+have overtaken earlier hardware demonstrations~\cite{kim2023,tindall2024,begusic2024}, with Pauli
+propagation since extended to real-time correlators~\cite{kemper2026};
+% 2026-09-30 (citation re-verification, belagali2026): the source reproduces the largest experiment
+% OF Sci. Adv. 11, eadu9991 (2025) (77 qubits, 10,570 gates) and itself cites later, larger LUCJ
+% hardware runs (94 qubits) it does not simulate, so "the largest such hardware experiment" was
+% wider than the source; the sentence now names the experiment it reproduces.  Same fix in
+% sm_scope.tex.
+the energy of any single-layer unitary cluster-Jastrow circuit, the largest ($77$-qubit) experiment of
+Ref.~\cite{robledomoreno2025} included, is now computed classically in polynomial
+time~\cite{belagali2026}, and an extended matchgate simulator evaluates, to additive approximation,
+the Born-rule probabilities of hardware-sampled cluster-Jastrow bitstrings at a cost exponential only in
+the magnitudes of the controlled-phase angles~\cite{extraferm}; on the ground-state energy the strong classical selectors already win on
+cost~\cite{reinholdt2025,zhangotten2026}, and even optimally ordered SQD subspaces need a number of
+configurations that grows exponentially with lattice size for Heisenberg and Hubbard ground
+states~\cite{gaberle2026}.
+
+\paragraph{A dequantization test.} On an emulated, under-sampled head for $\mathrm{N_2}$ ($R=2.5$~\AA; $1\,000$ shots drawn from the exact FCI marginal and corrupted by a synthetic Heron-class noise model, ten paired seeds; no device data), a classical Epstein--Nesbet prior~\cite{cipsi1973} applied to the same histogram cuts the energy error by $36\%$, from $38.22$ to $24.38$~mHa (paired $t_9=12.37$, all ten seeds), while a generative flow network~\cite{bengio2021} fused onto that prior moves it a further $1.80$~mHa, a difference ten paired seeds do not resolve ($t_9=1.19$) and whose sign reverses between two five-seed halves; at $500$ shots the fused generator is worse than the classical control (Sec.~\ref{app:dequant}). On this instance the dominant determinants are supplied by the sampled histogram (emulated, so the test does not measure whether a device state would supply them) and completed by a classical prior rather than manufactured by a learned generator, and the largest improvement available to an under-sampled head costs no quantum resources at all.

@@ -8,7 +8,9 @@
 %
 % EVERY coordinate comes from a JSON written by an auto-verifying run; none is typed by hand.
 % Builder: build_n3.py -> n3_*.dat ; the counts quoted in the legend are re-checked by that
-% script against the .dat files it writes (see n3_summary.json).
+%
+%
+%
 %   thm3_results.json  239 rows  original sweep: 3 Hubbard L=6 Hamiltonians x 8 subspace families
 %   thm3_L8b.json        4 rows  a SITE-seeded L=8 run.  NOT the paper's Fig. 5 configuration:
 %                                 its own docstring says "Site seed instead of momentum seed",
@@ -25,9 +27,12 @@
 % The plotted published bound is the weight term 2||phi||^2(1-w_S). On 195 of the 239 rows of the
 % original sweep the Krylov order is K_S = -1, so the second term C rho^{-K_S} = C rho supplies no
 % decay at all and no finite constant C turns the statement into a bound (2x2 counterexample).
-% Theorem B is plotted AS STATED: the minimum of the trivial cap ||phi||^2(1+w_S) and the leakage
-% branch (||phi||+||phi_S||)(||phi_Q|| + Lambda_S(eta)/eta). The leakage branch is the smaller of
-% the two in only 61 of the 606 live rows -- this figure does NOT show the leakage branch is tight.
+%
+%
+%
+%
+%
+%
 % ---------------------------------------------------------------------------------------------
 \definecolor{vlHi}{HTML}{D55E00}      % published bound, captured weight w_S >= 0.99
 \definecolor{vlLo}{HTML}{E9A178}      % published bound, w_S < 0.99

@@ -89,45 +89,14 @@ dynamics is classically efficient~\cite{oh2026}.
 
 \paragraph{The same orbit reaches the leakage.} The orbit argument was written for $|\mathcal S|$; it
 extends to the second budget of Eq.~\eqref{eq:twobudget}. An invariant upper
-bound on $\Lambda_S(\eta)/\eta$ \emph{does} exist---it is exhibited inside the proposition below, and we
-tested it on $1600$ hostile cases (GOE/GUE, near-degenerate, banded, $\lVert H\rVert\sim300$) with zero
-violations and with its first link attained, minimum ratio $1.0000000000$. The correct statement is
+%
+%
+bound on $\Lambda_S(\eta)/\eta$ \emph{does} exist---it is derived inside the proposition. The correct statement is
 therefore one of non-vacuity, not of non-existence: the same logical form the $|\mathcal S|$ no-go always
 had, where the sector dimension is likewise an invariant upper bound that says nothing.
 
-Table~\ref{tab:fiber} is the exhibit. The two endpoints of each fiber are the \emph{same} rotation angle
-applied within one geminal block and across two blocks, which is why the captured weight agrees bit for
-bit. An exhaustive search over all $276$ coordinate subspaces of that size at $K=2$ settles both ends.
-At the aligned endpoint the global minimum of the certificate over the $276$ is $0.856$ and it is
-attained by the protocol's own subspace: the subspace the sampler would return is the best available
-one. At the rotated endpoint the minimum over the same $276$ is exactly the trivial bound, attained
-only by subspaces of vanishing captured weight: \emph{no} determinant subspace of that size certifies
-anything there.
-
-\begin{table*}[tp]\centering\small
-\caption{\textbf{Fibers of fixed invariants with moving leakage}, at $s=\pi/16$, $\delta=0.01$,
-$\eta=0.10$, $|\mathcal S|=2^{K-1}$, $w_S=0.961940$, $\tau(w_S)=0.795$. Along each row the spectrum,
-every Lehmann weight, $\lVert\phi\rVert^2$, $|\mathcal S|$ and all $\mathcal F_k$ are identical between
-the two endpoints ($w_S$ to $2.2\times10^{-16}$), so the first term of Eq.~\eqref{eq:twobudget} is fixed
-and only the second moves. Quantities are relative ($\widehat\Lambda_S=\Lambda_S/\lVert\phi\rVert$) and
-``certificate'' is $\min\{(1+\sqrt{w_S})(\sqrt{1-w_S}+\widehat\Lambda_S/\eta),\,1+w_S\}$, the relative
-form of Theorem~\ref{thm:leakage}; ``al.''\ and ``rot.''\ label the aligned and rotated endpoints of the
-fiber. Bold marks a non-vacuous certificate, below the trivial bound $1+w_S$. A continuous angle sweep
-is in Sec.~\ref{app:witness}.}
-\label{tab:fiber}
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}lccccc@{}}
-\toprule
-$K$ ($\dim(N{+}1)$) & $\mathcal F_1{=}\mathcal F_2{=}\mathcal F_3$
- & $\widehat\Lambda/\eta$ al. & $\widehat\Lambda/\eta$ rot.
- & cert.\ al. & cert.\ rot. \\
-\midrule
-$2$ \ ($24$)   & $8$  & $0.237$ & $2.326$ & $\mathbf{0.856}$ & $1.962$ (trivial) \\
-$3$ \ ($300$)  & $12$ & $0.323$ & $2.336$ & $\mathbf{1.026}$ & $1.962$ (trivial) \\
-$4$ \ ($3920$) & $16$ & $0.391$ & $2.346$ & $\mathbf{1.161}$ & $1.962$ (trivial) \\
-\bottomrule
-\end{tabular}
-\end{table*}
+%
+%
 
 % --- float declarations moved here from main.tex (placement only):
 %     declared at the head of the section that discusses them instead of at
@@ -137,37 +106,14 @@ $4$ \ ($3920$) & $16$ & $0.391$ & $2.346$ & $\mathbf{1.161}$ & $1.962$ (trivial)
 \input{figs/captions.tex}
 \input{carried/fig_ladder.tex}
 
-\paragraph{What this exhibit is not.} Four limits are declared with it, and they are why we call it a
-fiber and not a sweep of the orbit. \emph{(i)}~The evidence is a matched pair at $s=\pi/16$ for $K=2,3,4$.
-At the maximal-pairing angle $s=\pi/4$ the Born distribution of $\phi$ is exactly flat over $2^{K}$
-determinants, so ``the top $|\mathcal S|$ of the Born distribution'' does not define a subspace at all
-($6$, $70$ and $12870$ equally valid outputs at $K=2,3,4$); any contrast quoted at that angle is a
-tie-breaking artifact and not a property of the fiber, and the sweep of Sec.~\ref{app:witness} stops
-at $s=0.654$ for that reason. \emph{(ii)}~Nothing here grows with the system, and two separate quantities shrink. The ratio of the
-two leakages falls, $9.80\to7.23\to6.01$ from $K=2$ to $K=4$, and it dies as the perturbation is turned
-up, from $28.7$ at $\delta=0.0025$ to $1.03$ at $\delta=0.3$. More to the point---because it is the
-quantity the proposition actually rests on---so does the margin of the certificate over the trivial
-bound: $1.962/0.856=2.29$, $1.962/1.026=1.91$, $1.962/1.161=1.69$, a fall of $26\%$ across the only
-three sizes available. Where that fall would reach unity we do not say: a linear extrapolation in $K$,
-a log-linear one and the last step alone place it between $K=6$ and $K=8$, the decrements are
-themselves decelerating, and three points do not support a number---which is exactly the objection this
-paper makes to its own fraction headline in Sec.~\ref{sec:prices}. A statement of non-vacuity needs one
-fiber and not a magnitude, and the fiber at $K=4$ is still non-vacuous by $69\%$; but ``the effect grows
-with $K$'' is false here. \emph{(iii)}~The small-leakage
-endpoint is realized only by the aligned basis, which is the stabilizer of the state
-($|\braket{\Psi(0)|\Psi(U_{\rm in})}|=1.000000000000$); at the fiber angle $s=\pi/16$, every generator
-that actually moves the state gives $\widehat\Lambda/\eta\in[2.34,5.61]$. That range is a statement
-about generators at one angle and not about the angle sweep of Sec.~\ref{app:witness}, whose rotated
-endpoint descends to $1.61$ as $s\to0$ because the rotation itself is being switched off. The rhetorical parallel with the cost witness---where
-the orbit contains an $O(K)$-cost point and points of plausibly exponential cost---is therefore lost; Sec.~\ref{sec:nogo:asym} states
-that asymmetry. \emph{(iv)}~The scale is a toy: $2K\le8$ orbitals, sector
-dimension $\le3920$, no instance at the $L=12$ Hubbard scale of Sec.~\ref{sec:frontier}.
+%
+%
 
-What the exhibit delivers survives all four limits and is measured: on fibers where every invariant is
-fixed to $10^{-14}$ and the captured Born weight to $2.2\times10^{-16}$, the certificate of
-Theorem~\ref{thm:leakage} separates a non-vacuous value from the trivial bound in every row of
-Table~\ref{tab:fiber}, and a quantity constant on those fibers cannot make that distinction. The a priori
-predictor asked for at the head of this section does not exist in the invariant class; what stands in its
+%
+%
+A quantity constant on a fiber of fixed invariants cannot follow a leakage that moves along it
+(Proposition~\ref{prop:leakinv}). The a priori
+predictor asked for at the head of this section is therefore not available in the invariant class; what stands in its
 place is the subspace-aware certificate, whose non-vacuous region is mapped, not asserted, in
 Sec.~\ref{sec:frontier}.
 
@@ -211,8 +157,8 @@ matchgate circuits---faithful, Gaussian invariant and (sub)additive---which is w
 proposed it as a predictor of the determinant support. It is our own
 no-go, about our own cost, and a corollary consistent with---not a competitor to---the two families of
 Tarabunga \emph{et al.}~\cite{tarabunga2026}, who in July 2026, before this work, showed that
-occupation entropies depend only on the covariance matrix, two members of which (orders $1$ and $2$) are
-strong monotones that lower-bound the non-Gaussian gate count,
+occupation entropies depend only on the covariance matrix, one member of which they prove monotone
+under Gaussian protocols, so that it lower-bounds the non-Gaussian gate count,
 while natural-orbital participation entropies depend on the full state and \emph{upper-bound the
 classical simulation cost} in an orthonormal Gaussian basis. Both of their families are Gaussian
 invariant; the basis dependence at issue here enters only because $|\mathcal S|$ is counted in a fixed
@@ -221,8 +167,7 @@ side of the division, and the priority is theirs. On the invariant side the same
 to Leone and Bittel~\cite{leonebittel2026}, who in July 2026, before this work, proved that the
 fermionic entropy $M_f=n\,(1-\|\Gamma\|_2^2/2n)$ on $n$ modes---an affine function of the squared
 Frobenius norm of the correlation matrix---is a strong pure-state Gaussian monotone (its convex roof one for mixed states)---on $n=2n_{\rm o}$ modes
-$M_f$ is $\mathcal F_1$ itself and Tarabunga \emph{et al.}'s quadratic occupation entropy, whose strong
-monotonicity the revised version of Ref.~\cite{tarabunga2026} proves independently---and that its
+$M_f$ is $\mathcal F_1$ itself and Tarabunga \emph{et al.}'s quadratic occupation entropy---and that its
 fermionic purity $\|\Gamma\|_2^2/2n$ has an unbiased estimator using $O(\varepsilon^{-2})$ two-copy
 measurements.
 % RESOLVED 2026-09-18: the key `leonebittel2026' exists in the bibliography (Leone, Bittel,
@@ -230,8 +175,10 @@ measurements.
 %  Bittel-Mele-Eisert-Leone, arXiv:2409.17953, a different paper; both keys are in the list.
 What our construction adds to that division is the constructive instance it does not
 contain: a family (Theorem~\ref{thm:witness}) on which every order of the invariant is maximal while the
-cost is $O(K)$, and fibers (Proposition~\ref{prop:leakinv}) on which the invariants are frozen to
-$10^{-14}$ while the certificate of Theorem~\ref{thm:leakage} still separates.
+%
+%
+cost is $O(K)$, and the observation (Proposition~\ref{prop:leakinv}) that an invariant cannot follow
+the leakage along a fiber.
 
 \subsection{Two blindnesses, and why we do not sell them as one symmetry}
 \label{sec:nogo:asym}
@@ -252,7 +199,7 @@ this paper, one controlled by the captured weight and one not, each carrying its
 measurement rather than an analogy is that both summands have been evaluated on the same object,
 $\mathcal S^{\ast}=\operatorname{supp}(\phi)$, where the first summand is identically zero while
 the second still leaves a relative $L_1$ error of $0.43$ at $L=6$ and $0.35$ at $L=8$ on the periodic
-rings at $\eta=0.18\,t$, and $0.28$ on the open chain (Secs.~\ref{sec:leakage} and~\ref{sec:moments}).
+rings at $\eta=0.18\,t$ (Sec.~\ref{sec:leakage}).
 
 \subsection{What does track the cost: \texorpdfstring{$\chi$}{chi}, and the statistics the right way up}
 \label{sec:nogo:chi}
@@ -263,11 +210,14 @@ rings at $\eta=0.18\,t$, and $0.28$ on the open chain (Secs.~\ref{sec:leakage} a
 % where the footnote fits; REVTeX's value is restored after the paragraph.  Setting it
 % for the whole document (or for the Sec. S8 footnote) sends ltxgrid into an endless
 % run of empty pages at \end{document}, measured, so it is not done.  No text changes.
+% 2026-11-08 (JCP): the footnote this setting served is folded, word for word, into its paragraph
+% (it overfilled its page by 14.2 pt once Sec. S5 moved here); the setting is kept and is inert.
 \global\count\footins=1000\relax
 
 The computable lower bounds on $|\mathcal S|$ are themselves basis dependent. The orbital-Schmidt rank
 across a bipartition---the tensor-network bond dimension $\chi$~\cite{schollwock2011}---is a rigorous
-floor on the \emph{raw} support,\footnote{For any state and any bipartition into $(\mathrm L,\mathrm R)$,
+floor on the \emph{raw} support and, empirically, a tracker of the measured
+$|\mathcal S|_{\varepsilon_w}$. For any state and any bipartition into $(\mathrm L,\mathrm R)$,
 $\chi\le|\mathcal S|$ with $|\mathcal S|$ the number of determinants of nonzero amplitude: each
 determinant factorizes across the cut, so the matricization $A_{D_{\mathrm L},D_{\mathrm R}}=c_D$ has at
 most $|\mathcal S|$ nonzero entries and rank at most $|\mathcal S|$. It is elementary, which is why we
@@ -276,14 +226,10 @@ the inequality need not survive---in the molecular suite $|\mathcal S|$ is cut a
 while $\chi$ is cut at a discarded tail of $\varepsilon_\chi^{2}=2.5\times10^{-3}$, i.e.\ at $99.75\%$,
 so the two are not truncated at the same place---and the measured $|\mathcal S|_{\varepsilon_w}$ falls
 below $\chi$ in $7$ of the $38$ molecular points. It is also one-sided and can be exponentially loose: Theorem~\ref{thm:witness} has
-$\chi=2$ at $|\mathcal S|_{\mathrm{pair}}=2^{K}$.} and, empirically, a tracker of the measured
-$|\mathcal S|_{\varepsilon_w}$. It is not the winner of a contest: $\chi$ is measured rather than
-predicted, and it has no purchase on the leakage at all. On the fibers of Table~\ref{tab:fiber} it is
-\emph{identical} at the two endpoints---$2$ and $2$ at $K=3$, $1$ and $1$ at $K=4$, at equal raw
-support---while $\widehat\Lambda/\eta$ moves by a factor $6$--$7$; in a control at $K=3$ it jumps from
-$2$ to $16$ with $\widehat\Lambda/\eta=2.336$ and relative $L_1=0.238$ unchanged to three figures; and
-across a subfamily of $58$ points on which $\chi$ and the raw support are \emph{exactly} equal,
-$\widehat\Lambda/\eta$ still varies by $2.8$ and the measured error by $8.3$. The only tracker of the
+$\chi=2$ at $|\mathcal S|_{\mathrm{pair}}=2^{K}$. It is not the winner of a contest: $\chi$ is measured rather than
+%
+%
+predicted, and nothing in its definition refers to the leakage. The only tracker of the
 leakage is the boundary coupling $\lVert P_SHQ_S\rVert$ of Sec.~\ref{sec:leakage}. What follows is a
 statement about $|\mathcal S|_{\varepsilon_w}$ and about nothing else.
 
@@ -349,7 +295,7 @@ $L=6,8,10$, identical to the last digit in $\mathcal F_1$, $|\mathcal S|$ and $\
 independent evidence. And with $n=3$ the smallest attainable permutation $p$-value is $1/6$: less evidence
 than three coin flips. What the chain/ladder pair does establish is the controlled contrast it was built
 for, which needs no correlation coefficient to read: at $\mathcal F_1$ equal to within $1\%$, the ladder's
-support exceeds the chain's by up to ${\sim}2.2\times$, while $\chi$ moves from $5$ to $13$ at $L=6$ and
+support exceeds the chain's by up to $2.24\times$, while $\chi$ moves from $5$ to $13$ at $L=6$ and
 from $8$ to $38$ at $L=8$.
 
 \paragraph{What stands, and where the tracker fails too.} Figure~\ref{fig:master} consolidates the
@@ -364,7 +310,7 @@ $\chi$ is flat at $38$ over that same step while the cost grows by $7.7$. That n
 chain $\chi$ is stated here explicitly, and it is a limit on $\chi$ itself. What
 $\mathcal F_1$ does instead is fail in two \emph{additional} and visibly distinct ways---the Hubbard
 branch runs the wrong way at a stratified $\tau=-1.000$, and the chain/ladder points sit at identical
-$\mathcal F_1$ with $|\mathcal S|_{\varepsilon_w}$ differing by up to ${\sim}2.2\times$. Neither statement supplies the
+$\mathcal F_1$ with $|\mathcal S|_{\varepsilon_w}$ differing by up to $2.24\times$. Neither statement supplies the
 predictor this section set out to find, $\chi$ being itself basis dependent, measured rather than
 predicted, and blind to the leakage. What $\mathcal F_1$ \emph{is} remains intact and useful: a faithful,
 efficiently measurable detector of static (multireference) correlation, generalizing to fermionic
